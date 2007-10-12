@@ -1,0 +1,463 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+ID	editMem-01.php	/^	$ID = $_POST[memID];$/;"	v
+ID	editMem.php	/^			$ID = $_POST[memID];$/;"	v
+ID	viewMem.php	/^$ID = $_GET[id];$/;"	v
+JY	editMem-01.php	/^	$JY = date("Y", $a[dateJoin]);$/;"	v
+JY	editMem-01.php	/^$JY = date("Y");$/;"	v
+JY	editMem.php	/^	$JY = date("Y");$/;"	v
+JY	functions.php	/^	$JY = date("Y");$/;"	v
+Jd	editMem-01.php	/^	$Jd = date("d", $a[dateJoin]);$/;"	v
+Jd	editMem-01.php	/^$Jd = date("d");$/;"	v
+Jd	editMem.php	/^	$Jd = date("d");$/;"	v
+Jd	functions.php	/^	$Jd = date("d");$/;"	v
+Jn	editMem-01.php	/^	$Jn = date("n", $a[dateJoin]);$/;"	v
+Jn	editMem-01.php	/^$Jn = date("n");$/;"	v
+Jn	editMem.php	/^	$Jn = date("n");$/;"	v
+Jn	functions.php	/^	$Jn = date("n");$/;"	v
+TY	editTrans.php	/^	$TY = date("Y");$/;"	v
+Td	editTrans.php	/^	$Td = date("d");$/;"	v
+Tn	editTrans.php	/^	$Tn = date("n");$/;"	v
+Y	editMem.php	/^	$Y = (integer) date("Y");$/;"	v
+a	confirm.php	/^	$a = mysql_fetch_array($r, MYSQL_ASSOC);$/;"	v
+a	editMem-01.php	/^	$a = mysql_fetch_array($result, MYSQL_ASSOC);$/;"	v
+a	editMem.php	/^	$a = mysql_fetch_array($result, MYSQL_ASSOC);$/;"	v
+a	editMem.php	/^$a = mysql_fetch_array($r, MYSQL_ASSOC);$/;"	v
+a	editTrans.php	/^	$a = mysql_fetch_array($result, MYSQL_ASSOC);$/;"	v
+a	functions.php	/^	$a = mysql_fetch_array($r, MYSQL_ASSOC);$/;"	v
+aE	functions.php	/^			$aE = $a[em];$/;"	v
+aFormat	functions.php	/^$aFormat = adrsFormat($adrs);$/;"	v
+aI	editMem.php	/^			$aI = 0;$/;"	v
+aID	editAccts.php	/^			$aID = (integer) $a[acctID];$/;"	v
+aID	editAccts.php	/^	$aID = (integer) $acct[acctID];$/;"	v
+aID	editMem.php	/^	$aID = (integer) $acct[aID];$/;"	v
+aID	functions.php	/^		$aID = (integer) $acct[ID];$/;"	v
+aN	editAccts.php	/^			$aN = $a[aName];$/;"	v
+aN	editAccts.php	/^	$aN = $acct[aName];$/;"	v
+aN	editMem.php	/^			$aN = $a[aName];$/;"	v
+aN	editMem.php	/^	$aN = $acct[aName];$/;"	v
+aN	functions.php	/^		$aN = $a[name];$/;"	v
+aN	functions.php	/^		$aN = $acct[name];$/;"	v
+aN	functions.php	/^		$aN = $c[name];$/;"	v
+aNum	editMem.php	/^	$aNum = "value='" . $a[num] . "'";$/;"	v
+aNum	functions.php	/^	$aNum = "value=''";$/;"	v
+aT	functions.php	/^			$aT = $a[telNum];$/;"	v
+acct	editMem.php	/^	$acct = "value='" . $a[acct] . "'";$/;"	v
+acct	editMem.php	/^	$acct = "value=''";$/;"	v
+acct	editTrans.php	/^	$acct = "value='" . $a[acct] . "'";$/;"	v
+acct	editTrans.php	/^	$acct = "value=''";$/;"	v
+acct	functions.php	/^	$acct = "value=''";$/;"	v
+accts	editAccts.php	/^	$accts = getAccts($link);$/;"	v
+accts	editMem.php	/^	$accts = getMemAccts($_SESSION, $link);$/;"	v
+accts	functions.php	/^$accts = getMemAccts($vars, $link);$/;"	v
+actionPhpSelf	forms.php	/^$actionPhpSelf = <<<EOD$/;"	v
+active	editMem-01.php	/^	$active = "value='" . $a[active] . "'";$/;"	v
+active	editMem-01.php	/^$active = "y";$/;"	v
+addrs	editMem.php	/^	$addrs = "value='" . $a[addrs] . "'";$/;"	v
+adrs	functions.php	/^	$adrs = "None";$/;"	v
+adrs	functions.php	/^$adrs =  getAdrs($memID, $link);$/;"	v
+adrs1	editMem-01.php	/^	$adrs1 = "value='" . $a[adrs1] . "'";$/;"	v
+adrs1	editMem-01.php	/^$adrs1 = "value=''";$/;"	v
+adrs2	editMem-01.php	/^	$adrs2 = "value='" . $a[adrs2] . "'";$/;"	v
+adrs2	editMem-01.php	/^$adrs2 = "value=''";$/;"	v
+adrs2	editMem.php	/^	$adrs2 = "value='" . $a[adrs2] . "'";$/;"	v
+adrs2	editMem.php	/^	$adrs2 = "value=''";$/;"	v
+adrs2	functions.php	/^	$adrs2 = "value=''";$/;"	v
+adrsFormat	functions.php	/^function adrsFormat($r) {$/;"	f
+amt	editTrans.php	/^	$amt = "value='" . $a[amount] . "'";$/;"	v
+amt	editTrans.php	/^	$amt = "value=''";$/;"	v
+array	editMem-01.php	/^	$array = mysql_fetch_array($result, MYSQL_ASSOC);$/;"	v
+bal	fun-table.php	/^		$bal = getAcctBal($r[aID], $r[tDate], $lnk, $vars);$/;"	v
+bal	functions.php	/^	$bal = $r[bal];$/;"	v
+bal	functions.php	/^	$bal = mysql_fetch_array($r, MYSQL_ASSOC);$/;"	v
+cAcct	editAccts.php	/^$cAcct = 0;$/;"	v
+city	editMem-01.php	/^	$city = "value='" . $a[city] . "'";$/;"	v
+city	editMem-01.php	/^$city = "Philadelphia";$/;"	v
+city	editMem.php	/^	$city = "value='" . $a[city] . "'";$/;"	v
+city	editMem.php	/^	$city = "value='Philadelphia'";$/;"	v
+city	functions.php	/^	$city = "Philadelphia";$/;"	v
+contact	editMem.php	/^	$contact = getMemContacts($_SESSION, $link);$/;"	v
+contact	functions.php	/^$contact = getMemContacts($vars, $link);$/;"	v
+country	editMem-01.php	/^	$country = "value='" . $a[country] . "'";$/;"	v
+country	editMem-01.php	/^$country = "USA";$/;"	v
+country	editMem.php	/^	$country = "value='" . $a[country] . "'";$/;"	v
+country	editMem.php	/^	$country = "value='USA'";$/;"	v
+country	functions.php	/^	$country = "USA";$/;"	v
+date	editTrans.php	/^	$date = "value='" . $a[date] . "'";$/;"	v
+date	editTrans.php	/^	$date = "value=''";$/;"	v
+dateJoin	editMem-01.php	/^	$dateJoin = "value='" . $a[dateJoin] . "'";$/;"	v
+dateJoin	editMem-01.php	/^$dateJoin = "value=''";$/;"	v
+dateJoin	functions.php	/^$dateJoin = $n[joinY] . "-" . $n[joinM] . "-" . $n[joinD];$/;"	v
+db	functions.php	/^	$db = $vars['db'];$/;"	v
+dbLink	functions.php	/^function dbLink($vars){$/;"	f
+e	functions.php	/^$e = getMemEmails($vars, $link);$/;"	v
+editAccts	editAccts.php	/^function editAccts($vars) {$/;"	f
+editMemNew	functions.php	/^function editMemNew () {$/;"	f
+email	editMem-01.php	/^	$email = "value='" . $a[email] . "'";$/;"	v
+email	editMem-01.php	/^$email = "value=''";$/;"	v
+email	editMem.php	/^	$email = "value='" . $a[email] . "'";$/;"	v
+email	editMem.php	/^	$email = "value=''";$/;"	v
+email	functions.php	/^	$email  = "value=''";$/;"	v
+f	functions.php	/^	$f = "CONCAT_WS(' ', given, middle, family) AS fullName";$/;"	v
+family	editMem.php	/^	$family = "value='" . $a[family] . "'";$/;"	v
+family	editMem.php	/^	$family = "value=''";$/;"	v
+family	functions.php	/^	$family = "value=''";$/;"	v
+fn	confirm.php	/^	$fn = fullName();$/;"	v
+fn	fun-table.php	/^	$fn = fullName();$/;"	v
+fn	functions.php	/^	$fn = "CONCAT_WS(' ', given, middle, family) AS fullName";$/;"	v
+fn	functions.php	/^	$fn = fullName();$/;"	v
+fn	queries.php	/^	$fn = fullName();$/;"	v
+form	forms.php	/^$form = <<<EOD$/;"	v
+form	forms.php	/^$form =<<<EOD$/;"	v
+fullName	functions.php	/^function fullName () {$/;"	f
+getAcctBal	functions.php	/^function getAcctBal ($acct, $end, $l, $vars) {$/;"	f
+getAcctMems	functions.php	/^function getAcctMems($aID, $link) {$/;"	f
+getAdrs	functions.php	/^function getAdrs($memID, $link){$/;"	f
+getAllBal	functions.php	/^function getAllBal ($aID, $link){$/;"	f
+getMemAccts	functions.php	/^function getMemAccts($arr, $link) {$/;"	f
+getMemContacts	functions.php	/^function getMemContacts($arr, $link) {$/;"	f
+getMemEmails	functions.php	/^function getMemEmails($arr, $link) {$/;"	f
+getMemInfo	functions.php	/^function getMemInfo($arr,$link) {$/;"	f
+getMemName	functions.php	/^function getMemName ($arr, $link) {$/;"	f
+getMemTels	functions.php	/^function getMemTels($arr, $link) {$/;"	f
+getPrimAcct	functions.php	/^function getPrimAcct($arr, $link) { $/;"	f
+getTelLoc	functions.php	/^function getTelLoc($t) {$/;"	f
+given	editMem.php	/^	$given  = "value='" . $a[given] . "'";$/;"	v
+given	editMem.php	/^	$given = "value=''";$/;"	v
+given	functions.php	/^	$given  = "value=''";$/;"	v
+headerMariposa	html.php	/^$headerMariposa = <<<EOD$/;"	v
+htmlHead	html.php	/^$htmlHead = <<<EOD$/;"	v
+htmlHome	html.php	/^$htmlHome = <<<EOD$/;"	v
+htmlTail	html.php	/^$htmlTail = <<<EOD$/;"	v
+job	editMem.php	/^	$job = "value='" . $a[job] . "'";$/;"	v
+job	editMem.php	/^	$job = "value=''";$/;"	v
+job	functions.php	/^	$job    = "value=''";$/;"	v
+jobID	editMem-01.php	/^	$jobID = "value='" . $a[jobID] . "'";$/;"	v
+jobID	editMem-01.php	/^$jobID = "value=''";$/;"	v
+join	editMem.php	/^	$join = "value='" . $a[join] . "'";$/;"	v
+join	editMem.php	/^	$join = "value=''";$/;"	v
+join	functions.php	/^	$join = "value=''";$/;"	v
+key	editMem-01.php	/^	$key = "value='" . $a[key] . "'";$/;"	v
+key	editMem-01.php	/^$key = "n";$/;"	v
+key	editMem.php	/^			$key = "ACCT" . $aI;$/;"	v
+key	editMem.php	/^	$key = "value='" . $a[key] . "'";$/;"	v
+key	editMem.php	/^	$key = "value='n'";$/;"	v
+key	functions.php	/^	$key = "n";$/;"	v
+link	cashier.php	/^			$link = dbLink($varLogin);$/;"	v
+link	confirm.php	/^	$link = dblink($l);$/;"	v
+link	editAccts.php	/^	$link = dbLink($varLogin);$/;"	v
+link	editMem-01.php	/^	$link = dbLink($varLogin);$/;"	v
+link	editMem.php	/^			$link = dbLink($varLogin);$/;"	v
+link	editMem.php	/^	$link = dbLink($varLogin);$/;"	v
+link	editMem.php	/^$link = dbLink($varLogin);$/;"	v
+link	editTrans.php	/^			$link = dbLink($varLogin);$/;"	v
+link	editTrans.php	/^$link = dbLink($varLogin);$/;"	v
+link	fun-table.php	/^	$link = dbLink($vars);$/;"	v
+link	functions.php	/^	$link = @mysql_connect($server, $user, $pass) or die(mysql_error());$/;"	v
+link	functions.php	/^	$link = dblink($vars);$/;"	v
+link	functions.php	/^$link = dbLink($varLogin);$/;"	v
+listAccts	functions.php	/^function listAccts($link) {$/;"	f
+listTels	functions.php	/^function listTels($link) {$/;"	f
+lnk	fun-table.php	/^	$lnk = dbLink($vars);$/;"	v
+loc	functions.php	/^			$loc = getTelLoc($a[loc]);$/;"	v
+loginForm	forms.php	/^function loginForm() {$/;"	f
+loginForm	login.php	/^$loginForm = print <<<EOD$/;"	v
+mID	editAccts.php	/^		$mID = (integer) $mAcct[acctID];$/;"	v
+mID	functions.php	/^		$mID = (integer) $mem[ID];$/;"	v
+mInfo	functions.php	/^	$mInfo = mysql_fetch_array($r, MYSQL_ASSOC);$/;"	v
+mInfo	functions.php	/^$mInfo = getMemInfo($vars, $link);$/;"	v
+mN	functions.php	/^		$mN = $mem[fullName];$/;"	v
+mem	editTrans.php	/^	$mem = "value='" . $a[mem] . "'";$/;"	v
+mem	editTrans.php	/^	$mem = "value=''";$/;"	v
+memAccts	editAccts.php	/^	$memAccts = getMemAccts($_SESSION, $link);$/;"	v
+memAccts	editMem.php	/^			$memAccts = $_SESSION[memAccts];$/;"	v
+memID	editMem-01.php	/^	$memID = $_GET['id'];$/;"	v
+memID	editMem.php	/^	$memID = $_GET['id'];$/;"	v
+memID	functions.php	/^	$memID = $arr[memID];$/;"	v
+memID	functions.php	/^$memID = $vars[memID];$/;"	v
+memId	editMem.php	/^$memId = $_SESSION[memID];$/;"	v
+memId	editTrans.php	/^$memId = $_SESSION[memID];$/;"	v
+memName	editAccts.php	/^	$memName = getMemName($_SESSION, $link);$/;"	v
+memName	editMem-01.php	/^	$memName = $a[nGiv] . " " . $a[nMid] . " " .$a[nFam];$/;"	v
+memName	editMem.php	/^	$memName = $a[given] . " " . $a[middle] . " " .$a[family];$/;"	v
+memName	functions.php	/^	$memName = $a[name];$/;"	v
+mems	fun-table.php	/^		$mems = getAcctMems($r[aID], $link);$/;"	v
+middle	editMem.php	/^	$middle = "value='" . $a[middle] . "'";$/;"	v
+middle	editMem.php	/^	$middle = "value=''";$/;"	v
+middle	functions.php	/^	$middle = "value=''";$/;"	v
+modID	functions.php	/^		$modID = 0;$/;"	v
+modTime	editMem-01.php	/^	$modTime = date("M d, Y", $a[modTime]) . " at " . date("h:m:sa", $a[modTime]);$/;"	v
+modTime	editMem.php	/^	$modTime = date("M d, Y", $a[modTime]) . " at " . date("h:m:sa", $a[modTime]);$/;"	v
+mon	editMem-01.php	/^   				$mon = "Apr";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Aug";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Dec";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Feb";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Jan";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Jul";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Jun";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Mar";$/;"	v
+mon	editMem-01.php	/^   				$mon = "May";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Nov";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Oct";$/;"	v
+mon	editMem-01.php	/^   				$mon = "Sep";$/;"	v
+mon	editMem.php	/^		$mon = whatMonth($M);$/;"	v
+mon	functions.php	/^			$mon = "Apr";$/;"	v
+mon	functions.php	/^			$mon = "Aug";$/;"	v
+mon	functions.php	/^			$mon = "Dec";$/;"	v
+mon	functions.php	/^			$mon = "Feb";$/;"	v
+mon	functions.php	/^			$mon = "Jan";$/;"	v
+mon	functions.php	/^			$mon = "Jul";$/;"	v
+mon	functions.php	/^			$mon = "Jun";$/;"	v
+mon	functions.php	/^			$mon = "Mar";$/;"	v
+mon	functions.php	/^			$mon = "May";$/;"	v
+mon	functions.php	/^			$mon = "Nov";$/;"	v
+mon	functions.php	/^			$mon = "Oct";$/;"	v
+mon	functions.php	/^			$mon = "Sep";$/;"	v
+mysql	objects.php	/^class mysql ($db, $host, $user, $pass) {$/;"	c
+nFam	editMem-01.php	/^	$nFam = "value='" . $a[nFam] . "'";$/;"	v
+nFam	editMem-01.php	/^$nFam = "value=''";$/;"	v
+nGiv	editMem-01.php	/^	$nGiv = "value='" . $a[nGiv] . "'";$/;"	v
+nGiv	editMem-01.php	/^$nGiv = "value=''";$/;"	v
+nMid	editMem-01.php	/^	$nMid = "value='" . $a[nMid] . "'";$/;"	v
+nMid	editMem-01.php	/^$nMid = "value=''";$/;"	v
+navHome	html.php	/^$navHome = <<<EOD$/;"	v
+newTransQuery	functions.php	/^function newTransQuery($n) {$/;"	f
+nextID	prevNext.php	/^$nextID = $ID + 1; $/;"	v
+note	editTrans.php	/^	$note = "value='" . $a[note] . "'";$/;"	v
+note	editTrans.php	/^	$note = "value=''";$/;"	v
+note	functions.php	/^		$note  = NULL;$/;"	v
+num	editMem.php	/^	$num = "value=''";$/;"	v
+pAcct	functions.php	/^$pAcct = getPrimAcct($vars, $link);$/;"	v
+pass	functions.php	/^	$pass = $vars['pass'];$/;"	v
+ph1	editMem-01.php	/^$ph1 = "value=''";$/;"	v
+ph1	functions.php	/^	$ph1 = $n[ph1ac] . "-" . $n[ph1ex] . "-" .$n[ph1num];$/;"	v
+ph1Type	editMem-01.php	/^	$ph1Type = "value='" . $a[ph1Type] . "'";$/;"	v
+ph1Type	editMem-01.php	/^$ph1Type = "value=''";$/;"	v
+ph1ac	editMem-01.php	/^	$ph1ac =  "value='" . $ph1ac . "'";$/;"	v
+ph1ac	editMem.php	/^	$ph1ac =  "value='" . $ph1ac . "'";$/;"	v
+ph1ex	editMem-01.php	/^	$ph1ex =  "value='" . $ph1ex . "'";$/;"	v
+ph1ex	editMem.php	/^	$ph1ex =  "value='" . $ph1ex . "'";$/;"	v
+ph1num	editMem-01.php	/^	$ph1num =  "value='" . $ph1num . "'";$/;"	v
+ph1num	editMem.php	/^	$ph1num =  "value='" . $ph1num . "'";$/;"	v
+ph2	editMem-01.php	/^$ph2 = "value=''";$/;"	v
+ph2	functions.php	/^	$ph2 = $n[ph2ac] . "-" . $n[ph2ex] . "-" .$n[ph2num];$/;"	v
+ph2Type	editMem-01.php	/^	$ph2Type = "value='" . $a[ph2Type] . "'";$/;"	v
+ph2Type	editMem-01.php	/^$ph2Type = "value=''";$/;"	v
+ph2ac	editMem-01.php	/^	$ph2ac =  "value='" . $ph2ac . "'";$/;"	v
+ph2ac	editMem.php	/^	$ph2ac =  "value='" . $ph2ac . "'";$/;"	v
+ph2ex	editMem-01.php	/^	$ph2ex =  "value='" . $ph2ex . "'";$/;"	v
+ph2ex	editMem.php	/^	$ph2ex =  "value='" . $ph2ex . "'";$/;"	v
+ph2num	editMem-01.php	/^	$ph2num =  "value='" . $ph2num . "'";$/;"	v
+ph2num	editMem.php	/^	$ph2num =  "value='" . $ph2num . "'";$/;"	v
+ph3	editMem-01.php	/^$ph3 = "value=''";$/;"	v
+ph3	functions.php	/^	$ph3 = $n[ph3ac] . "-" . $n[ph3ex] . "-" .$n[ph3num];$/;"	v
+ph3Type	editMem-01.php	/^	$ph3Type = "value='" . $a[ph3Type] . "'";$/;"	v
+ph3Type	editMem-01.php	/^$ph3Type = "value=''";$/;"	v
+ph3ac	editMem-01.php	/^	$ph3ac =  "value='" . $ph3ac . "'";$/;"	v
+ph3ac	editMem.php	/^	$ph3ac =  "value='" . $ph3ac . "'";$/;"	v
+ph3ex	editMem-01.php	/^	$ph3ex =  "value='" . $ph3ex . "'";$/;"	v
+ph3ex	editMem.php	/^	$ph3ex =  "value='" . $ph3ex . "'";$/;"	v
+ph3num	editMem-01.php	/^	$ph3num =  "value='" . $ph3num . "'";$/;"	v
+ph3num	editMem.php	/^	$ph3num =  "value='" . $ph3num . "'";$/;"	v
+phPref	editMem-01.php	/^	$phPref = "value='" . $a[phPref] . "'";$/;"	v
+phPref	editMem-01.php	/^$phPref = "1";$/;"	v
+phSelect	functions.php	/^function phSelect($ph, $phtype) { $/;"	f
+prefEmail	editMem-01.php	/^	$prefEmail = "value='" . $a[prefEmail] . "'";$/;"	v
+prefEmail	editMem-01.php	/^$prefEmail = "value=''";$/;"	v
+prefer	editMem.php	/^	$prefer = "value='" . $a[prefer] . "'";$/;"	v
+prefer	editMem.php	/^	$prefer = "value='e'";$/;"	v
+prefer	functions.php	/^	$prefer = "value=''";$/;"	v
+prevID	prevNext.php	/^$prevID = $ID - 1; $/;"	v
+primAcct	editAccts.php	/^	$primAcct = getPrimAcct($_SESSION, $link);$/;"	v
+primAcct	editMem-01.php	/^	$primAcct = "value='" . $a[primAcct] . "'";$/;"	v
+primAcct	editMem-01.php	/^$primAcct = "value=''";$/;"	v
+primAcctID	editAccts.php	/^	$primAcctID = (integer) $primAcct[primAcct];$/;"	v
+primAcctID	editMem.php	/^$primAcctID = (integer) $a[accts.aID];$/;"	v
+printPh	functions.php	/^function printPh ($type, $ph, $ext ){$/;"	f
+pub	functions.php	/^			$pub = pub($a[pub]);  $/;"	v
+pub	functions.php	/^function pub($pub) {$/;"	f
+pubAdrs	editMem-01.php	/^	$pubAdrs = "value='" . $a[pubAdrs] . "'";$/;"	v
+pubAdrs	editMem-01.php	/^$pubAdrs = "y";$/;"	v
+pubEmail	editMem-01.php	/^	$pubEmail = "value='" . $a[pubEmail] . "'";$/;"	v
+pubEmail	editMem-01.php	/^$pubEmail = "y";$/;"	v
+pubPh1	editMem-01.php	/^	$pubPh1 = "value='" . $a[pubPh1] . "'";$/;"	v
+pubPh1	editMem-01.php	/^$pubPh1 = "y";$/;"	v
+pubPh2	editMem-01.php	/^	$pubPh2 = "value='" . $a[pubPh2] . "'";$/;"	v
+pubPh2	editMem-01.php	/^$pubPh2 = "y";$/;"	v
+pubPh3	editMem-01.php	/^	$pubPh3 = "value='" . $a[pubPh3] . "'";$/;"	v
+pubPh3	editMem-01.php	/^$pubPh3 = "y";$/;"	v
+pub_view	functions.php	/^function pub_view($name, $yn) {$/;"	f
+q	cashier.php	/^			$q = newTransQuery($vars);$/;"	v
+q	confirm.php	/^	$q = "SELECT name, $fn FROM acct, mem ";$/;"	v
+q	editAccts.php	/^	$q = "SELECT aName, acctID FROM accounts ";$/;"	v
+q	editMem.php	/^			$q = updateMemQuery($vars);$/;"	v
+q	editMem.php	/^$q =  "SELECT accts.aID, accts.aName, mem.nGiven ";$/;"	v
+q	editMem.php	/^$q = "SELECT * FROM accts ORDER BY aName";$/;"	v
+q	editTrans.php	/^			$q = newTransQuery($vars);$/;"	v
+q	fun-table.php	/^	$q  = "SELECT CONCAT_WS(' ' , given, middle, family) AS fullName, ";$/;"	v
+q	fun-table.php	/^	$q  = "SELECT CONCAT_WS(' ', given, middle, family) as fullName, ";$/;"	v
+q	fun-table.php	/^	$q  = "SELECT name, acct.ID AS aID, $fn, mem.ID AS mID FROM acct, trans, mem WHERE (trans.acct != acct.ID) AND (acct.contact = mem.ID) GROUP BY acct.ID ORDER BY acct.name";$/;"	v
+q	fun-table.php	/^	$q ="SELECT date, $fn, mem.ID AS mID, name, type, SUM(amt) AS bal FROM trans, acct, mem WHERE (trans.acct = acct.ID) AND (trans.mem = mem.ID)GROUP BY type, name$/;"	v
+q	fun-table.php	/^	$q= qTransToday();	$/;"	v
+q	functions.php	/^	$q  = " SELECT acct.ID, name FROM acct ";$/;"	v
+q	functions.php	/^	$q  = "INSERT INTO trans ";$/;"	v
+q	functions.php	/^	$q  = "SELECT $f, mem.ID AS mID, name, contact FROM mem, acct, acctMem ";$/;"	v
+q	functions.php	/^	$q  = "SELECT *, $tel FROM tel ";$/;"	v
+q	functions.php	/^	$q  = "SELECT ID, name FROM acct ";$/;"	v
+q	functions.php	/^	$q  = "SELECT acct.ID, acct.name FROM mem, acct ";$/;"	v
+q	functions.php	/^	$q  = "SELECT adrs.* FROM mem, adrs ";$/;"	v
+q	functions.php	/^	$q  = "SELECT emLnk.ID AS eID, emLnk.loc as eLoc, email.email AS em ";$/;"	v
+q	functions.php	/^	$q  = "SELECT telLnk.ID, loc, ";$/;"	v
+q	functions.php	/^	$q = "SELECT *, CONCAT_WS(' ' , given, middle, family) AS 'fullName' ";$/;"	v
+q	functions.php	/^	$q = "SELECT CONCAT_WS(' ', given, middle, family) AS 'fullName' ";$/;"	v
+q	functions.php	/^	$q = "SELECT acct.name, acct.ID ";$/;"	v
+q	functions.php	/^	$q = 'SELECT ID, name FROM acct ORDER BY name';$/;"	v
+q	functions.php	/^	$q = qGetAcctBal($acct, $end);$/;"	v
+q	functions.php	/^	$q =<<<EOD$/;"	v
+q	functions.php	/^$q  = "UPDATE trans SET "; $/;"	v
+q	queries.php	/^	$q =<<<EOD$/;"	v
+q	queries.php	/^$q =<<<EOD$/;"	v
+qGetAcctBal	queries.php	/^function qGetAcctBal($aID, $end) {$/;"	f
+qGetFullName	queries.php	/^function qGetFullName($ID) {$/;"	f
+qMemAccts	queries.php	/^function qMemAccts ($mID){$/;"	f
+qTransToday	queries.php	/^function qTransToday(){$/;"	f
+qr	functions.php	/^	$qr = mysql_query($q, $l);$/;"	v
+query	editMem-01.php	/^	$query = "SELECT *, accounts.aName ";$/;"	v
+query	editMem-01.php	/^	$query = "SELECT accounts.aName FROM accounts, member ";$/;"	v
+query	editMem-01.php	/^	$query = updateMem ($_POST);$/;"	v
+query	editMem.php	/^	$query = "SELECT *, acct.name ";$/;"	v
+query	editTrans.php	/^	$query = "SELECT *, accts.aName ";$/;"	v
+query	functions.php	/^$query = "UPDATE member "; $/;"	v
+r	confirm.php	/^	$r = mysql_query($q, $link);$/;"	v
+r	editAccts.php	/^	$r = mysql_query($q, $link);$/;"	v
+r	editMem.php	/^$r = mysql_query($q, $link);$/;"	v
+r	functions.php	/^	$r = mysql_fetch_array($qr, MYSQL_ASSOC);$/;"	v
+r	functions.php	/^	$r = mysql_query($q, $link);$/;"	v
+ref	editTrans.php	/^	$ref = "value=" . $a[ref] . "''";$/;"	v
+ref	editTrans.php	/^	$ref = "value=''";$/;"	v
+ref	functions.php	/^		$ref   = NULL;$/;"	v
+result	editMem-01.php	/^	$result = mysql_query($query, $link);$/;"	v
+result	editMem.php	/^	$result = mysql_query($query, $link);$/;"	v
+result	editTrans.php	/^	$result = mysql_query($query, $link);$/;"	v
+result	fun-table.php	/^	$result = mysql_query($q, $link);$/;"	v
+rq	fun-table.php	/^	$rq = mysql_query($q, $link);$/;"	v
+rq	fun-table.php	/^	$rq = mysql_query($q, $lnk);$/;"	v
+s	functions.php	/^	$s = '';	$/;"	v
+s	functions.php	/^	$s = '';$/;"	v
+selectAcct	functions.php	/^function selectAcct($vars){$/;"	f
+selectWho	functions.php	/^function selectWho($vars){$/;"	f
+server	functions.php	/^	$server = $vars['server'];$/;"	v
+state	editMem-01.php	/^	$state = "value='" . $a[state] . "'";$/;"	v
+state	editMem-01.php	/^$state = "PA";$/;"	v
+state	editMem.php	/^	$state = "value='" . $a[state] . "'";$/;"	v
+state	editMem.php	/^	$state = "value='PA'";$/;"	v
+state	functions.php	/^	$state = "PA";$/;"	v
+status	editMem-01.php	/^	$status = "value='" . $a[status] . "'";$/;"	v
+status	editMem-01.php	/^$status = "a";$/;"	v
+status	editMem.php	/^	$status = "value='" . $a[status] . "'";$/;"	v
+status	editMem.php	/^	$status = "value='a'";$/;"	v
+status	functions.php	/^	$status = "a";$/;"	v
+street	editMem.php	/^	$street = "value='" . $a[street] . "'";$/;"	v
+street	editMem.php	/^	$street = "value=''";$/;"	v
+street	functions.php	/^	$street = "value=''";$/;"	v
+t	confirm.php	/^			$t = "Bulk Order";$/;"	v
+t	confirm.php	/^			$t = "Check Payment";$/;"	v
+t	confirm.php	/^			$t = "Credit Card Payment";$/;"	v
+t	confirm.php	/^			$t = "Debit Card Payment";$/;"	v
+t	confirm.php	/^			$t = "Deposit";$/;"	v
+t	confirm.php	/^			$t = "Dues";$/;"	v
+t	confirm.php	/^			$t = "EBT Payment";$/;"	v
+t	confirm.php	/^			$t = "Extras Purchase";$/;"	v
+t	confirm.php	/^			$t = "Key Deposit";$/;"	v
+t	confirm.php	/^			$t = "Misc";$/;"	v
+t	confirm.php	/^			$t = "Money Order Payment";$/;"	v
+t	confirm.php	/^			$t = "Purchase";$/;"	v
+t	confirm.php	/^			$t = "Refund or Credit";$/;"	v
+t	confirm.php	/^			$t = "Work Credit";$/;"	v
+t	functions.php	/^			$t = "Bulk";$/;"	v
+t	functions.php	/^			$t = "Check";$/;"	v
+t	functions.php	/^			$t = "Credit Card";$/;"	v
+t	functions.php	/^			$t = "Debit Card";$/;"	v
+t	functions.php	/^			$t = "Deposit";$/;"	v
+t	functions.php	/^			$t = "Dues";$/;"	v
+t	functions.php	/^			$t = "EBT";$/;"	v
+t	functions.php	/^			$t = "Extras";$/;"	v
+t	functions.php	/^			$t = "Key Deposit";$/;"	v
+t	functions.php	/^			$t = "Misc";$/;"	v
+t	functions.php	/^			$t = "Money Order";$/;"	v
+t	functions.php	/^			$t = "Refund or Credit";$/;"	v
+t	functions.php	/^			$t = "Sales";$/;"	v
+t	functions.php	/^			$t = "Work Credit";$/;"	v
+tID	editTrans.php	/^	$tID = "value='" . $a[ID] . "'";$/;"	v
+tableAcct	fun-table.php	/^function tableAcct($vars) {$/;"	f
+tableAllBal	fun-table.php	/^function tableAllBal($vars) {$/;"	f
+tableMem	fun-table.php	/^function tableMem($vars) {$/;"	f
+tableNoTrans	fun-table.php	/^function tableNoTrans($vars) {$/;"	f
+tableTransToday	fun-table.php	/^function tableTransToday($vars) {$/;"	f
+tel	editMem.php	/^	$tel = "value='" . $a[tel] . "'";$/;"	v
+tel	editMem.php	/^	$tel = "value=''";$/;"	v
+tel	functions.php	/^	$tel    = "value=''";$/;"	v
+tel	functions.php	/^	$tel = fullTel();$/;"	v
+telLoc	functions.php	/^function telLoc() { $/;"	f
+tels	functions.php	/^$tels  = getMemTels($vars, $link);$/;"	v
+testForName	functions.php	/^function testForName ($vars) {$/;"	f
+today	index.php	/^	$today = date("l, F j, Y \\a\\\\t g:i a");$/;"	v
+transConfirm	confirm.php	/^function transConfirm ($v,$l){$/;"	f
+transForm	forms.php	/^function transForm($varLogin) {$/;"	f
+transType	functions.php	/^function transType ($type) {$/;"	f
+type	confirm.php	/^	$type = transType($v[type]);$/;"	v
+type	editTrans.php	/^	$type = "value='" . $a[type] . "'";$/;"	v
+type	editTrans.php	/^	$type = "value=''";$/;"	v
+type	fun-table.php	/^		$type = "TYPE";$/;"	v
+type	fun-table.php	/^		$type = transType($r[type]);$/;"	v
+type	functions.php	/^				$type = "Fax";$/;"	v
+type	functions.php	/^				$type = "Home";$/;"	v
+type	functions.php	/^				$type = "Mobile";$/;"	v
+type	functions.php	/^				$type = "None";$/;"	v
+type	functions.php	/^				$type = "Other";$/;"	v
+type	functions.php	/^				$type = "Pager";$/;"	v
+type	functions.php	/^				$type = "Unknown";$/;"	v
+type	functions.php	/^				$type = "Voice Mail";$/;"	v
+type	functions.php	/^				$type = "Work";$/;"	v
+type	functions.php	/^	$type = array(	1 =>	array ( 1=>	'n', 'None'),$/;"	v
+updateMemQuery	functions.php	/^function updateMemQuery($n) {$/;"	f
+updateTransQuery	functions.php	/^function updateTransQuery($n) {$/;"	f
+user	functions.php	/^	$user = $vars['user'];$/;"	v
+user	index.php	/^	$user = &$vars[user];$/;"	v
+validateTrans	functions.php	/^function validateTrans ($v){$/;"	f
+varLogin	cashier.php	/^$varLogin = varLogin();$/;"	v
+varLogin	editAccts.php	/^	$varLogin = $_SESSION[varLogin];$/;"	v
+varLogin	editMem-01.php	/^$varLogin = $_SESSION[varLogin];$/;"	v
+varLogin	editMem.php	/^$varLogin = $_SESSION[varLogin];$/;"	v
+varLogin	editTrans.php	/^$varLogin = varLogin();$/;"	v
+varLogin	functions.php	/^$varLogin = $vars[varLogin];$/;"	v
+varLogin	functions.php	/^function varLogin() {$/;"	f
+varLogin	tableAcct.php	/^$varLogin = varLogin();$/;"	v
+varLogin	tableAllBal.php	/^$varLogin = varLogin();$/;"	v
+varLogin	tableMem.php	/^$varLogin = varLogin();$/;"	v
+varLogin	tableTrans.php	/^$varLogin = varLogin();$/;"	v
+varLogin	tableTransToday.php	/^$varLogin = varLogin();$/;"	v
+vars	cashier.php	/^	$vars = $_POST;$/;"	v
+vars	editMem-01.php	/^	$vars = $_POST;$/;"	v
+vars	editMem.php	/^	$vars = $_POST;$/;"	v
+vars	editTrans.php	/^	$vars = $_POST;$/;"	v
+vars	functions.php	/^		$vars = $_POST;$/;"	v
+vars	functions.php	/^		$vars = $_SESSION[varLogin];	$/;"	v
+vars	index.php	/^	$vars = varlogin();$/;"	v
+viewMem	functions.php	/^function viewMem($vars) {$/;"	f
+whatMonth	functions.php	/^function whatMonth ($M) {$/;"	f
+worker	editMem.php	/^	$worker = "value='" . $a[worker] . "'";$/;"	v
+worker	functions.php	/^	$worker = "value=''";$/;"	v
+xajax	ajaxForm.php	/^$xajax = new xajax();$/;"	v
+zip	editMem-01.php	/^	$zip = "value='" . $a[zip] . "'";$/;"	v
+zip	editMem-01.php	/^$zip = "value=''";$/;"	v
+zip1	editMem.php	/^	$zip1 = "value='" . $a[zip1] . "'";$/;"	v
+zip1	editMem.php	/^	$zip1 = "value=''";$/;"	v
+zip1	functions.php	/^	$zip1 = "value=''";$/;"	v
+zip2	editMem.php	/^	$zip2 = "value='" . $a[zip2] . "'";$/;"	v
+zip2	editMem.php	/^	$zip2 = "value=''";$/;"	v
+zip2	functions.php	/^	$zip2 = "value=''";$/;"	v
