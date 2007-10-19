@@ -1,11 +1,13 @@
 //functions.js
 
 
-function testStuff () {
+function testStuff ()
+{
 	document.write("Hellllo");
 }
 
-function listType ( thisObj, e, type) {
+function listType ( thisObj, e, type)
+{
 	
 	document.getElementById("table").background = "#000000";
 	
@@ -35,8 +37,10 @@ function listType ( thisObj, e, type) {
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
 	
-	ajaxRequest.onreadystatechange = function () {
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200) { 
+	ajaxRequest.onreadystatechange = function ()
+	{
+		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200)
+		{ 
  			listBox.innerHTML = ajaxRequest.responseText; 
  		}
 	}
@@ -47,7 +51,8 @@ function listType ( thisObj, e, type) {
 
 ///////////////////////////////////////////////////////////////////////
 
-function listAccounts(thisObj, e) {
+function listAccounts(thisObj, e)
+{
 	// List all accounts that match a pattern
 	
 	p = findPos (thisObj);
@@ -66,7 +71,8 @@ function listAccounts(thisObj, e) {
 	if (e.keyCode) keycode = e.keyCode;
 	else if (e.which) keycode = e.which;
 	
-	if(keycode == 8 ) {
+	if(keycode == 8 )
+	{
 		document.getElementById("fName").value = '';	
 		document.getElementById("mID").value = '';
 		document.getElementById("aID").value = '';
@@ -79,8 +85,10 @@ function listAccounts(thisObj, e) {
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
 	
-	ajaxRequest.onreadystatechange = function () {
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )  { 
+	ajaxRequest.onreadystatechange = function ()
+	{
+		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		{
  			listBox.innerHTML = ajaxRequest.responseText; 
  		}
 	}
@@ -91,7 +99,8 @@ function listAccounts(thisObj, e) {
 ////////////////////////////////////////////////////////////////////////
 
 
-function listMembers (e) {
+function listMembers (e)
+{
 	// List all members that match a pattern
 	
 	p = findPos (document.getElementById("fName"));
@@ -110,7 +119,8 @@ function listMembers (e) {
 	if (e.keyCode) keycode = e.keyCode;
 	else if (e.which) keycode = e.which;
 	
-	if(keycode == 8 ) {
+	if(keycode == 8 )
+	{
 		document.getElementById("fName").value = '';	
 		document.getElementById("mID").value = '';
 	}
@@ -126,8 +136,10 @@ function listMembers (e) {
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
 	
-	ajaxRequest.onreadystatechange = function () {
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 ) { 
+	ajaxRequest.onreadystatechange = function ()
+	{
+		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		{
  			listBox.innerHTML = ajaxRequest.responseText; 
  		}
 	}
@@ -137,7 +149,8 @@ function listMembers (e) {
 
 ////////////////////////////////////////////////////////////////////////
 
-function getMembers (e) {
+function getMembers (e)
+{
 	// Get members that belong to an account
 	
 	p = findPos (document.getElementById("fName"));
@@ -161,8 +174,10 @@ function getMembers (e) {
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
 	
-	ajaxRequest.onreadystatechange = function () {
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 ) { 
+	ajaxRequest.onreadystatechange = function ()
+	{
+		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		{
  			listBox.innerHTML = ajaxRequest.responseText; 
  		}
 	}
@@ -172,7 +187,8 @@ function getMembers (e) {
 
 ////////////////////////////////////////////////////////////////////////
 
-function setAccount (id, name) {
+function setAccount (id, name)
+{
 	
 	hideBox (document.getElementById("listNames"));
 	hideBox (document.getElementById("listMembers"));
@@ -185,7 +201,8 @@ function setAccount (id, name) {
 }
 ///////////////////////////////////////////////////////////////////////
 
-function setMember (id, name) {
+function setMember (id, name)
+{
 	
 	hideBox(document.getElementById("message"));
 	
@@ -199,7 +216,8 @@ function setMember (id, name) {
 	document.getElementById("mID").value = id;
 }
 
-function setOtherMember (id, name) {
+function setOtherMember (id, name)
+{
 	
 	//close and hide the member list
 	list = document.getElementById("listMembers");
@@ -243,8 +261,10 @@ function setOtherMember (id, name) {
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
 	
-	ajaxRequest.onreadystatechange = function () {
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )  { 
+	ajaxRequest.onreadystatechange = function ()
+	{
+		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		{
  			confirm.innerHTML = message + ajaxRequest.responseText; 
  		}
 	}
@@ -253,9 +273,10 @@ function setOtherMember (id, name) {
 } // End function setOtherMember 
 
 
-///////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
-function setType (ps, type, tName) {
+function setType (ps, type, tName)
+{
 	acObject = document.getElementById("listType");
 	acObject.style.visibility = "hidden";
 	acObject.style.height = "0px";
@@ -264,25 +285,25 @@ function setType (ps, type, tName) {
 	document.getElementById("payLabel").style.outline = "0px";
 	document.getElementById("saleLabel").style.outline = "0px";	
 	
-	switch (ps) {
-		
+	switch (ps)
+	{
 	case 's': document.getElementById("saleLabel").innerHTML = tName;
-			  document.getElementById("sale").value = type;
-			  document.getElementById("TEST").innerHTML = type;
+        	  document.getElementById("sale").value = type;
+		  document.getElementById("TEST").innerHTML = type;
 	break;
 	case 'p': document.getElementById("payLabel").innerHTML = tName;
-			  document.getElementById("pay").value = type;
+		  document.getElementById("pay").value = type;
 	break;
 	case 'a': document.getElementById("tName").innerHTML = tName;
-			  document.getElementById("xType").value = type;
+		  document.getElementById("xType").value = type;
 	break;
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////
 
-function validate () {
-	
+function validate ()
+{	
 	var m = '';
 	
 	var aID = document.getElementById("aID");
@@ -298,7 +319,8 @@ function validate () {
 	var ref = document.getElementById("ref");
 	var note = document.getElementById("note");
 
-	function moneyBox () {
+	function moneyBox ()
+	{
 		p = findPos (document.getElementById("payLabel"));
 		px = (p[0] + 10) + "px";
 		py = (p[1] - 5) + "px";
@@ -314,7 +336,8 @@ function validate () {
 		money.style.MozOutlineRadius = "30px";
 	}
 
-	if (!aID.value && !mID.value && !saleAmt) {
+	if (!aID.value && !mID.value && !saleAmt)
+	{
 		aName.style.outline = "solid red 1.5px";
 		aName.style.outlineOffset = "2px";
 		aName.style.MozOutlineRadius = "30px";
@@ -322,7 +345,8 @@ function validate () {
 		m = "No account selected!<br />";
 	}
 	
-	if (!mID.value) {
+	if (!mID.value)
+	{
 		fName.style.outline = "solid red 1.5px";
 		fName.style.outlineOffset = "2px";
 		fName.style.MozOutlineRadius = "30px";
@@ -330,7 +354,8 @@ function validate () {
 		m = "No member selected!<br />";
 	}
 	
-	if (!saleAmt.value && !payAmt.vaule && !pay.value) {
+	if (!saleAmt.value && !payAmt.vaule && !pay.value)
+	{
 		/*
 		saleAmt.style.outline = "solid red 1.5px";
 		saleAmt.style.outlineOffset = "2px";
@@ -349,7 +374,8 @@ function validate () {
 		m  = m + "No Sale or Payment Informaion!<br />";
 	}
 	
-	if(m) {
+	if(m)
+	{
 		h = "<div style='font-size: 1.25em'>Corrections Needed!</div><br />";	
 		var message = document.getElementById("message");
 		message.style.visibility = "visible";
@@ -361,7 +387,8 @@ function validate () {
 
 ////////////////////////////////////////////////////////////////////////
 
-function hideBox (box) {
+function hideBox (box)
+{
 	box.style.visibility = "hidden";
 	box.style.height = "0px";
 	box.style.width = "0px";
