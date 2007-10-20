@@ -141,7 +141,7 @@ print htmlTitle('Cashier');
 <div id='listMembers' ></div>
 <div id='validate' ></div>
 <div id='listType' ></div>
-<div id='message' class='message'></div>
-<div id='money' ></div>
+<div id='message' class='message' onclick='this.style.visibility = "hidden"' ></div>
+<div id='money' onclick='this.style.visibility = "hidden"' ></div>
 
 <?php print htmlTail(); ?>

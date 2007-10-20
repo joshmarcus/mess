@@ -72,7 +72,21 @@ div#content {
 	text-align: center;
 	top: 70px;
 }
-
+/*
+div#message {
+	visibility: hidden;
+	position: absolute;
+	width: auto;
+	height: auto;
+	padding: 20px;
+	background: #cc9999;
+	color: #003333;
+	border: solid red 1px;
+	-moz-border-radius: 15px;
+	fontSize: 1.5em;
+	textAlign: center;
+}
+*/
 /* ////////////////////////////////////////////////////////////////// */
 
 h1, h2 {text-align: center;}

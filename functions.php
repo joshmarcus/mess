@@ -158,4 +158,9 @@ function salesName () {
     }  //  end transTypeName
 
 ///////////////////////////////////////////////////////////////////////
+
+function escChar ($S)
+{
+
+} //End function escChar
 ?>

@@ -151,6 +151,7 @@ function listMembers (e)
 
 function getMembers (e)
 {
+	//hideBox (document.getElementById("message"))
 	// Get members that belong to an account
 	
 	p = findPos (document.getElementById("fName"));
@@ -185,31 +186,23 @@ function getMembers (e)
 	
 } // End function getMembers
 
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 function setAccount (id, name)
 {
-	
 	hideBox (document.getElementById("listNames"));
 	hideBox (document.getElementById("listMembers"));
 	
 	document.getElementById("aName").style.outline = "0px";	
 	document.getElementById("aName").value = name;	
 	document.getElementById("aID").value = id;
-	
-	//getMember (document.getElementById("fName"), event);
 }
 ///////////////////////////////////////////////////////////////////////
 
 function setMember (id, name)
 {
-	
 	hideBox(document.getElementById("message"));
-	
-	acObject = document.getElementById("listMembers");
-	acObject.style.visibility = "hidden";
-	acObject.style.height = "0px";
-	acObject.style.width = "0px";
+	hideBox(document.getElementById("listMembers"));
 
 	document.getElementById("fName").style.outline = "0px";	
 	document.getElementById("fName").value = name;	
@@ -220,10 +213,7 @@ function setOtherMember (id, name)
 {
 	
 	//close and hide the member list
-	list = document.getElementById("listMembers");
-	list.style.visibility = "hidden";
-	list.style.height = "0px";
-	list.style.width = "0px";
+	hideBox (document.getElementById("listMembers"))
 	
 	p = findPos (document.getElementById("fName"));
 	px = (p[0] + 25) + "px";
@@ -231,21 +221,23 @@ function setOtherMember (id, name)
 	
 	var aName = document.getElementById("aName").value;
 	
-	var confirm = document.getElementById("message");
-	confirm.style.visibility = "visible";
-	confirm.style.position = "absolute";
-	confirm.style.left = px;
-	confirm.style.top = py;
-	//confirm.style.width = "400px";
-	confirm.style.padding = "20px";
-	confirm.style.background = "#cc9999";
-	confirm.style.color = "#003333";
-	confirm.style.border = "solid red 1px";
-	confirm.style.MozBorderRadiusTopright = "15px";
-	confirm.style.MozBorderRadiusBottomleft = "15px";
-	confirm.style.MozBorderRadiusBottomright = "30px";
-	confirm.style.fontSize = "1.5em";
-	confirm.style.textAlign =  "center";
+	var b = document.getElementById("message");
+	b.style.visibility = "visible";
+	b.style.position = "absolute";
+	b.style.left = px;
+	b.style.top = py;
+	b.style.width = "auto";
+	b.style.height = "auto";
+	b.style.padding = "20px";
+	b.style.background = "#cc9999";
+	b.style.color = "#003333";
+	b.style.border = "solid red 1px";
+	b.style.MozBorderRadiusTopright = "0px";
+	b.style.MozBorderRadiusTopright = "15px";
+	b.style.MozBorderRadiusBottomleft = "15px";
+	b.style.MozBorderRadiusBottomright = "30px";
+	b.style.fontSize = "1.5em";
+	b.style.textAlign =  "center";
 
 	var message = "Which member from "
 				  + " <span style='color: red;'>"
@@ -256,7 +248,7 @@ function setOtherMember (id, name)
 	
 	var url = "confirmMember.php"
 	var aid = document.getElementById("aID").value
-	var query = url + "?aID=" + aid;
+	var query = url + "?aID=" + aid + "&id=" + id + "&name=" + name;
 	
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
@@ -265,7 +257,7 @@ function setOtherMember (id, name)
 	{
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
 		{
- 			confirm.innerHTML = message + ajaxRequest.responseText; 
+ 			b.innerHTML = message + ajaxRequest.responseText; 
  		}
 	}
 	ajaxRequest.send(null);
@@ -370,17 +362,39 @@ function validate ()
 		payAmt.style.MozOutlineRadius = "30px";
 		*/
 		
-		//moneyBox ();
+		moneyBox ();
 		m  = m + "No Sale or Payment Informaion!<br />";
 	}
 	
 	if(m)
 	{
-		h = "<div style='font-size: 1.25em'>Corrections Needed!</div><br />";	
-		var message = document.getElementById("message");
-		message.style.visibility = "visible";
+		p = findPos (document.getElementById("note"));
+		px = (p[0] + 25) + "px";
+		py = (p[1] + 25) + "px";
+	
+	var b = document.getElementById("message");
+	b.style.visibility = "visible";
+	b.style.position = "absolute";
+	b.style.left = px;
+	b.style.top = py;
+	b.style.width = "auto";
+	b.style.height = "auto";
+	b.style.padding = "20px";
+	b.style.background = "#cc9999";
+	b.style.color = "#003333";
+	b.style.border = "solid red 1px";
+	b.style.MozBorderRadiusTopright = "0px";
+	b.style.MozBorderRadiusTopright = "15px";
+	b.style.MozBorderRadiusBottomleft = "15px";
+	b.style.MozBorderRadiusBottomright = "30px";
+	b.style.fontSize = "1.5em";
+	b.style.textAlign =  "center";
+
 		//message.
-		message.innerHTML = h + m;
+		var h = "<span style='font-size: 1.25em'>Corrections Needed!</span><br />";
+		var c = "<div style='color: red; text-align: right;' >Click to close</div>";
+		m = h + m + c
+		b.innerHTML = m;
 	}
 	
 } 
@@ -392,5 +406,18 @@ function hideBox (box)
 	box.style.visibility = "hidden";
 	box.style.height = "0px";
 	box.style.width = "0px";
-}
-///////////////////////////////////////////////////////////////////////
+} //End function hideBox
+////////////////////////////////////////////////////////////////////////////////
+
+function setNote (id, name)
+{
+	var oldNote;
+	var note = document.getElementById("note");
+	if (note.value)
+	{
+		oldNote =  "; " + note.value;
+	}
+	var newNote = "(#" + id + ")" + name + oldNote;
+	document.getElementById("note").value = newNote;
+	
+} //End function setNote

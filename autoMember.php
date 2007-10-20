@@ -7,7 +7,8 @@ include 'functions.php';
 
 $l = varLogin();
 	
-if ($_GET['aID']) {
+if ($_GET['aID'])
+{
 	$aID = $_GET['aID'];
 	
 	$q =<<<QUERY
@@ -28,21 +29,34 @@ QUERY;
 
 	echo <<<EOD
 		<div style="background: #99CC99;
-				    border-style: solid;
-				    border-width: 1px;
-				    border-color: #990099;
-				    width: 300px; 
-				     ">
+			    padding: 4px;
+			    padding-right: 20px;
+			    border: solid #990099;
+			    border-width: 1px 1px 0px 1px;
+			    height: 14px;
+			    text-align: right;
+			    color: #cc0000;"	    
+			    onmouseover="this.style.background = '#cc9999'
+			    		 this.style.color = '#0000cc'"
+			    onmouseout="this.style.background = '#99cc99'
+			    		this.style.color = '#cc0000'"
+			    onclick="setMember ('','')">
+		Cancel</div>
+		<div style="background: #99CC99;
+			    border: solid #990099;
+			    border-width: 0px 1px 1px 1px;
+			    text-align: left;" >
 EOD;
 
-	while ($r = $myDB->getRow()) {
-		
+	while ($r = $myDB->getRow())
+	{
+		$fName = addslashes ($r[fName]);
 		$m .=<<<NAME
 				<div style="padding: 4px;
 							height: 14px;"
 					 onmouseover="this.style.background = '#96b4ff'"
 					 onmouseout="this.style.background = '#99CC99'"
-					 onclick="setMember ('$r[mID]','$r[fName]')">
+					 onclick="setMember ('$r[mID]','$fName')">
 				$r[fName]
 				</div>
 NAME;
@@ -57,7 +71,8 @@ NAME;
 }
 
 
-if ($_GET['string']) {
+if ($_GET['string'])
+{
 	$pat = "%" . $_GET['string'] . "%";
 
 	$q =<<<QUERY
@@ -87,14 +102,15 @@ QUERY;
 				     </div>
 EOD;
 
-	while ($r = $myDB->getRow()) {
-		
+	while ($r = $myDB->getRow())
+	{
+		$fName = addslashes ($r[fName]);
 		$o .=<<<NAME
 				<div style="padding: 4px;
 							height: 14px;"
 					 onmouseover="this.style.background = '#96b4ff'"
 					 onmouseout="this.style.background = '#cc9999'"
-					 onclick="setOtherMember ('$r[mID]','$r[fName]')">
+					 onclick="setOtherMember ('$r[mID]','$fName')">
 				$r[fName]
 				</div>
 NAME;

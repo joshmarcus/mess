@@ -7,7 +7,8 @@ include 'functions.php';
 
 $l = varLogin();
 
-if ($_GET['string']) {
+if ($_GET['string'])
+{
 	$pat = "%" . $_GET['string'] . "%";
 	
 	$q =<<<QUERY
@@ -27,32 +28,48 @@ QUERY;
 	
 	$t =<<<EOD
 		<div style="background: #99CC99;
-				    border-style: solid;
-				    border-width: 1px;
-				    border-color: #990099;
-				    width: 300px;
-				    text-align: left; 
-				     ">
+			    padding: 4px;
+			    padding-right: 20px;
+			    border: solid #990099;
+			    border-width: 1px 1px 0px 1px;
+			    height: 14px;
+			    text-align: right;
+			    color: #cc0000;"	    
+			    onmouseover="this.style.background = '#cc9999'
+			    		 this.style.color = '#0000cc'"
+			    onmouseout="this.style.background = '#99cc99'
+			    		this.style.color = '#cc0000'"
+			    onclick="setAccount ('','')">
+		Cancel</div>
+		<div style="background: #99CC99;
+			    border: solid #990099;
+			    border-width: 0px 1px 1px 1px;
+			    text-align: left;" >
+		
 EOD;
 
-	if ($myDB->getNumRows ()) {
-		while ($r = $myDB->getRow()) {
-			
+	if ($myDB->getNumRows ())
+	{
+		while ($r = $myDB->getRow())
+		{
+			$aName = addslashes ($r[aName]);
 			$t .=<<<NAME
-					<div style="padding: 4px;
-								height: 14px;"
-						 onmouseover="this.style.background = '#96b4ff'"
-						 onmouseout="this.style.background = '#99CC99'"
-						 onclick="setAccount ('$r[aID]','$r[aName]'); getMembers(event)">
-					$r[aName]
-					</div>
+				<div style="padding: 4px;
+					height: 14px;"
+				 onmouseover="this.style.background = '#96b4ff'"
+				 onmouseout="this.style.background = '#99CC99'"
+				 onclick="setAccount ($r[aID], '$aName'); getMembers(event)">
+				$r[aName]
+				</div>
 NAME;
 		
 		}
-}	else {
+	}
+	else
+	{
 		$t .=<<<NAME
 			<div style="padding: 4px;
-						height: 14px;"
+				height: 14px;"
 				 onmouseover="this.style.background = '#96b4ff'"
 				 onmouseout="this.style.background = '#99CC99'">
 			--- Sorry No Matches! ---

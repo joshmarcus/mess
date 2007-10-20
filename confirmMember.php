@@ -7,7 +7,8 @@ include 'functions.php';
 
 $l = varLogin();
 	
-if ($_GET['aID']) {
+if ($_GET['aID'])
+{
 	$aID = $_GET['aID'];
 	
 	$q =<<<QUERY
@@ -28,25 +29,24 @@ QUERY;
 
 	echo <<<EOD
 		<div style="background: #cc9999;
-				    border-style: solid;
-				    border-width: 1px;
-				    border-color: #990099;
-				    width: 300px
-				    padding: 4px;
-				    text-size: 1em;"
-					>
+			    border: solid 1px #990099;
+			    width: 300px;
+			    padding: 4px;
+			    font-size: 1em;
+			    margin: auto;" >
 		<div onmouseover="this.style.background = '#99cc99'"
-             onmouseout="this.style.background = '#cc9999'"
-             onclick="getMembers (event)">No One!</div>
+		onmouseout="this.style.background = '#cc9999'"
+		onclick="setMember ('','')" >No one, please cancel!</div>
 EOD;
 
-	while ($r = $myDB->getRow()) {
-		
+	while ($r = $myDB->getRow())
+	{
+		$fName = addslashes ($r[fName]);
 		$m .=<<<NAME
-				<div onmouseover="this.style.background = '#99cc99'"
-					 onmouseout="this.style.background = '#cc9999'"
-					 onclick="setMember ('$r[mID]','$r[fName]')
-					 		  setNote ()">
+			<div	onmouseover="this.style.background = '#99cc99'"
+				onmouseout="this.style.background = '#cc9999'"
+				onclick="setMember ('$_GET[id]','$_GET[name]')
+				setNote ('$r[mID]','$fName')">
 				$r[fName]
 				</div>
 NAME;
