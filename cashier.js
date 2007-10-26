@@ -8,10 +8,12 @@ function testStuff ()
 
 function listType ( thisObj, e, type)
 {
+	hideMoney ();
+	hideMessage ();
 	
 	document.getElementById("table").background = "#000000";
 	
-	var listBox = document.getElementById("listType");
+	var l = document.getElementById("list");
 	
 	var obj = document.getElementById("payLabel");
 	
@@ -19,15 +21,16 @@ function listType ( thisObj, e, type)
 	var px = p[0] + "px";
 	var py = p[1] + "px";
 	
+	
+	l.style.visibility = "visible";
+	l.style.position = "absolute";
+	l.style.left = px;
+	l.style.top = py;
+	l.style.width = "200px";
+	
 	var url = "listTransType.php"
 	var string = obj.value
 	var query = url + "?ps=" + type;
-	
-	listBox.style.visibility = "visible";
-	listBox.style.position = "absolute";
-	listBox.style.left = px;
-	listBox.style.top = py;
-	listBox.style.width = "200px";
 	
 		// Try to check for the key
 	if (!e) var e = window.event;
@@ -41,12 +44,12 @@ function listType ( thisObj, e, type)
 	{
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200)
 		{ 
- 			listBox.innerHTML = ajaxRequest.responseText; 
+ 			l.innerHTML = ajaxRequest.responseText; 
  		}
 	}
 	ajaxRequest.send(null);
 	
-} // End function getTransType
+} // End function listType
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -55,16 +58,22 @@ function listAccounts(thisObj, e)
 {
 	// List all accounts that match a pattern
 	
+	var aName = document.getElementById("aName")
+	var fName = document.getElementById("fName")
+	hideRing (aName);
+	hideRing (fName);
+	hideMessage ();
+	
 	p = findPos (thisObj);
 	px = (p[0] + 25) + "px";
 	py = (p[1] + 25) + "px";
 	 
-	listBox = document.getElementById("listNames");
-	listBox.style.visibility = "visible";
-	listBox.style.position = "absolute";
-	listBox.style.left = px;
-	listBox.style.top = py;
-	listBox.style.width = "300px";	
+	l = document.getElementById("list");
+	l.style.visibility = "visible";
+	l.style.position = "absolute";
+	l.style.left = px;
+	l.style.top = py;
+	l.style.width = "300px";	
 	
 	// Try to check for the key
 	if (!e) var e = window.event;
@@ -79,7 +88,7 @@ function listAccounts(thisObj, e)
 	}
 	
 	var url = "autoAccount.php"
-	var string = document.getElementById("aName").value
+	var string = aName.value
 	var query = url + "?string=" + string;
 
 	ajaxRequest = xmlHttp();
@@ -89,7 +98,7 @@ function listAccounts(thisObj, e)
 	{
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
 		{
- 			listBox.innerHTML = ajaxRequest.responseText; 
+ 			l.innerHTML = ajaxRequest.responseText; 
  		}
 	}
 	ajaxRequest.send(null);
@@ -98,52 +107,52 @@ function listAccounts(thisObj, e)
 
 ////////////////////////////////////////////////////////////////////////
 
-
 function listMembers (e)
 {
 	// List all members that match a pattern
-	
-	p = findPos (document.getElementById("fName"));
-	px = (p[0] + 25) + "px";
-	py = (p[1] + 25) + "px";
-	
-	listBox = document.getElementById("listMembers");
-	listBox.style.visibility = "visible";
-	listBox.style.position = "absolute";
-	listBox.style.left = px;
-	listBox.style.top = py;
-	listBox.style.width = "300px";
-	
-		// Try to check for the key
-	if (!e) var e = window.event;
-	if (e.keyCode) keycode = e.keyCode;
-	else if (e.which) keycode = e.which;
-	
-	if(keycode == 8 )
-	{
-		document.getElementById("fName").value = '';	
-		document.getElementById("mID").value = '';
-	}
-	
-	var url = "autoMember.php"
-	var string = document.getElementById("fName").value
-	var aid = document.getElementById("aID").value
-	var query = url + "?aID=" + aid + "&string=" + string;
-	
-	//document.getElementById("listNames").innerHTML=query;
-	//document.getElementById("listNames").innerHTML=query;
 
-	ajaxRequest = xmlHttp();
-	ajaxRequest.open("GET",query,true);
+	var fName = document.getElementById("fName")
+	hideRing (fName);
+	hideMessage ();	
 	
-	ajaxRequest.onreadystatechange = function ()
-	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		p = findPos (fName);
+		px = (p[0] + 25) + "px";
+		py = (p[1] + 25) + "px";
+		
+		l = document.getElementById("list");
+		l.style.visibility = "visible";
+		l.style.position = "absolute";
+		l.style.left = px;
+		l.style.top = py;
+		l.style.width = "300px";
+		
+			// Try to check for the key
+		if (!e) var e = window.event;
+		if (e.keyCode) keycode = e.keyCode;
+		else if (e.which) keycode = e.which;
+		
+		if(keycode == 8 )
 		{
- 			listBox.innerHTML = ajaxRequest.responseText; 
- 		}
-	}
-	ajaxRequest.send(null);
+			//document.getElementById("fName").value = '';	
+			document.getElementById("mID").value = '';
+		}
+		
+		var url = "autoMember.php"
+		var string = document.getElementById("fName").value
+		var aid = document.getElementById("aID").value
+		var query = url + "?aID=" + aid + "&string=" + string;
+		
+		ajaxRequest = xmlHttp();
+		ajaxRequest.open("GET",query,true);
+		
+		ajaxRequest.onreadystatechange = function ()
+		{
+			if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+			{
+				l.innerHTML = ajaxRequest.responseText; 
+			}
+		}
+		ajaxRequest.send(null);
 	
 } // End function listMembers
 
@@ -151,38 +160,47 @@ function listMembers (e)
 
 function getMembers (e)
 {
-	//hideBox (document.getElementById("message"))
 	// Get members that belong to an account
+	var fName = document.getElementById("fName")
 	
-	p = findPos (document.getElementById("fName"));
-	px = (p[0] + 25) + "px";
-	py = (p[1] + 25) + "px";
+	hideRing (fName);
+	hideMessage ();	
 	
-	listBox = document.getElementById("listMembers");
-	listBox.style.visibility = "visible";
-	listBox.style.position = "absolute";
-	listBox.style.left = px;
-	listBox.style.top = py;
-	listBox.style.width = "300px";
-	
-	var url = "autoMember.php"
-	var aid = document.getElementById("aID").value
-	var query = url + "?aID=" + aid;
-	
-	//document.getElementById("listNames").innerHTML=query;
-	//document.getElementById("listNames").innerHTML=query;
-
-	ajaxRequest = xmlHttp();
-	ajaxRequest.open("GET",query,true);
-	
-	ajaxRequest.onreadystatechange = function ()
+	if (!document.getElementById("aID").value)
 	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		showMessage ("fName", "Please select an account first." )
+	} else
+	{
+		p = findPos (fName);
+		px = (p[0] + 25) + "px";
+		py = (p[1] + 25) + "px";
+		
+		l = document.getElementById("list");
+		l.style.visibility = "visible";
+		l.style.position = "absolute";
+		l.style.left = px;
+		l.style.top = py;
+		l.style.width = "300px";
+		
+		var url = "autoMember.php"
+		var aid = document.getElementById("aID").value
+		var query = url + "?aID=" + aid;
+		
+		//document.getElementById("listNames").innerHTML=query;
+		//document.getElementById("listNames").innerHTML=query;
+
+		ajaxRequest = xmlHttp();
+		ajaxRequest.open("GET",query,true);
+		
+		ajaxRequest.onreadystatechange = function ()
 		{
- 			listBox.innerHTML = ajaxRequest.responseText; 
- 		}
+			if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+			{
+				l.innerHTML = ajaxRequest.responseText; 
+			}
+		}
+		ajaxRequest.send(null);
 	}
-	ajaxRequest.send(null);
 	
 } // End function getMembers
 
@@ -190,8 +208,8 @@ function getMembers (e)
 
 function setAccount (id, name)
 {
-	hideBox (document.getElementById("listNames"));
-	hideBox (document.getElementById("listMembers"));
+	hideList ();
+	hideMessage ();
 	
 	document.getElementById("aName").style.outline = "0px";	
 	document.getElementById("aName").value = name;	
@@ -201,10 +219,10 @@ function setAccount (id, name)
 
 function setMember (id, name)
 {
-	hideBox(document.getElementById("message"));
-	hideBox(document.getElementById("listMembers"));
+	hideList ();
+	hideMessage ();
 
-	document.getElementById("fName").style.outline = "0px";	
+	//document.getElementById("fName").style.outline = "0px";	
 	document.getElementById("fName").value = name;	
 	document.getElementById("mID").value = id;
 }
@@ -212,8 +230,8 @@ function setMember (id, name)
 function setOtherMember (id, name)
 {
 	
-	//close and hide the member list
-	hideBox (document.getElementById("listMembers"))
+	hideList ();
+	hideMessage ();
 	
 	p = findPos (document.getElementById("fName"));
 	px = (p[0] + 25) + "px";
@@ -228,15 +246,6 @@ function setOtherMember (id, name)
 	b.style.top = py;
 	b.style.width = "auto";
 	b.style.height = "auto";
-	b.style.padding = "20px";
-	b.style.background = "#cc9999";
-	b.style.color = "#003333";
-	b.style.border = "solid red 1px";
-	b.style.MozBorderRadiusTopright = "0px";
-	b.style.MozBorderRadiusTopright = "15px";
-	b.style.MozBorderRadiusBottomleft = "15px";
-	b.style.MozBorderRadiusBottomright = "30px";
-	b.style.fontSize = "1.5em";
 	b.style.textAlign =  "center";
 
 	var message = "Which member from "
@@ -269,10 +278,10 @@ function setOtherMember (id, name)
 
 function setType (ps, type, tName)
 {
-	acObject = document.getElementById("listType");
-	acObject.style.visibility = "hidden";
-	acObject.style.height = "0px";
-	acObject.style.width = "0px";
+	list = document.getElementById("list");
+	list.style.visibility = "hidden";
+	list.style.height = "0px";
+	list.style.width = "0px";
 	
 	document.getElementById("payLabel").style.outline = "0px";
 	document.getElementById("saleLabel").style.outline = "0px";	
@@ -310,7 +319,7 @@ function validate ()
 	
 	var ref = document.getElementById("ref");
 	var note = document.getElementById("note");
-
+	
 	function moneyBox ()
 	{
 		p = findPos (document.getElementById("payLabel"));
@@ -328,76 +337,94 @@ function validate ()
 		money.style.MozOutlineRadius = "30px";
 	}
 
-	if (!aID.value && !mID.value && !saleAmt)
+	if (!aID.value)
 	{
-		aName.style.outline = "solid red 1.5px";
-		aName.style.outlineOffset = "2px";
-		aName.style.MozOutlineRadius = "30px";
-		
-		m = "No account selected!<br />";
+		showRing (aName);
+		m = m + "No account selected!<br />";
 	}
 	
 	if (!mID.value)
 	{
-		fName.style.outline = "solid red 1.5px";
-		fName.style.outlineOffset = "2px";
-		fName.style.MozOutlineRadius = "30px";
-		
-		m = "No member selected!<br />";
+		showRing (fName);
+		m = m + "No member selected!<br />";
 	}
 	
-	if (!saleAmt.value && !payAmt.vaule && !pay.value)
-	{
-		/*
-		saleAmt.style.outline = "solid red 1.5px";
-		saleAmt.style.outlineOffset = "2px";
-		saleAmt.style.MozOutlineRadius = "30px";
-		
-		payLabel.style.outline = "solid red 1.5px";
-		payLabel.outlineOffset = "2px";
-		payLabel.MozOutlineRadius = "30px";
-		
-		payAmt.style.outline = "solid red 1.5px";
-		payAmt.style.outlineOffset = "2px";
-		payAmt.style.MozOutlineRadius = "30px";
-		*/
-		
+	if (!pay.value && !payAmt.value && !saleAmt.value)
+	{		
 		moneyBox ();
-		m  = m + "No Sale or Payment Informaion!<br />";
+		m  = m + "No Purchase or Payment Information!<br />";
 	}
 	
+	if (!sale.value && !sale.value)
+	{
+		showRing (saleAmt);
+		m  = m + "No Purchase Amount!<br />";
+	}
+		
+	if (pay.value && !payAmt.value)
+	{
+		showRing (payAmt);
+		m  = m + "No Payment Amount!<br />";
+	}
+	 
+	if (!pay.value && payAmt.value)
+	{
+		showRing (payAmt);
+		m  = m + "No Payment Type!<br />";
+	}
+	 
 	if(m)
 	{
-		p = findPos (document.getElementById("note"));
-		px = (p[0] + 25) + "px";
-		py = (p[1] + 25) + "px";
-	
-	var b = document.getElementById("message");
-	b.style.visibility = "visible";
-	b.style.position = "absolute";
-	b.style.left = px;
-	b.style.top = py;
-	b.style.width = "auto";
-	b.style.height = "auto";
-	b.style.padding = "20px";
-	b.style.background = "#cc9999";
-	b.style.color = "#003333";
-	b.style.border = "solid red 1px";
-	b.style.MozBorderRadiusTopright = "0px";
-	b.style.MozBorderRadiusTopright = "15px";
-	b.style.MozBorderRadiusBottomleft = "15px";
-	b.style.MozBorderRadiusBottomright = "30px";
-	b.style.fontSize = "1.5em";
-	b.style.textAlign =  "center";
-
 		//message.
-		var h = "<span style='font-size: 1.25em'>Corrections Needed!</span><br />";
-		var c = "<div style='color: red; text-align: right;' >Click to close</div>";
-		m = h + m + c
-		b.innerHTML = m;
+		var h = "<span style='font-size: 1.25em' \
+				>Corrections Needed!</span><br />";
+		m = h + m
+		showMessage ("note", m)
+	} else (!m)
+	{
+		//~ m = "<div style='font-size: 1.0em; \
+			//~ text-align: center;'>Please Confirm Transactions</div><br />";
+		
+		m = m + "<table style ='width: 100%;' >";
+		m = m + "<tr><th style ='width: 10%;'> \
+				Account:</th> \
+				<td style ='width: 40%;'><span style='font-size: 1.75em;'>";
+		m = m + aName.value + "</span></td>";
+		
+		m = m + "<th style ='width: 10%;'> \
+				Member:</th > \
+				<td style ='width: 40%;'><span style='font-size: 1.75em;'>";
+		m = m + fName.value + "</span></td></tr>";
+		
+		m = m + "<tr><th style ='width: 10%;'>Purchase:</th> \
+				<td style ='width: 20%;' ><span style='font-size: 1.75em;'>";
+		m = m + saleAmt.value + "</span></td>";
+		
+		m = m + "<th style ='width: 10%;'>Note</th> \
+				<td style ='width: 60%;'><span style='font-size: 1.75em;'>";
+		m = m + note.value + "</span></td>"
+		
+		m = m + "<tr>";
+		m = m + "<th style ='width: 10%;'>Payment</th> \
+				<td style ='width: 20%;'><span style='font-size: 1.75em;'>";
+		m = m + payAmt.value + "</span></td></tr>";
+		
+		m = m + "<th style ='width: 10%;'>Ref:</th> \
+				<td ><span style='font-size: 1.75em;'>";
+		m = m + ref.value + "</span></td></tr>";
+		m = m + "</table>";
+		  
+		showMessage ("form", m);
 	}
 	
 } 
+
+function showRing(r)
+{
+	r.style.outline = "solid red 1.5px";
+	r.style.outlineOffset = "2px";
+	r.style.MozOutlineRadius = "30px";
+}
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -409,9 +436,41 @@ function hideBox (box)
 } //End function hideBox
 ////////////////////////////////////////////////////////////////////////////////
 
+function hideList ()
+{
+	var b = document.getElementById("list")
+	b.style.visibility = "hidden";
+	b.style.height = "0px";
+	b.style.width = "0px";
+} //End function hideList
+////////////////////////////////////////////////////////////////////////////////
+
+function hideMoney ()
+{
+	var b = document.getElementById("money")
+	b.style.visibility = "hidden";
+	b.style.height = "0px";
+	b.style.width = "0px";
+} //End function hideList
+////////////////////////////////////////////////////////////////////////////////
+
+function hideHint ()
+{
+	var b = document.getElementById("hint")
+	b.style.visibility = "hidden";
+	b.style.height = "0px";
+	b.style.width = "0px";
+} //End function hideList
+////////////////////////////////////////////////////////////////////////////////
+
+function hideRing(r)
+{
+	r.style.outline = "0px";
+}
+
 function setNote (id, name)
 {
-	var oldNote;
+	var oldNote = "";
 	var note = document.getElementById("note");
 	if (note.value)
 	{

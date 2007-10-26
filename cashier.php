@@ -38,7 +38,7 @@ print htmlTitle('Cashier');
         <a class='button' href='closeOut.php' >Close Out</a>
 </div>
 
-<form name='transForm' method='post' >
+<form id='form' name='form' method='post' >
 
 <input type='hidden' id='aID' name='aID' />
 <input type='hidden' id='mID' name='mID' />
@@ -48,20 +48,22 @@ print htmlTitle('Cashier');
 
 <table id='table'>
 <tr>
-	<th style='text-align: left' >
+	<th id='acctCell' style='text-align: left' >
 		Account Name:
 	</th>
 	<td>
 		<input style='outline: 0px;'
 			   id='aName' name='aName'
-			   type='text' size='40' 
+			   type='text' size='40'
+			   onclick='hideRing (this);
+						showMessage ("aName", "Typing will display matches.")'
 			   onkeyup='listAccounts(this, event)'/>
 	</td>
 	<th style='text-align: right' >
 		Reference:
 	</th>
 	<td>
-		<input type='text' size='10' id='ref' name='ref' 
+		<input type='text' size='10' id='ref' name='ref'
 			   onkeyPress='return noEnter(event)' />
 	</td>
 </tr>
@@ -86,7 +88,8 @@ print htmlTitle('Cashier');
 	</th>
 	<td>
 		<input style='outline: 0px;' type='text' size='10' id='payAmt' name='payAmt'
-			   onkeyPress='return noEnter(event)'/>
+			   		  onclick='hideMessage(); hideRing(this)'
+					  onkeyPress='return noEnter(event)'/>
 	</td>
 </tr>
 <tr>
@@ -101,23 +104,23 @@ print htmlTitle('Cashier');
 		style='text-align: right; width: 120px'
 		onmouseover="this.style.background = '#99cc99'"
 		onmouseout="this.style.background = '#96b4c8'"
-		onclick="listType (this, event, 's')" >
+		onclick="hideMessage(); listType (this, event, 's')" >
 		
 		<div id='saleLabel' >
 		Purchase:
 		</div>
-		
 	</th>
 	<td>
 		<input style='outline: 0px;'
 			   type='text' size='10' id='saleAmt' name='saleAmt'
+			   onclick='hideMessage(); hideRing(this)'
 			   onkeyPress='return noEnter(event)'/>
 	</td>
 </tr>
 	<td  colspan='2'>
 	</td>
 	<td style='text-align: right;' colspan='2'>
-		<a href='javascript:validate()'
+		<a href='javascript:resetForm()'
 		   alt='Reset Button'
 		   title='Click to reset the form' >
 		   <img class='button'
@@ -137,11 +140,9 @@ print htmlTitle('Cashier');
 
 </div>
 
-<div id='listNames' ></div>
-<div id='listMembers' ></div>
-<div id='validate' ></div>
-<div id='listType' ></div>
-<div id='message' class='message' onclick='this.style.visibility = "hidden"' ></div>
-<div id='money' onclick='this.style.visibility = "hidden"' ></div>
+<div id='list' ></div>
+<div id='message' class='message' onclick='hideMessage ()'
+	 style='visibility: hidden;' ></div>
+<div id='money' onclick='hideMoney (), hideMessage ()' ></div>
 
 <?php print htmlTail(); ?>

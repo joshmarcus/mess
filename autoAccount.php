@@ -32,7 +32,6 @@ QUERY;
 			    padding-right: 20px;
 			    border: solid #990099;
 			    border-width: 1px 1px 0px 1px;
-			    height: 14px;
 			    text-align: right;
 			    color: #cc0000;"	    
 			    onmouseover="this.style.background = '#cc9999'
@@ -44,8 +43,7 @@ QUERY;
 		<div style="background: #99CC99;
 			    border: solid #990099;
 			    border-width: 0px 1px 1px 1px;
-			    text-align: left;" >
-		
+			    text-align: left;" >		
 EOD;
 
 	if ($myDB->getNumRows ())
@@ -54,8 +52,7 @@ EOD;
 		{
 			$aName = addslashes ($r[aName]);
 			$t .=<<<NAME
-				<div style="padding: 4px;
-					height: 14px;"
+				<div style="padding: 4px;"
 				 onmouseover="this.style.background = '#96b4ff'"
 				 onmouseout="this.style.background = '#99CC99'"
 				 onclick="setAccount ($r[aID], '$aName'); getMembers(event)">
@@ -68,8 +65,7 @@ NAME;
 	else
 	{
 		$t .=<<<NAME
-			<div style="padding: 4px;
-				height: 14px;"
+			<div style="padding: 4px;"
 				 onmouseover="this.style.background = '#96b4ff'"
 				 onmouseout="this.style.background = '#99CC99'">
 			--- Sorry No Matches! ---
