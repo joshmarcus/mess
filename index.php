@@ -1,20 +1,24 @@
 <?php
-
-// mariposa/index.php
 session_start();
 
 $_SESSION = array();
-            
-//~~~~~~ Set up the page ~~~~~~~~~~~
-include 'html.php';
 
-print htmlHead();
+include 'functions.php';
+include 'class/MyDB.php';
+
+include 'html.php';
+print htmlHead('Login');
 print htmlTitle('Login');
 
-// Help with debugging 
-//print "SESSION::";print_r($_SESSION);print "::SESSION<br />";
-//print "POST::";print_r($_POST);print "::POST<br />";
+//~~~~~~~~~~~ Print Stuff for debuging
+//print "<br />SESSION:>> "; print_r($_SESSION); print "<<:SESSION<br />";
+//print "login:>>"; print_r($login); print "<<:login<br />";
+//print "GET:>>"; print_r($_GET); print "<<:GET<br />";
+//print "POST:>>"; print_r($_POST); print "<<:POST<br />";
+//print "xTRANS:>>"; print_r($xArray); print "<<:xTRANS<br />";
+//~~~~~~~~~~~ Print Stuff for debugging
 
+/*
 if (empty($_POST['Submit'])) {
     
     include 'login.php';
@@ -25,7 +29,33 @@ if (empty($_POST['Submit'])) {
 }
 
 print htmlTail();
-
+*/
 ?>
             
+<script type="text/javascript" src="functions.js"></script>
 
+<div id='content' >
+
+<h2>Please login to the database</h2>
+
+<form method='POST' action='home.php' name='login' >
+    <input type='hidden' name='db' value='mariposa' />
+    <input type='hidden' name='server' value='localhost' />
+    
+    <table>
+    <tr>
+        <th>User Name:</th>
+        <td><input type='text' name='user'></td>
+    </tr>
+    <tr>
+        <th>Password:</th>
+        <td><input type='password' name='pass'></td>
+    <tr>
+        <td colspan='2' style='text-align: right;';>
+            <input name='Submit' type='image' value='Login' src='images/Login.png'/>
+        </td>
+    </tr>
+    </table>
+
+</form>
+</div>
