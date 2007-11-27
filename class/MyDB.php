@@ -11,7 +11,7 @@ class MyDB{
 
         if(MyDB::$instances == 0){
             
-            $this->link = new mysqli(   $login[server],
+            $this->link = new mysqli(   $login[host],
                                         $login[user],
                                         $login[pass],
                                         $login[db]

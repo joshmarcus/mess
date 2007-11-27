@@ -4,8 +4,6 @@ session_start();
 include 'functions.php';
 include 'class/MyDB.php';
 
-$login = varLogin();
-
 include 'html.php';
 print htmlHead('Cashier');
 print htmlTitle('Cashier');
@@ -13,7 +11,7 @@ print htmlTitle('Cashier');
 
 //~~~~~~~~~~~ Print Stuff for debuging
 //print "<br />SESSION:>> "; print_r($_SESSION); print "<<:SESSION<br />";
-//print "login:>>"; print_r($login); print "<<:login<br />";
+//print "login:>>"; print_r($LOGIN); print "<<:login<br />";
 //print "GET:>>"; print_r($_GET); print "<<:GET<br />";
 //print "POST:>>"; print_r($_POST); print "<<:POST<br />";
 //print "xTRANS:>>"; print_r($xArray); print "<<:xTRANS<br />";
@@ -117,6 +115,8 @@ print htmlTitle('Cashier');
 			   onkeyPress='return noEnter(event)'/>
 	</td>
 </tr>
+<tr>
+
 	<td  colspan='2'>
 	</td>
 	<td style='text-align: right;' colspan='2'>
@@ -133,7 +133,6 @@ print htmlTitle('Cashier');
 		   		src='images/Enter.png' />
 		</a>	
 	</td>
-<tr>
 </tr>
 </table>
 </form>

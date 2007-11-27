@@ -2,10 +2,11 @@
 
 session_start();
 
+include 'pwd.php';
 include 'class/MyDB.php';
 include 'functions.php';
 
-$l = varLogin();
+//$l = varLogin();
 
 if ($_GET['string'])
 {
@@ -19,7 +20,7 @@ if ($_GET['string'])
 		LIMIT 20
 QUERY;
 
-	$myDB = new myDB ($l);
+	$myDB = new myDB ($LOGIN);
 
 	$myDB->createResult ($q);
 

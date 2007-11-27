@@ -2,10 +2,11 @@
 
 session_start();
 
+include 'pwd.php';
 include 'class/MyDB.php';
 include 'functions.php';
 
-$l = varLogin();
+//$l = varLogin();
 	
 if ($_GET['aID'])
 {
@@ -20,7 +21,7 @@ if ($_GET['aID'])
 		AND   (AM.aID = '$aID')
 QUERY;
 
-	$myDB = new myDB ($l);
+	$myDB = new myDB ($LOGIN);
 
 	$myDB->createResult ($q);
 

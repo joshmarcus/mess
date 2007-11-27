@@ -8,10 +8,10 @@ include 'class/MyDB.php';
 
 include 'html.php';
 print htmlHead('Login');
-print htmlTitle('Login');
+//print htmlTitle('Login');
 
 //~~~~~~~~~~~ Print Stuff for debuging
-//print "<br />SESSION:>> "; print_r($_SESSION); print "<<:SESSION<br />";
+print "<br />SESSION:>> "; print_r($_SESSION); print "<<:SESSION<br />";
 //print "login:>>"; print_r($login); print "<<:login<br />";
 //print "GET:>>"; print_r($_GET); print "<<:GET<br />";
 //print "POST:>>"; print_r($_POST); print "<<:POST<br />";
@@ -38,9 +38,7 @@ print htmlTail();
 
 <h2>Please login to the database</h2>
 
-<form method='POST' action='home.php' name='login' >
-    <input type='hidden' name='db' value='mariposa' />
-    <input type='hidden' name='server' value='localhost' />
+<form method='POST' action='login.php' name='login' >
     
     <table>
     <tr>

@@ -1,5 +1,5 @@
 <?php
-
+/*
 function varLogin() {
     if ($_POST && $_POST[Submit] == 'Login') {
         //echo "IAMPOST";
@@ -14,6 +14,7 @@ function varLogin() {
 } //end function varLogin
 
 ///////////////////////////////////////////////////////////////////////
+*/
 
 function phone ($ac, $ex, $num, $ext) {
     $p = "($ac) $ex-$num";

@@ -2,10 +2,10 @@
 
 session_start();
 
+include 'pwd.php';
 include 'class/MyDB.php';
 include 'functions.php';
 
-$l = varLogin();
 	
 if ($_GET['aID'])
 {
@@ -20,7 +20,7 @@ if ($_GET['aID'])
 		AND   (AM.aID = '$aID')
 QUERY;
 
-	$myDB = new myDB ($l);
+	$myDB = new myDB ($LOGIN);
 
 	$myDB->createResult ($q);
 
@@ -84,7 +84,7 @@ if ($_GET['string'])
 		LIMIT 10
 QUERY;
 
-	$myDB = new myDB ($l);
+	$myDB = new myDB ($LOGIN);
 
 	$myDB->createResult ($q);
 

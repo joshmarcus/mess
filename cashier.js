@@ -1,11 +1,5 @@
 //functions.js
 
-
-function testStuff ()
-{
-	document.write("Hellllo");
-}
-
 function listType ( thisObj, e, type)
 {
 	hideMoney ();
@@ -380,10 +374,55 @@ function validate ()
 				>Corrections Needed!</span><br />";
 		m = h + m
 		showMessage ("note", m)
-	} else (!m)
+		
+	} else if (!m && saleAmt.value > 100 )
 	{
-		//~ m = "<div style='font-size: 1.0em; \
-			//~ text-align: center;'>Please Confirm Transactions</div><br />";
+		m = "<div style='font-size: 1.5em; \
+			text-align: center;'>"
+			+ saleAmt.value
+			+ " is a lot of money! <br /> \
+			  Is that correct?</div><br /> \
+			  We can do preliminary checks like this <br /> \
+			  beform the form is actually submitted";
+		showMessage ("form", m)
+		
+	} else if (!m && payAmt.value > 100 )
+	{
+		m = "<div style='font-size: 1.5em; \
+			text-align: center;'>"
+			+ saleAmt.value
+			+ " is a lot of money! <br /> \
+			  Is that correct?</div><br />  \
+			  We can do preliminary checks like this <br /> \
+			  beform the form is actually submitted";
+		showMessage ("form", m)
+		
+	} else if ( pay.value == 'g' && !ref.value )
+	{
+		m = "<div style='font-size: 1.5em; \
+			text-align: center;'> \
+			The payment is by check.<br /> \
+			Please enter a reference number.</div><br />  \
+			  We can do preliminary checks like this <br /> \
+			  beform the form is actually submitted";
+		showMessage ("form", m)
+		
+	} else if (!m)
+	{
+		var p = "";
+		var s = "";
+		
+		if (payAmt.value)
+		{	
+			p = "$" + payAmt.value;
+		}
+		if (saleAmt.value)
+		{
+			s = "$" + payAmt.value;
+		}
+		
+		m = "<div style='font-size: 1.5em; \
+			text-align: center;'>Please Confirm Transactions</div><br />";
 		
 		m = m + "<table style ='width: 100%;' >";
 		m = m + "<tr><th style ='width: 10%;'> \
@@ -398,26 +437,58 @@ function validate ()
 		
 		m = m + "<tr><th style ='width: 10%;'>Purchase:</th> \
 				<td style ='width: 20%;' ><span style='font-size: 1.75em;'>";
-		m = m + saleAmt.value + "</span></td>";
+		m = m + s + "</span></td>";
 		
 		m = m + "<th style ='width: 10%;'>Note</th> \
 				<td style ='width: 60%;'><span style='font-size: 1.75em;'>";
 		m = m + note.value + "</span></td>"
 		
 		m = m + "<tr>";
-		m = m + "<th style ='width: 10%;'>Payment</th> \
+		m = m + "<th style ='width: 10%;'>Payment:</th> \
 				<td style ='width: 20%;'><span style='font-size: 1.75em;'>";
-		m = m + payAmt.value + "</span></td></tr>";
+		m = m + p + "</span></td></tr>";
 		
 		m = m + "<th style ='width: 10%;'>Ref:</th> \
 				<td ><span style='font-size: 1.75em;'>";
 		m = m + ref.value + "</span></td></tr>";
+		
+		m = m + "<tr><td  colspan='2' ></td> \
+				<td style='text-align: right;' colspan='2'> \
+				<a	href='javascript:resetForm()' \
+		   			alt='Cancel Button' \
+		   			title='Click to cancel transaction' \
+		   			> \
+		   			<img class='button' src='images/Cancel.png' /> \
+				</a> \
+				<a	href='javascript:()' \
+		   			alt='Edit Button' \
+		   			title='Click to edit the transaction' \
+		   			> \
+		   			<img class='button' src='images/Edit.png' /> \
+				</a> \
+				<a	href='javascript:makeItSo()' \
+		   			alt='Enter Button' \
+		   			title='Click to enter the transaction' \
+		   			> \
+		   			<img class='button' src='images/Enter.png' /> \
+				</a> \
+				</td></tr>"
+		
 		m = m + "</table>";
 		  
 		showMessage ("form", m);
 	}
 	
 } 
+
+
+function makeItSo()
+{
+m = "1. Further validate transaction with php. <br />\
+	2. If it's all okie dokie insert into table"
+	
+	showMessage ("form", m)
+}
 
 function showRing(r)
 {
@@ -476,7 +547,7 @@ function setNote (id, name)
 	{
 		oldNote =  "; " + note.value;
 	}
-	var newNote = "(#" + id + ")" + name + oldNote;
+	var newNote = "Authorized by " + name + "(#" + id + ")" + oldNote;
 	document.getElementById("note").value = newNote;
 	
 } //End function setNote
