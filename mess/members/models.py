@@ -1,6 +1,5 @@
 from django.db import models
 
-#from mess.accounts.models import Account
 from mess.contacts.models import Email, Phone, Address
 from mess.work.models import Job
 
