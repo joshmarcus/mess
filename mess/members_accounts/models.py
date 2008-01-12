@@ -8,7 +8,13 @@ class Account(models.Model):
     contact = models.ForeignKey('Member', related_name='Member.account')
 
     def __str__(self):
-        return smart_str('%s' % (self.name))
+        return '%s' % (self.name)
+    
+    class Meta:
+        ordering = ['name']
+
+    class Admin:
+        pass
 
 class Member(models.Model):
 
@@ -34,8 +40,8 @@ class Member(models.Model):
         ('t', 'Telephone'),
     )
 
-    user = models.CharField(maxlength=20, unique=True)
-    password = models.CharField(maxlength=96)
+    user = models.CharField(maxlength=20, blank=True, unique=True)
+    password = models.CharField(maxlength=96, blank=True)
     role = models.CharField(maxlength=1, choices=ROLE_CHOICES, default='m')
     given = models.CharField(maxlength=20, blank=True)
     middle = models.CharField(maxlength=20, blank=True)
@@ -47,7 +53,7 @@ class Member(models.Model):
     
     accounts = models.ManyToManyField(Account)
     account = models.ForeignKey(Account, verbose_name='Primary Account',
-                                related_name='accounts')
+                                related_name='accounts', blank=True)
     
     emails = models.ManyToManyField(Email, blank=True)
     phones = models.ManyToManyField(Phone, blank=True)
@@ -59,11 +65,16 @@ class Member(models.Model):
     contact_by = models.CharField(maxlength=1, choices=CONTACT_PREF,
                                 default='e')
     email = models.ForeignKey(Email, verbose_name='Prefered Email Address',
-                                related_name='emails')
+                                related_name='emails', blank=True)
     phone = models.ForeignKey(Phone, verbose_name='Prefered Phone Number',
-                                related_name='phones')
+                                related_name='phones', blank=True)
 
     def __str__(self):
-        return smart_str('%s %s %s' % (self.given, self.middle, self.family))
+        return '%s %s %s' % (self.given, self.middle, self.family)
     
+    class Meta:
+        ordering = ['given']
+
+    class Admin:
+        pass
 
