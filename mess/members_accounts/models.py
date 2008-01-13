@@ -29,7 +29,7 @@ class Member(models.Model):
         ('a', 'Active'),
         ('w', 'Working'),  # Member is active and has a job.
         ('n', 'Non-Working'),  # Such as a single parent.
-        ('l', 'Leave of Absense'),
+        ('L', 'Leave of Absence'),
         ('q', 'Quit'),
         ('m', 'Missing'),  # Member has disappeared without notice.
         ('i', 'Inactive'),
@@ -42,16 +42,18 @@ class Member(models.Model):
 
     user = models.CharField(maxlength=20, blank=True, unique=True)
     password = models.CharField(maxlength=96, blank=True)
-    role = models.CharField(maxlength=1, choices=ROLE_CHOICES, default='m')
+    role = models.CharField(maxlength=1, choices=ROLE_CHOICES,
+                            default=STATUS_CHOICES[0], radio_admin=True)
     given = models.CharField(maxlength=20, blank=True)
     middle = models.CharField(maxlength=20, blank=True)
     family = models.CharField(maxlength=20, blank=True)
-    status = models.CharField(maxlength=1, choices=STATUS_CHOICES, default='a')
+    status = models.CharField(maxlength=1, choices=STATUS_CHOICES,
+                            default='a', radio_admin=True)
     date_joined = models.DateField()
     has_key = models.BooleanField(default=False)
     job = models.ForeignKey(Job)
     
-    accounts = models.ManyToManyField(Account)
+    accounts = models.ManyToManyField(Account, blank=True)
     account = models.ForeignKey(Account, verbose_name='Primary Account',
                                 related_name='accounts', blank=True)
     
@@ -63,7 +65,7 @@ class Member(models.Model):
     # the MySQL schema. I'm not sure what will work best in Django
 
     contact_by = models.CharField(maxlength=1, choices=CONTACT_PREF,
-                                default='e')
+                                default='e', radio_admin=True)
     email = models.ForeignKey(Email, verbose_name='Prefered Email Address',
                                 related_name='emails', blank=True)
     phone = models.ForeignKey(Phone, verbose_name='Prefered Phone Number',
@@ -76,5 +78,20 @@ class Member(models.Model):
         ordering = ['given']
 
     class Admin:
-        pass
+        fields = (
+            (None, {
+                'fields': (('given', 'middle', 'family'),
+                            ('user', 'password'), 'date_joined', 'status',
+                            'role', ('has_key', 'job'))
+                }),
+            ('Accounts', {
+                'classes': 'collapse',
+                'fields' : (('account', 'accounts'),),
+                }),
+            ('Contact', {
+                'classes': 'collapse',
+                'fields' : (('email', 'emails'), ('phone', 'phones'),
+                            'address'),
+                }),
+        )
 
