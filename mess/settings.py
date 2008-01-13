@@ -13,11 +13,11 @@ DATABASE_ENGINE = 'postgresql_psycopg2' # 'postgresql', 'mysql', 'sqlite3' or 'o
 DATABASE_NAME = 'mess'                  # Or path to database file if using sqlite3.
 DATABASE_USER = 'mess'                  # Not used with sqlite3.
 DATABASE_PASSWORD = 'caGlisjem6'        # Not used with sqlite3.
-DATABASE_HOST = ''                      # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_HOST = 'localhost'          # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''                      # Set to empty string for default. Not used with sqlite3.
 
 
-TIME_ZONE = 'America/New York'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -63,10 +63,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'mess.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates"
-    # or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    '/home/digger/src/SVN/mess/trunk/mess/Templates',
 )
 
 INSTALLED_APPS = (
