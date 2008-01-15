@@ -1,4 +1,6 @@
-# Django settings for mess project.
+# Django settings for the Mess project.
+
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -29,19 +31,26 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+# Absolute path to the root of the project.
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# URL of the project.  Leave blank to keep all links relative to "/".
+# Don't use a trailing slash.
+PROJECT_URL = ''
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = PROJECT_ROOT + '/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = PROJECT_URL + '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = PROJECT_URL + '/admin/media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '4w-cz*to=zc-gjoqtrf=pi2m54i@ghqlnsdq=2mq7e^8fbgh#w'
@@ -63,14 +72,14 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'mess.urls'
 
 TEMPLATE_DIRS = (
-    '/home/digger/src/SVN/mess/trunk/mess/Templates',
+    PROJECT_ROOT + '/templates',
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.admin',
     #'mess.transaction',
     'mess.members_accounts',
