@@ -81,8 +81,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     #'django.contrib.sites',
     'django.contrib.admin',
-    #'mess.transaction',
-    'mess.members_accounts',
-    'mess.contacts',
+    
+    'mess.membership',
+    'mess.accounting',
     'mess.work',
 )
