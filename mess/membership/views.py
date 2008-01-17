@@ -3,7 +3,7 @@ from django.shortcuts import HttpResponse
 from membership.models import Member, Account
 
 def members_list(request):
-    return HttpResponse("Welcome to the future site of Mess' list of members!")
+    return HttpResponse("Welcome to the future site of the MESS list of members!")
 
 def member(request, id_num):
     name = Member.objects.get(id=id_num).given
