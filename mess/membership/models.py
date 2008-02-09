@@ -1,4 +1,5 @@
 from datetime import date
+from string import split, join
 
 from django.db import models
 
@@ -152,9 +153,40 @@ class Member(models.Model):
                                     default='u', choices=LOCATION_CHOICES)
     email_3_pub = models.BooleanField(default=0, verbose_name='Email 3 Publish')
 
-    def __unicode__(self):
-        return '%s %s %s' % (self.given, self.middle, self.family)
+    def _get_prefered_phone(self):
+        """ The Member's prefered phone. """
+        return getattr(self, 'phone_%s' % self.prefered_phone)
+
+    def _get_prefered_email(self):
+        """ The Member's prefered email address. """
+        return getattr(self, 'email_%s' % self.prefered_email)
     
+    def _get_prefered_contact(self):
+        """ The Member's prefered contact. """
+        email = getattr(self, 'email_%s' % self.prefered_email)
+        phone = getattr(self, 'phone_%s' % self.prefered_phone)
+        contact = ''
+
+        if self.contact_by is 'e' and email:
+            contact = email
+        elif self.contact_by is 'p' and phone:
+            contact = phone
+        elif email:
+            contact = email
+        elif phone:
+            contact = phone 
+        else:
+            contact = 'None Defined'
+        return contact
+
+    pref_phone = property(_get_prefered_phone)
+    pref_email = property(_get_prefered_email)
+    contact = property(_get_prefered_contact)
+
+    def __unicode__(self):
+        return join(('%s %s %s' % 
+                    (self.given, self.middle, self.family)).split())
+
     class Meta:
         ordering = ['given']
 
