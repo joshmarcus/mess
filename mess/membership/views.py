@@ -1,19 +1,46 @@
-from django.shortcuts import HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
 
 from membership.models import Member, Account
+from membership.forms import MemberForm
 
-def members_list(request):
-    return HttpResponse("Welcome to the future site of the MESS list of members!")
+def member_list(request):
+    page = 'Members'
+    member_list = Member.objects.all()
+    return render_to_response('membership/member_list.html', locals())
 
 def member(request, id_num):
-    name = Member.objects.get(id=id_num).given
-    return HttpResponse('Welcome to the future site of %s\'s  Member Page!'
-                        % name)
+    member = Member.objects.get(id=id_num)    
+    page = member
+    return render_to_response('membership/member.html', locals())
 
-def accounts_list(request):
-    return HttpResponse("Welcome to the future site of Mess' list of accounts!")
+def member_form(request, pk=None):
+    page_name = 'Member Form'
+    if request.method == 'POST':
+        if pk:
+            member = Member.objects.get(pk=pk)
+            form = MemberForm(request.POST, instance=member)
+        else:
+            form = MemberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/member/list')
+        else:
+            pass
+    else:
+        if pk:
+            member = Member.objects.get(pk=pk)
+            form = MemberForm(instance=member)
+        else:
+            form = MemberForm()
+        return render_to_response('membership/member_form.html', locals())
+
+def account_list(request):
+    page = 'Accounts'
+    account_list = Account.objects.all()
+    return render_to_response('membership/account_list.html', locals())
 
 def account(request, id_num):
     name = Account.objects.get(id=id_num).name
-    return HttpResponse('Welcome to the future site of %s\'s  Account Page!'
-                        % name)
+    page = 'name'
+    return render_to_response('membership/account.html', locals())
