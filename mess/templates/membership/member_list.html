@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table id='table' >
+    <th>Name</th>
+    <th>Primary Account</th>
+    <th>Job</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Address</th>
+    {% for member in member_list %}
+    <tr>
+        <td>{{ member.full_name }}</td>
+        <td>{{ member.account }}</td>
+        <td>{{ member.job }}</td>        
+        <td>{{ member.email_1 }}</td>
+        <td>{{ member.phone_1 }}</td>
+        <td>{{ member.address.address_1 }}</td>
+        
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+

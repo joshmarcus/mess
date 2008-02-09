@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome to the future location of {{ member.full_name }}'s Member Page</h1>
+
+<table>
+    <tr>
+        <th>Primary Account</th><td>{{ member.account }}</td>
+    </tr>    
+    <tr>
+        <th>Job</th><td>{{ member.job }}</td>
+    </tr>
+    <tr>
+        <th>Contact By</th><td>{{ member.contact }}</td>
+    </tr>
+    <tr>
+        <th>Primary Email</th><td>{{ member.pref_email }}</td>
+    </tr>
+    <tr>
+        <th>Primary Phone</th><td>{{ member.pref_phone }}</td>
+    </tr>
+    <tr>
+        <th>Address</th><td>{{ member.address }}</td>
+    </tr>
+    <tr>
+        <th>Date Joined</th><td>{{ member.date_joined }}</td>
+    </tr>
+    <tr>
+        <th>Current Status</th><td>{{ member.status }}</td>
+    </tr>
+
+</table>
+{% endblock %}

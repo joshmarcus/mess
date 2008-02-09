@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table id='table' >
+    <th>Name</th>
+    <th>Contact</th>
+    <th>Contact By</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Balance</th>
+    {% for account in account_list %}
+    <tr>
+        <td>{{ account.name }}</td>
+        <td>{{ account.contact }}</td>
+        <td>{{ account.contact.contact }}</td>
+        <td>{{ account.contact.pref_email }}</td>
+        <td>{{ account.contact.pref_phone }}</td>
+        <td>{{ account.balance }}</td>
+
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
+
