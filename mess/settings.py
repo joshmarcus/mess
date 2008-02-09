@@ -6,7 +6,6 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('digger vermont', 'digVer@verizon.net'),
 )
 
 MANAGERS = ADMINS
