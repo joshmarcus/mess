@@ -1,10 +1,10 @@
 from django.db import models
 
 class Job(models.Model):
-    name = models.CharField(maxlength=40, unique=True)
+    name = models.CharField(max_length=40, unique=True)
 
-    def __str__(self):
-        return '%s' % (self.name)
+    def __unicode__(self):
+        return self.name
     
     class Meta:
         ordering = ['name']
