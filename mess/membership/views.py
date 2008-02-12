@@ -5,13 +5,13 @@ from membership.models import Member, Account
 from membership.forms import MemberForm
 
 def member_list(request):
-    page = 'Members'
+    page_name = 'Members'
     member_list = Member.objects.all()
     return render_to_response('membership/member_list.html', locals())
 
 def member(request, id_num):
     member = Member.objects.get(id=id_num)    
-    page = member
+    page_name = member
     return render_to_response('membership/member.html', locals())
 
 def member_form(request, pk=None):
@@ -36,11 +36,11 @@ def member_form(request, pk=None):
         return render_to_response('membership/member_form.html', locals())
 
 def account_list(request):
-    page = 'Accounts'
+    page_name = 'Accounts'
     account_list = Account.objects.all()
     return render_to_response('membership/account_list.html', locals())
 
 def account(request, id_num):
     name = Account.objects.get(id=id_num).name
-    page = 'name'
+    page_name = 'name'
     return render_to_response('membership/account.html', locals())

@@ -2,6 +2,7 @@ from datetime import date
 from string import split, join
 
 from django.db import models
+from django.contrib.auth.models import User
 
 from mess.work.models import Job
 
@@ -26,7 +27,7 @@ class Account(models.Model):
     def balance():
         return balance
 
-    name = models.CharField(max_length=40, unique=True)
+    name = models.CharField(max_length=40, unique=True, blank=True, null=True,)
     contact = models.ForeignKey('Member', related_name='Member.account',
                                 blank=True, null=True)
     balance = models.DecimalField(max_digits=4, decimal_places=2,
@@ -43,6 +44,13 @@ class Account(models.Model):
 
 
 class Member(models.Model):
+
+    def _get_accounts(self):
+        for key in self.accounts:
+            a[key] = a.name
+        return a
+
+    member_accounts = property(_get_accounts)
 
     STATUS_CHOICES = (
         ('a', 'Active'),
@@ -80,7 +88,8 @@ class Member(models.Model):
         ('2','2'),
         ('3','3'),
     )
-
+    
+    user = models.ForeignKey(User, unique=True)
     given = models.CharField(max_length=20, blank=True)
     middle = models.CharField(max_length=20, blank=True)
     family = models.CharField(max_length=20, blank=True)
@@ -92,7 +101,8 @@ class Member(models.Model):
     
     accounts = models.ManyToManyField(Account, blank=True, null=True)
     account = models.ForeignKey(Account, verbose_name='Primary Account',
-                                related_name='accounts',blank=True, null=True)
+                                related_name='accounts',blank=True, null=True,
+                                limit_choices_to=_get_accounts)
     
     address = models.ForeignKey(Address, blank=True, null=True)
     contact_by = models.CharField(max_length=1, choices=CONTACT_PREF,

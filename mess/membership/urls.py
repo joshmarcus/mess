@@ -4,6 +4,7 @@ from membership.models import Member
 
 member_info = {
     'queryset': Member.objects.all(),
+    'template_object_name' : 'member',
 }
 
 
@@ -15,7 +16,6 @@ urlpatterns = patterns('mess.membership.views',
     (r'^account/(\d{1,4})$', 'account'),
 )
 
-urlpatterns = patterns('',
-    (r'^gen_mem_list$', 'object_list', member_info),
-
+urlpatterns += patterns('',
+    (r'^member_list$', object_list, member_info),
 )
