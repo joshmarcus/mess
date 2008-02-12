@@ -54,6 +54,9 @@ ADMIN_MEDIA_PREFIX = PROJECT_URL + '/admin/media/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '4w-cz*to=zc-gjoqtrf=pi2m54i@ghqlnsdq=2mq7e^8fbgh#w'
 
+# Application and model that stores user profiles.
+AUTH_PROFILE_MODULE = 'people.Person'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
