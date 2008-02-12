@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta name="generator" content=""/>
+    <meta name="author" content="digger vermont"/>
+    <link href="/media/css/base.css"
+        type="text/css" rel="Stylesheet" media="screen" />
+        <title>
+            {% block title %}Mariposa: {{ page_name }}{% endblock %}
+        </title>
+</head>
+<body>    
+    <div id='logo'>Mariposa: {{ page_name }}</div>
+    <div id='headerLine'></div>
+    <div id="menu">
+        <a class='button' href="/cashier" >Cashier</a>
+        <a class='button' href="/member/list" >Members</a>
+        <a class='button' href="/account/list" >Accounts</a>
+        <a class='button' href="/member/list" >Reports</a>    
+        <a class='button' href="/admin" >Staff</a>
+        <a class='button' href="/accounts/logout" >Logout</a>
+    </div>
+    <div id='viewMenu'>
+        {% block view_menu %}
+        <a class='button' href="/cashier" >Page</a>
+        <a class='button' href="/book/list" >Buttons</a>
+        <a class='button' href="/author/list" >Here</a>
+        {% endblock %}
+    </div>
+    <div id='content' >{% block content %}{% endblock %}</div>
+    <div id='rights' >{% block rights %}{% endblock %}</div>
+
+
+</body>
+</html>
+
+

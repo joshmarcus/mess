@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome to the future location of {{ member.full_name }}'s Member Page</h1>
 
 <table>
+    <tr>
+        <th>User Name</th><td>{{ member.user }}</td>
+    </tr>    
     <tr>
         <th>Primary Account</th><td>{{ member.account }}</td>
     </tr>    
@@ -26,7 +28,7 @@
         <th>Date Joined</th><td>{{ member.date_joined }}</td>
     </tr>
     <tr>
-        <th>Current Status</th><td>{{ member.status }}</td>
+        <th>Current Status</th><td>{{ member.get_status_display }}</td>
     </tr>
 
 </table>
