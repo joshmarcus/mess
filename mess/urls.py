@@ -1,18 +1,19 @@
 from django.conf.urls.defaults import *
+from django.conf import settings 
 from django.contrib.auth.views import login, logout
 
 urlpatterns = patterns('',
-    (r'^about/$', 'mess.misc.views.about'),
-    (r'^contact/$', 'mess.misc.views.contact'),
-    (r'^feedback/$', 'mess.misc.views.feedback'),
-    (r'^members_list/$', 'mess.membership.views.members_list'),
-    (r'^member/(\d{1,4}|\w{3,20})/$', 'mess.membership.views.member'),
-    (r'^accounts_list/$', 'mess.membership.views.accounts_list'),
-    (r'^account/(\d{1,4})/$', 'mess.membership.views.account'),
-    (r'^job_list/$', 'mess.work.views.jobs'),
-    (r'^job/(\d{1,3}|\w{3,20})/$', 'mess.work.views.job'),
-
     (r'^admin/', include('django.contrib.admin.urls')),
+    (r'', include('mess.membership.urls')),        
     (r'^accounts/login/$',  login),
     (r'^accounts/logout/$', logout),
 )
+
+# We're going to use the Django server in development, so we'll serve
+# also the static content.
+if settings.DEBUG:
+	urlpatterns += patterns('',
+       (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root':'./media/'}),
+    )
+
+
