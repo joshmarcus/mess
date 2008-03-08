@@ -1,0 +1,125 @@
+{% extends "accounting/base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="/media/js/base.js"></script>
+<script type="text/javascript" src="/media/js/cashier.js"></script>
+
+<form id='form' name='form' method='post' >
+
+<input type='hidden' id='id_account' name='account' value='' />
+<input type='hidden' id='id_member' name='member' value='' />
+<input type='hidden' id='id_debit_type' name='debit_type' value='' />
+<input type='hidden' id='id_credit_type' name='credit_type' value='' />
+
+<table id='table'>
+<tr>
+	<th>Account Name:</th>
+	<td>
+        <input type='text' size='40'        
+			   id='account_name' name='account_name'
+			   onclick='hide_ring (this);
+                        show_message ("account_name",
+                                    "Typing will display matches.")'
+			   onkeyup='get_accounts(this, event)'/>
+	</td>
+	<th>Reference:</th>
+	<td>
+		<input type='text' size='10' id='id_ref' name='ref'
+			   onkeyPress='return no_enter(event)' />
+	</td>
+</tr>
+<tr>
+	<th>Member Name:</th>
+	<td>
+		<input type='text' size='40' id='member_name' name='member_name'
+			   onclick='get_account_members(event)'
+			   onkeyup='get_members(event)' />
+	</td>
+	<th class=list_choice onclick="list_type (this, event, 'p')" >
+		<div id='payment_type' >Select Payment</div>
+	</th>
+	<td>
+		<input type='text' size='10' id='id_debit' name='debit'
+			   		  onclick='hide_message(); hide_ring(this)'
+					  onkeyPress='return no_enter(event)'/>
+	</td>
+</tr>
+<tr>
+	<th>Note:</th>
+	<td >
+		<input type='text' size='40' id='id_note' name='note' 
+			   onkeyPress='return no_enter(event)'/>
+	</td>
+	<th class=list_choice onclick="hide_message();
+                            list_type (this, event, 's')" >
+		<div id=sale_type >Purchase:</div>
+	</th>
+	<td>
+		<input style='outline: 0px;'
+			   type='text' size='10' id='debit' name='debit'
+			   onclick='hide_message(); hide_ring(this)'
+			   onkeyPress='return no_enter(event)'/>
+	</td>
+</tr>
+<tr>
+	<td style='text-align: right;' colspan='4'>
+		<a href='javascript:reset_form()'
+		   alt='Reset Button'
+		   title='Click to reset the form' >
+		   <img class='b125em'
+		   		src='/media/images/Reset.png' />
+		</a>
+		<a href='javascript:validate()'
+		   alt='Enter Button'
+		   title='Click to enter the transaction' >
+		   <img class='b125em'
+		   		src='/media/images/Enter.png' />
+		</a>	
+	</td>
+</tr>
+</table>
+</form>
+
+<div id='transactions' >
+
+<h1>Today's Transactions</h1>
+<table>
+    <tr>
+        <th>Number</th>
+        <th>Date</th>
+        <th>Account</th>
+        <th>Member</th>
+        <th>Note</th>
+        <th>Reference</th>
+        <th>Type</th>
+        <th>Purchase</th>
+        <th>Payment</th>
+        <th>Balance</th>
+    </tr>
+    {% for trans in transactions %}
+    <tr>
+        <td>{{ trans.id }}</td>
+        <td>
+            {{ trans.date.hour }}:
+            {{ trans.date.minute }}:
+            {{ trans.date.second }}
+        </td>    
+        <td>{{ trans.account }}</td>
+        <td>{{ trans.member }}</td>
+        <td>{{ trans.note }}</td>
+        <td>{{ trans.ref }}</td>
+        <td>{{ trans.get_credit_type_display }}</td>
+        <td>{{ trans.credit }}</td>
+        <td>{{ trans.balance }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+<div id=list class=list ></div>
+<div id=listShadow ></div>
+
+<div id='message' onclick='hide_message ()' ></div>
+
+<div id='money' onclick='hideMoney (), hide_message ()' ></div>
+
+{% endblock %}

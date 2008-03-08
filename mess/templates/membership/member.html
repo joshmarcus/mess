@@ -2,34 +2,67 @@
 
 {% block content %}
 
+<a href='/member/form/{{ member.id }}'>
+    <img class=b125em src='/media/images/Edit.png' />
+</a>
+
 <table>
     <tr>
-        <th>User Name</th><td>{{ member.user }}</td>
-    </tr>    
-    <tr>
-        <th>Primary Account</th><td>{{ member.account }}</td>
-    </tr>    
-    <tr>
-        <th>Job</th><td>{{ member.job }}</td>
+        <th>Name</th>
+        <th>User Name</th>
+        <th>Status</th>
+        <th>Work Status</th>
+        <th>Job</th>
+        <th>Has key</th>
+        <th>Joined</th>
     </tr>
     <tr>
-        <th>Contact By</th><td>{{ member.contact }}</td>
+        <td>{{ member.person.name }}</td>
+        <td>{{ member.person.user }}</td>
+        <td>{{ member.get_status_display }}</td>
+        <td>{{ member.get_work_status_display }}</td>
+        <td>{{ member.job }}</td>
+        <td>{{ member.has_key }}</td>
+        <td>{{ member.date_joined }}</td>
     </tr>
-    <tr>
-        <th>Primary Email</th><td>{{ member.pref_email }}</td>
-    </tr>
-    <tr>
-        <th>Primary Phone</th><td>{{ member.pref_phone }}</td>
-    </tr>
-    <tr>
-        <th>Address</th><td>{{ member.address }}</td>
-    </tr>
-    <tr>
-        <th>Date Joined</th><td>{{ member.date_joined }}</td>
-    </tr>
-    <tr>
-        <th>Current Status</th><td>{{ member.get_status_display }}</td>
-    </tr>
-
 </table>
-{% endblock %}
+<h2>Addresses</h2>
+<table>
+    <tr>{% for address in member.person.addresses.all %}
+        <th>{{ address.get_type_display }}</th>
+        <td>{% if address.address_1 %}
+                {{ address.address_1 }}<br />
+            {% endif %}
+            {% if address.address_2 %}
+                {{ address.address_2 }}<br />
+            {% endif %}
+            {{ address.city }}, {{ address.state }}
+            {{ address.postal_code }}<br />
+            {{ address.country }}
+        </td>
+        {% endfor %}
+</table>
+<h2>Email</h2>
+<table>
+    <tr>{% for email in member.person.emails.all %}
+        <th>{{ email.get_location_display }}<br />
+            {{ email.get_type_display }}
+        </th>
+        <td>{{ email.email }}</td>
+        {% endfor %}
+    </tr>
+</table>
+<h2>Phone</h2>
+<table>
+    <tr>{% for phone in member.person.phones.all %}
+        <th>
+            {{ phone.get_location_display }}<br />
+            {{ phone.get_type_display }}
+        </th>
+        <td>
+            {{ phone.number }}{% if phone.ext %}Ext: {{ phone.ext }}{% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+</table>
+    {% endblock %}
