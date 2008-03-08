@@ -44,7 +44,7 @@ OTHER_DEBIT_CHOICES = (
     ('W','Work Credit'),
     ('T','Trade'),
     ('H','Deposit'),
-    ('K','Key Deposit'),
+    ('Y','Key Deposit'),
     ('X','Misc Debit'),
 )
 

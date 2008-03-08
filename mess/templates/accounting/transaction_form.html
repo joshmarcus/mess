@@ -48,7 +48,10 @@
         <td>{{ trans.account }}</td>
         <td>{{ trans.member }}</td>
         <td>{{ trans.note }}</td>
-        <td>{{ trans.ref }}</td>
+        <td>{% if trans.ref %}
+                {{ trans.ref }}
+            {% endif %}
+        </td>
         <td>{% ifnotequal trans.credit_type "N" %}
                 {{ trans.get_credit_type_display }}
             {% endifnotequal %}

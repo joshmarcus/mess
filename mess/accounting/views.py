@@ -91,7 +91,8 @@ def save_credit_trans(request):
             data = {'account': d.data['account'], 'member': d.data['member'],
                 'debit_type': 'N', 'debit': '0',
                 'credit_type': d.data['credit_type'],
-                'credit': d.data['credit'], 'balance': '0'}
+                'credit': d.data['credit'], 'note': d.data['note'],
+                'ref': d.data['ref'], 'balance': '0'}
             f = TransactionForm(data)
             f.is_valid()
             f.save()
@@ -101,7 +102,8 @@ def save_debit_trans(request):
         if d.data['debit_type'] != 'N':
             data = {'account': d.data['account'], 'member': d.data['member'],
                 'debit_type': d.data['debit_type'], 'debit': d.data['debit'],
-                'credit_type': 'N', 'credit': '0', 'balance': '0'}
+                'credit_type': 'N', 'credit': '0', 'note': d.data['note'],
+                'ref': d.data['ref'], 'balance': '0'}
             f = TransactionForm(data)
             f.is_valid()
             f.save()
