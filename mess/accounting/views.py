@@ -10,7 +10,6 @@ from accounting.forms import TransactionForm
 
 def thanks(request):
     page_name = 'Thank You'
-    stuff = request.META
     try:
         redirect = request.META.get('HTTP_REFERER')
     except:
