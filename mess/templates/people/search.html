@@ -1,0 +1,28 @@
+{% extends "people/base.html" %}
+
+{% block content %}
+<script type="text/javascript" src="/media/js/base.js"></script>
+<script type="text/javascript" src="/media/js/search.js"></script>
+
+<form method='get' action=''>
+    <table>
+        <tr>
+            <th>String</th>
+            <td>
+                <input type="text" id="id_string" name="string" value=""
+			            onkeyup='listAccounts(this, event)'/>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type='submit' value='Save' >
+            <td>
+        </tr>
+    </table>
+</form>
+
+<div id='list'></div>
+
+{% endblock %}
+
