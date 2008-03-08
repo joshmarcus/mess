@@ -8,12 +8,16 @@ from mess.work.models import Job
 
 MEMBER_STATUS = (
     ('a', 'Active'),
-    ('w', 'Working'),  # Member is active and has a job.
-    ('n', 'Non-Working'),  # Such as a single parent.
     ('L', 'Leave of Absence'),
     ('q', 'Quit'),
     ('m', 'Missing'),  # Member has disappeared without notice.
     ('i', 'Inactive'),
+)
+
+WORK_STATUS = (
+    ('e','Excused'),
+    ('w', 'Working'),  # Member is active and has a job.
+    ('n', 'Non-Working'),  # Such as a single parent.
 )
 
 CONTACT_PREF = (
@@ -22,15 +26,17 @@ CONTACT_PREF = (
 )
 
 class Member(models.Model):
-    person = models.ForeignKey(Person)
-    # It seems that some of the choices in MEMBER_STATUS could overlap,
-    # in which case they should be split into separate fields, such as
-    # "status" and "active".  I may just be reading them wrong, though.
+    person = models.ForeignKey(Person, unique=True, related_name='member')
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
                             default='a', radio_admin=True)
+    work_status = models.CharField(max_length=1, choices=WORK_STATUS,
+                            default='w', radio_admin=True)
+    account = models.ForeignKey('Account', related_name='primary_account',
+                                verbose_name='Primary Account',
+                                blank=True, null=True)
     date_joined = models.DateField(default=date(1990, 01, 01))
-    has_key = models.BooleanField()
-    job = models.ForeignKey(Job)
+    has_key = models.BooleanField(default=False)
+    job = models.ForeignKey(Job, blank=True, null=True,)
     contact_preference = models.CharField(max_length=1, 
             choices=CONTACT_PREF, default='e', radio_admin=True)
 
@@ -70,51 +76,17 @@ class Member(models.Model):
 
     class Meta:
         pass
+        #ordering = ['person.name']
 
     class Admin:
         pass
-#        list_display = ('__str__', 'account',)
-#        fields = (
-#            (None, {
-#                'fields': (('given', 'middle', 'family'),
-#                            ('user', 'password'), 'date_joined', 'status',
-#                            'role', ('has_key', 'job', 'address')),
-#                }),
-#            ('Accounts', {
-#                'classes': 'collapse',
-#                'fields' : (('account', 'accounts'),),
-#                }),
-#            ('Contact', {
-#                'classes': 'collapse',
-#                'fields' : (('contact_by', 'prefered_email', 'prefered_phone'),
-#                            ('email_1', 'email_1_loc', 'email_1_pub'),
-#                            ('email_2', 'email_2_loc', 'email_2_pub'),
-#                            ('email_3', 'email_3_loc', 'email_3_pub'),
-#                            ('phone_1', 'phone_1_ext', 'phone_1_type',
-#                                'phone_1_loc','phone_1_pub'),
-#                            ('phone_2', 'phone_2_ext', 'phone_2_type',
-#                                'phone_2_loc', 'phone_2_pub'),
-#                            ('phone_3', 'phone_3_ext', 'phone_3_type',
-#                                'phone_3_loc',  'phone_3_pub'),
-#                            ),
-#                }),
-#        )
+
 
 class Account(models.Model):
-# Regarding balance(), just reference the variable instead of creating a
-# method to get it.  a.balance and a.balance() should be the same.  That
-# is,
-# >>> a = Account.objects.get(id=1)
-# >>> a.balance  
-# 72.06
-# >>> a.balance()
-# 72.06
-#    def balance():
-#        return balance
 
     name = models.CharField(max_length=50, unique=True)
     contact = models.ForeignKey(Member, related_name='contact_for')
-    members = models.ManyToManyField(Member)
+    members = models.ManyToManyField(Member, related_name='accounts',)
     can_shop = models.BooleanField()
 
     # Do we want to keep an account balance here?  It would mean some
@@ -124,7 +96,7 @@ class Account(models.Model):
     # transaction.save().
     # Also, people really shouldn't have null balances.  Even if it's a 
     # new account, a deposit should have been made.
-    balance = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    # balance = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     def __unicode__(self):
         return self.name

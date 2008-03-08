@@ -5,13 +5,22 @@ from mess.contact.models import Address, Phone, Email
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(User)
-    addresses = models.ManyToManyField(Address)
-    phones = models.ManyToManyField(Phone)
-    emails = models.ManyToManyField(Email)
+    user = models.ForeignKey(User, unique=True, blank=True, null=True,)
+    addresses = models.ManyToManyField(Address, blank=True, null=True,)
+    phones = models.ManyToManyField(Phone, blank=True, null=True,)
+    emails = models.ManyToManyField(Email, blank=True, null=True,)
 
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
     class Admin:
-        pass
+        list_display = ('__unicode__', 'user',)
+        fields = (
+            (None, {
+                'fields': (('name', 'user',), 'addresses',
+                            'emails', 'phones',)
+                },),)
+

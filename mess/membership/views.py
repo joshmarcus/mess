@@ -14,11 +14,11 @@ def member(request, id_num):
     page_name = member
     return render_to_response('membership/member.html', locals())
 
-def member_form(request, pk=None):
+def member_form(request, id=None):
     page_name = 'Member Form'
     if request.method == 'POST':
         if pk:
-            member = Member.objects.get(pk=pk)
+            member = Member.objects.get(id=id)
             form = MemberForm(request.POST, instance=member)
         else:
             form = MemberForm(request.POST)
@@ -28,8 +28,8 @@ def member_form(request, pk=None):
         else:
             pass
     else:
-        if pk:
-            member = Member.objects.get(pk=pk)
+        if id:
+            member = Member.objects.get(id=id)
             form = MemberForm(instance=member)
         else:
             form = MemberForm()

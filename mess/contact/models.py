@@ -22,8 +22,9 @@ EMAIL_TYPES = (
  
 class Address(models.Model):
     type = models.CharField(max_length=1, choices=ADDRESS_TYPES)
-    address1 = models.CharField(max_length=100)
-    address2 = models.CharField(max_length=100, blank=True)
+    # I added an underscore. Is that okay or do you prefer not?
+    address_1 = models.CharField(max_length=100)
+    address_2 = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=50, default='Philadelphia')
     # state is CharField to allow for international
     state = models.CharField(max_length=50, default='PA')
@@ -32,7 +33,7 @@ class Address(models.Model):
     country = models.CharField(max_length=50, default='USA')
     
     def __unicode__(self):
-        return self.address1
+        return self.address_1
 
     class Admin:
         pass
