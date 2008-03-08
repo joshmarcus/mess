@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table id='table' >
+    <th>Name</th>
+    <th>Accounts</th>
+    <th>Job</th>
+    <th>Current<br /> Status</th>
+    <th>Email</th>
+    <th>Phone</th>
+    {% for member in member_list %}
+    <tr>
+        <td><a href='/member/form/{{ member.id }}'>
+                <img class='b100em' src='/media/images/Edit.png' />
+            </a>
+            <a href=/member/{{ member.id }}> {{ member }} </a>
+        </td>
+        <td>{% for account in member.accounts.all %}
+                <a href=/account/{{ account.id }}>{{ account }}</a><br />
+            {% endfor %}
+        </td>
+        <td>{{ member.job }}</td>
+        <td>{{ member.get_status_display }}</td>        
+        <td>{% for email in member.person.emails.all %}
+                {{ email.get_type_display }}: {{ email.email }}<br />
+            {% endfor %}
+        </td>
+         <td>{% for phone in member.person.phones.all %}
+                {{ phone.get_type_display }}: {{ phone.number }}
+                {% if not phone.ext %}
+                    <br />
+                {% else %}
+                    Ext: {{ phone.ext }}<br />
+                {% endif %}
+            {% endfor %}
+        </td>     
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+
