@@ -72,6 +72,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'mess.urls'
+LOCATION = 'Cashier'
 
 TEMPLATE_DIRS = (
     PROJECT_ROOT + '/templates',

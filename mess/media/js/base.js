@@ -65,28 +65,18 @@ function show_message (id, m)
 	py = (p[1] + 25) + "px";
 	
 	var b = document.getElementById("message");
-	b.style.visibility = "visible";
-	b.style.position = "absolute";
-	b.style.left = px;
+    b.style.left = px;
 	b.style.top = py;
-	b.style.width = "auto";
-	b.style.height = "auto";
-	b.style.padding = "20px";
-	b.style.background = "#cc9999";
-	b.style.color = "#003333";
-	b.style.border = "solid red 1px";
-	b.style.MozBorderRadiusTopright = "0px";
-	b.style.MozBorderRadiusTopright = "15px";
-	b.style.MozBorderRadiusBottomleft = "15px";
-	b.style.MozBorderRadiusBottomright = "30px";
-	b.style.fontSize = "1.5em";
-	b.style.textAlign =  "left";
-	
+	b.style.visibility = "visible";
+    b.style.position = 'absolute';
+    b.style.width = 'auto';
+    b.style.height = 'auto';
+		
 	var c = "<div style='font-size: 0.75em; color: red; text-align: right;' >Click to close</div>";
 	m = m + c;
 	b.innerHTML = m;
 } //End function showMessage
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 function hide_message ()
 {
@@ -95,6 +85,35 @@ function hide_message ()
 	b.style.height = "0px";
 	b.style.width = "0px";
 } //End function hide_message
+/////////////////////////////////////////////////////////////////////////////
+
+function show_list (obj)
+{
+    var p = find_pos (obj);
+	var px = (p[0] + 25) + "px";
+	var py = (p[1] + 25) + "px";
+
+    var l = document.getElementById("list");
+    l.style.visibility = "visible";
+    l.style.left = px;
+    l.style.top = py;
+    l.style.height = "auto";
+	l.style.width = "300px";
+
+} //End function show_list
+
+/////////////////////////////////////////////////////////////////////////////
+
+function hide_list ()
+{
+	var l = document.getElementById("list")
+	l.style.visibility = "hidden";
+	l.style.height = "0px";
+	l.style.width = "0px";
+    l.style.innerHTML = "";
+} //End function hideList
+
+////////////////////////////////////////////////////////////////////////////////
 
 function reset_form ()
 {

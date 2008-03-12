@@ -34,16 +34,26 @@ function get_accounts(thisObj, e)
             show_list (thisObj);	   
             var r = eval("(" + ajaxRequest.responseText + ")");
             var accounts = r['get_accounts'];
-            responseString = "<div id='list_cancel' >Cancel</div>";
- 			for ( key in accounts )
+            var response = "<div id='list_cancel' onclick="
+                            + "\"set_account('','');\" >Cancel</div>";
+ 			
+            var num_accounts = 0;
+            for ( key in accounts )
             {
-                responseString += "<div class=list_choice " +
-                                "onclick='set_account(" +
-                                key + ", \"" + accounts[key] +
-                                "\"); get_account_members(event);'>" +
-                                accounts[key] + "</div>";
+                num_accounts++;
+                response += "<div class=list_choice onclick=\'set_account("
+                            + key + ", \"" + accounts[key] + "\");"
+                            + " get_account_members(event);\'>"
+                            + accounts[key] + "</div>";
             }
-            document.getElementById("list").innerHTML = responseString;
+            if (num_accounts == 0)
+            {
+                response += "<div class=list_choices>" +
+                            "------ Sorry No Matches ---------" +
+                                "</div>";
+            }
+
+            document.getElementById("list").innerHTML = response;
  		}
 	}
     ajaxRequest.send(null);
@@ -61,7 +71,7 @@ function get_members(e)
     var id_account = document.getElementById('id_account')
 	
     //hide_ring (member);
-	hide_message ();	
+	hide_message();	
 	//show_list (member)
 
 		// Try to check for the key
@@ -90,17 +100,17 @@ function get_members(e)
             var account_members = r['account_members'];
             var other_members = r['get_members'];
 
-            response_string = "<div id='list_cancel' >Cancel</div>";
+            var response = "<div id=list_cancel onclick=\"set_member('','');\""
+                            + " >Cancel</div>";
  			for ( key in account_members )
             {
-                response_string += "<div class=list_choice onclick=\"set_member(" +
+                response += "<div class=list_choice onclick=\"set_member(" +
                                 key + ", \'" + account_members[key] +
                                 "\');\">" + account_members[key] + "</div>";
             }
 
-            response_string += "<div class=other_choice>" +
-                            "------------------- Other Members ----------" +
-                                "</div>";
+            response += "<div class=other_choice>"
+                        + "----  Other Members ----------</div>";
             
             var num_other_members = 0;
 
@@ -108,19 +118,18 @@ function get_members(e)
             {
                 num_other_members++;
                 var name = other_members[key];
-                response_string += "<div class=other_choice " +
-                                "onclick=\"set_other_member(" + key + ", \'" +
-                                name + "\')\">" + name + "</div>";
+                response += "<div class=other_choice onclick="
+                                + "\"confirm_other_member(" + key + ", \'"
+                                + name + "\')\">" + name + "</div>";
             }
             if (num_other_members == 0)
             {
-                responseString += "<div class=list_choices>" +
-                                "----------- Sorry No Matches ---------" +
-                                "</div>";
+                response += "<div class=other_choices>"
+                            + "----------- Sorry No Matches ---------</div>";
             }
 
-            document.getElementById("list").innerHTML = response_string;
-             		}
+            document.getElementById("list").innerHTML = response;
+        }
 	}
     ajaxRequest.send(null);
 
@@ -135,11 +144,11 @@ function get_account_members (e)
     var id_account = document.getElementById('id_account')
 
     //hide_ring (thisObj);
-	hide_message ();	
+	hide_message();	
 	
 	if (!id_account.value)
 	{
-		show_message ("member_name", "Please select an account first." )
+		show_message("member_name", "Please select an account first." )
 	} else
 	{
         hide_list ();
@@ -157,30 +166,30 @@ function get_account_members (e)
                 show_list (member_name);	   
                 var r = eval("(" + ajaxRequest.responseText + ")");
                 var account_members = r['account_members'];
-                response_string = "<div id='list_cancel' >Cancel</div>";
+                var response = "<div id='list_cancel' onclick=\"set_member"
+                                + "('','');\" >Cancel</div>";
                 for ( i in account_members )
                 {
-                    response_string += "<div class=list_choice " +
-                                    "onclick='set_member(" + i +
-                                    ", \"" + account_members[i] + "\");'>" +
-                                    account_members[i] + "</div>";
+                    response += "<div class=list_choice onclick='set_member("
+                                + i + ", \"" + account_members[i] + "\");'>"
+                                + account_members[i] + "</div>";
                 }
-                document.getElementById('list').innerHTML = response_string;
+                document.getElementById('list').innerHTML = response;
             }
         }
         ajaxRequest.send(null);
 	}
-} // End function get_mccount_members
+} // End function get_account_members
 
 ////////////////////////////////////////////////////////////////////////////////
 
 function set_account (id_account, account_name)
 {
-	hide_list ();
-	hide_message ();
+	hide_list();
+	hide_message();
 	document.getElementById("account_name").value = account_name;	
 	document.getElementById("id_account").value = id_account;
-} // End function setAccount
+} // End function set_account
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -192,16 +201,16 @@ function set_member (id_member, member_name)
 	document.getElementById("id_member").value = id_member;
 }
 
-function set_other_member (id, member)
+/////////////////////////////////////////////////////////////////////////////
+
+function confirm_other_member (id_other, other_name)
 {
-	hide_list ();
-	hide_message ();
+	hide_list();
+	hide_message();
 
     account_name = document.getElementById("account_name").value;
-	member_name = document.getElementById("member_name").value;
-	id_member = document.getElementById("id_member").value;
 	
-	p = find_pos (member);
+	p = find_pos('member_name');
 	px = (p[0] + 25) + "px";
 	py = (p[1] + 25) + "px";
 	
@@ -213,16 +222,17 @@ function set_other_member (id, member)
     m.style.width = "auto";
 	m.style.height = "auto";
 	m.style.textAlign =  "center";
+    m.style.fontSize = "1.25em";
 
-	var message = "Which member from "
+	var message = "Which member from<br /> "
 				  + " <span style='color: red;'>"
-				  + account_name.value + "<br /></span>"
-				  + " is authorizing this transaction by "
-				  + "<br /><span style='color: red;'>"
-				  + member_name + "</span>?";
+				  + account_name + "<br /></span>"
+				  + " is authorizing this transaction by<br /> "
+				  + "<span style='color: red;'>"
+				  + other_name + "</span>?";
 	
-	var query = "confirmMember.php"
-    query += "?memberID=" + id_account + "&id=" + id + "&name=" + member;
+    var query = "cashier?search=accountMembers&accountID=" +
+                    document.getElementById("id_account").value;
 	
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
@@ -231,15 +241,51 @@ function set_other_member (id, member)
 	{
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
 		{
- 			b.innerHTML = message + ajaxRequest.responseText; 
+            var r = eval("(" + ajaxRequest.responseText + ")");
+            var account_members = r['account_members'];
+            var response = message;
+ 			for ( key in account_members )
+            {
+                response += "<div class=confirm_member "
+                            + "onclick=\"set_other_member(" + key
+                            + ", \'" + account_members[key] + "\', " + id_other
+                            + ", \'" + other_name + "\');\">"
+                            + account_members[key] + "</div>";
+            }
+            response += "<div class='confirm_member' "
+                        + " onclick=\"set_member('', '');\" >"
+                        + "No one, please cancel!</div>";
+            m.innerHTML = response;
  		}
 	}
 	ajaxRequest.send(null);
 	
-} // End function setOtherMember 
+} // End function confirm_other_member 
 
+/////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////////
+function set_other_member(id_member, member_name, id_other, other_name)
+{
+    set_member(id_other, other_name);
+    set_note(id_member, member_name);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+function set_note (id_other, other_name)
+{
+	var old_note = "";
+	var note = document.getElementById("id_note");
+	if ( note.value )
+	{
+		old_note =  "; " + note.value;
+	}
+	var new_note = "Authorized by " + other_name + " (#" + id_other + ")" + old_note;
+	note.value = new_note;
+	
+} //End function set_note
+
+/////////////////////////////////////////////////////////////////////////////
 
 function set_type (ps, type, tName)
 {
@@ -294,18 +340,6 @@ function hide_box (box)
 } //End function hideBox
 ////////////////////////////////////////////////////////////////////////////////
 
-function show_list (obj)
-{
-    var p = find_pos (obj);
-	var px = (p[0] + 25) + "px";
-	var py = (p[1] + 25) + "px";
-
-    var l = document.getElementById("list");
-    l.style.visibility = "visible";
-    l.style.left = px;
-    l.style.top = py;
-}
-
 function show_shadow ()
 {
     var l = document.getElementById("list");
@@ -321,15 +355,6 @@ function show_shadow ()
     s.style.height = l.outerHeight;
 }
 
-function hide_list ()
-{
-	var l = document.getElementById("list")
-	l.style.visibility = "hidden";
-	l.style.height = "0px";
-	l.style.width = "0px";
-    l.style.innerHTML = "";
-} //End function hideList
-////////////////////////////////////////////////////////////////////////////////
 
 function hide_money ()
 {
@@ -338,7 +363,7 @@ function hide_money ()
 	b.style.height = "0px";
 	b.style.width = "0px";
 } //End function hideList
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 function hide_hint ()
 {
@@ -347,38 +372,28 @@ function hide_hint ()
 	b.style.height = "0px";
 	b.style.width = "0px";
 } //End function hideList
-////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
 
 function hide_ring(r)
 {
 	r.style.outline = "0px";
 }
 
-function set_note (id, name)
-{
-	var oldNote = "";
-	var note = document.getElementById("note");
-	if (note.value)
-	{
-		oldNote =  "; " + note.value;
-	}
-	var newNote = "Authorized by " + name + "(#" + id + ")" + oldNote;
-	document.getElementById("note").value = newNote;
-	
-} //End function setNotea
+/////////////////////////////////////////////////////////////////////////////
 
-function list_type ( thisObj, e, type)
+function list_type ( this_obj, e, type)
 {
-	hideMoney ();
-	hide_message ();
+	hideMoney();
+	hide_message();
 	
 	//document.getElementById("table").background = "#000000";
 	
 	var l = document.getElementById("list");
 	
-	var obj = document.getElementById("credit_type");
+	//var obj = document.getElementById("credit_type");
 	
-	var p = find_pos (thisObj);
+	var p = find_pos (this_obj);
 	var px = p[0] + "px";
 	var py = p[1] + "px";
 	
@@ -388,12 +403,18 @@ function list_type ( thisObj, e, type)
 	l.style.left = px;
 	l.style.top = py;
 	l.style.width = "200px";
-	
-	var url = "listTransType.php"
-	var string = obj.value
-	var query = url + "?ps=" + type;
-	
-		// Try to check for the key
+    
+    if ( this_obj.id == 'credit_type' )
+    {
+        type = 'credit';
+    }
+    else if (this_obj == 'debit_type' )
+    {
+       type = 'debit';
+    }
+    var query = "cashier?list=" + list_type;
+
+    // Try to check for the key
 	if (!e) var e = window.event;
 	if (e.keyCode) keycode = e.keyCode;
 	else if (e.which) keycode = e.which;

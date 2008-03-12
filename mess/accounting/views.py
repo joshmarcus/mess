@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
 
 from accounting.models import Transaction
+from accounting.models import get_credit_choices, get_debit_choices
 from membership.models import Member, Account
 from accounting.forms import TransactionForm
 
@@ -121,20 +122,27 @@ def transaction_form(request):
 
 def cashier(request):
     """accounting view for the transaction form."""
-
+    
     page_name = 'Cashier'
-    if not request.method == 'POST' and not request.GET.has_key('search'):  
+    if request.GET.has_key('accountID'):
+        transactions = get_todays_transactions(request.GET.get('accountID'))
+        transaction_title = ('%s\'s Transactions' %
+                            request.GET.get('account_name'))
+
+    if not request.method == 'POST' and not request.GET.has_key('search'):
+        credit_choices = get_credit_choices('Cashier', 'Cashier')
+        debit_choices = get_debit_choices('Cashier', 'Cashier')
         form = TransactionForm()
+        transactions = get_todays_transactions()
+        transaction_title = 'Today\'s Transactions'
         return render_to_response('accounting/cashier.html', locals())
     elif request.GET.has_key('search'):
         search_dict = live_search(request)
         return HttpResponse(simplejson.dumps(search_dict),
                             mimetype='application/javascript')
-    
-    form = TransactionForm(request.POST)
-    if form.is_valid():
-        pass
-
-    #    form.save()
-    #    return HttpResponseRedirect('cashier')
+    else:
+        save_credit_trans(request)        
+        save_debit_trans(request)        
+        return HttpResponseRedirect('thanks')
+ 
     return render_to_response('accounting/cashier.html', locals())

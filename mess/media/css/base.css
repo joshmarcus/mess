@@ -65,6 +65,7 @@ div#content {
 
 div#message {
     visibility: hidden;
+    position: absolute;
 	width: auto;
 	height: auto;
 	padding: 20px;

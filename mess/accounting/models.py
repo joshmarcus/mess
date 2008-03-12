@@ -1,6 +1,7 @@
 from django.db import models
 from django.core import exceptions
 
+from mess.settings import LOCATION
 from mess.membership.models import Account, Member
 
 # Is it better to have these lists in the model or out?
@@ -8,7 +9,7 @@ from mess.membership.models import Account, Member
 # Credit is looked at from the stores point of view.  A credit
 # will be a positive number.
 
-COMMON_CREDIT_CHOICES = (
+NO_CREDIT_CHOICES = (
     ('N','None'),
 )
 
@@ -28,7 +29,7 @@ OTHER_CREDIT_CHOICES = (
 
 # A debit is looked at from the stores point of view.  A debit
 # will be a negative number.
-COMMON_DEBIT_CHOICES = (
+NO_DEBIT_CHOICES = (
     ('N','None'),
 )
 
@@ -48,13 +49,29 @@ OTHER_DEBIT_CHOICES = (
     ('X','Misc Debit'),
 )
 
-CREDIT_CHOICES = (COMMON_CREDIT_CHOICES + MEMBER_CREDIT_CHOICES +
+def get_credit_choices(role=None, location=None):
+    # This logic needs work-dv
+    if role == None and location == None:
+        return NO_CREDIT_CHOICES
+    elif role == 'Member' and location == None:
+        return NO_CREDIT_CHOICES + MEMBER_CREDIT_CHOICES
+    elif LOCATION == 'Cashier':
+        return NO_CREDIT_CHOICES + CASHIER_CREDIT_CHOICES
+    elif role == 'Staff':
+        return (NO_CREDIT_CHOICES + MEMBER_CREDIT_CHOICES +
                 CASHIER_CREDIT_CHOICES + OTHER_CREDIT_CHOICES
                 )
 
-DEBIT_CHOICES = (COMMON_DEBIT_CHOICES + CASHIER_DEBIT_CHOICES +
-                OTHER_DEBIT_CHOICES
-                )
+def get_debit_choices(role=None, location=None):
+    # This logic needs work. - dv
+    if role == None and location == None:
+        return NO_DEBIT_CHOICES
+    elif role == 'Member' and location == None:
+        return NO_DEBIT_CHOICES
+    elif LOCATION == 'Cashier':
+        return NO_DEBIT_CHOICES + CASHIER_DEBIT_CHOICES
+    elif role == 'Staff':
+        return (NO_DEBIT_CHOICES + CASHIER_DEBIT_CHOICES + OTHER_DEBIT_CHOICES)
 
 def get_account_balance(id):
     try:
@@ -67,6 +84,9 @@ def get_account_transactions(id):
 
 
 class Transaction(models.Model):
+    CREDIT_CHOICES = get_credit_choices('Cashier', 'Cashier')
+    DEBIT_CHOICES = get_debit_choices('Cashier', 'Cashier')
+
     credit_type = models.CharField(max_length=1, choices=CREDIT_CHOICES,
                                     default='N',)
     debit_type = models.CharField(max_length=1, choices=DEBIT_CHOICES,

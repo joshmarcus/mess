@@ -43,3 +43,17 @@ div#list_cancel:hover, div.other_choice:hover {
 	color: #0000cc;
 }
 
+div.confirm_member {
+    background: #99CC99;
+	color: #0000cc;        
+	padding: 4px;    
+	border: solid #990099;
+	border-width: 1px;
+	text-align: left;
+    z-index: 2;
+}
+
+div.confirm_member:hover {
+    background: #cc9999;
+}    
+
