@@ -285,35 +285,7 @@ function set_note (id_other, other_name)
 	
 } //End function set_note
 
-/////////////////////////////////////////////////////////////////////////////
-
-function set_type (ps, type, tName)
-{
-	list = document.getElementById("list");
-	list.style.visibility = "hidden";
-	list.style.height = "0px";
-	list.style.width = "0px";
-	
-	document.getElementById("payLabel").style.outline = "0px";
-	document.getElementById("saleLabel").style.outline = "0px";	
-	
-	switch (ps)
-	{
-	case 's': document.getElementById("saleLabel").innerHTML = tName;
-        	  document.getElementById("sale").value = type;
-		  document.getElementById("TEST").innerHTML = type;
-	break;
-	case 'p': document.getElementById("payLabel").innerHTML = tName;
-		  document.getElementById("pay").value = type;
-	break;
-	case 'a': document.getElementById("tName").innerHTML = tName;
-		  document.getElementById("xType").value = type;
-	break;
-	}
-}
-
 ///////////////////////////////////////////////////////////////////////
-
 
 function make_it_so()
 {
@@ -353,8 +325,9 @@ function show_shadow ()
 	s.style.top =  py;
 	s.style.width = l.style.width;
     s.style.height = l.outerHeight;
-}
+} // End function show_shadow
 
+/////////////////////////////////////////////////////////////////////////////
 
 function hide_money ()
 {
@@ -363,6 +336,7 @@ function hide_money ()
 	b.style.height = "0px";
 	b.style.width = "0px";
 } //End function hideList
+
 /////////////////////////////////////////////////////////////////////////////
 
 function hide_hint ()
@@ -379,60 +353,6 @@ function hide_ring(r)
 {
 	r.style.outline = "0px";
 }
-
-/////////////////////////////////////////////////////////////////////////////
-
-function list_type ( this_obj, e, type)
-{
-	hideMoney();
-	hide_message();
-	
-	//document.getElementById("table").background = "#000000";
-	
-	var l = document.getElementById("list");
-	
-	//var obj = document.getElementById("credit_type");
-	
-	var p = find_pos (this_obj);
-	var px = p[0] + "px";
-	var py = p[1] + "px";
-	
-	
-	l.style.visibility = "visible";
-	l.style.position = "absolute";
-	l.style.left = px;
-	l.style.top = py;
-	l.style.width = "200px";
-    
-    if ( this_obj.id == 'credit_type' )
-    {
-        type = 'credit';
-    }
-    else if (this_obj == 'debit_type' )
-    {
-       type = 'debit';
-    }
-    var query = "cashier?list=" + list_type;
-
-    // Try to check for the key
-	if (!e) var e = window.event;
-	if (e.keyCode) keycode = e.keyCode;
-	else if (e.which) keycode = e.which;
-	
-	ajaxRequest = xmlHttp();
-	ajaxRequest.open("GET",query,true);
-	
-	ajaxRequest.onreadystatechange = function ()
-	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200)
-		{ 
- 			l.innerHTML = ajaxRequest.responseText; 
- 		}
-	}
-	ajaxRequest.send(null);
-	
-} // End function listType
-
 
 ///////////////////////////////////////////////////////////////////////
 
