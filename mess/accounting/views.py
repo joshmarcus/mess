@@ -124,11 +124,6 @@ def cashier(request):
     """accounting view for the transaction form."""
     
     page_name = 'Cashier'
-    if request.GET.has_key('accountID'):
-        transactions = get_todays_transactions(request.GET.get('accountID'))
-        transaction_title = ('%s\'s Transactions' %
-                            request.GET.get('account_name'))
-
     if not request.method == 'POST' and not request.GET.has_key('search'):
         credit_choices = get_credit_choices('Cashier', 'Cashier')
         debit_choices = get_debit_choices('Cashier', 'Cashier')
