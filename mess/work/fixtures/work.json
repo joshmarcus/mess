@@ -1,0 +1,65 @@
+[
+    {
+        "pk": 2, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Cashier"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Cheese Cutter"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Cleaning"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Closing"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "work.job", 
+        "fields": {
+            "name": "None"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Opening"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Recyling"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Stocking"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "work.job", 
+        "fields": {
+            "name": "Storekeeper"
+        }
+    }
+]
