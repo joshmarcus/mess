@@ -2,8 +2,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
 
-from people.models import Person
-from people.forms import PersonForm, Search
+from mess.people.models import Person
+from mess.people.forms import PersonForm, Search
 
 def search(request):
     if not request.method == 'GET':

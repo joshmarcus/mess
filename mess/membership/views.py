@@ -1,8 +1,8 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 
-from membership.models import Member, Account
-from membership.forms import MemberForm
+from mess.membership.models import Member, Account
+from mess.membership.forms import MemberForm
 
 def member_list(request):
     page_name = 'Members'

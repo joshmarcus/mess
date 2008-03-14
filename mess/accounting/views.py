@@ -4,10 +4,10 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
 
-from accounting.models import Transaction
-from accounting.models import get_credit_choices, get_debit_choices
-from membership.models import Member, Account
-from accounting.forms import TransactionForm
+from mess.accounting.models import Transaction
+from mess.accounting.models import get_credit_choices, get_debit_choices
+from mess.membership.models import Member, Account
+from mess.accounting.forms import TransactionForm
 
 def thanks(request):
     page_name = 'Thank You'
