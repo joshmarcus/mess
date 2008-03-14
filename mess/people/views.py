@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
+from django.template import RequestContext
 
 from mess.people.models import Person
 from mess.people.forms import PersonForm, Search
@@ -20,10 +21,10 @@ def search(request):
     return render_to_response('people/search.html', {} )
 
 def people(request):
-    pass
     page_name = 'People'
     people_list = Person.objects.all()
-    return render_to_response('people/people_list.html', locals())
+    return render_to_response('people/people_list.html', locals(),
+            context_instance=RequestContext(request))
 
 def person(request, id_num):
     person = Person.objects.get(id=id_num)    

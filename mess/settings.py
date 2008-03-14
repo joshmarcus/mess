@@ -38,12 +38,12 @@ PROJECT_URL = '/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = PROJECT_ROOT + '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = PROJECT_URL + '/media/'
+MEDIA_URL = PROJECT_URL + 'media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -71,6 +71,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'mess.urls'
+
 LOCATION = 'Cashier'
 
 TEMPLATE_DIRS = (
@@ -89,3 +90,12 @@ INSTALLED_APPS = (
     'mess.people',
     'mess.work',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'mess.context_processors.project',
+)
+
