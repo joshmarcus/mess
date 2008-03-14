@@ -33,16 +33,15 @@ USE_I18N = True
 # Absolute path to the root of the project.
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# URL of the project.  Leave blank to keep all links relative to "/".
-# Don't use a trailing slash.
-PROJECT_URL = ''
+# URL of the project.  Leave at '/' to keep all links relative.
+PROJECT_URL = '/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = PROJECT_ROOT + '/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
+# trailing slash.
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = PROJECT_URL + '/media/'
 
