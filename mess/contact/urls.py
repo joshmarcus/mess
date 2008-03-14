@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from contact.models import Address, Email, Phone
+from mess.contact.models import Address, Email, Phone
 
 urlpatterns = patterns('mess.contact.views',
     (r'^email/list/$', 'email_list'),

@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from membership.models import Member, Account
+from mess.membership.models import Member, Account
 
 urlpatterns = patterns('mess.membership.views',
     (r'^member/list/$', 'member_list'),
