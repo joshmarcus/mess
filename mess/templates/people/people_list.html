@@ -12,7 +12,7 @@
     <tr>
         <td>
         <a href='/person/form/{{ person.pk }}'>
-            <img class='b100em' src='/media/images/Edit.png' />
+            <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
         </a>
         <a href='/person/{{ person.pk }}' > {{ person.name }} </a>
     </td>

@@ -1,8 +1,8 @@
 {% extends "people/base.html" %}
 
 {% block content %}
-<script type="text/javascript" src="/media/js/base.js"></script>
-<script type="text/javascript" src="/media/js/live_address.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/live_address.js"></script>
 
 <form method='post' action=''>
     <h2>Name</h2>
@@ -26,10 +26,10 @@
             {{ address.country }}
             </td>
             <td><a href='/address/form/{{ address.id }}'>
-                    <img class=b125em src='/media/images/Pencil32.png' />
+                    <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
                 </a>
                 <a href='/address/form/{{ address.id }}'>
-                    <img class=b125em src='/media/images/Minus32.png' />
+                    <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
                 </a>
             </td>
         </tr>
@@ -49,10 +49,10 @@
             </th>
             <td>{{ email.email }}</td>
             <td><a href='/email/form/{{ email.id }}'>
-                    <img class=b125em src='/media/images/Pencil32.png' />
+                    <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
                 </a>
                 <a href='/email/form/{{ email.id }}'>
-                    <img class=b125em src='/media/images/Minus32.png' />
+                    <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
                 </a>
             </td>
         </tr>
@@ -70,10 +70,10 @@
                 {{ phone.number }}{% if phone.ext %}Ext: {{ phone.ext }}{% endif %}
             </td>
             <td><a href='/phone/form/{{ phone.id }}'>
-                    <img class=b125em src='/media/images/Pencil32.png' />
+                    <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
                 </a>
                 <a href='/phone/form/{{ phone.id }}'>
-                    <img class=b125em src='/media/images/Minus32.png' />
+                    <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
                 </a>
             </td>
 

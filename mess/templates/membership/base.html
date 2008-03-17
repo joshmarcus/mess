@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link href="/media/css/div_list.css"
+<link href="{{ MEDIA_URL }}css/div_list.css"
         type="text/css" rel="Stylesheet" media="screen" />
 {% endblock head %}
 
 {% block page_menu %}
-<a class='button' href="/member/form/" >New Member</a>
-<a class='button' href="/member/" >Home</a>
+<a class='button' href="{{ PROJECT_URL }}member/form/" >New Member</a>
+<a class='button' href="{{ PROJECT_URL }}member/" >Home</a>
 {% endblock %}

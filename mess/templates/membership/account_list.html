@@ -10,7 +10,7 @@
     {% for account in account_list %}
     <tr>
         <td><a href=/account/form/{{ account.id }} >
-            <img class='b100em' src='/media/images/Edit.png' />
+            <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
         </a>
             <a href=/account/{{ account.id }}>{{ account.name }}</a>
         </td>
