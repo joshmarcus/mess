@@ -11,7 +11,7 @@
     {% for person in people_list %}
     <tr>
         <td>
-        <a href='/person/form/{{ person.pk }}'>
+            <a href='{{ PROJECT_URL }}person/form/{{ person.pk }}'>
             <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
         </a>
         <a href='/person/{{ person.pk }}' > {{ person.name }} </a>
