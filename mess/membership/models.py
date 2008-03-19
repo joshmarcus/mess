@@ -75,8 +75,7 @@ class Member(models.Model):
         return self.person.name
 
     class Meta:
-        pass
-        #ordering = ['person.name']
+        ordering = ['person']
 
     class Admin:
         pass

@@ -33,8 +33,10 @@ class Address(models.Model):
     country = models.CharField(max_length=50, default='USA')
     
     def __unicode__(self):
-        return self.address_1
-
+        if self.address_2:
+            return ('%s, %s' % (self.address_1, self.address_2))
+        else:
+            return self.address_1
     class Admin:
         pass
 
@@ -48,7 +50,12 @@ class Phone(models.Model):
     ext = models.PositiveIntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.number
+        # Why doesn't get_type_display work here:
+        #phone = ('%s: %s' % (self.get_type_display, self.number))
+        if self.ext:
+            return ('%s Ext %s' % (self.number, self.ext))
+        else:
+            return self.number
 
     class Admin:
         pass
