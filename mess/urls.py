@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.views import login, logout
 
 urlpatterns = patterns('',
+    (r'^$', 'views.welcome'),
     (r'^admin/', include('django.contrib.admin.urls')),
     (r'', include('mess.accounting.urls')),        
     #(r'', include('mess.contact.urls')),            

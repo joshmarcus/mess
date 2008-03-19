@@ -3,6 +3,7 @@ from datetime import date
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
+from django.template import RequestContext
 
 from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
@@ -15,7 +16,8 @@ def thanks(request):
         redirect = request.META.get('HTTP_REFERER')
     except:
         redirect = '/'
-    return render_to_response('accounting/thanks.html', locals())
+    return render_to_response('accounting/thanks.html', locals(),
+                                context_instance=RequestContext(request))
 
 def live_search(request):
     """ If GET has a 'search' key it returns primary keys and names
@@ -118,7 +120,8 @@ def transaction_form(request):
         save_credit_trans(request)        
         save_debit_trans(request)        
         return HttpResponseRedirect('thanks')
-    return render_to_response('accounting/transaction_form.html', locals() )
+    return render_to_response('accounting/transaction_form.html', locals(),
+                                context_instance=RequestContext(request))
 
 def cashier(request):
     """accounting view for the transaction form."""
@@ -130,7 +133,8 @@ def cashier(request):
         form = TransactionForm()
         transactions = get_todays_transactions()
         transaction_title = 'Today\'s Transactions'
-        return render_to_response('accounting/cashier.html', locals())
+        return render_to_response('accounting/cashier.html', locals(),
+                                    context_instance=RequestContext(request))
     elif request.GET.has_key('search'):
         search_dict = live_search(request)
         return HttpResponse(simplejson.dumps(search_dict),
@@ -140,4 +144,5 @@ def cashier(request):
         save_debit_trans(request)        
         return HttpResponseRedirect('thanks')
  
-    return render_to_response('accounting/cashier.html', locals())
+    return render_to_response('accounting/cashier.html', locals(),
+                                context_instance=RequestContext(request))

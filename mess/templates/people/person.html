@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "people/base.html" %}
 
 {% block content %}
 
 <a href='/person/form/{{ person.id }}'>
-    <img class=b125em src='/media/images/Edit.png' />
+    <img class=b125em src='{{ MEDIA_URL }}images/Edit.png' />
 </a>
 
 <table>
