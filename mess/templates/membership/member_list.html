@@ -11,13 +11,18 @@
     <th>Phone</th>
     {% for member in member_list %}
     <tr>
-        <td><a href='/member/form/{{ member.id }}'>
+        <td><a href='{{ PROJECT_URL }}member/form/{{ member.id }}'>
                 <img class='b100em' src='/media/images/Edit.png' />
             </a>
-            <a href=/member/{{ member.id }}> {{ member }} </a>
+            <a href='{{ PROJECT_URL }}member/{{ member.id }}'>
+                {{ member }}
+            </a>
         </td>
         <td>{% for account in member.accounts.all %}
-                <a href=/account/{{ account.id }}>{{ account }}</a><br />
+            <a href='{{ PROJECT_URL }}account/{{ account.id }}' >
+                {{ account }}
+            </a>
+            <br />
             {% endfor %}
         </td>
         <td>{{ member.job }}</td>

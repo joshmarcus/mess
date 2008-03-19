@@ -9,16 +9,23 @@
     <th>Balance</th>
     {% for account in account_list %}
     <tr>
-        <td><a href=/account/form/{{ account.id }} >
+        <td><a href='{{ PROJECT_URL }}account/form/{{ account.id }}' >
             <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
         </a>
-            <a href=/account/{{ account.id }}>{{ account.name }}</a>
+        <a href={{ PROJECT_URL }}account/{{ account.id }}>
+            {{ account.name }}
+        </a>
         </td>
         <td>{% for member in account.members.all %}
-                <a href=/member/{{ member.id }} >{{ member }}</a><br />
+                <a href='{{ PROJECT_URL }}member/{{ member.id }}' >
+                    {{ member }}
+                </a>
+                <br />
             {% endfor %}
         </td>
-        <td><a href=/account/{{ account.id }}>{{ account.contact }}<br /></a>
+        <td><a href='{{ PROJECT_URL }}account/{{ account.id }}'>
+                {{ account.contact }}<br />
+            </a>
             {{ account.contact.person.phones.all|first }}<br />
             {{ account.contact.person.emails.all|first }}
         </td>
