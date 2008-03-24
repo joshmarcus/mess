@@ -33,8 +33,9 @@ USE_I18N = True
 # Absolute path to the root of the project.
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# URL of the project.  Leave at '/' to keep all links relative.
-PROJECT_URL = '/'
+# URL of the project.  Leave out a network address to keep links relative.
+# Make sure to use a trailing slash.
+PROJECT_URL = '/mess/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"

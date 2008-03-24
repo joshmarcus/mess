@@ -3,24 +3,21 @@ from django.conf import settings
 from django.contrib.auth.views import login, logout
 
 urlpatterns = patterns('',
-    (r'^$', 'mess.views.welcome'),
-    (r'', include('mess.accounting.urls')),        
-    (r'', include('mess.contact.urls')),            
-    (r'', include('mess.membership.urls')),        
-    (r'', include('mess.people.urls')),      
-    #(r'', include('mess.work.urls')),        
-    (r'^accounts/login/$',  login),
-    (r'^accounts/logout/$', logout),
-    (r'^admin/', include('django.contrib.admin.urls')),
-    
+    (r'^mess/$', 'mess.views.welcome'),
+    (r'^mess/', include('mess.accounting.urls')),        
+    (r'^mess/', include('mess.contact.urls')),            
+    (r'^mess/', include('mess.membership.urls')),        
+    (r'^mess/', include('mess.people.urls')),      
+    (r'^mess/accounts/login/$',  login),
+    (r'^mess/accounts/logout/$', logout),
+    (r'^mess/admin/', include('django.contrib.admin.urls')),
 )
 
 # We're going to use the Django server in development, so we'll serve
 # also the static content.
 if settings.DEBUG:
     urlpatterns += patterns('', 
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve', 
+        (r'^mess/media/(?P<path>.*)$', 'django.views.static.serve', 
             {'document_root':'./media/'}),
     )
-
 
