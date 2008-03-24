@@ -64,13 +64,13 @@ def search_for_members(string):
     list = Member.objects.filter(person__name__icontains=string)
     return create_dictionary(list)
 
-def search(search, string):
+def search_for_string(search, string):
     """Search for a string in the given model"""
     SEARCH_TYPES = {
         'people': search_for_people,
         'members': search_for_members,
         'accounts': search_for_accounts,
-        'address': search_for_addresses,
+        'address': search_for_address,
         'email': search_for_email,
         'phone': search_for_phone,
     }

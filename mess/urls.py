@@ -4,14 +4,15 @@ from django.contrib.auth.views import login, logout
 
 urlpatterns = patterns('',
     (r'^$', 'mess.views.welcome'),
-    (r'^admin/', include('django.contrib.admin.urls')),
     (r'', include('mess.accounting.urls')),        
-    #(r'', include('mess.contact.urls')),            
+    (r'', include('mess.contact.urls')),            
     (r'', include('mess.membership.urls')),        
     (r'', include('mess.people.urls')),      
     #(r'', include('mess.work.urls')),        
     (r'^accounts/login/$',  login),
     (r'^accounts/logout/$', logout),
+    (r'^admin/', include('django.contrib.admin.urls')),
+    
 )
 
 # We're going to use the Django server in development, so we'll serve

@@ -146,3 +146,51 @@ def cashier(request):
  
     return render_to_response('accounting/cashier.html', locals(),
                                 context_instance=RequestContext(request))
+
+def member_transaction(request):
+    """accounting view for the transaction form."""
+    role = 'Member'
+    page_name = 'Member Trans'
+    if not request.method == 'POST' and not request.GET.has_key('search'):
+        credit_choices = get_credit_choices(role)
+        debit_choices = get_debit_choices(role)
+        form = TransactionForm()
+        transactions = get_todays_transactions()
+        transaction_title = 'Today\'s Transactions'
+        return render_to_response('accounting/cashier.html', locals(),
+                                    context_instance=RequestContext(request))
+    elif request.GET.has_key('search'):
+        search_dict = live_search(request)
+        return HttpResponse(simplejson.dumps(search_dict),
+                            mimetype='application/javascript')
+    else:
+        save_credit_trans(request)        
+        save_debit_trans(request)        
+        return HttpResponseRedirect('thanks')
+ 
+    return render_to_response('accounting/cashier.html', locals(),
+                                context_instance=RequestContext(request))
+
+def staff_transaction(request):
+    """accounting view for the transaction form."""
+    role = 'Staff'
+    page_name = 'Staff Trans'
+    if not request.method == 'POST' and not request.GET.has_key('search'):
+        credit_choices = get_credit_choices(role)
+        debit_choices = get_debit_choices(role)
+        form = TransactionForm()
+        transactions = get_todays_transactions()
+        transaction_title = 'Today\'s Transactions'
+        return render_to_response('accounting/cashier.html', locals(),
+                                    context_instance=RequestContext(request))
+    elif request.GET.has_key('search'):
+        search_dict = live_search(request)
+        return HttpResponse(simplejson.dumps(search_dict),
+                            mimetype='application/javascript')
+    else:
+        save_credit_trans(request)        
+        save_debit_trans(request)        
+        return HttpResponseRedirect('thanks')
+ 
+    return render_to_response('accounting/cashier.html', locals(),
+                                context_instance=RequestContext(request))

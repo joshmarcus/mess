@@ -1,9 +1,9 @@
-function getAddresses(thisObj, e)
+function find_address(this_obj, e)
 {    
     // List all addresses that match a pattern
-	var addAddress = document.getElementById("addAddress");
+	var address = document.getElementById("address");
 	
-	hideMessage ();
+	hide_message();
 		     
 	// Try to check for the key
 	if (!e) var e = window.event;
@@ -12,12 +12,12 @@ function getAddresses(thisObj, e)
 	
 	if(keycode == 8 )
 	{
-		member.value = '';	
-        document.getElementById("accountID").value = '';
-        document.getElementById("memberID").value = '';
+		//member.value = '';	
+        //document.getElementById("accountID").value = '';
+        //document.getElementById("memberID").value = '';
 	}
 	
-    var query = "cashier?search=getAccounts&string=" + account.value;
+    var query = "search_for?search=address&string=" + address.value;
 
 	ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
@@ -26,18 +26,17 @@ function getAddresses(thisObj, e)
 	{
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
 		{
-            showList (thisObj);	   
-            var r = eval("(" + ajaxRequest.responseText + ")");
-            var accounts = r['get_accounts'];
-            responseString = "<div id='listCancel' >Cancel</div>";
- 			for ( key in accounts )
+            show_list(this_obj);
+            document.getElementById("list").innerHTML = ajaxRequest.responseText;            
+            var response = eval("(" + ajaxRequest.responseText + ")");
+            rHtml = "<div id='list_cancel' >Cancel</div>";
+ 			for ( key in response )
             {
-                responseString += "<div id='listChoice' onclick='setAccount(" +
-                                key + ", \"" + accounts[key] +
-                                "\"); getAccountMembers(event);'>" +
-                                accounts[key] + "</div>";
+                rHtml += "<div id='list_choice' onclick='add_address("
+                        + key + ", \"" + response[key] + "\");'>"
+                        + response[key] + "</div>";
             }
-            document.getElementById("list").innerHTML = responseString;
+            //document.getElementById("list").innerHTML = rHtml;
  		}
 	}
     ajaxRequest.send(null);

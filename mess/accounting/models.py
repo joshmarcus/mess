@@ -25,6 +25,8 @@ OTHER_CREDIT_CHOICES = (
     ('B','Bulk Purchase'),
     ('U','Dues'),
     ('S','Misc Sales'),
+    ('T','Trade'),
+    ('W','Work Credit')
 )
 
 # A debit is looked at from the stores point of view.  A debit
@@ -42,20 +44,24 @@ CASHIER_DEBIT_CHOICES = (
 )
 
 OTHER_DEBIT_CHOICES = (
-    ('W','Work Credit'),
-    ('T','Trade'),
+    #('W','Work Credit'),
+    #('T','Trade'),
     ('H','Deposit'),
     ('Y','Key Deposit'),
     ('X','Misc Debit'),
 )
 
 def get_credit_choices(role=None, location=None):
+    try:
+        location = LOCATION
+    except:
+        pass
     # This logic needs work-dv
     if role == None and location == None:
         return NO_CREDIT_CHOICES
-    elif role == 'Member' and location == None:
+    elif role == 'Member':
         return NO_CREDIT_CHOICES + MEMBER_CREDIT_CHOICES
-    elif LOCATION == 'Cashier':
+    elif role == 'Cashier' and location == 'Cashier':
         return NO_CREDIT_CHOICES + CASHIER_CREDIT_CHOICES
     elif role == 'Staff':
         return (NO_CREDIT_CHOICES + MEMBER_CREDIT_CHOICES +
@@ -64,11 +70,15 @@ def get_credit_choices(role=None, location=None):
 
 def get_debit_choices(role=None, location=None):
     # This logic needs work. - dv
+    try:
+        location = LOCATION
+    except:
+        pass
     if role == None and location == None:
         return NO_DEBIT_CHOICES
     elif role == 'Member' and location == None:
         return NO_DEBIT_CHOICES
-    elif LOCATION == 'Cashier':
+    elif role == 'Cashier' and location == 'Cashier':
         return NO_DEBIT_CHOICES + CASHIER_DEBIT_CHOICES
     elif role == 'Staff':
         return (NO_DEBIT_CHOICES + CASHIER_DEBIT_CHOICES + OTHER_DEBIT_CHOICES)
@@ -84,12 +94,12 @@ def get_account_transactions(id):
 
 
 class Transaction(models.Model):
-    CREDIT_CHOICES = get_credit_choices('Cashier', 'Cashier')
-    DEBIT_CHOICES = get_debit_choices('Cashier', 'Cashier')
+    credit_choices = get_credit_choices('Staff')
+    debit_choices = get_debit_choices('Staff')
 
-    credit_type = models.CharField(max_length=1, choices=CREDIT_CHOICES,
+    credit_type = models.CharField(max_length=1, choices=credit_choices,
                                     default='N',)
-    debit_type = models.CharField(max_length=1, choices=DEBIT_CHOICES,
+    debit_type = models.CharField(max_length=1, choices=debit_choices,
                                     default='N',)
     account = models.ForeignKey(Account)
     member = models.ForeignKey(Member)

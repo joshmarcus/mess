@@ -12,7 +12,8 @@
     {% for member in member_list %}
     <tr>
         <td><a href='{{ PROJECT_URL }}member/form/{{ member.id }}'>
-                <img class='b100em' src='/media/images/Edit.png' />
+                <img class='b100em'
+                        src='{{ MEDIA_URL }}media/images/Edit.png' />
             </a>
             <a href='{{ PROJECT_URL }}member/{{ member.id }}'>
                 {{ member }}

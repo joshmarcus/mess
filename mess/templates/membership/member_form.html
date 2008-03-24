@@ -16,30 +16,30 @@
     <table>
         {% for address in member.person.addresses.all %}
             <tr><th>{{ address.get_type_display }}</th>
-                    <td>{% if address.address1 %}
-                            {{ address.address1 }}<br />
+                    <td>{% if address.address_1 %}
+                            {{ address.address_1 }}<br />
                         {% endif %}
-                        {% if address.address2 %}
-                            {{ address.address2 }}<br />
+                        {% if address.address_2 %}
+                            {{ address.address_2 }}<br />
                         {% endif %}
                         {{ address.city }}, {{ address.state }}
                         {{ address.postal_code }}<br />
                         {{ address.country }}
             </td>
-            <td><a href='/address/form/{{ address.id }}'>
+            <td><a href='{{ MEDIA_URL }}address/form/{{ address.id }}'>
                     <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
                 </a>
-                <a href='/address/form/{{ address.id }}'>
+                <a href='{{ MEDIA_URL }}address/form/{{ address.id }}'>
                     <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
                 </a>
             </td>
         </tr>
         {% endfor %}
         <tr><th>Add Address</th><td colspan='2' >
-                <input size=40 id=addAddress type='text' name=addAddress 
-                        onclick='showMessage ("addAddress",
+                <input size='40' id='address' type='text' name='address' 
+                        onclick='show_message ("address",
                                             "Typing will display matches.")'
-			            onkeyup='getAccounts(this, event)'/>
+			            onkeyup='find_address(this, event)'/>
             </td></tr>
     </table>
     <h2>Email Addresses</h2>
@@ -49,10 +49,10 @@
                 {{ email.get_type_display }}
             </th>
             <td>{{ email.email }}</td>
-            <td><a href='/email/form/{{ email.id }}'>
+            <td><a href='{{ MEDIA_URL }}email/form/{{ email.id }}'>
                     <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
                 </a>
-                <a href='/email/form/{{ email.id }}'>
+                <a href='{{ MEDIA_URL }}email/form/{{ email.id }}'>
                     <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
                 </a>
             </td>
@@ -71,10 +71,10 @@
                 {{ phone.number }}
                 {% if phone.ext %}Ext: {{ phone.ext }}{% endif %}
             </td>
-            <td><a href='/phone/form/{{ phone.id }}'>
+            <td><a href='{{ MEDIA_URL }}phone/form/{{ phone.id }}'>
                     <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
                 </a>
-                <a href='/phone/form/{{ phone.id }}'>
+                <a href='{{ MEDIA_URL }}phone/form/{{ phone.id }}'>
                     <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
                 </a>
             </td>
@@ -85,6 +85,10 @@
         <input type='submit' value='Save' <td>
 </form>
 
+{% endblock %}
+
+{% block pop_up %}
+<div id='message' onclick='hide_message ()' ></div>
 <div id=list ></div>
-<div id=message></div>
+<div id=listShadow ></div>
 {% endblock %}
