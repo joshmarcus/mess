@@ -71,7 +71,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'mess.urls'
+# change base_url.py if necessary
+ROOT_URLCONF = 'mess.base_url'
 
 LOCATION = 'Cashier'
 
@@ -99,4 +100,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'mess.context_processors.project',
 )
+
+## mess project constants below ##
 

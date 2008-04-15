@@ -6,7 +6,7 @@ from mess.membership.models import Account, Member
 
 # Is it better to have these lists in the model or out?
 
-# Credit is looked at from the stores point of view.  A credit
+# Credit is looked at from the store's point of view.  A credit
 # will be a positive number.
 
 NO_CREDIT_CHOICES = (
@@ -26,7 +26,7 @@ OTHER_CREDIT_CHOICES = (
     ('U','Dues'),
     ('S','Misc Sales'),
     ('T','Trade'),
-    ('W','Work Credit')
+    ('W','Work Credit'),
 )
 
 # A debit is looked at from the stores point of view.  A debit
