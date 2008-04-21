@@ -24,7 +24,9 @@
         <a class='button' href="{{ PROJECT_URL }}cashier" >Cashier</a>        
         <a class='button' href="{{ PROJECT_URL }}admin" >Staff</a>
         <a class='button' href="http://fruct.us/trac/mess" >Wiki</a>
-        <a class='button' href="{{ PROJECT_URL }}accounts/logout" >Logout</a>
+        {% if user.is_authenticated %}
+            <a class='button' href="{% url django.contrib.auth.views.logout_then_login %}" >Logout</a>
+        {% endif %}
         {% endblock %}
     </div>
     <div id='page_menu'>

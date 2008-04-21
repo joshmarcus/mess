@@ -101,5 +101,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'mess.context_processors.project',
 )
 
+LOGIN_URL = PROJECT_URL
+LOGIN_REDIRECT_URL = PROJECT_URL
+
 ## mess project constants below ##
 
