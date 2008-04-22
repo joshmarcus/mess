@@ -75,14 +75,15 @@ class Member(models.Model):
         return self.person.name
 
     class Meta:
-        ordering = ['person']
+        pass
+        # can't order by ForeignKey
+        #ordering = ['person']
 
     class Admin:
         pass
 
 
 class Account(models.Model):
-
     name = models.CharField(max_length=50, unique=True)
     contact = models.ForeignKey(Member, related_name='contact_for')
     members = models.ManyToManyField(Member, related_name='accounts',)
