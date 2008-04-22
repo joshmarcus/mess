@@ -17,29 +17,35 @@
     <div id='headerLine'></div>
     <div id="main_menu">
         {% block main_menu %}
+        {% if user.is_staff %}
+            <a class='button' href="{{ PROJECT_URL }}member/list" >Members</a>
+            <a class='button' href="{{ PROJECT_URL }}account/list" >Accounts</a>
+            <a class='button' href="{{ PROJECT_URL }}reports" >Reports</a>
+            <a class='button' href="{{ PROJECT_URL }}cashier" >Cashier</a>
+            <a class='button' href="{{ PROJECT_URL }}admin" >Admin</a>
+        {% endif %}
+        {% comment %}
         <a class='button' href="{{ PROJECT_URL }}people" >People</a>        
-        <a class='button' href="{{ PROJECT_URL }}member/list" >Members</a>
-        <a class='button' href="{{ PROJECT_URL }}account/list" >Accounts</a>
-        <a class='button' href="{{ PROJECT_URL }}roports" >Reports</a>
-        <a class='button' href="{{ PROJECT_URL }}cashier" >Cashier</a>        
-        <a class='button' href="{{ PROJECT_URL }}admin" >Staff</a>
         <a class='button' href="http://fruct.us/trac/mess" >Wiki</a>
+        {% endcomment %}
         {% if user.is_authenticated %}
+            <a class='button' href="{{ PROJECT_URL }}member/32/edit" >Edit Profile</a>
             <a class='button' href="{% url django.contrib.auth.views.logout_then_login %}" >Logout</a>
         {% endif %}
         {% endblock %}
     </div>
     <div id='page_menu'>
         {% block page_menu %}
+        {% comment %}
         <a class='button' href="{{ PROJECT_URL }}cashier" >Page</a>
         <a class='button' href="{{ PROJECT_URL }}book/list" >Buttons</a>
         <a class='button' href="{{ PROJECT_URL }}author/list" >Here</a>
+        {% endcomment %}
         {% endblock %}
     </div>
     <div id='content' >{% block content %}{% endblock %}</div>
     <div id='pop_up' >{% block pop_up %}{% endblock %}</div>
     <div id='footer' >{% block footer %}{% endblock %}</div>
-
 </body>
 </html>
 
