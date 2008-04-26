@@ -18,7 +18,8 @@ function find_pos(obj) {
 ///////////////////////////////////////////////////////////////////////
 
 
-function xmlHttp() {
+function xmlHttp()
+{
 	var xmlHttp=null;
 	try {
  		// Firefox, Opera 8.0+, Safari
@@ -40,6 +41,23 @@ function xmlHttp() {
 } // End function xmlHttp
 
 ////////////////////////////////////////////////////////////////////////
+
+function xhr(query, element)
+{
+    ajaxRequest = xmlHttp();
+	ajaxRequest.open("GET",query,true);
+
+	ajaxRequest.onreadystatechange = function ()
+	{
+		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
+		{	   
+	        var response = ajaxRequest.responseText
+            document.getElementById(element).innerHTML = response;
+ 		}
+	}
+    ajaxRequest.send(null);
+} // End function xhr
+
 
 function no_enter(e)
 {
