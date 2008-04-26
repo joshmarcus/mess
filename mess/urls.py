@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     (r'^people/', include('mess.people.urls')),      
     (r'^admin/', include('django.contrib.admin.urls')),
     (r'^$', login, {'template_name': 'welcome.html'}),
-    (r'^accounts/logout/$', logout),
+    #(r'^accounts/logout/$', logout),
     (r'^logout/$', logout_then_login),
 )
 

@@ -8,12 +8,12 @@
     <link href="{{ MEDIA_URL }}css/base.css"
         type="text/css" rel="Stylesheet" media="screen" />
     <title>
-        {% block title %}Mariposa: {{ page_name }}{% endblock %}
+      {% block title %}The MESS: {{ page_name }}{% endblock %}
     </title>
     {% block head %}{% endblock %}
   </head>
   <body>
-    <div id='logo'>Mariposa: {{ page_name }}</div>
+    <div id='logo'>{% block logo %}The MESS: {{ page_name }}{% endblock %}</div>
     <div id='headerLine'></div>
     <div id="main_menu">
       {% block main_menu %}

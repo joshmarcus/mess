@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}Welcome to The MESS{% endblock %}
+{% block logo %}The MESS{% endblock %}
 {% block content %}
-<h1>Welcome to the MESS (Mariposa's Electronic Storage System)</h1>
+<h1>Welcome to The MESS (Mariposa's Electronic Storage System)</h1>
 {% if not user.is_authenticated %}
 <form method="post" action=".">
   <input type="hidden" name="next" value="{{ next }}" />
