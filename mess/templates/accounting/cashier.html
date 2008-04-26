@@ -3,6 +3,7 @@
 {% block content %}
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
 
 <form id='form' name='form' method='post' >
 
@@ -13,25 +14,18 @@
 <tr>
 	<th>Account Name:</th>
 	<td>
-        <input type='text' size='40'        
-			   id=account_name name=account_name
-			   onclick='hide_ring (this);
-                        show_message("account_name",
-                                    "Typing will display matches.")'
-			   onkeyup='get_accounts(this, event)'/>
+        <input type=text size="40"        
+			   id=account_name name=account_name/>
 	</td>
 	<th>Reference:</th>
 	<td>
-		<input type='text' size='10' id='id_ref' name='ref'
-			   onkeyPress='return no_enter(event)' />
+		<input type='text' size='10' id='id_ref' name='ref'/>
 	</td>
 </tr>
 <tr>
 	<th>Member Name:</th>
 	<td>
-		<input type='text' size='40' id='member_name' name='member_name'
-			   onclick='get_account_members(event)'
-			   onkeyup='get_members(event)' />
+		<input type='text' size='40' id='member_name' name='member_name'/>
 	</td>
     <td>
         <select id=id_debit_type name=debit_type >
@@ -42,16 +36,13 @@
         </select>
     </td>
 	<td>
-		<input type='text' size='10' id='id_debit' name='debit' value='00'
-			   		  onclick='hide_message(); hide_ring(this)'
-					  onkeyPress='return no_enter(event)'/>
+		<input type='text' size='10' id='id_debit' name='debit' value='00' />
 	</td>
 </tr>
 <tr>
 	<th>Note:</th>
 	<td >
-		<input type='text' size='40' id='id_note' name='note' value='' 
-			   onkeyPress='return no_enter(event)'/>
+		<input type='text' size='40' id='id_note' name='note' value='' />
 	</td>
     <td>
         <select id=id_credit_type name=credit_type >
@@ -62,9 +53,7 @@
         </select>
     </td>
 	<td>
-		<input type='text' size='10' id='id_credit' name='credit' value='00'
-			   onclick='hide_message(); hide_ring(this)'
-			   onkeyPress='return no_enter(event)'/>
+		<input type='text' size='10' id='id_credit' name='credit' value='00'/>
 	</td>
 </tr>
 <tr>
@@ -76,58 +65,12 @@
 </table>
 </form>
 
-<div id='transactions' >
-
-<h1>Today's Transactions</h1>
-<table>
-    <tr>
-        <th>Trans ID</th>
-        <th>Time</th>
-        <th>Account</th>
-        <th>Member</th>
-        <th>Note</th>
-        <th>Reference</th>
-        <th>Type</th>
-        <th>Purchase</th>
-        <th>Payment</th>
-        <th>Account<br />Balance</th>
-    </tr>
-    {% for trans in transactions|dictsortreversed:"id" %}
-    <tr>
-        <td>{{ trans.id }}</td>
-        <td>{{ trans.date|date:"g:i:s A" }}</td>    
-        <td>{{ trans.account }}</td>
-        <td>{{ trans.member }}</td>
-        <td>{{ trans.note }}</td>
-        <td>{% if trans.ref %}
-                {{ trans.ref }}
-            {% endif %}
-        </td>
-        <td>{% ifnotequal trans.credit_type "N" %}
-                {{ trans.get_credit_type_display }}
-            {% endifnotequal %}
-            {% ifnotequal trans.debit_type "N" %}
-                {{ trans.get_debit_type_display }}
-            {% endifnotequal %}
-        </td>
-        <td>{% ifnotequal trans.credit 0 %}
-                {{ trans.credit }}
-            {% endifnotequal %}
-        </td>
-        <td>{% ifnotequal trans.debit 0 %}
-                {{ trans.debit }}
-            {% endifnotequal %}
-        </td>
-        <td>{{ trans.balance }}</td>
-    </tr>
-    {% endfor %}
-</table>
-</div>
+<div id='transactions' ></div>
 
 {% endblock %}
 {% block pop_up %}
 
-<div id='message' onclick='hide_message ()' ></div>
+<div id='message' ></div>
 <div id=list ></div>
 <div id=listShadow ></div>
 
