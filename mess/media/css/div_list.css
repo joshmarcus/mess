@@ -6,7 +6,7 @@ div#list {
     visibility: hidden;
     position: absolute;
     width: 300px;
-    height: "auto";
+    height: auto;
     background: #99CC99;
 	color: #0000cc;        
 	padding: 4px;    
