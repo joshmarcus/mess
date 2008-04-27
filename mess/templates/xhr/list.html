@@ -1,4 +1,4 @@
-<div id=list_cancel id="" onclick="set_member(this)";>Cancel</div>
+<div id=list_cancel id=cancel onclick="set_member(this)";>Cancel</div>
 
 {{ locals }}
 {% if accounts %}
@@ -16,7 +16,7 @@
 {% endif %}
 
 {% if members %}
-    <div class=other_choice >------- Other members ---------
+    <div class=other_choice >------- Other members ---------</div>
     {% for id, name in members.items %}
         <div class=other_choice id={{ id }}
             onclick="confirm_other_member(this);">{{ name }}</div>

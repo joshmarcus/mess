@@ -4,11 +4,13 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import simplejson
 from django.template import RequestContext
+from django.template.loader import render_to_string
 
 from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
 from mess.membership.models import Member, Account
 from mess.accounting.forms import TransactionForm
+from mess.utils.search import search_for_string, account_members_dict
 
 def thanks(request):
     page_name = 'Thank You'
@@ -19,75 +21,11 @@ def thanks(request):
     return render_to_response('accounting/thanks.html', locals(),
                                 context_instance=RequestContext(request))
 
-def live_search(request):
-    """ If GET has a 'search' key it returns primary keys and names
-    based on the type of 'search' requested.
-
-    Search Values:
-        accountMembers: Returns members belonging to an account.
-            account_members: {'id', 'name'}
-        allMembers: Returns all members.
-            account_members: {'id', 'name'}
-        allAccounts: Returns all accounts.
-            account_members: {'id', 'name'}
-        getMembers: Returns members with names matcing a string.
-            account_members: {'id', 'name'}
-        getAccounts: Returns accounts with names matching a string.
-            account_members: {'id', 'name'}
-                
-    search_dict = {'account_members': {},
-                    'all_members': {}, 'all_accounts': {},
-                    'get_members': {}, 'get_accounts': {},
-                }
-        
-    """
-    if request.GET.has_key('search'):
-        search = request.GET.get('search')
-        search_dict = {'account_members': {},
-                    'all_members': {}, 'all_accounts': {},
-                    'get_members': {}, 'get_accounts': {},
-                    }
-        if search == 'accountMembers' and request.GET.has_key('accountID'):
-            # Get the members that belong to an account.
-            list = Account.objects.get(id=request.GET.get('accountID'))
-            for i in list.members.all():
-                search_dict['account_members'][i.id] = i.person.name
-        if search == 'allAccounts':
-            # Get all accounts.
-            list = Account.objects.all()
-            for i in list:
-                search_dict['all_accounts'][i.id] = i.name
-        if search == 'allMembers':
-            # Get all members.
-            list = Member.objects.all()
-            for i in list:
-                search_dict['all_members'][i.id] = i.person.name
-        if request.GET.has_key('string'):
-            if request.GET.get('string'):
-                string = request.GET.get('string')
-                if search == 'getAccounts':
-                    # Search for account names matching a string.
-                    list = Account.objects.filter(name__icontains=string)
-                    for i in list:
-                        search_dict['get_accounts'][i.id] = i.name
-                if search == 'getMembers':
-                    # Search for member names matching a string.
-                    list = Member.objects.filter(person__name__icontains=string)
-                    for i in list:
-                        search_dict['get_members'][i.id] = i.person.name
-                    if request.GET.has_key('accountID'):
-                        accounts = Account.objects.get(id=request.GET.get('accountID'))
-                        for i in accounts.members.all():
-                            search_dict['account_members'][i.id] = i.person.name
-    return search_dict
-
-
 def get_todays_transactions():
     d = date.today()
     return Transaction.objects.filter(date__year = d.year,
                                         date__month = d.month,
                                         date__day = d.day)
-
 def save_credit_trans(request):
         d = TransactionForm(request.POST)
         if d.data['credit_type'] != 'N':
@@ -124,28 +62,37 @@ def transaction_form(request):
                                 context_instance=RequestContext(request))
 
 def cashier(request):
-    """accounting view for the transaction form."""
-    
-    page_name = 'Cashier'
-    if not request.method == 'POST' and not request.GET.has_key('search'):
-        credit_choices = get_credit_choices('Cashier', 'Cashier')
-        debit_choices = get_debit_choices('Cashier', 'Cashier')
-        form = TransactionForm()
-        transactions = get_todays_transactions()
-        transaction_title = 'Today\'s Transactions'
-        return render_to_response('accounting/cashier.html', locals(),
-                                    context_instance=RequestContext(request))
-    elif request.GET.has_key('search'):
-        search_dict = live_search(request)
-        return HttpResponse(simplejson.dumps(search_dict),
-                            mimetype='application/javascript')
-    else:
-        save_credit_trans(request)        
-        save_debit_trans(request)        
+    context = {}
+    if request.method == 'POST':
+        save_credit_trans(request)
+        save_debit_trans(request)
         return HttpResponseRedirect('thanks')
- 
-    return render_to_response('accounting/cashier.html', locals(),
-                                context_instance=RequestContext(request))
+    elif 'search' in request.GET:
+        search = request.GET.get('search')
+        if 'account_id' in request.GET:
+            account_id = request.GET.get('account_id')
+            account_members = account_members_dict(account_id)
+            context['account_members'] = account_members
+        if 'string' in request.GET:
+            string = request.GET.get('string')
+            if search == 'members':
+                context['members'] = search_for_string('members', string)
+            elif search == 'accounts':
+                context['accounts'] = search_for_string('accounts', string)
+        if search == 'other_member':
+            context['other_member_id'] =  request.GET.get('om_id')
+            context['other_member_name'] = request.GET.get('om_name')
+            context['account_name'] = request.GET.get('account_name')
+            return render_to_response('xhr/confirm_other_member.html', context)
+        return render_to_response('xhr/list.html', context)
+    else:
+        context['page_name'] = 'Cashier'
+        context['credit_choices'] = get_credit_choices('Cashier', 'Cashier')
+        context['debit_choices'] = get_debit_choices('Cashier', 'Cashier')
+        form = TransactionForm()
+        context['transactions_today'] = get_todays_transactions()
+        return render_to_response('accounting/cashier.html', context,
+                                    context_instance=RequestContext(request))
 
 def member_transaction(request):
     """accounting view for the transaction form."""

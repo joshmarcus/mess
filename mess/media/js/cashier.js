@@ -1,4 +1,4 @@
-//functions.js
+//cashier.js
 
 function get_accounts(thisObj, e)
 {    
@@ -6,8 +6,6 @@ function get_accounts(thisObj, e)
 	var account_name = document.getElementById("account_name");
 	var member_name = document.getElementById("member_name");
 	
-	//hide_ring (account);
-	//hide_ring (member);
 	hide_message ();
 		     
 	// Try to check for the key
@@ -22,45 +20,40 @@ function get_accounts(thisObj, e)
         document.getElementById("id_member").value = '';
 	}
 	
-    var query = "cashier?search=getAccounts&string=" + account_name.value;
+    var query = "cashier?search=accounts&string=" + account_name.value;
 
-	ajaxRequest = xmlHttp();
-	ajaxRequest.open("GET",query,true);
-
-	ajaxRequest.onreadystatechange = function ()
-	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
-		{
-            show_list (thisObj);	   
-            var r = eval("(" + ajaxRequest.responseText + ")");
-            var accounts = r['get_accounts'];
-            var response = "<div id='list_cancel' onclick="
-                            + "\"set_account('','');\" >Cancel</div>";
- 			
-            var num_accounts = 0;
-            for ( key in accounts )
-            {
-                num_accounts++;
-                response += "<div class=list_choice onclick=\'set_account("
-                            + key + ", \"" + accounts[key] + "\");"
-                            + " get_account_members(event);\'>"
-                            + accounts[key] + "</div>";
-            }
-            if (num_accounts == 0)
-            {
-                response += "<div class=list_choices>" +
-                            "------ Sorry No Matches ---------" +
-                                "</div>";
-            }
-
-            document.getElementById("list").innerHTML = response;
- 		}
-	}
-    ajaxRequest.send(null);
+    xhr(query, 'list');
+    show_list(thisObj);
 
 } //End function get_accounts
 
 ////////////////////////////////////////////////////////////////////////
+
+function get_account_members(e)
+{
+	// Get members that belong to an account
+	var member_name = document.getElementById('member_name')
+    var id_account = document.getElementById('id_account')
+
+	hide_message();	
+	
+	if (!id_account.value)
+	{
+		show_message("member_name", "Please select an account first." )
+	} else
+	{
+        hide_list();
+       		
+		var query = "cashier?search=members&account_id=" +
+                    id_account.value;
+		
+        xhr(query, 'list');
+        show_list(member_name);
+
+	}
+} // End function get_account_members
+
+////////////////////////////////////////////////////////////////////////////////
 
 function get_members(e)
 {
@@ -70,146 +63,78 @@ function get_members(e)
     var id_member = document.getElementById('id_member')
     var id_account = document.getElementById('id_account')
 	
-    //hide_ring (member);
-	hide_message();	
-	//show_list (member)
+	hide_message();
+    hide_list();    
 
-		// Try to check for the key
-		if (!e) var e = window.event;
-		if (e.keyCode) keycode = e.keyCode;
-		else if (e.which) keycode = e.which;
+	// Try to check for the key
+	if (!e) var e = window.event;
+	if (e.keyCode) keycode = e.keyCode;
+	else if (e.which) keycode = e.which;
 		
-		if(keycode == 8 )
-		{
-			//member.value = '';	
-			id_member.value = '';
-		}
-		
-		var query = "cashier?search=getMembers&accountID=" +
-                    document.getElementById('id_account').value +
-                    "&string=" + member_name.value;
-    
-    ajaxRequest = xmlHttp();
-	ajaxRequest.open("GET",query,true);
-
-	ajaxRequest.onreadystatechange = function ()
+	if(keycode == 8 )
 	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
-		{	
-            var r = eval("(" + ajaxRequest.responseText + ")");
-            var account_members = r['account_members'];
-            var other_members = r['get_members'];
-
-            var response = "<div id=list_cancel onclick=\"set_member('','');\""
-                            + " >Cancel</div>";
- 			for ( key in account_members )
-            {
-                response += "<div class=list_choice onclick=\"set_member(" +
-                                key + ", \'" + account_members[key] +
-                                "\');\">" + account_members[key] + "</div>";
-            }
-
-            response += "<div class=other_choice>"
-                        + "----  Other Members ----------</div>";
-            
-            var num_other_members = 0;
-
-            for ( key in other_members )
-            {
-                num_other_members++;
-                var name = other_members[key];
-                response += "<div class=other_choice onclick="
-                                + "\"confirm_other_member(" + key + ", \'"
-                                + name + "\')\">" + name + "</div>";
-            }
-            if (num_other_members == 0)
-            {
-                response += "<div class=other_choices>"
-                            + "----------- Sorry No Matches ---------</div>";
-            }
-
-            document.getElementById("list").innerHTML = response;
-        }
+		//member.value = '';	
+		id_member.value = '';
 	}
-    ajaxRequest.send(null);
+		
+	var query = "cashier?search=members&account_id=" +
+                document.getElementById('id_account').value +
+                "&string=" + member_name.value;
+    
+    xhr(query, 'list');
+    show_list(member_name);
 
 } // End function getMembers
 
 ////////////////////////////////////////////////////////////////////////
 
-function get_account_members (e)
-{
-	// Get members that belong to an account
-	var member_name = document.getElementById('member_name')
-    var id_account = document.getElementById('id_account')
-
-    //hide_ring (thisObj);
-	hide_message();	
-	
-	if (!id_account.value)
-	{
-		show_message("member_name", "Please select an account first." )
-	} else
-	{
-        hide_list ();
-       		
-		var query = "cashier?search=accountMembers&accountID=" +
-                    id_account.value;
-		
-        ajaxRequest = xmlHttp();
-        ajaxRequest.open("GET",query,true);
-
-        ajaxRequest.onreadystatechange = function ()
-        {
-            if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
-            {
-                show_list (member_name);	   
-                var r = eval("(" + ajaxRequest.responseText + ")");
-                var account_members = r['account_members'];
-                var response = "<div id='list_cancel' onclick=\"set_member"
-                                + "('','');\" >Cancel</div>";
-                for ( i in account_members )
-                {
-                    response += "<div class=list_choice onclick='set_member("
-                                + i + ", \"" + account_members[i] + "\");'>"
-                                + account_members[i] + "</div>";
-                }
-                document.getElementById('list').innerHTML = response;
-            }
-        }
-        ajaxRequest.send(null);
-	}
-} // End function get_account_members
-
-////////////////////////////////////////////////////////////////////////////////
-
-function set_account (id_account, account_name)
+function set_account (this_obj)
 {
 	hide_list();
 	hide_message();
-	document.getElementById("account_name").value = account_name;	
+
+	if (!this_obj.textContent) var account_name = this_obj.innerText;
+	if (this_obj.textContent) var account_name = this_obj.textContent;
+	id_account = this_obj.id
+	document.getElementById("account_name").value = account_name;
 	document.getElementById("id_account").value = id_account;
+	get_account_members();
 } // End function set_account
 
 ///////////////////////////////////////////////////////////////////////
 
-function set_member (id_member, member_name)
+function set_member (this_obj)
 {      
-	hide_list ();
-	hide_message ();
+	hide_list();
+	hide_message();
+    if ( this_obj.id == 'cancel')
+    {
+        member_name = '';
+        id_member = '';
+    }
+    else
+    {
+        if (!this_obj.textContent) var member_name = this_obj.innerText;
+	    if (this_obj.textContent) var member_name = this_obj.textContent;
+	    id_member = this_obj.id;
+    }
 	document.getElementById("member_name").value = member_name;
 	document.getElementById("id_member").value = id_member;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 
-function confirm_other_member (id_other, other_name)
+function confirm_other_member (this_obj)
 {
 	hide_list();
 	hide_message();
 
     account_name = document.getElementById("account_name").value;
-	
+    account_id = document.getElementById("id_account").value;
+	if (!this_obj.textContent) var om_name = this_obj.innerText;
+	if (this_obj.textContent) var om_name = this_obj.textContent;
+    om_id = this_obj.id;
+
 	p = find_pos('member_name');
 	px = (p[0] + 25) + "px";
 	py = (p[1] + 25) + "px";
@@ -223,56 +148,32 @@ function confirm_other_member (id_other, other_name)
 	m.style.height = "auto";
 	m.style.textAlign =  "center";
     m.style.fontSize = "1.25em";
+ 
+    var query = "cashier?search=other_member&account_name=" + account_name
+                + "&account_id=" + id_account + "&om_name="
+                + om_name + "&om_id=" + om_id; 
 
-	var message = "Which member from<br /> "
-				  + " <span style='color: red;'>"
-				  + account_name + "<br /></span>"
-				  + " is authorizing this transaction by<br /> "
-				  + "<span style='color: red;'>"
-				  + other_name + "</span>?";
-	
-    var query = "cashier?search=accountMembers&accountID=" +
-                    document.getElementById("id_account").value;
-	
-	ajaxRequest = xmlHttp();
-	ajaxRequest.open("GET",query,true);
-	
-	ajaxRequest.onreadystatechange = function ()
-	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
-		{
-            var r = eval("(" + ajaxRequest.responseText + ")");
-            var account_members = r['account_members'];
-            var response = message;
- 			for ( key in account_members )
-            {
-                response += "<div class=confirm_member "
-                            + "onclick=\"set_other_member(" + key
-                            + ", \'" + account_members[key] + "\', " + id_other
-                            + ", \'" + other_name + "\');\">"
-                            + account_members[key] + "</div>";
-            }
-            response += "<div class='confirm_member' "
-                        + " onclick=\"set_member('', '');\" >"
-                        + "No one, please cancel!</div>";
-            m.innerHTML = response;
- 		}
-	}
-	ajaxRequest.send(null);
-	
+    xhr(query, 'message');
+
 } // End function confirm_other_member 
 
 /////////////////////////////////////////////////////////////////////////////
 
-function set_other_member(id_member, member_name, id_other, other_name)
+function set_other_member(this_obj, other_member_id, other_member_name)    
 {
-    set_member(id_other, other_name);
+    hide_message();    
+    if (!this_obj.textContent) var member_name = this_obj.innerText;
+	if (this_obj.textContent) var member_name = this_obj.textContent;
+	id_member = this_obj.id;
     set_note(id_member, member_name);
-}
+    document.getElementById("member_name").value = other_member_name;
+	document.getElementById("id_member").value = other_member_id;
+
+} //End function set_other_member
 
 /////////////////////////////////////////////////////////////////////////////
 
-function set_note (id_other, other_name)
+function set_note (id_member, member_name)
 {
 	var old_note = "";
 	var note = document.getElementById("id_note");
@@ -280,7 +181,7 @@ function set_note (id_other, other_name)
 	{
 		old_note =  "; " + note.value;
 	}
-	var new_note = "Authorized by " + other_name + " (#" + id_other + ")" + old_note;
+	var new_note = "Authorized by " + member_name + " (#" + id_member + ")" + old_note;
 	note.value = new_note;
 	
 } //End function set_note

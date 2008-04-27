@@ -1,0 +1,12 @@
+Which member from<br />
+<span style='color: red;'>{{ account_name }}<br /></span>
+is authorizing this transaction by<br />
+<span style='color: red;'>{{ other_member_name }}</span>?"
+
+{% for id, name in account_members.items %}
+<div class=confirm_member id={{ id }}
+        onclick="set_other_member(this,'{{ other_member_id }}','{{ other_member_name }}');">{{ name }}</div>
+{% endfor %}
+
+<div class=confirm_member id=cancel onclick="set_member(this);">No one, please cancel!</div>
+
