@@ -1,68 +1,92 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<a href='{{ PROJECT_URL }}member/form/{{ member.id }}'>
-    <img class=b125em src='{{ MEDIA_URL }}images/Edit.png' />
-</a>
-
-<table>
-    <tr>
+  <form method='post'>
+    <table>
+      <tr>
         <th>Name</th>
-        <th>User Name</th>
-        <th>Status</th>
-        <th>Work Status</th>
-        <th>Job</th>
-        <th>Has key</th>
-        <th>Joined</th>
+        <td>
+          <div>{{ member.person.name }}</div>
+          <div>{{ form.person }}</div>
+        </td>
+      </tr>
+      <tr>
+        <th>Addresses</th>
+        <td>
+          {# will we need to pull addresses from form? #}
+          {% for address in member.person.addresses.all %}
+            <div>
+              {% include "contact/snippets/address.html" %}
+            </div>
+            <div><a href="{% url mess.contact.views.address_edit address.id %}">Edit</a></div>
+          {% endfor %}
+          <div><a href="{% url mess.contact.views.address_add %}">Add</a></div>
+        </td>
+      </tr>
+    </table>
+  </form>
+  <p>&nbsp;</p>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>User Name</th>
+      <th>Status</th>
+      <th>Work Status</th>
+      <th>Job</th>
+      <th>Has key</th>
+      <th>Joined</th>
     </tr>
     <tr>
-        <td>{{ member.person.name }}</td>
-        <td>{{ member.person.user }}</td>
-        <td>{{ member.get_status_display }}</td>
-        <td>{{ member.get_work_status_display }}</td>
-        <td>{{ member.job }}</td>
-        <td>{{ member.has_key }}</td>
-        <td>{{ member.date_joined }}</td>
+      <td>{{ member.person.name }}</td>
+      <td>{{ member.person.user }}</td>
+      <td>{{ member.get_status_display }}</td>
+      <td>{{ member.get_work_status_display }}</td>
+      <td>{{ member.job }}</td>
+      <td>{{ member.has_key }}</td>
+      <td>{{ member.date_joined }}</td>
     </tr>
-</table>
-<h2>Addresses</h2>
-<table>
-    <tr>{% for address in member.person.addresses.all %}
+  </table>
+  <h2>Addresses</h2>
+  <table>
+    <tr>
+      {% for address in member.person.addresses.all %}
         <th>{{ address.get_type_display }}</th>
-        <td>{% if address.address_1 %}
-                {{ address.address_1 }}<br />
-            {% endif %}
-            {% if address.address_2 %}
-                {{ address.address_2 }}<br />
-            {% endif %}
-            {{ address.city }}, {{ address.state }}
-            {{ address.postal_code }}<br />
-            {{ address.country }}
+        <td>
+          {% if address.address_1 %}
+            {{ address.address_1 }}<br />
+          {% endif %}
+          {% if address.address_2 %}
+            {{ address.address_2 }}<br />
+          {% endif %}
+          {{ address.city }}, {{ address.state }}
+          {{ address.postal_code }}<br />
+          {{ address.country }}
         </td>
-        {% endfor %}
-</table>
-<h2>Email</h2>
-<table>
-    <tr>{% for email in member.person.emails.all %}
-        <th>{{ email.get_location_display }}<br />
-            {{ email.get_type_display }}
-        </th>
-        <td>{{ email.email }}</td>
-        {% endfor %}
+      {% endfor %}
     </tr>
-</table>
-<h2>Phone</h2>
-<table>
-    <tr>{% for phone in member.person.phones.all %}
+  </table>
+  <h2>Email</h2>
+  <table>
+    <tr>{% for email in member.person.emails.all %}
+      <th>{{ email.get_location_display }}<br />
+        {{ email.get_type_display }}
+      </th>
+      <td>{{ email.email }}</td>
+      {% endfor %}
+    </tr>
+  </table>
+  <h2>Phone</h2>
+  <table>
+    <tr>
+      {% for phone in member.person.phones.all %}
         <th>
-            {{ phone.get_location_display }}<br />
-            {{ phone.get_type_display }}
+          {{ phone.get_location_display }}<br />
+          {{ phone.get_type_display }}
         </th>
         <td>
-            {{ phone.number }}{% if phone.ext %}Ext: {{ phone.ext }}{% endif %}
+          {{ phone.number }}{% if phone.ext %}Ext: {{ phone.ext }}{% endif %}
         </td>
-        {% endfor %}
+      {% endfor %}
     </tr>
-</table>
-    {% endblock %}
+  </table>
+{% endblock %}

@@ -13,14 +13,9 @@ def member_list(request):
     return render_to_response('membership/member_list.html', locals(),
                                 context_instance=RequestContext(request))
 
-def member(request, id_num):
-    member = Member.objects.get(id=id_num)    
-    page_name = member
-    return render_to_response('membership/member.html', locals(),
-                                context_instance=RequestContext(request))
-
-def member_form(request, id=None):
-    page_name = 'Member Form'
+@permission_required('membership.can_edit_own')
+def member(request, id):
+    member = Member.objects.get(id=id)    
     if request.method == 'POST':
         if pk:
             member = Member.objects.get(id=id)
@@ -38,8 +33,8 @@ def member_form(request, id=None):
             form = MemberForm(instance=member)
         else:
             form = MemberForm()
-        return render_to_response('membership/member_form.html', locals(),
-                                    context_instance=RequestContext(request))
+    return render_to_response('membership/member.html', locals(),
+                                context_instance=RequestContext(request))
 
 def account_list(request):
     page_name = 'Accounts'
