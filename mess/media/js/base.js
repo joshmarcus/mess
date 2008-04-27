@@ -58,6 +58,7 @@ function xhr(query, element)
     ajaxRequest.send(null);
 } // End function xhr
 
+/////////////////////////////////////////////////////////////////////////////
 
 function no_enter(e)
 {
