@@ -75,7 +75,11 @@ class Member(models.Model):
         return self.person.name
 
     class Meta:
-        pass
+        permissions = (
+            ('can_edit_own', 'Can edit own'),
+            ('can_view_own', 'Can view own'),
+            ('can_view_list', 'Can view list'),
+        )
         # can't order by ForeignKey
         #ordering = ['person']
 

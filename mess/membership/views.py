@@ -1,10 +1,12 @@
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 
 from mess.membership.models import Member, Account
 from mess.membership.forms import MemberForm
 
+@permission_required('membership.can_view_list')
 def member_list(request):
     page_name = 'Members'
     member_list = Member.objects.all()
