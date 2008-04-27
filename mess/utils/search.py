@@ -13,6 +13,15 @@ def create_dictionary(list):
         dict[i.id] = unicode(i)
     return dict
 
+def account_members_dict(id):
+    """ Return a dictionary of Members in an Account given
+    a primary key.
+    
+    dict = {'primary_key': 'name'}
+    """
+    list = Account.objects.get(id=id).members.all()
+    return create_dictionary(list)
+
 def search_for_accounts(string):
     """ Return a dictionary of Accounts with names matching a string.
     
@@ -74,4 +83,5 @@ def search_for_string(search, string):
         'email': search_for_email,
         'phone': search_for_phone,
     }
-    return SEARCH_TYPES[search](string)
+    dict = SEARCH_TYPES[search](string)
+    return dict
