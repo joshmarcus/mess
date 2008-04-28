@@ -5,8 +5,8 @@ from django.utils import simplejson
 
 from mess.utils.search import search_for_string
 
-from contact.models import Address
-from contact.forms import AddressForm
+from mess.contact.models import Address
+from mess.contact.forms import AddressForm
 
 def search_for(request):
     if request.GET.has_key('string')  and request.GET.has_key('search'):
