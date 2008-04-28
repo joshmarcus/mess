@@ -1,1 +1,51 @@
-[{"pk": 1, "model": "auth.group", "fields": {"name": "member", "permissions": [40, 42, 41]}}, {"pk": 2, "model": "auth.user", "fields": {"username": "member", "first_name": "", "last_name": "", "is_active": true, "is_superuser": false, "is_staff": false, "last_login": "2008-04-27 13:44:57", "groups": [1], "user_permissions": [], "password": "sha1$67820$497be27da633bca18d9af91852f7cf1d7497dd5f", "email": "", "date_joined": "2008-04-27 13:44:57"}}, {"pk": 1, "model": "auth.user", "fields": {"username": "staff", "first_name": "", "last_name": "", "is_active": true, "is_superuser": true, "is_staff": true, "last_login": "2008-04-27 13:43:54", "groups": [], "user_permissions": [], "password": "sha1$c90be$556cd49fd83cffecd793a34b1f65f1f6aa3d37c8", "email": "staff@mariposa.coop", "date_joined": "2008-04-27 13:32:12"}}, {"pk": 1, "model": "auth.permission", "fields": {"codename": "add_message", "name": "Can add message", "content_type": 1}}, {"pk": 2, "model": "auth.permission", "fields": {"codename": "change_message", "name": "Can change message", "content_type": 1}}, {"pk": 3, "model": "auth.permission", "fields": {"codename": "delete_message", "name": "Can delete message", "content_type": 1}}, {"pk": 4, "model": "auth.permission", "fields": {"codename": "add_group", "name": "Can add group", "content_type": 2}}, {"pk": 5, "model": "auth.permission", "fields": {"codename": "change_group", "name": "Can change group", "content_type": 2}}, {"pk": 6, "model": "auth.permission", "fields": {"codename": "delete_group", "name": "Can delete group", "content_type": 2}}, {"pk": 7, "model": "auth.permission", "fields": {"codename": "add_user", "name": "Can add user", "content_type": 3}}, {"pk": 8, "model": "auth.permission", "fields": {"codename": "change_user", "name": "Can change user", "content_type": 3}}, {"pk": 9, "model": "auth.permission", "fields": {"codename": "delete_user", "name": "Can delete user", "content_type": 3}}, {"pk": 10, "model": "auth.permission", "fields": {"codename": "add_permission", "name": "Can add permission", "content_type": 4}}, {"pk": 11, "model": "auth.permission", "fields": {"codename": "change_permission", "name": "Can change permission", "content_type": 4}}, {"pk": 12, "model": "auth.permission", "fields": {"codename": "delete_permission", "name": "Can delete permission", "content_type": 4}}, {"pk": 13, "model": "auth.permission", "fields": {"codename": "add_contenttype", "name": "Can add content type", "content_type": 5}}, {"pk": 14, "model": "auth.permission", "fields": {"codename": "change_contenttype", "name": "Can change content type", "content_type": 5}}, {"pk": 15, "model": "auth.permission", "fields": {"codename": "delete_contenttype", "name": "Can delete content type", "content_type": 5}}, {"pk": 16, "model": "auth.permission", "fields": {"codename": "add_session", "name": "Can add session", "content_type": 6}}, {"pk": 17, "model": "auth.permission", "fields": {"codename": "change_session", "name": "Can change session", "content_type": 6}}, {"pk": 18, "model": "auth.permission", "fields": {"codename": "delete_session", "name": "Can delete session", "content_type": 6}}, {"pk": 19, "model": "auth.permission", "fields": {"codename": "add_logentry", "name": "Can add log entry", "content_type": 7}}, {"pk": 20, "model": "auth.permission", "fields": {"codename": "change_logentry", "name": "Can change log entry", "content_type": 7}}, {"pk": 21, "model": "auth.permission", "fields": {"codename": "delete_logentry", "name": "Can delete log entry", "content_type": 7}}, {"pk": 22, "model": "auth.permission", "fields": {"codename": "add_reconciliation", "name": "Can add reconciliation", "content_type": 8}}, {"pk": 23, "model": "auth.permission", "fields": {"codename": "change_reconciliation", "name": "Can change reconciliation", "content_type": 8}}, {"pk": 24, "model": "auth.permission", "fields": {"codename": "delete_reconciliation", "name": "Can delete reconciliation", "content_type": 8}}, {"pk": 25, "model": "auth.permission", "fields": {"codename": "add_transaction", "name": "Can add transaction", "content_type": 9}}, {"pk": 26, "model": "auth.permission", "fields": {"codename": "change_transaction", "name": "Can change transaction", "content_type": 9}}, {"pk": 27, "model": "auth.permission", "fields": {"codename": "delete_transaction", "name": "Can delete transaction", "content_type": 9}}, {"pk": 28, "model": "auth.permission", "fields": {"codename": "add_phone", "name": "Can add phone", "content_type": 10}}, {"pk": 29, "model": "auth.permission", "fields": {"codename": "change_phone", "name": "Can change phone", "content_type": 10}}, {"pk": 30, "model": "auth.permission", "fields": {"codename": "delete_phone", "name": "Can delete phone", "content_type": 10}}, {"pk": 31, "model": "auth.permission", "fields": {"codename": "add_email", "name": "Can add email", "content_type": 11}}, {"pk": 32, "model": "auth.permission", "fields": {"codename": "change_email", "name": "Can change email", "content_type": 11}}, {"pk": 33, "model": "auth.permission", "fields": {"codename": "delete_email", "name": "Can delete email", "content_type": 11}}, {"pk": 34, "model": "auth.permission", "fields": {"codename": "add_address", "name": "Can add address", "content_type": 12}}, {"pk": 35, "model": "auth.permission", "fields": {"codename": "change_address", "name": "Can change address", "content_type": 12}}, {"pk": 36, "model": "auth.permission", "fields": {"codename": "delete_address", "name": "Can delete address", "content_type": 12}}, {"pk": 37, "model": "auth.permission", "fields": {"codename": "add_member", "name": "Can add member", "content_type": 13}}, {"pk": 40, "model": "auth.permission", "fields": {"codename": "can_edit_own", "name": "Can edit own", "content_type": 13}}, {"pk": 42, "model": "auth.permission", "fields": {"codename": "can_view_list", "name": "Can view list", "content_type": 13}}, {"pk": 41, "model": "auth.permission", "fields": {"codename": "can_view_own", "name": "Can view own", "content_type": 13}}, {"pk": 38, "model": "auth.permission", "fields": {"codename": "change_member", "name": "Can change member", "content_type": 13}}, {"pk": 39, "model": "auth.permission", "fields": {"codename": "delete_member", "name": "Can delete member", "content_type": 13}}, {"pk": 43, "model": "auth.permission", "fields": {"codename": "add_account", "name": "Can add account", "content_type": 14}}, {"pk": 44, "model": "auth.permission", "fields": {"codename": "change_account", "name": "Can change account", "content_type": 14}}, {"pk": 45, "model": "auth.permission", "fields": {"codename": "delete_account", "name": "Can delete account", "content_type": 14}}, {"pk": 46, "model": "auth.permission", "fields": {"codename": "add_person", "name": "Can add person", "content_type": 15}}, {"pk": 47, "model": "auth.permission", "fields": {"codename": "change_person", "name": "Can change person", "content_type": 15}}, {"pk": 48, "model": "auth.permission", "fields": {"codename": "delete_person", "name": "Can delete person", "content_type": 15}}, {"pk": 49, "model": "auth.permission", "fields": {"codename": "add_job", "name": "Can add job", "content_type": 16}}, {"pk": 50, "model": "auth.permission", "fields": {"codename": "change_job", "name": "Can change job", "content_type": 16}}, {"pk": 51, "model": "auth.permission", "fields": {"codename": "delete_job", "name": "Can delete job", "content_type": 16}}]
+[
+  {
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+      "name": "member", 
+      "permissions": [
+        40, 
+        41
+      ]
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "member", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2008-04-27 13:44:57", 
+      "groups": [
+        1
+      ], 
+      "user_permissions": [], 
+      "password": "sha1$67820$497be27da633bca18d9af91852f7cf1d7497dd5f", 
+      "email": "", 
+      "date_joined": "2008-04-27 13:44:57"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "staff", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2008-04-28 11:42:02", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$c90be$556cd49fd83cffecd793a34b1f65f1f6aa3d37c8", 
+      "email": "staff@mariposa.coop", 
+      "date_joined": "2008-04-27 13:32:12"
+    }
+  }
+]
