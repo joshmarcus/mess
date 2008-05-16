@@ -3,7 +3,7 @@
 /*///////////////////////////////////////////////////////////////////*/
 
 div#list {
-    visibility: hidden;
+    display: none;    
     position: absolute;
     width: 300px;
     height: auto;
@@ -29,14 +29,14 @@ div#list_cancel {
 	color: #cc0000;
 }
 
-div.other_choice {
+div.other_member_choice {
 	padding-right: 20px;
 	color: #cc0000;
 }
 
-div.list_choice:hover {
+div.account_choice:hover, div.member_choice:hover {
     background: #cc9999;
-}    
+} 
 
 div#list_cancel:hover, div.other_choice:hover {
     background: #cc9999;
