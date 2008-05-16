@@ -10,8 +10,8 @@ function get_accounts(thisObj, e)
 		     
 	// Try to check for the key
 	if (!e) var e = window.event;
-	if (e.keyCode) keycode = e.keyCode;
-	else if (e.which) keycode = e.which;
+	if (e.keyCode) var keycode = e.keyCode;
+	else if (e.which) var keycode = e.which;
 	
 	if(keycode == 8 )
 	{
@@ -19,17 +19,20 @@ function get_accounts(thisObj, e)
         document.getElementById("id_account").value = '';
         document.getElementById("id_member").value = '';
 	}
-	
-    var query = "cashier?search=accounts&string=" + account_name.value;
+	if (account_name.value.length > 1)
+    {
+        var query = "cashier?search=accounts&string=" + account_name.value;
 
-    xhr(query, 'list');
-    show_list(thisObj);
+        xhr(query, 'list');
+        show_list(thisObj);
+        setTimeout('account_list_click()', 100);
+    }
 
 } //End function get_accounts
 
 ////////////////////////////////////////////////////////////////////////
 
-function get_account_members(e)
+function get_account_members()
 {
 	// Get members that belong to an account
 	var member_name = document.getElementById('member_name')
@@ -49,7 +52,7 @@ function get_account_members(e)
 		
         xhr(query, 'list');
         show_list(member_name);
-
+        setTimeout('account_members_click()', 100);
 	}
 } // End function get_account_members
 
@@ -83,31 +86,53 @@ function get_members(e)
     
     xhr(query, 'list');
     show_list(member_name);
+    setTimeout('other_members_click()', 100);
+
 
 } // End function getMembers
 
 ////////////////////////////////////////////////////////////////////////
 
-function set_account (this_obj)
+function set_account(this_obj)
 {
 	hide_list();
 	hide_message();
+    if ( this_obj.id == 'list_cancel')
+    {
+        account_name = '';
+        id_account = '';
 
-	if (!this_obj.textContent) var account_name = this_obj.innerText;
-	if (this_obj.textContent) var account_name = this_obj.textContent;
-	id_account = this_obj.id
+    }
+    else
+    {
+        if (!this_obj.textContent) var account_name = this_obj.innerText;
+	    if (this_obj.textContent) var account_name = this_obj.textContent;
+    	id_account = this_obj.id;
+    }
 	document.getElementById("account_name").value = account_name;
 	document.getElementById("id_account").value = id_account;
-	get_account_members();
+
 } // End function set_account
 
 ///////////////////////////////////////////////////////////////////////
 
-function set_member (this_obj)
+function get_transactions()
+{
+    var query = "cashier?search=transactions"
+    if ( document.getElementById('id_account').value )
+    {  
+        query += "&account_id=" + document.getElementById('id_account').value
+    }
+    xhr(query,'transactions');
+} // End function get_transactions
+
+/////////////////////////////////////////////////////////////////////////////
+
+function set_member(this_obj)
 {      
 	hide_list();
 	hide_message();
-    if ( this_obj.id == 'cancel')
+    if ( this_obj.id == 'list_cancel')
     {
         member_name = '';
         id_member = '';
@@ -124,7 +149,7 @@ function set_member (this_obj)
 
 /////////////////////////////////////////////////////////////////////////////
 
-function confirm_other_member (this_obj)
+function confirm_other_member(this_obj)
 {
 	hide_list();
 	hide_message();
@@ -140,7 +165,7 @@ function confirm_other_member (this_obj)
 	py = (p[1] + 25) + "px";
 	
 	var m = document.getElementById("message");
-	m.style.visibility = "visible";
+	//m.style.visibility = "visible";
 	m.style.position = "absolute";
 	m.style.left = px;
 	m.style.top = py;
@@ -148,6 +173,7 @@ function confirm_other_member (this_obj)
 	m.style.height = "auto";
 	m.style.textAlign =  "center";
     m.style.fontSize = "1.25em";
+    m.style.display = "inline";
  
     var query = "cashier?search=other_member&account_name=" + account_name
                 + "&account_id=" + id_account + "&om_name="
@@ -188,29 +214,107 @@ function set_note (id_member, member_name)
 
 ///////////////////////////////////////////////////////////////////////
 
-function make_it_so()
+function list_cancel_click()
 {
-m = "1. Further validate transaction with php. <br />\
-	2. If it's all okie dokie insert into table"
-	
-	showMessage ("form", m)
-}
+    if (document.getElementById('list_cancel'))
+    {
+        document.getElementById('list_cancel').onclick = function()
+            {
+                hide_list();
+                set_account(this);
+            }
+    }
+} // End function list_cancel_onclick
 
-function show_ring(r)
+/////////////////////////////////////////////////////////////////////////////
+
+function account_list_click()
 {
-	r.style.outline = "solid red 1.5px";
-	r.style.outlineOffset = "2px";
-	r.style.MozOutlineRadius = "30px";
-}
+    if (document.getElementById && document.getElementsByTagName)
+    {
+        if (!document.getElementById("account_list"))
+        {
+            setTimeout('account_list_click()',100);
+        }
+        else
+        {
+            list_cancel_click();
+            var list = document.getElementById('account_list');
+            var item = list.getElementsByTagName('div');
+            for( var i=0; i < item.length; i++ )
+            {
+                item[i].onclick = function()
+                    {
+                        hide_list();
+                        set_account(this);
+                        setTimeout('get_transactions()', 1000);
+                        get_account_members();
+                        }
+                }
+        }
+    }
+} // End function account_list_onclick
 
-////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
-function hide_box (box)
+function account_members_click()
 {
-	box.style.visibility = "hidden";
-	box.style.height = "0px";
-	box.style.width = "0px";
-} //End function hideBox
+    if (document.getElementById && document.getElementsByTagName)
+    {
+        if (!document.getElementById("account_members"))
+        {
+            setTimeout('account_members_click()',100);
+        }
+        else
+        {
+            var list = document.getElementById('account_members');
+            var item = list.getElementsByTagName('div');
+            for( var i=0; i < item.length; i++ )
+            {
+                item[i].onclick = function()
+                    {
+                        hide_list();
+                        set_member(this);
+                    }
+            }
+        }
+    }
+} // End function account_list_onclick
+
+/////////////////////////////////////////////////////////////////////////////
+
+function other_members_click()
+{
+    if (document.getElementById && document.getElementsByTagName)
+    {
+        if (!document.getElementById("other_members"))
+        {
+            setTimeout('other_members_click()',100);
+        }
+        else
+        {
+            var list = document.getElementById('other_members');
+            var item = list.getElementsByTagName('div');
+            for( var i=0; i < item.length; i++ )
+            {
+                item[i].onclick = function()
+                    {
+                        hide_list();
+                        confirm_other_member(this);
+                    }
+            }
+        }
+    }
+} // End function account_list_onclick
+
+/////////////////////////////////////////////////////////////////////////////
+
+//function hide_box (box)
+//{
+//	box.style.visibility = "hidden";
+//	box.style.height = "0px";
+//	box.style.width = "0px";
+//} //End function hideBox
 ////////////////////////////////////////////////////////////////////////////////
 
 function show_shadow ()
@@ -230,16 +334,6 @@ function show_shadow ()
 
 /////////////////////////////////////////////////////////////////////////////
 
-function hide_money ()
-{
-	var b = document.getElementById("money")
-	b.style.visibility = "hidden";
-	b.style.height = "0px";
-	b.style.width = "0px";
-} //End function hideList
-
-/////////////////////////////////////////////////////////////////////////////
-
 function hide_hint ()
 {
 	var b = document.getElementById("hint")
@@ -249,12 +343,3 @@ function hide_hint ()
 } //End function hideList
 
 /////////////////////////////////////////////////////////////////////////////
-
-function hide_ring(r)
-{
-	r.style.outline = "0px";
-}
-
-///////////////////////////////////////////////////////////////////////
-
-

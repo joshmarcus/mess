@@ -1,6 +1,7 @@
 //functions.js
 
-function find_pos(obj) {
+function find_pos(obj)
+{
 	// Originally from
 	// http://www.quirksmode.org/js/findpos.html
 	var curleft = curtop = 0;
@@ -16,7 +17,6 @@ function find_pos(obj) {
 }
 
 ///////////////////////////////////////////////////////////////////////
-
 
 function xmlHttp()
 {
@@ -86,7 +86,6 @@ function show_message (id, m)
 	var b = document.getElementById("message");
     b.style.left = px;
 	b.style.top = py;
-	b.style.visibility = "visible";
     b.style.position = 'absolute';
     b.style.width = 'auto';
     b.style.height = 'auto';
@@ -94,16 +93,17 @@ function show_message (id, m)
 	var c = "<div style='font-size: 0.75em; color: red; text-align: right;' >Click to close</div>";
 	m = m + c;
 	b.innerHTML = m;
-} //End function showMessage
+    b.style.display = 'inline';
+    b.onclick = hide_message;
+
+} //End function show_message
 /////////////////////////////////////////////////////////////////////////////
 
 function hide_message ()
 {
-	var b = document.getElementById("message")
-	b.style.visibility = "hidden";
-	b.style.height = "0px";
-	b.style.width = "0px";
+	document.getElementById("message").style.display = "none";   
 } //End function hide_message
+
 /////////////////////////////////////////////////////////////////////////////
 
 function show_list (obj)
@@ -113,23 +113,18 @@ function show_list (obj)
 	var py = (p[1] + 25) + "px";
 
     var l = document.getElementById("list");
-    l.style.visibility = "visible";
     l.style.left = px;
     l.style.top = py;
     l.style.height = "auto";
-	l.style.width = "300px";
+    l.style.display = 'inline';
 
 } //End function show_list
 
 /////////////////////////////////////////////////////////////////////////////
 
-function hide_list ()
+function hide_list()
 {
-	var l = document.getElementById("list")
-	l.style.visibility = "hidden";
-	l.style.height = "0px";
-	l.style.width = "0px";
-    l.style.innerHTML = "";
+	document.getElementById("list").style.display = "none";        
 } //End function hideList
 
 ////////////////////////////////////////////////////////////////////////////////
