@@ -69,6 +69,18 @@ def cashier(request):
         return HttpResponseRedirect('thanks')
     elif 'search' in request.GET:
         search = request.GET.get('search')
+        if search == 'transactions':
+            if 'account_id' in request.GET:
+                account_id = request.GET.get('account_id')
+                trans = Transaction.objects.filter(id = account_id)
+                context['account_name'] = Account.objects.get(id = account_id).name
+            else:
+                d = date.today()
+                trans = Transaction.objects.filter(date__year = d.year,
+                                            date__month = d.month,
+                                            date__day = d.day)
+            context['transactions'] = trans
+            return render_to_response('xhr/transactions.html', context)
         if 'account_id' in request.GET:
             account_id = request.GET.get('account_id')
             account_members = account_members_dict(account_id)
