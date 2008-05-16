@@ -64,7 +64,7 @@ div#content {
 }
 
 div#message {
-    visibility: hidden;
+    display: none;
     position: absolute;
 	width: auto;
 	height: auto;
