@@ -1,11 +1,11 @@
-from django.conf.urls.defaults import *
 from django.conf import settings 
+from django.conf.urls.defaults import *
 from django.contrib.auth.views import login, logout, logout_then_login
 
 urlpatterns = patterns('',
     #(r'^$', 'mess.views.welcome'),
     (r'', include('mess.accounting.urls')),        
-    (r'', include('mess.contact.urls')),            
+    (r'^contact/', include('mess.contact.urls')),            
     (r'', include('mess.membership.urls')),        
     (r'^people/', include('mess.people.urls')),      
     (r'^admin/', include('django.contrib.admin.urls')),

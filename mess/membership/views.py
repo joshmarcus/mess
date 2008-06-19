@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -15,7 +15,7 @@ def member_list(request):
 
 @permission_required('membership.can_edit_own')
 def member(request, id):
-    member = Member.objects.get(id=id)    
+    member = get_object_or_404(Member, id=id)    
     if request.method == 'POST':
         if pk:
             member = Member.objects.get(id=id)

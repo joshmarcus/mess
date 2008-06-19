@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from mess.contact.models import Address, Phone, Email
 
 class Person(models.Model):
+    """
+    """
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, unique=True, blank=True, null=True)
     addresses = models.ManyToManyField(Address, blank=True, null=True)

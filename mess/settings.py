@@ -35,7 +35,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # URL of the project.  Leave out a network address to keep links relative.
 # Make sure to use a trailing slash.
-PROJECT_URL = '/mess/'
+PROJECT_URL = '/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -71,7 +71,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-# change base_url.py if necessary
 ROOT_URLCONF = 'mess.base_url'
 
 LOCATION = 'Cashier'
