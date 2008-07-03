@@ -110,3 +110,7 @@ LOGIN_REDIRECT_URL = PROJECT_URL
 
 ## mess project constants below ##
 
+try:
+    from settings_local import *
+except ImportError:
+    pass
