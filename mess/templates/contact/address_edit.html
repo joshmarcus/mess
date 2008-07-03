@@ -3,7 +3,11 @@
 {% block content %}
   <table>
     <form method="post">
+    <input type="hidden" name="referer" value="{{ referer }}"/>
       {% include "contact/snippets/address_edit.html" %}
+    <tr>
+      <td></td><td><input type="submit"/></td>
+    </tr>
     </form>
   </table>
 {% endblock %}
