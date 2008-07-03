@@ -5,16 +5,23 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# Absolute path to the root of the project.
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# URL of the project.  Leave out a network address to keep links relative.
+# Make sure to use a trailing slash.
+PROJECT_URL = '/'
+
 ADMINS = (
 )
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'postgresql_psycopg2' # 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'mess'                  # Or path to database file if using sqlite3.
-DATABASE_USER = 'mess'                  # Not used with sqlite3.
-DATABASE_PASSWORD = 'caGlisjem6'        # Not used with sqlite3.
-DATABASE_HOST = 'localhost'          # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_ENGINE = 'sqlite3' # 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = PROJECT_ROOT + 'mess.db'             # Or path to database file if using sqlite3.
+DATABASE_USER = ''                  # Not used with sqlite3.
+DATABASE_PASSWORD = ''        # Not used with sqlite3.
+DATABASE_HOST = ''          # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''                      # Set to empty string for default. Not used with sqlite3.
 
 
@@ -29,13 +36,6 @@ SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
-
-# Absolute path to the root of the project.
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-# URL of the project.  Leave out a network address to keep links relative.
-# Make sure to use a trailing slash.
-PROJECT_URL = '/'
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
