@@ -94,7 +94,7 @@ INSTALLED_APPS = (
     'mess.contact',
     'mess.membership',
     'mess.people',
-    'mess.work',
+    'mess.scheduling',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
