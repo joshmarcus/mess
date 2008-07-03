@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from mess.people.models import Person
-from mess.work.models import Job
+from mess.scheduling.models import Job
 
 MEMBER_STATUS = (
     ('a', 'Active'),
