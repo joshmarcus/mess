@@ -72,7 +72,7 @@ def cashier(request):
         if search == 'transactions':
             if 'account_id' in request.GET:
                 account_id = request.GET.get('account_id')
-                trans = Transaction.objects.filter(id = account_id)
+                trans = Transaction.objects.filter(account = account_id)
                 context['account_name'] = Account.objects.get(id = account_id).name
             else:
                 d = date.today()
