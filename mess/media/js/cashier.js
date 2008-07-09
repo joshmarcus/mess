@@ -19,7 +19,7 @@ function get_accounts(thisObj, e)
         document.getElementById("id_account").value = '';
         document.getElementById("id_member").value = '';
 	}
-	if (account_name.value.length > 1)
+	if (account_name.value.length > 0)
     {
         var query = "cashier?search=accounts&string=" + account_name.value;
 
@@ -116,10 +116,10 @@ function set_account(this_obj)
 
 ///////////////////////////////////////////////////////////////////////
 
-function get_transactions()
+function get_transactions(id)
 {
     var query = "cashier?search=transactions"
-    if ( document.getElementById('id_account').value )
+    if (id == parseInt(id))
     {  
         query += "&account_id=" + document.getElementById('id_account').value
     }
@@ -247,8 +247,8 @@ function account_list_click()
                     {
                         hide_list();
                         set_account(this);
-                        setTimeout('get_transactions()', 1000);
                         get_account_members();
+                        get_transactions(i);                        
                         }
                 }
         }
