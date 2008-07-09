@@ -36,14 +36,14 @@
             {% endifnotequal %}
         </td>
         <td>{% ifnotequal trans.credit 0 %}
-                {{ trans.credit }}
+                {{ trans.credit|floatformat:2 }}
             {% endifnotequal %}
         </td>
         <td>{% ifnotequal trans.debit 0 %}
-                {{ trans.debit }}
+                {{ trans.debit|floatformat:2 }}
             {% endifnotequal %}
         </td>
-        <td>{{ trans.balance }}</td>
+        <td>{{ trans.balance|floatformat:2 }}</td>
     </tr>
     {% endfor %}
 </table>
