@@ -44,7 +44,7 @@ function xmlHttp()
 
 function xhr(query, element)
 {
-    ajaxRequest = xmlHttp();
+    var ajaxRequest = xmlHttp();
 	ajaxRequest.open("GET",query,true);
 
 	ajaxRequest.onreadystatechange = function ()
