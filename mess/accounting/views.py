@@ -106,6 +106,12 @@ def cashier(request):
         return render_to_response('accounting/cashier.html', context,
                                     context_instance=RequestContext(request))
 
+def close_out(request):
+    """Page to reconcile the day's transactions."""
+    context = {}
+    return render_to_response('accounting/close_out.html', context,
+                                context_instance=RequestContext(request))
+
 def member_transaction(request):
     """accounting view for the transaction form."""
     role = 'Member'
