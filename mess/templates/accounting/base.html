@@ -10,9 +10,6 @@
 {% endblock head %}
 
 {% block page_menu %}
-<a class='button' href='{{ PROJECT_URL }}cashier' >Smooth</a>
-<a class='button' href='{{ PROJECT_URL }}transaction' >Chunky</a>
-<a class='button' href='{{ PROJECT_URL }}member_transaction' >Member</a>
-<a class='button' href='{{ PROJECT_URL }}staff_transaction' >Staff</a>
-<a class='button' href='{{ PROJECT_URL }}closeOut.php' >Close Out</a>
+<a class='button' href="{% url close_out %}">Daily Report</a>
+<a class='button' href="{% url close_out %}">Close Out</a>
 {% endblock %}
