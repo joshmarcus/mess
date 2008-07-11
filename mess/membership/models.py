@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from mess.people.models import Person
-from mess.scheduling.models import Job
 
 MEMBER_STATUS = (
     ('a', 'Active'),
@@ -36,7 +35,6 @@ class Member(models.Model):
                                 blank=True, null=True)
     date_joined = models.DateField(default=date(1990, 01, 01))
     has_key = models.BooleanField(default=False)
-    job = models.ForeignKey(Job, blank=True, null=True,)
     contact_preference = models.CharField(max_length=1, 
             choices=CONTACT_PREF, default='e', radio_admin=True)
 

@@ -1,63 +1,63 @@
 [
     {
         "pk": 2, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Cashier"
         }
     }, 
     {
         "pk": 6, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Cheese Cutter"
         }
     }, 
     {
         "pk": 7, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Cleaning"
         }
     }, 
     {
         "pk": 5, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Closing"
         }
     }, 
     {
         "pk": 1, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "None"
         }
     }, 
     {
         "pk": 4, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Opening"
         }
     }, 
     {
         "pk": 8, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Recyling"
         }
     }, 
     {
         "pk": 9, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Stocking"
         }
     }, 
     {
         "pk": 3, 
-        "model": "scheduling.job", 
+        "model": "scheduling.shifttype", 
         "fields": {
             "name": "Storekeeper"
         }
