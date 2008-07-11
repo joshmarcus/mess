@@ -17,7 +17,7 @@
       <div id="header">
 	    <ul id="utility-nav">
 		  {% if perms.membership.can_edit_own %}
-            <li><a href="{{ PROJECT_URL }}member/32/edit" >My profile</a></li>
+            <li><a href="{% url member user.id %}" >My profile</a></li>
           {% endif %}
 		  <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Logout</a></li>
 		</ul>
@@ -28,14 +28,13 @@
           {% block main_menu %}
             {% if user.is_authenticated %}
               {% if perms.membership.can_view_list %}
-                <li><a href="{{ PROJECT_URL }}member/list" >Members</a></li>
+                <li><a href="{% url members %}">Members</a></li>
               {% endif %}
 
               {% if user.is_staff %}
-                <li><a href="{{ PROJECT_URL }}account/list" >Accounts</a></li>
-                <li><a href="{{ PROJECT_URL }}reports" >Reports</a></li>
-                <li><a href="{{ PROJECT_URL }}cashier" >Cashier</a></li>
-                <li><a href="{{ PROJECT_URL }}admin" >Admin</a></li>
+                <li><a href="{% url accounts %}">Accounts</a></li>
+                <li><a href="{% url reports %}">Reports</a></li>
+                <li><a href="{% url cashier %}">Cashier</a></li>
               {% endif %}
             {% endif %}
           {% endblock %}
