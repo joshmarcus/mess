@@ -38,37 +38,6 @@ class Member(models.Model):
     contact_preference = models.CharField(max_length=1, 
             choices=CONTACT_PREF, default='e', radio_admin=True)
 
-# I removed preferred phone and email -- if you think we need them we can
-# put them back in.  Even CONTACT_PREF is questionable -- won't we, in
-# reality, just default to email for everyone unless they don't have an
-# email address, and use phone for times when we need immediate contact?
-#    def _get_prefered_phone(self):
-#        """ The Member's prefered phone. """
-#        return getattr(self, 'phone_%s' % self.prefered_phone)
-#
-#    def _get_prefered_email(self):
-#        """ The Member's prefered email address. """
-#        return getattr(self, 'email_%s' % self.prefered_email)
-#    
-#    def _get_prefered_contact(self):
-#        """ The Member's prefered contact. """
-#        email = getattr(self, 'email_%s' % self.prefered_email)
-#        phone = getattr(self, 'phone_%s' % self.prefered_phone)
-#        contact = ''
-#
-#        if self.contact_by is 'e' and email:
-#            contact = email
-#        elif self.contact_by is 'p' and phone:
-#            contact = phone
-#        elif email:
-#            contact = email
-#        elif phone:
-#            contact = phone 
-#        else:
-#            contact = 'None Defined'
-#        return contact
-#    contact = property(_get_prefered_contact)
-
     def __unicode__(self):
         return self.person.name
 
@@ -78,7 +47,7 @@ class Member(models.Model):
             ('can_view_list', 'Can view list'),
         )
         # can't order by ForeignKey
-        #ordering = ['person']
+        ordering = ['person']
 
     class Admin:
         pass
@@ -88,7 +57,7 @@ class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
     contact = models.ForeignKey(Member, related_name='contact_for')
     members = models.ManyToManyField(Member, related_name='accounts',)
-    can_shop = models.BooleanField()
+    can_shop = models.BooleanField(default=True)
 
     # Do we want to keep an account balance here?  It would mean some
     # replication of data because balance can be found by tracing 

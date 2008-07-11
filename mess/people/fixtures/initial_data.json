@@ -915,6 +915,28 @@
     }
   }, 
   {
+    "pk": 102, 
+    "model": "people.person", 
+    "fields": {
+      "phones": [], 
+      "addresses": [], 
+      "name": "General Member", 
+      "emails": [], 
+      "user": 1
+    }
+  }, 
+  {
+    "pk": 103, 
+    "model": "people.person", 
+    "fields": {
+      "phones": [], 
+      "addresses": [], 
+      "name": "General Staff", 
+      "emails": [], 
+      "user": 2
+    }
+  }, 
+  {
     "pk": 67, 
     "model": "people.person", 
     "fields": {
