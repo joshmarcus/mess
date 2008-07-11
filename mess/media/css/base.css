@@ -64,7 +64,17 @@ body {
 	background: #00417d;
 }
 
+ul#local-nav {} /*This could be in header below global-nav, in left-column above content, or in right-column. Will understand more when interface design is clearer*/
+
 #content-wrapper {
+	}
+	
+	#left-column { 
+		float:left;
+		}
+	
+	#right-column {
+		float:left;
 	}
 
 #footer {
@@ -121,7 +131,6 @@ body {
 				font-weight:bold;
 				font-size:1.2em;
 				text-decoration:none;
-				
 			}
 		
 			
