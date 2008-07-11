@@ -13,26 +13,33 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    <div id='logo'>{% block logo %}The MESS: {{ page_name }}{% endblock %}</div>
-    <div id='headerLine'></div>
-    <div id="main_menu">
-      {% block main_menu %}
-        {% if user.is_authenticated %}
-          {% if perms.membership.can_view_list %}
-            <a class='button' href="{{ PROJECT_URL }}member/list" >Members</a>
+    <div id="wrapper">	
+      <div id="header">
+	    <ul id="utility-nav">
+		  {% if perms.membership.can_edit_own %}
+            <li><a href="{{ PROJECT_URL }}member/32/edit" >My profile</a></li>
           {% endif %}
-          {% if perms.membership.can_edit_own %}
-            <a class='button' href="{{ PROJECT_URL }}member/32/edit" >Edit Profile</a>
-          {% endif %}
-          {% if user.is_staff %}
-            <a class='button' href="{{ PROJECT_URL }}account/list" >Accounts</a>
-            <a class='button' href="{{ PROJECT_URL }}reports" >Reports</a>
-            <a class='button' href="{{ PROJECT_URL }}cashier" >Cashier</a>
-            <a class='button' href="{{ PROJECT_URL }}admin" >Admin</a>
-          {% endif %}
-          <a class='button' href="{% url django.contrib.auth.views.logout_then_login %}" >Logout</a>
-        {% endif %}
-      {% endblock %}
+		  <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Logout</a></li>
+		</ul>
+	    <h1><a href="">The Mess</a>
+	      <span class="sub-title">{{ page_name }}</span>
+	    </h1>	
+    	<ul id="global-nav">
+          {% block main_menu %}
+            {% if user.is_authenticated %}
+              {% if perms.membership.can_view_list %}
+                <li><a href="{{ PROJECT_URL }}member/list" >Members</a></li>
+              {% endif %}
+
+              {% if user.is_staff %}
+                <li><a href="{{ PROJECT_URL }}account/list" >Accounts</a></li>
+                <li><a href="{{ PROJECT_URL }}reports" >Reports</a></li>
+                <li><a href="{{ PROJECT_URL }}cashier" >Cashier</a></li>
+                <li><a href="{{ PROJECT_URL }}admin" >Admin</a></li>
+              {% endif %}
+            {% endif %}
+          {% endblock %}
+		</ul>
     </div>
     <div id='page_menu'>
       {% block page_menu %}
@@ -45,7 +52,8 @@
     </div>
     <div id='content' >{% block content %}{% endblock %}</div>
     <div id='pop_up' >{% block pop_up %}{% endblock %}</div>
-    <div id='footer' >{% block footer %}{% endblock %}</div>
+      <div id='footer' >{% block footer %}{% endblock %}</div><!--end of footer-->
+    </div><!--end of wrapper-->
   </body>
 </html>
 

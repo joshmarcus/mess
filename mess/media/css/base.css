@@ -2,14 +2,132 @@
 
 /*///////////////////////////////////////////////////////////////////*/
 
-body {
-    margin: 0;
-    /*width: 700px;*/
-    background: #c8c8ff;
-    color: 		#0000ff;
-    font-family: "Times New Roman",times,sans-serif;
-    font-size: 16px;
+/*--((( global jawn )))--*/
+* {
+	margin: 0;
+	padding: 0;
 }
+
+body {
+	text-align:center;
+	background:#fff;
+    color: #333;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:62.5%;
+}
+
+	p {
+		font-size: 1.2em; 
+		line-height:1.5em;
+	}
+
+	h2 {
+		font-size: 1.4em; 
+		color:#454545;
+	}
+
+	h3 {
+		font-size: 1.3em;
+		color:#858284;
+	}
+	
+	h4 {
+		font-size: 1.2em;
+	}
+
+	a {
+		color: #00417d;
+		
+	}
+		a:visited { 
+			color: #00417d;
+		}
+		
+		a:hover { 
+			color: #246495;
+		}
+		
+	ul {}
+	
+		ul li {
+			list-style-type:none;
+		}
+		
+/*-- ((( structure ))) --*/
+
+#wrapper {
+	background:#ebebeb;
+	width:960px; 
+	margin:0 auto;
+	text-align:left;
+}
+
+#header {
+	background: #00417d;
+}
+
+#content-wrapper {
+	}
+
+#footer {
+}
+
+
+/*-- ((( #header styles ))) --*/
+
+#header {}
+	
+	ul#utility-nav {
+		float:right;
+	}
+	
+		ul#utility-nav li {
+			display:inline;
+		}
+			ul#utility-nav li a {
+				font-size:1.1em;
+				color:#fff;
+			}
+			
+				ul#utility-nav li a:visited {
+					color:#fff;
+				}
+
+	h1 a {
+		font-size:1.2em; 
+		color:#fddc08;
+		text-decoration:none;
+	}
+		h1 a:visited {
+			color:#fddc08;
+		}
+		h1 a:hover {
+			color:#fddc08;
+		}
+		h1 span.sub-title {
+			font-size:.8em;
+			font-weight:normal; 
+			color:#fff;
+		}
+		
+	ul#global-nav {}
+	
+		ul#global-nav li {
+			display:inline;
+		}
+	
+			ul#global-nav li a {
+				background:#246495;
+				color:#fff;
+				font-weight:bold;
+				font-size:1.2em;
+				text-decoration:none;
+			}
+		
+			
+
+
+/*-------------------------------old stuff begins here
 
 div#logo {
     position: absolute;
@@ -79,7 +197,7 @@ div#message {
 	font-size: 1.5em;
 	text-align: center;
 }
-/* ////////////////////////////////////////////////////////////////// */
+////////////////////////////////////////////////////////////////// 
 
 h1, h2 {text-align: center;}
 
@@ -178,4 +296,4 @@ td {
     padding: 5px;
     font-family: "Arial",times,sans-serif;
 }
-
+*/
