@@ -39,18 +39,24 @@
             {% endif %}
           {% endblock %}
 		</ul>
-    </div>
-    <div id='page_menu'>
-      {% block page_menu %}
-      {% comment %}
-      <a class='button' href="{{ PROJECT_URL }}cashier" >Page</a>
-      <a class='button' href="{{ PROJECT_URL }}book/list" >Buttons</a>
-      <a class='button' href="{{ PROJECT_URL }}author/list" >Here</a>
-      {% endcomment %}
-      {% endblock %}
-    </div>
-    <div id='content' >{% block content %}{% endblock %}</div>
-    <div id='pop_up' >{% block pop_up %}{% endblock %}</div>
+      </div>
+      <div id="content-wrapper">
+	    <ul id="local-nav">
+			{% block page_menu %}
+	          {% comment %}
+	            <li><a href="{{ PROJECT_URL }}cashier" >Page</a></li>
+	            <li><a href="{{ PROJECT_URL }}book/list" >Buttons</a></li>
+	            <li><a href="{{ PROJECT_URL }}author/list" >Here</a></li>
+	          {% endcomment %}
+	        {% endblock %}
+	    </ul>
+	    <div id="left-column">
+		  {% block content %}{% endblock %}
+		</div><!--end #left-column-->
+		<div id="right-column">
+		</div><!--end #right-column-->
+      </div><!--end #content-wrapper-->
+      <div id='pop_up' >{% block pop_up %}{% endblock %}</div><!--end pop_up-->
       <div id='footer' >{% block footer %}{% endblock %}</div><!--end of footer-->
     </div><!--end of wrapper-->
   </body>

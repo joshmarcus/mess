@@ -1,8 +1,6 @@
-/* base.css */
+/*i'm gonna play with this cause i'm dum with backendz*/
 
-/*///////////////////////////////////////////////////////////////////*/
-
-/*--((( global jawn )))--*/
+/*--((( global jawnt )))--*/
 * {
 	margin: 0;
 	padding: 0;
@@ -114,6 +112,7 @@ body {
 	
 		ul#global-nav li {
 			display:inline;
+			
 		}
 	
 			ul#global-nav li a {
@@ -122,6 +121,7 @@ body {
 				font-weight:bold;
 				font-size:1.2em;
 				text-decoration:none;
+				
 			}
 		
 			
