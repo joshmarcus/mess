@@ -2,6 +2,28 @@
 
 {% block content %}
 
-<h1>The Daily Report goes here.</h1>
+<h1>Totals for Today, {{ date }}</h1>
+<h2>Credits</h2>
+Extras: {{ total_extras }}<br />
+Purchases: {{ total_purchase }}<br />
+Bulk Orders: {{ total_bulk_purchase }}<br />
+Dues: {{ total_dues }}<br />
+Misc Sales:  {{ total_misc_sales }}<br />
+Trades: {{ total_trade }}<br />
+Work Credit: {{ total_work_credit }}<br />
+<h3>Total Credits: {{ total_credits }}</h3>
+
+<br />
+<h2>Debits</h2>
+Credit Cards: {{ total_credit_card }}<br />
+Debit Cards: {{ total_debit_card }}<br />
+Checks: {{ total_check}}<br />
+Money Orders{{ total_money_order}}<br />
+EBT: {{ total_ebt }}<br />
+Deposits: {{ total_deposit }}<br />
+Key Deposits: {{ total_key_deposit }}<br />
+Misc Debits: {{ total_misc_debit }}<br />
+<h3>Total Debits: {{ total_debits }}</h3>
+
 
 {% endblock %}
