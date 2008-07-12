@@ -2,12 +2,13 @@ from datetime import date
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
-from django.utils import simplejson
+#from django.utils import simplejson
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
 from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
+from mess.accounting.models import get_trans_total
 from mess.membership.models import Member, Account
 from mess.accounting.forms import TransactionForm
 from mess.utils.search import search_for_string, account_members_dict
@@ -109,53 +110,81 @@ def cashier(request):
 def close_out(request):
     """Page to reconcile the day's transactions."""
     context = {}
+    context['page_name'] = 'Close Out'
+    context['total_credits'] = 0
+    context['total_debits'] = 0
+    d = date.today()
+    context['date'] = d.strftime('%A, %B %d, %Y')    
+    for type, name in get_credit_choices('Staff'):
+        name = name.lower().replace(' ','_')
+        total_name = 'total_' + name
+        context[name] = Transaction.objects.filter(date__year = d.year,
+                                                date__month = d.month,
+                                                date__day = d.day,
+                                                credit_type = type,)
+        context[total_name] = get_trans_total(context[name], 'credit')
+        context['total_credits'] += context[total_name]
+    for type, name in get_debit_choices('Staff'):
+        name = name.lower().replace(' ','_')
+        total_name = 'total_' + name
+        context[name] = Transaction.objects.filter(date__year = d.year,
+                                                date__month = d.month,
+                                                date__day = d.day,
+                                                debit_type = type,)
+        context[total_name] = get_trans_total(context[name], 'debit')
+        context['total_debits'] += context[total_name]
+
     return render_to_response('accounting/close_out.html', context,
                                 context_instance=RequestContext(request))
 
-def member_transaction(request):
-    """accounting view for the transaction form."""
-    role = 'Member'
-    page_name = 'Member Trans'
-    if not request.method == 'POST' and not request.GET.has_key('search'):
-        credit_choices = get_credit_choices(role)
-        debit_choices = get_debit_choices(role)
-        form = TransactionForm()
-        transactions = get_todays_transactions()
-        transaction_title = 'Today\'s Transactions'
-        return render_to_response('accounting/cashier.html', locals(),
-                                    context_instance=RequestContext(request))
-    elif request.GET.has_key('search'):
-        search_dict = live_search(request)
-        return HttpResponse(simplejson.dumps(search_dict),
-                            mimetype='application/javascript')
-    else:
-        save_credit_trans(request)        
-        save_debit_trans(request)        
-        return HttpResponseRedirect('thanks')
- 
-    return render_to_response('accounting/cashier.html', locals(),
-                                context_instance=RequestContext(request))
+# I don't believe this is useful any more.  in any case it needs to be
+# rewriten to reflect the changes that were made in the cashier view above.
+# That is get rid of the simplejson
+#
+#def member_transaction(request):
+#    """accounting view for the transaction form."""
+#    role = 'Member'
+#    page_name = 'Member Trans'
+#    if not request.method == 'POST' and not request.GET.has_key('search'):
+#        credit_choices = get_credit_choices(role)
+#        debit_choices = get_debit_choices(role)
+#        form = TransactionForm()
+#        transactions = get_todays_transactions()
+#        transaction_title = 'Today\'s Transactions'
+#        return render_to_response('accounting/cashier.html', locals(),
+#                                    context_instance=RequestContext(request))
+#    elif request.GET.has_key('search'):
+#        search_dict = live_search(request)
+#        return HttpResponse(simplejson.dumps(search_dict),
+#                            mimetype='application/javascript')
+#    else:
+#        save_credit_trans(request)        
+#        save_debit_trans(request)        
+#        return HttpResponseRedirect('thanks')
+# 
+#    return render_to_response('accounting/cashier.html', locals(),
+#                                context_instance=RequestContext(request))
 
-def staff_transaction(request):
-    """accounting view for the transaction form."""
-    role = 'Staff'
-    page_name = 'Staff Trans'
-    if not request.method == 'POST' and not request.GET.has_key('search'):
-        credit_choices = get_credit_choices(role)
-        debit_choices = get_debit_choices(role)
-        form = TransactionForm()
-        transactions = get_todays_transactions()
-        transaction_title = 'Today\'s Transactions'
-        return render_to_response('accounting/cashier.html', locals(),
-                                    context_instance=RequestContext(request))
-    elif request.GET.has_key('search'):
-        search_dict = live_search(request)
-        return HttpResponse(simplejson.dumps(search_dict),
-                            mimetype='application/javascript')
-    else:
-        save_credit_trans(request)        
-        save_debit_trans(request)        
-        return HttpResponseRedirect('thanks')
- 
-    return render_to_response('accounting/cashier.html', locals(),
-                                context_instance=RequestContext(request))
+#def staff_transaction(request):
+#    """accounting view for the transaction form."""
+#    role = 'Staff'
+#    page_name = 'Staff Trans'
+#    if not request.method == 'POST' and not request.GET.has_key('search'):
+#        credit_choices = get_credit_choices(role)
+#        debit_choices = get_debit_choices(role)
+#        form = TransactionForm()
+#        transactions = get_todays_transactions()
+#        transaction_title = 'Today\'s Transactions'
+#        return render_to_response('accounting/cashier.html', locals(),
+#                                    context_instance=RequestContext(request))
+#    elif request.GET.has_key('search'):
+#        search_dict = live_search(request)
+#        return HttpResponse(simplejson.dumps(search_dict),
+#                            mimetype='application/javascript')
+#    else:
+#        save_credit_trans(request)        
+#        save_debit_trans(request)        
+#        return HttpResponseRedirect('thanks')
+# 
+#    return render_to_response('accounting/cashier.html', locals(),
+#                                context_instance=RequestContext(request))
