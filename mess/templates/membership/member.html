@@ -7,20 +7,18 @@
         <th>Name</th>
         <td>
           <div>{{ member.person.name }}</div>
-          <div>{{ form.person }}</div>
         </td>
       </tr>
       <tr>
         <th>Addresses</th>
         <td>
-          {# will we need to pull addresses from form? #}
           {% for address in member.person.addresses.all %}
             <div>
               {% include "contact/snippets/address.html" %}
             </div>
-            <div><a href="{% url mess.contact.views.address_edit address.id %}">Edit</a></div>
+            <div><a href="{% url address_edit address.id %}">Edit</a></div>
           {% endfor %}
-          <div><a href="{% url mess.contact.views.address_add member.person.id %}">Add</a></div>
+          <div><a href="{% url address_add %}?member={{ member.person.id }}">Add</a></div>
         </td>
       </tr>
     </table>
