@@ -52,6 +52,13 @@ body {
 			list-style-type:none;
 		}
 		
+/*--- ((( tools ))) ---*/
+.clearAll {clear:both;}
+.float-left {float:left;}
+.float-right {float:right;}
+hr.left-clearer {display: block; clear: left; margin: -0.66em 0; visibility: hidden;}
+hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: hidden;}
+		
 /*--- ((( structure ))) ---*/
 
 #wrapper {
@@ -65,9 +72,12 @@ body {
 	height:120px;
 }
 #content-wrapper {
+	background:#EBEBEB;
 	}	
 	#left-column { 
 		float:left;
+		background:#fff;
+		margin:0 0 0 15px;
 		}
 	#right-column {
 		float:left;
