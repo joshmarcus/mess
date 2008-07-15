@@ -11,6 +11,6 @@ urlpatterns = patterns('mess.contact.views',
     #(r'^phone/(\d{1,4})$', 'phone'),
     #(r'^address/list/$', 'address_list'),
     url(r'^address/(\d+)/$', 'address', name='address'),
-    url(r'^address/add/$', 'address_add', name='address_add'),
-    url(r'^address/(\d+)/edit/$', 'address_edit', name='address_edit'),
+    url(r'^address/add/$', 'address_form', name='address_add'),
+    url(r'^address/(\d+)/edit/$', 'address_form', name='address_edit'),
 )

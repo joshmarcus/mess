@@ -1,5 +1,6 @@
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.utils import simplejson
@@ -19,51 +20,32 @@ def search_for(request):
                         mimetype='application/javascript')
 
 def address(request, id):
-    context = {}
-    try:
-        address = Address.objects.get(id=id)
-    except Address.DoesNotExist:
-        return Http404
-    context['address'] = address
-    return render_to_response('contact/address.html', context,
-                            context_instance=RequestContext(request))
-
-def address_add(request, person_id):
     context = RequestContext(request)
-    referer = request.META['HTTP_REFERER']
-    if request.method == 'POST':
-        form = AddressForm(request.POST)
-        referer = request.POST['referer']
-        if form.is_valid():
-            new_address = form.save()
-            person = Person.objects.get(id=person_id)
-            person.addresses.add(new_address)
-            return HttpResponseRedirect(referer)
-    else:
-        form = AddressForm()
-    context['form'] = form
-    context['referer'] = referer
-    template = get_template('contact/address_edit.html')
+    context['address'] = get_object_or_404(Address, id=id)
+    template = get_template('contact/address.html')
     return HttpResponse(template.render(context))
 
-def address_edit(request, id):
+def address_form(request, id=None):
     context = RequestContext(request)
-    referer = request.META['HTTP_REFERER']
-    try:
-        address = Address.objects.get(id=id)
-    except Address.DoesNotExist:
-        return Http404
+    if id:
+        address = get_object_or_404(Address, id=id)
+    else:
+        address = None
     if request.method == 'POST':
         form = AddressForm(request.POST, instance=address)
         referer = request.POST['referer']
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(referer)
+            new_address = form.save()
+            if referer:
+                return HttpResponseRedirect(referer)
+            else:
+                return HttpResponseRedirect(reverse('address', 
+                        args=[new_address.id]))
     else:
         form = AddressForm(instance=address)
-    context['address'] = address
     context['form'] = form
+    referer = request.META.get('HTTP_REFERER', '')
     context['referer'] = referer
-    template = get_template('contact/address_edit.html')
+    template = get_template('contact/address_form.html')
     return HttpResponse(template.render(context))
 
