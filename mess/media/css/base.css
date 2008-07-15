@@ -1,6 +1,6 @@
 /*i'm gonna play with this cause i'm dum with backendz*/
 
-/*--((( global jawnt )))--*/
+/*---((( global jawnt )))---*/
 * {
 	margin: 0;
 	padding: 0;
@@ -17,6 +17,7 @@ body {
 	p {
 		font-size: 1.2em; 
 		line-height:1.5em;
+		margin-bottom:1.2em;
 	}
 
 	h2 {
@@ -51,7 +52,7 @@ body {
 			list-style-type:none;
 		}
 		
-/*-- ((( structure ))) --*/
+/*--- ((( structure ))) ---*/
 
 #wrapper {
 	background:#ebebeb;
@@ -59,36 +60,48 @@ body {
 	margin:0 auto;
 	text-align:left;
 }
-
 #header {
 	background: #00417d;
+	height:120px;
 }
-
-ul#local-nav {} /*This could be in header below global-nav, in left-column above content, or in right-column. Will understand more when interface design is clearer*/
-
 #content-wrapper {
-	}
-	
+	}	
 	#left-column { 
 		float:left;
 		}
-	
 	#right-column {
 		float:left;
 	}
-
 #footer {
 }
 
 
-/*-- ((( #header styles ))) --*/
+/*--- ((( #header styles ))) ---*/
 
 #header {}
+
+	/*h1*/
+	h1 a {
+		font-size:1.2em; 
+		color:#fddc08;
+		text-decoration:none;
+	}
+	h1 a:visited {
+		color:#fddc08;
+	}
+	h1 a:hover {
+		color:#fddc08;
+	}
+	h1 span.sub-title {
+		font-size:.8em;
+		font-weight:normal; 
+		color:#fff;
+	}
 	
+	/*utility-nav*/
 	ul#utility-nav {
 		float:right;
 	}
-	
 		ul#utility-nav li {
 			display:inline;
 		}
@@ -96,35 +109,16 @@ ul#local-nav {} /*This could be in header below global-nav, in left-column above
 				font-size:1.1em;
 				color:#fff;
 			}
-			
 				ul#utility-nav li a:visited {
 					color:#fff;
 				}
-
-	h1 a {
-		font-size:1.2em; 
-		color:#fddc08;
-		text-decoration:none;
-	}
-		h1 a:visited {
-			color:#fddc08;
-		}
-		h1 a:hover {
-			color:#fddc08;
-		}
-		h1 span.sub-title {
-			font-size:.8em;
-			font-weight:normal; 
-			color:#fff;
-		}
 		
-	ul#global-nav {}
-	
+	/*global-nav*/
+	ul#global-nav {
+	}	
 		ul#global-nav li {
 			display:inline;
-			
 		}
-	
 			ul#global-nav li a {
 				background:#246495;
 				color:#fff;
@@ -132,8 +126,59 @@ ul#local-nav {} /*This could be in header below global-nav, in left-column above
 				font-size:1.2em;
 				text-decoration:none;
 			}
-		
-			
+
+/*--- ((( footer styles ))) ---*/
+
+div#footer {
+}
+	div#footer-nav {
+		padding-top:20px;
+		background:#00417d;
+		text-align:center;
+	}
+	ul#global-footer-nav {
+	}
+		ul#global-footer-nav li {
+			display:inline;
+			font-weight:bold;
+			color:#fff;
+		}
+			ul#global-footer-nav li a, ul#footer-global-nav a:link {
+				color:#fff;
+			}
+				ul#global-footer-nav li a:hover {
+				}
+				ul#global-footer-nav li a:visited {
+				}
+				ul#global-footer-nav li a.current {
+					color:#999;
+					text-decoration:none;
+				}
+	ul#local-footer-nav {
+		margin-top:20px;
+	}
+		ul#local-footer-nav li {
+			display:inline;
+			font-weight:bold;
+			color:#fff;
+		}
+			ul#local-footer-nav li a, ul#local-vooter-nav li a:link {
+				color:#fff;
+			}
+				ul#local-footer-nav li a.current {
+					color:#999;
+					text-decoration:none;
+				}
+	#footer-info {
+		background:#53648C;
+		padding:15px 0;
+	}
+		#footer p {
+			font-size:1.1em;
+			line-height:1.3em;
+			padding-left:15px;
+			color:#fff;
+		}
 
 
 /*-------------------------------old stuff begins here

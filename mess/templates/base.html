@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
     <meta name="generator" content=""/>
-    <meta name="author" content="digger vermont"/>
+    <meta name="author" content="Digger Vermont, Mike Ball, Gabriel Farrell"/>
     <link href="{{ MEDIA_URL }}css/base.css"
         type="text/css" rel="Stylesheet" media="screen" />
     <title>
@@ -56,8 +56,29 @@
 		<div id="right-column">
 		</div><!--end #right-column-->
       </div><!--end #content-wrapper-->
-      <div id='pop_up' >{% block pop_up %}{% endblock %}</div><!--end pop_up-->
-      <div id='footer' >{% block footer %}{% endblock %}</div><!--end of footer-->
+      <div id="pop_up">{% block pop_up %}{% endblock %}</div><!--end pop_up-->
+      <div id="footer">
+      	<div id="footer-nav">
+		  <ul id="global-footer-nav">
+			<li><a href="">global nav item</a> |</li>
+			<li><a href="">another item</a> |</li>
+			<li><a href="" class="current">current nav item</a> |</li>
+			<li><a href="">third item</a></li>
+		  </ul>
+		  <ul id="local-footer-nav">
+			<li><a href="">local nav item</a> |</li>
+			<li><a href="">local nav</a> |</li>
+			<li><a href="" class="current">current local nav item</a></li>
+		  </ul>
+		</div><!--end of footer-nav-->
+		<div id="footer-info">
+		  <p>Mariposa Coop<br />
+		   4726 Baltimore Avenue<br />
+		   Philadelphia, PA  19143<br />
+		   <a href="http://www.mariposa.coop">www.mariposa.coop</a></p>
+		  <p>Site built in <a href="http://www.django.com">Django</a></p>
+        </div>
+	  </div><!--end of footer-->
     </div><!--end of wrapper-->
   </body>
 </html>
