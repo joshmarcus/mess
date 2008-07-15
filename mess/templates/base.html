@@ -41,16 +41,22 @@
 		</ul>
       </div>
       <div id="content-wrapper">
-	    <ul id="local-nav">
-			{% block page_menu %}
-	          {% comment %}
-	            <li><a href="{{ PROJECT_URL }}cashier" >Page</a></li>
-	            <li><a href="{{ PROJECT_URL }}book/list" >Buttons</a></li>
-	            <li><a href="{{ PROJECT_URL }}author/list" >Here</a></li>
-	          {% endcomment %}
-	        {% endblock %}
-	    </ul>
 	    <div id="left-column">
+			<ul id="local-nav"><!--this is just mock content to experiment with-->
+			  <li><a href="">local nav item</a></li>
+			  <li><a href="">another local item</a></li>
+			  <li><a href="">current local nav</a></li>
+			  <li><a href="">fourth local item</a></li>
+			</ul>
+		  <!--<ul id="local-nav">
+			{% block page_menu %}
+			  {% comment %}
+			    <li><a href="{{ PROJECT_URL }}cashier" >Page</a></li>
+			    <li><a href="{{ PROJECT_URL }}book/list" >Buttons</a></li>
+			    <li><a href="{{ PROJECT_URL }}author/list" >Here</a></li>
+			  {% endcomment %}
+			{% endblock %}
+		   </ul>-->
 		  {% block content %}{% endblock %}
 		</div><!--end #left-column-->
 		<div id="right-column">

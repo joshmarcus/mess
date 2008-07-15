@@ -193,6 +193,22 @@ div#footer {
 			padding-left:15px;
 			color:#fff;
 		}
+		
+/*--- ((( content-wrapper styles ))) ---*/
+
+/*left-column*/
+#left-column {}
+	ul#local-nav {
+		background:#EFF0F9;
+		padding:15px;
+	}
+		ul#local-nav li {
+			display:inline;
+		}
+		
+
+/*right-column*/
+#right-column {}
 
 
 /*-------------------------------old stuff begins here
