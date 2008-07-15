@@ -11,10 +11,11 @@ from mess.people.models import Person
 
 @permission_required('membership.can_view_list')
 def member_list(request):
-    page_name = 'Members'
-    member_list = Member.objects.all()
-    return render_to_response('membership/member_list.html', locals(),
-                                context_instance=RequestContext(request))
+    context = RequestContext(request)
+    context['page_name'] = 'Members'
+    context['member_list'] = Member.objects.all()
+    template = get_template('membership/member_list.html')
+    return HttpResponse(template.render(context))
 
 @permission_required('membership.can_edit_own')
 def member(request, id):

@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<table id='table' >
+  <table id='table' >
     <th>Name</th>
     <th>Accounts</th>
     <th>Job</th>
@@ -10,40 +9,34 @@
     <th>Email</th>
     <th>Phone</th>
     {% for member in member_list %}
-    <tr>
-        <td><a href='{{ PROJECT_URL }}member/form/{{ member.id }}'>
-                <img class='b100em'
-                        src='{{ MEDIA_URL }}media/images/Edit.png' />
-            </a>
-            <a href='{{ PROJECT_URL }}member/{{ member.id }}'>
-                {{ member }}
-            </a>
+      <tr>
+        <td>
+          <a href='{% url member member.id %}'>{{ member }}</a>
         </td>
-        <td>{% for account in member.accounts.all %}
-            <a href='{{ PROJECT_URL }}account/{{ account.id }}' >
-                {{ account }}
-            </a>
+        <td>
+          {% for account in member.accounts.all %}
+            <a href='{% url account account.id %}'>{{ account }}</a>
             <br />
-            {% endfor %}
+          {% endfor %}
         </td>
         <td>{{ member.job }}</td>
         <td>{{ member.get_status_display }}</td>        
-        <td>{% for email in member.person.emails.all %}
-                {{ email.get_type_display }}: {{ email.email }}<br />
-            {% endfor %}
+        <td>
+          {% for email in member.person.emails.all %}
+            {{ email.get_type_display }}: {{ email.email }}<br />
+          {% endfor %}
         </td>
-         <td>{% for phone in member.person.phones.all %}
-                {{ phone.get_type_display }}: {{ phone.number }}
-                {% if not phone.ext %}
-                    <br />
-                {% else %}
-                    Ext: {{ phone.ext }}<br />
-                {% endif %}
-            {% endfor %}
+        <td>
+          {% for phone in member.person.phones.all %}
+            {{ phone.get_type_display }}: {{ phone.number }}
+            {% if phone.ext %}
+              Ext: {{ phone.ext }}
+            {% endif %}
+            <br />
+          {% endfor %}
         </td>     
-    </tr>
-{% endfor %}
-</table>
-
+      </tr>
+    {% endfor %}
+  </table>
 {% endblock %}
 
