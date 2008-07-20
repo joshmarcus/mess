@@ -181,7 +181,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			
 /*--- ((( content-wrapper styles ))) ---*/
 
-	/*left-column*/
+	/*left-column and double-column*/
 	#left-column {}
 
 		ul#local-nav {
@@ -205,18 +205,18 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					
 					ul#local-nav li a:visited {}
 					
-		#left-column p {
+		#left-column p, #double-column p {
 			margin-left:15px;
 			margin-right:15px;
 			}
-		#left-column h2 {
+		#left-column h2, #double-column h2 {
 			margin-left:15px;
 			}
-		#left-column ul {
+		#left-column ul, #double-column ul {
 			margin-left:15px;
 			margin-bottom:1.5em;
 			}
-			#left-column ul li {
+			#left-column ul li, #double-column ul li {
 				margin-bottom:.5em;
 				padding-left:14px;
 				background:url(/media/images/bg-bullet.gif) no-repeat 0 0;
@@ -234,10 +234,6 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	/*double-column*/
 	#double-column {
 		}
-		#double-column h2 {
-			padding-left:15px;
-			}
-		#double-column p {}
 		#double-column table {
 			width:97%;
 			margin:15px;
@@ -251,7 +247,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				}
 			#double-column table td {
 				padding:1em .25em;
+				vertical-align:top;
 				}
+				#double-column table td ul {margin:0;}
+					#double-column table td ul li {}
 		
 		
 

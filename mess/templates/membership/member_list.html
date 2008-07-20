@@ -10,7 +10,7 @@
   </ul>
   <h2>Active Global Item</h2>
   <h3>Active local Page</h2>
-  <p>This could be a good spot for any sort of forms through which the user can sort or limit info in the table.</p>
+  <p>This could be a good spot for any sort of forms through which the user can sort or limit info in the table.</p	>
   <table>
 	<tr>
       <th>Name</th>
@@ -26,9 +26,11 @@
         <a href='{% url member member.id %}'>{{ member }}</a>
       </td>
       <td>
-          {% for account in member.accounts.all %}
-            <a href='{% url account account.id %}'>{{ account }}</a>
+	     <ul>
+		   <li>{% for account in member.accounts.all %}</li>
+           <li> <a href='{% url account account.id %}'>{{ account }}</a></li>
             <br />
+          </ul>
           {% endfor %}
         </td>
         <td>{{ member.job }}</td>
