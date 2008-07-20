@@ -28,43 +28,46 @@
     <li>Another unordered list item</li>
     <li>And just one more</li>
   </ul>
-  {% if not user.is_authenticated %}
-  <form method="post" action=".">
-    <input type="hidden" name="next" value="{{ next }}" />
-    <table>
-      {% if form.has_errors %}
-      <tr>
-        <td></td>
-        <td>
-          <ul class="errorlist">
-            <li>Your username and password didn't match. Please try again.</li>
-          </ul>
-        </td>
-      </tr>
-      {% endif %}
-      <tr>
-        <th>
-          <label for="id_username">Username:</label>
-        </th>
-        <td>{{form.username}}</td>
-      </tr>
-      <tr>
-        <th>
-          <label for="id_password">Password:</label>
-        </th>
-        <td>{{form.password}}</td>
-      </tr>
-        <td></td>
-        <td>
-          <input type="submit" value="Login" />
-        </td>
-      </tr>
-    </table>
-  </form>
-  {% endif %}
 </div>
 <div id ="right-column">
   <h3>Testing Right column h2s</h3>
+  {% if not user.is_authenticated %}
+    <div id="login">
+      <h4>Log in to the MESS</h4>
+      <form method="post" action=".">
+        <input type="hidden" name="next" value="{{ next }}" />
+        <table>
+          {% if form.has_errors %}
+          <tr>
+            <td></td>
+            <td>
+              <ul class="errorlist">
+                <li>Your username and password didn't match. Please try again.</li>
+              </ul>
+            </td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th>
+              <label for="id_username">Username:</label>
+            </th>
+            <td>{{form.username}}</td>
+          </tr>
+          <tr>
+            <th>
+              <label for="id_password">Password:</label>
+            </th>
+            <td>{{form.password}}</td>
+          </tr>
+            <td></td>
+            <td>
+              <input type="submit" value="Log in"/>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  {% endif %}
   <p>This content currently appears in welcome.html. Is there anything that should appear here?</p>
 </div><!--end right-column-->
 {% endblock %}
