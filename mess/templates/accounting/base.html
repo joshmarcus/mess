@@ -1,14 +1,3 @@
-{% extends "base.html" %}
-
-{% block head %}
-<link href="{{ MEDIA_URL }}css/div_list.css"
-        type="text/css" rel="Stylesheet" media="screen" />
-        
-<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
-{% endblock head %}
-
 {% block page_menu %}
 <a class='button' href="{% url daily_report %}">Daily Report</a>
 <a class='button' href="{% url close_out %}">Close Out</a>
