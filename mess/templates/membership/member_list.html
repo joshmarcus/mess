@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <table id='table' >
+<div id="double-column">
+  <ul id="local-nav"><!--this is just mock content to experiment with-->
+    <li><a href="">local nav item</a></li>
+	<li><a href="">another local item</a></li>
+	<li><a href="">current local nav</a></li>
+	<li class="last-item"><a href="">fourth local item</a></li>
+  </ul>
+  <table>
     <th>Name</th>
     <th>Accounts</th>
     <th>Job</th>
@@ -38,5 +45,6 @@
       </tr>
     {% endfor %}
   </table>
+</div>
 {% endblock %}
 

@@ -108,6 +108,13 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		width:280px;
 		margin-top:15px;
 		}
+	#double-column {
+		padding-bottom:50px;
+		border-top:1px solid #999;
+		float:left;
+		background:#fff;
+		margin:15px 20px 15px 15px;
+		}
 #footer {
 }
 
@@ -220,6 +227,21 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			margin:0 0 1em 0;
 			padding:14px 5px;
 			}
+			
+	/*double-column*/
+	#double-column table {
+		font-size:1.1em;
+		border-collapse:collapse;
+		}
+		#double-column table th {
+			background:#004175;
+			color:#fff;
+			}
+		#double-column table td {
+			
+		}
+		
+		
 
 
 /*--- ((( footer styles ))) ---*/
