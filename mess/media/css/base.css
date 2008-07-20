@@ -80,6 +80,7 @@ body {
 hr.left-clearer {display: block; clear: left; margin: -0.66em 0; visibility: hidden;}
 hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: hidden;}
 .last-item {border:none !important;}
+.attention {border:1px solid #ddd; background:yellow; padding:1em;}
 		
 /*--- ((( structure ))) ---*/
 
@@ -235,6 +236,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	#double-column {
 		}
 		#double-column table {
+			border:1px solid #ddd;
 			width:97%;
 			margin:15px;
 			font-size:1.1em;
@@ -243,15 +245,23 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#double-column table th {
 				background:#D18405;
 				color:#fff;
-				padding:1em .25em;
+				padding:.75em .25em .75em .5em;
 				}
 			#double-column table td {
-				padding:1em .25em;
+				padding:.75em .25em 1em .5em;
+				font-size:1em;
 				vertical-align:top;
+				border-bottom:1px solid #eee;
 				}
-				#double-column table td ul {margin:0;}
-					#double-column table td ul li {}
-		
+				#double-column table td ul {
+					margin:0;
+					}
+					#double-column table td ul li {
+						font-size:1em;
+						}
+				#double-column table tr.odd {
+					background:#F7F7F7;
+					}
 		
 
 
