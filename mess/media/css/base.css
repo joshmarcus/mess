@@ -6,13 +6,15 @@ COLORS:
 h1 yellow: 
 
 dark blue: #004175
-slate blue:
+slate blue: #246495
 body link blue:
 pale blue: #EFF0F9
 
 body type gray: #333
 pale gray: #ebebeb
 medium gray: #999
+
+orange: #D18405
 
 */
 
@@ -25,7 +27,7 @@ medium gray: #999
 
 body {
 	text-align:center;
-	background:#fff;
+	background:#fff; /*url(http://www.greaterphilachamber.com/images/main-bg.gif) repeat-y top center;*/
     color: #333;
     font-family:Helvetica, Arial, sans-serif;
     font-size:62.5%;
@@ -112,6 +114,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		padding-bottom:50px;
 		border-top:1px solid #999;
 		float:left;
+		width:930px;
 		background:#fff;
 		margin:15px 20px 15px 15px;
 		}
@@ -229,17 +232,26 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			}
 			
 	/*double-column*/
-	#double-column table {
-		font-size:1.1em;
-		border-collapse:collapse;
+	#double-column {
 		}
-		#double-column table th {
-			background:#004175;
-			color:#fff;
+		#double-column h2 {
+			padding-left:15px;
 			}
-		#double-column table td {
-			
-		}
+		#double-column p {}
+		#double-column table {
+			width:97%;
+			margin:15px;
+			font-size:1.1em;
+			border-collapse:collapse;
+			}
+			#double-column table th {
+				background:#D18405;
+				color:#fff;
+				padding:1em .25em;
+				}
+			#double-column table td {
+				padding:1em .25em;
+				}
 		
 		
 

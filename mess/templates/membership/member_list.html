@@ -8,19 +8,24 @@
 	<li><a href="">current local nav</a></li>
 	<li class="last-item"><a href="">fourth local item</a></li>
   </ul>
+  <h2>Active Global Item</h2>
+  <h3>Active local Page</h2>
+  <p>This could be a good spot for any sort of forms through which the user can sort or limit info in the table.</p>
   <table>
-    <th>Name</th>
-    <th>Accounts</th>
-    <th>Job</th>
-    <th>Current<br /> Status</th>
-    <th>Email</th>
-    <th>Phone</th>
-    {% for member in member_list %}
-      <tr>
-        <td>
-          <a href='{% url member member.id %}'>{{ member }}</a>
-        </td>
-        <td>
+	<tr>
+      <th>Name</th>
+      <th>Accounts</th>
+      <th>Job</th>
+      <th>Current<br /> Status</th>
+      <th>Email</th>
+      <th>Phone</th>
+    </tr>    
+	{% for member in member_list %}
+    <tr>
+      <td>
+        <a href='{% url member member.id %}'>{{ member }}</a>
+      </td>
+      <td>
           {% for account in member.accounts.all %}
             <a href='{% url account account.id %}'>{{ account }}</a>
             <br />
