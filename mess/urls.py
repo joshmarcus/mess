@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     (r'^membership/', include('mess.membership.urls')),        
     (r'^people/', include('mess.people.urls')),
     (r'^reporting/', include('mess.reporting.urls')),        
+    (r'^scheduling/', include('mess.scheduling.urls')),        
     
     url(r'^$', login, {'template_name': 'welcome.html'}, 'login'),
     url(r'^logout/$', logout_then_login, name='logout'),
