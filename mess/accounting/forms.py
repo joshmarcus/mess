@@ -1,7 +1,8 @@
 from django import newforms as forms
 
-from mess.accounting.models import Transaction, get_account_balance
+from mess.accounting.models import Transaction, Reconciliation
 from mess.accounting.models import get_credit_choices, get_debit_choices
+from mess.accounting.models import get_account_balance, get_todays_transactions
 
 
 class TransactionForm(forms.ModelForm):
@@ -34,4 +35,6 @@ class TransactionForm(forms.ModelForm):
         return self.cleaned_data
         
     
-
+class CloseOutForm(forms.ModelForm):
+    class Meta:
+        model = Reconciliation
