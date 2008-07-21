@@ -1,7 +1,18 @@
 from django.db import models
+from mess.membership.models import Member
 
-class ShiftType(models.Model):
+JOB_CHOICES = (
+    ('p','Paid'),
+    ('m','Member'),
+)
+
+class Job(models.Model):
+    """
+    Job description / title
+    """
     name = models.CharField(max_length=40, unique=True)
+    desc = models.TextField(blank=True)
+    type = models.CharField(max_length=1, choices=JOB_CHOICES, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -12,18 +23,33 @@ class ShiftType(models.Model):
     class Admin:
         pass
 
-class Shift(models.Model):
-    type = models.ForeignKey(ShiftType)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    completed = models.BooleanField()
-
-    def __unicode__(self):
-        return self.type.name
+class Task(models.Model):
+    """
+    A task is an instance of a job
+    """
+    job = models.ForeignKey(Job)
+    deadline = models.DateTimeField()
+    start = models.DateTimeField(null=True, blank=True)
+    hours = models.IntegerField()
     
-    class Meta:
-        ordering = ['start_time']
-
     class Admin:
         pass
 
+class Assignment(models.Model):
+    """
+    Associate a member with a task event
+    """
+    member = models.ForeignKey(Member)
+    task = models.ForeignKey(Task)
+    class Admin:
+        pass
+
+class Timecard(models.Model):
+    """
+    Keep track of the time worked on a task (through assignment)
+    """
+    assignment = models.ForeignKey(Assignment)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    class Admin:
+        pass
