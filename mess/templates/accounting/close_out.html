@@ -1,26 +1,34 @@
-{% extends "accounting/base.html" %}
+{% extends "base.html" %}i
 
 {% block content %}
+{% include "accounting/snippets/page_menu.html" %}
+<h1>Close Out for {{ date }}</h1>
+<h2>Transactions are being reconciled by {{ user_name }}</h2>
+<br /><br />
 
-<h1>Totals for Today - {{ date }}</h1>
-<h2>Total Credits: {{ total_credits }}</h2>
-Extras: {{ total_extras }}<br />
-Purchases: {{ total_purchase }}<br />
-Bulk Orders: {{ total_bulk_purchase }}<br />
-Dues: {{ total_dues }}<br />
-Misc Sales:  {{ total_misc_sales }}<br />
-Trades: {{ total_trade }}<br />
-Work Credit: {{ total_work_credit }}<br />
-<br />
-<h2>Total Debits: {{ total_debits }}</h2>
-Credit Cards: {{ total_credit_card }}<br />
-Debit Cards: {{ total_debit_card }}<br />
-Checks: {{ total_check}}<br />
-Money Orders{{ total_money_order}}<br />
-EBT: {{ total_ebt }}<br />
-Deposits: {{ total_deposit }}<br />
-Key Deposits: {{ total_key_deposit }}<br />
-Misc Debits: {{ total_misc_debit }}<br />
-
-
+<form id='form' name='form' method='post'>
+    <table>
+        <th>Transaction</th>
+        <th>Account</th>
+        <th>Member</th>
+        <th>Credit</th>
+        <th>Debit</th>
+        <th>Reconciled</th>
+        {% for key, data  in tran_list.items %}
+            <tr>
+                <td>{{ data.transaction }}</td>
+                <td>{{ data.account }}</td>
+                <td>{{ data.member }}</td>
+                <td>{{ data.credit }}</td>
+                <td>{{ data.debit }}</td>
+                <td><input id={{ key }} type="checkbox"
+                            name={{ key }}"_reconciled"
+                            value={{ data.reconciled }}>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+            <input type='reset' value='Reset' >
+        <input type='submit' value='Done' >
+</form>
 {% endblock %}
