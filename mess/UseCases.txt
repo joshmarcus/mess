@@ -1,0 +1,2 @@
+Suzy is membership coordinator:
+	To start a new sched period, she goes to the sched app and fills in all the known nessisary tasks. Members sign up for tasks they want (creating TaskAssignments). When the scheduling deadline aproaches, Suzy gets a report of the Tasks that are still lacking Assignments. She clicks on each unassigned Task and is given a list of members who could do the Task (ordered by debt of hours and how recently they worked).
