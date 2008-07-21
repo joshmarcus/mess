@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link href="{{ MEDIA_URL }}css/div_list.css"
+        type="text/css" rel="Stylesheet" media="screen" />
+{% endblock head %}
+
+{% block page_menu %}
+<a class='button' href="{{ PROJECT_URL }}monthly.html" >Monthly</a>
+<a class='button' href="{{ PROJECT_URL }}weekly.html" >Weekly</a>
+<a class='button' href="{{ PROJECT_URL }}daily.html" >Daily</a>
+<a class='button' href="{{ PROJECT_URL }}job_list.html" >Job List</a>
+{% endblock %}
