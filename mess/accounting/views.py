@@ -4,13 +4,16 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 #from django.utils import simplejson
 from django.template import RequestContext
-from django.template.loader import render_to_string
+#from django.template.loader import render_to_string
+from django.template.loader import get_template
+from django.contrib.auth.models import User
 
 from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
+from mess.accounting.models import get_todays_transactions
 from mess.accounting.models import get_trans_total
 from mess.membership.models import Member, Account
-from mess.accounting.forms import TransactionForm
+from mess.accounting.forms import TransactionForm, CloseOutForm
 from mess.utils.search import search_for_string, account_members_dict
 
 def thanks(request):
@@ -22,11 +25,6 @@ def thanks(request):
     return render_to_response('accounting/thanks.html', locals(),
                                 context_instance=RequestContext(request))
 
-def get_todays_transactions():
-    d = date.today()
-    return Transaction.objects.filter(date__year = d.year,
-                                        date__month = d.month,
-                                        date__day = d.day)
 def save_credit_trans(request):
         d = TransactionForm(request.POST)
         if d.data['credit_type'] != 'N':
@@ -81,7 +79,7 @@ def cashier(request):
                                             date__month = d.month,
                                             date__day = d.day)
             context['transactions'] = trans
-            return render_to_response('xhr/transactions.html', context)
+            return render_to_response('accounting/snippets/transactions.html', context)
         if 'account_id' in request.GET:
             account_id = request.GET.get('account_id')
             account_members = account_members_dict(account_id)
@@ -96,8 +94,8 @@ def cashier(request):
             context['other_member_id'] =  request.GET.get('om_id')
             context['other_member_name'] = request.GET.get('om_name')
             context['account_name'] = request.GET.get('account_name')
-            return render_to_response('xhr/confirm_other_member.html', context)
-        return render_to_response('xhr/list.html', context)
+            return render_to_response('accounting/snippets/confirm_other_member.html', context)
+        return render_to_response('accounting/snippets/list.html', context)
     else:
         context['page_name'] = 'Cashier'
         context['credit_choices'] = get_credit_choices('Cashier', 'Cashier')
@@ -109,33 +107,32 @@ def cashier(request):
 
 def close_out(request):
     """Page to reconcile the day's transactions."""
-    context = {}
+    context = RequestContext(request)
+    if not request.method == 'POST':  
+        transactions = get_todays_transactions()
+        tran_list = {}
+        user = request.user
+        context['user_name'] = user.person_set.all()[0].name
+        for t in transactions:
+            initial_data = {
+                    'reconciled_by': user.person_set.all()[0].id,
+                    'transaction': t.id,
+                    'reconciled': 0,
+                    #'reconciled_by_name': user.person_set.all()[0].name,
+                    'account': t.account,
+                    'member': t.member,
+                    'debit': t.debit,
+                    'credit': t.credit,
+                    }
+            tran_list[t.id] = initial_data
+        context['tran_list'] = tran_list
+        
     context['page_name'] = 'Close Out'
-    context['total_credits'] = 0
-    context['total_debits'] = 0
     d = date.today()
     context['date'] = d.strftime('%A, %B %d, %Y')    
-    for type, name in get_credit_choices('Staff'):
-        name = name.lower().replace(' ','_')
-        total_name = 'total_' + name
-        context[name] = Transaction.objects.filter(date__year = d.year,
-                                                date__month = d.month,
-                                                date__day = d.day,
-                                                credit_type = type,)
-        context[total_name] = get_trans_total(context[name], 'credit')
-        context['total_credits'] += context[total_name]
-    for type, name in get_debit_choices('Staff'):
-        name = name.lower().replace(' ','_')
-        total_name = 'total_' + name
-        context[name] = Transaction.objects.filter(date__year = d.year,
-                                                date__month = d.month,
-                                                date__day = d.day,
-                                                debit_type = type,)
-        context[total_name] = get_trans_total(context[name], 'debit')
-        context['total_debits'] += context[total_name]
+    template = get_template('accounting/close_out.html')
+    return HttpResponse(template.render(context))
 
-    return render_to_response('accounting/close_out.html', context,
-                                context_instance=RequestContext(request))
 
 # I don't believe this is useful any more.  in any case it needs to be
 # rewriten to reflect the changes that were made in the cashier view above.
