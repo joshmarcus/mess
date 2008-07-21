@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from django.core import exceptions
 
@@ -92,6 +94,11 @@ def get_account_balance(id):
 def get_account_transactions(id):
     return Transaction.objects.filter(member=id)
 
+def get_todays_transactions():
+    d = date.today()
+    return Transaction.objects.filter(date__year = d.year,
+                                        date__month = d.month,
+                                        date__day = d.day)
 
 def get_trans_total(trans, type='all'):
     total = 0
@@ -153,7 +160,7 @@ class Reconciliation(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.date
+        return str(self.date)
     
     class Admin:
         pass
