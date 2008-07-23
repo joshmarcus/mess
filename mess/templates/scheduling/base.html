@@ -1,13 +1,23 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link href="{{ MEDIA_URL }}css/div_list.css"
-        type="text/css" rel="Stylesheet" media="screen" />
+<link href="{{MEDIA_URL}}css/div_list.css"
+        type="text/css" rel="stylesheet" media="screen" />
+
+<!--CSS file (default YUI Sam Skin) -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/calendar/assets/skins/sam/calendar.css">
+
+<!-- Dependencies -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+<!-- Source file -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/calendar/calendar-min.js"></script>
+
 {% endblock head %}
 
 {% block page_menu %}
-<a class='button' href="{{ PROJECT_URL }}monthly.html" >Monthly</a>
-<a class='button' href="{{ PROJECT_URL }}weekly.html" >Weekly</a>
-<a class='button' href="{{ PROJECT_URL }}daily.html" >Daily</a>
-<a class='button' href="{{ PROJECT_URL }}job_list.html" >Job List</a>
+<a class='button' href="monthly.html" >Monthly</a>
+<a class='button' href="weekly.html" >Weekly</a>
+<a class='button' href="daily.html" >Daily</a>
+<a class='button' href="job_list.html" >Job List</a>
 {% endblock %}

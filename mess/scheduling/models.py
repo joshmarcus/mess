@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from mess.membership.models import Member
 
@@ -28,6 +30,9 @@ class Task(models.Model):
     deadline = models.DateTimeField()
     start = models.DateTimeField(null=True, blank=True)
     hours = models.IntegerField()
+    
+    def __unicode__(self):
+        return u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
 
 class Assignment(models.Model):
     """
@@ -35,6 +40,9 @@ class Assignment(models.Model):
     """
     member = models.ForeignKey(Member)
     task = models.ForeignKey(Task)
+    
+    def __unicode__(self):
+        return u"%s: %s" % (self.member, self.task)
 
 class Timecard(models.Model):
     """
@@ -43,3 +51,7 @@ class Timecard(models.Model):
     assignment = models.ForeignKey(Assignment)
     start = models.DateTimeField()
     end = models.DateTimeField()
+    
+    def __unicode__(self):
+        work = self.end - self.start
+        return u"%s hrs of %s" % (work.seconds / 3600, self.assignment.task.job)

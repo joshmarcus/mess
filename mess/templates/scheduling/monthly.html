@@ -1,8 +1,9 @@
 {% extends "scheduling/base.html" %}
 
 {% block content %}
-{# print help information on usage #}
-{% include "calendar.html" %}
-{% include "task_form.py" %}
-{% include "task_list.html" %}
+<ul>
+{% for task in tasks %}
+<li>{{task}}</li>
+{% endfor %}
+</ul>
 {% endblock content %}
