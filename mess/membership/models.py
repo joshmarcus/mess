@@ -27,16 +27,16 @@ CONTACT_PREF = (
 class Member(models.Model):
     person = models.ForeignKey(Person, unique=True, related_name='member')
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
-                            default='a', radio_admin=True)
+                            default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
-                            default='w', radio_admin=True)
+                            default='w')
     account = models.ForeignKey('Account', related_name='primary_account',
                                 verbose_name='Primary Account',
                                 blank=True, null=True)
     date_joined = models.DateField(default=date(1990, 01, 01))
     has_key = models.BooleanField(default=False)
     contact_preference = models.CharField(max_length=1, 
-            choices=CONTACT_PREF, default='e', radio_admin=True)
+            choices=CONTACT_PREF, default='e')
 
     def __unicode__(self):
         return self.person.name
