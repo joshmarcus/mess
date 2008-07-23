@@ -1,6 +1,9 @@
 from django.conf import settings 
 from django.conf.urls.defaults import *
+from django.contrib import admin
 from django.contrib.auth.views import login, logout, logout_then_login
+
+admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^accounting/', include('mess.accounting.urls')),        
@@ -13,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^$', login, {'template_name': 'welcome.html'}, 'login'),
     url(r'^logout/$', logout_then_login, name='logout'),
 
-    (r'^admin/', include('django.contrib.admin.urls')),
+    ('^admin/(.*)', admin.site.root),
 )
 
 # We're going to use the Django server in development, so we'll serve
