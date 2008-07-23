@@ -32,7 +32,7 @@
                 <li><a href="{% url members %}">Members</a></li>
               {% endif %}
               {% if user.is_staff %}
-                <li><a href="{% url accounts %}">Accounts</a></li>
+                <li class="active"><a href="{% url accounts %}">Accounts</a></li>
                 <li><a href="{% url reports %}">Reports</a></li>
                 <li><a href="{% url cashier %}">Cashier</a></li>
               {% endif %}
