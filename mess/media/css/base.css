@@ -171,15 +171,13 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		
 	/*global-nav*/
 	ul#global-nav {
-		float:left;
-		margin:94px 15px 0 15px;
-		
+		margin:100px 15px 0 15px;
+		position:absolute;
 		}	
 		ul#global-nav li {
 			display:inline;
 			}
 			ul#global-nav li a {
-				display:block;
 				padding:6px;
 				background:#246495;
 				color:#fff;
