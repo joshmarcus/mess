@@ -1,9 +1,10 @@
 from django.conf.urls.defaults import *
-from mess.membership.models import Member, Account
 
-urlpatterns = patterns('mess.membership.views',
-    (r'^monthly.html', 'Monthly'),
-    (r'^weekly.html', 'Weekly'),
-    (r'^daily.html', 'Daily'),
-    (r'^job_list.html', 'Job List'),
-)
+# commented out until there are actual views to point at -- 
+# phantom urls wreak havoc with {% url %} and reverse()
+#urlpatterns = patterns('mess.scheduling.views',
+#    (r'^monthly.html', 'monthly'),
+#    (r'^weekly.html', 'weekly'),
+#    (r'^daily.html', 'daily'),
+#    (r'^job_list.html', 'job_list'),
+#)

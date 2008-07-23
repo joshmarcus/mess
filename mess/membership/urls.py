@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from mess.membership.models import Member, Account
 
 urlpatterns = patterns('mess.membership.views',
     url(r'^account/(\d{1,4})$', 'account', name='account'),
