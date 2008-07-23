@@ -18,7 +18,7 @@
         <ul id="utility-nav">
           {% if user.is_authenticated %}
           <li>Logged in as <a href="{% url member user.id %}" >{{ user.username }}</a></li>
-          <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
+          <li class="last-item"><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
           {% endif %}
         </ul>
         <h1>

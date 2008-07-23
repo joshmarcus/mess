@@ -157,7 +157,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		}
 		ul#utility-nav li {
 			display:inline;
+			color:#fff;
 			font-size:1em;
+			border-right:1px solid #fff;
+			padding:2px 7px 2px 3px;
 			}
 			ul#utility-nav li a {
 				color:#fff;
