@@ -25,7 +25,7 @@ CONTACT_PREF = (
 )
 
 class Member(models.Model):
-    person = models.ForeignKey(Person, unique=True, related_name='member')
+    user = models.ForeignKey(User, unique=True)
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
                             default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
@@ -39,7 +39,7 @@ class Member(models.Model):
             choices=CONTACT_PREF, default='e')
 
     def __unicode__(self):
-        return self.person.name
+        return self.user.username
 
     class Meta:
         permissions = (
@@ -47,11 +47,7 @@ class Member(models.Model):
             ('can_view_list', 'Can view list'),
         )
         # can't order by ForeignKey
-        ordering = ['person']
-
-    class Admin:
-        pass
-
+        ordering = ['user']
 
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -74,5 +70,3 @@ class Account(models.Model):
     class Meta:
         ordering = ['name']
 
-    class Admin:
-        pass

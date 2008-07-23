@@ -1,2685 +1,2685 @@
 [
-    {
-        "pk": 1, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "q", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 27, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 20, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "i", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 15, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 11, 
-            "has_key": false, 
-            "work_status": "n", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 80, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": 17, 
-            "contact_preference": "e", 
-            "person": 76, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 5, 
-            "has_key": false, 
-            "work_status": "n", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "i", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 12, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 73, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 86, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 88, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 10, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 8, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 92, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 29, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 16, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 7, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 18, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 14, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 17, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 3, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 19, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "i", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 9, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 20, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 42, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2006-08-07"
-        }
-    }, 
-    {
-        "pk": 21, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 66, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 22, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 72, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 23, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 99, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 24, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 69, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 25, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 26, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 26, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 58, 
-            "has_key": false, 
-            "work_status": "n", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 27, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 56, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 28, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 68, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 35, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 36, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 29, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 85, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 30, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 30, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 31, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "i", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 41, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 32, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 38, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 101, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "m", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 98, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 33, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 21, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 34, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 37, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 36, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 101, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 37, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 33, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 38, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 89, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 39, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "L", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 74, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 40, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 79, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 41, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "L", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 96, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 42, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 61, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 43, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 82, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 44, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 2, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 45, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 39, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 46, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "L", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 32, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 47, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 46, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 48, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 4, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 49, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 45, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 50, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 48, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 51, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 25, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 52, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 1, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 53, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 62, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 54, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 44, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 102, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": 99, 
-            "contact_preference": "e", 
-            "person": 102, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-07-11"
-        }
-    }, 
-    {
-        "pk": 103, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": 100, 
-            "contact_preference": "e", 
-            "person": 103, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-07-11"
-        }
-    }, 
-    {
-        "pk": 55, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 67, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 56, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 16, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 57, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 31, 
-            "has_key": false, 
-            "work_status": "n", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 58, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 63, 
-            "has_key": false, 
-            "work_status": "e", 
-            "date_joined": "1981-05-19"
-        }
-    }, 
-    {
-        "pk": 59, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 54, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 60, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 34, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 61, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 65, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 62, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 50, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 63, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 91, 
-            "has_key": false, 
-            "work_status": "n", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 64, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 18, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 65, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 90, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 69, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 13, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 66, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 6, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 67, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 24, 
-            "has_key": false, 
-            "work_status": "e", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 68, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 83, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 70, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 94, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 71, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 23, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 72, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 52, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 73, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 57, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 74, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 49, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 75, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 71, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 76, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 93, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 77, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 77, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 78, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 59, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 79, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 51, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 80, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 55, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 81, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 70, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 82, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 40, 
-            "has_key": false, 
-            "work_status": "e", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 83, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 19, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 84, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 97, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 85, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "m", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 28, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 86, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 84, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 89, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 22, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 90, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 64, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 91, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 75, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 92, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 53, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 87, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 35, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 88, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "m", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 95, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 93, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 81, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 94, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 43, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 95, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "L", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 87, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 96, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "i", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 47, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 97, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 17, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 98, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 78, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 99, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "a", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 100, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 100, 
-        "model": "membership.member", 
-        "fields": {
-            "status": "i", 
-            "account": null, 
-            "contact_preference": "e", 
-            "person": 60, 
-            "has_key": false, 
-            "work_status": "w", 
-            "date_joined": "2008-02-29"
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 55, 
-            "name": "@ House", 
-            "members": [
-                43, 
-                55, 
-                80, 
-                88
-            ]
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 53, 
-            "name": "@ Space", 
-            "members": [
-                53, 
-                83, 
-                84, 
-                91
-            ]
-        }
-    }, 
-    {
-        "pk": 33, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 3, 
-            "name": "Alice's Kitchen", 
-            "members": [
-                3, 
-                90
-            ]
-        }
-    }, 
-    {
-        "pk": 21, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 33, 
-            "name": "Alice's Malice", 
-            "members": [
-                14, 
-                33, 
-                66, 
-                94
-            ]
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 14, 
-            "name": "Alley Kats", 
-            "members": [
-                14, 
-                61
-            ]
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 34, 
-            "name": "Allie Oppps", 
-            "members": [
-                19, 
-                34
-            ]
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 27, 
-            "name": "Allie's Cats ", 
-            "members": [
-                27
-            ]
-        }
-    }, 
-    {
-        "pk": 17, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 5, 
-            "name": "And the winner is...", 
-            "members": [
-                5, 
-                22
-            ]
-        }
-    }, 
-    {
-        "pk": 34, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 4, 
-            "name": "Andrew Quincy", 
-            "members": [
-                4, 
-                10, 
-                22, 
-                37, 
-                53, 
-                89
-            ]
-        }
-    }, 
-    {
-        "pk": 66, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 59, 
-            "name": "Andrews", 
-            "members": [
-                59, 
-                67, 
-                70
-            ]
-        }
-    }, 
-    {
-        "pk": 36, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 7, 
-            "name": "Andy Smith", 
-            "members": [
-                7, 
-                43
-            ]
-        }
-    }, 
-    {
-        "pk": 31, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 15, 
-            "name": "Are You Hungry?", 
-            "members": [
-                15
-            ]
-        }
-    }, 
-    {
-        "pk": 38, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 11, 
-            "name": "Beatrice Davidson", 
-            "members": [
-                11, 
-                19, 
-                62
-            ]
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 28, 
-            "name": "Bedrest", 
-            "members": [
-                28
-            ]
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 47, 
-            "name": "Believe it!", 
-            "members": [
-                30, 
-                41, 
-                47, 
-                58, 
-                76, 
-                82
-            ]
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 53, 
-            "name": "Best in Peas", 
-            "members": [
-                9, 
-                39, 
-                53, 
-                99
-            ]
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 36, 
-            "name": "Best in show", 
-            "members": [
-                21, 
-                36, 
-                70
-            ]
-        }
-    }, 
-    {
-        "pk": 41, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 16, 
-            "name": "Bull's Kitchen", 
-            "members": [
-                16, 
-                20, 
-                47, 
-                53
-            ]
-        }
-    }, 
-    {
-        "pk": 68, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 63, 
-            "name": "Butterworth", 
-            "members": [
-                63
-            ]
-        }
-    }, 
-    {
-        "pk": 96, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 93, 
-            "name": "Butterworth's House", 
-            "members": [
-                93
-            ]
-        }
-    }, 
-    {
-        "pk": 43, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 18, 
-            "name": "C.'s Kitchen", 
-            "members": [
-                18, 
-                41, 
-                49, 
-                99
-            ]
-        }
-    }, 
-    {
-        "pk": 51, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 26, 
-            "name": "Carpenter", 
-            "members": [
-                15, 
-                26
-            ]
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 60, 
-            "name": "Cat House", 
-            "members": [
-                60, 
-                68
-            ]
-        }
-    }, 
-    {
-        "pk": 44, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 19, 
-            "name": "Charles", 
-            "members": [
-                11, 
-                19, 
-                44, 
-                76
-            ]
-        }
-    }, 
-    {
-        "pk": 45, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 20, 
-            "name": "Charles's House", 
-            "members": [
-                20
-            ]
-        }
-    }, 
-    {
-        "pk": 50, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 25, 
-            "name": "Charlie Nicols", 
-            "members": [
-                19, 
-                25
-            ]
-        }
-    }, 
-    {
-        "pk": 48, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 23, 
-            "name": "Charlie's House", 
-            "members": [
-                23, 
-                99
-            ]
-        }
-    }, 
-    {
-        "pk": 62, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 51, 
-            "name": "DaVinci", 
-            "members": [
-                3, 
-                35, 
-                51
-            ]
-        }
-    }, 
-    {
-        "pk": 52, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 30, 
-            "name": "Dave Edwards", 
-            "members": [
-                1, 
-                30, 
-                50, 
-                60, 
-                64
-            ]
-        }
-    }, 
-    {
-        "pk": 53, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 31, 
-            "name": "Debbie Cooper", 
-            "members": [
-                31, 
-                48, 
-                90
-            ]
-        }
-    }, 
-    {
-        "pk": 55, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 38, 
-            "name": "Dolores Yarrow", 
-            "members": [
-                14, 
-                38, 
-                83
-            ]
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 80, 
-            "name": "Dreams of Ice Cream ", 
-            "members": [
-                15, 
-                17, 
-                80
-            ]
-        }
-    }, 
-    {
-        "pk": 28, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 1, 
-            "name": "Eat Your Peas!!", 
-            "members": [
-                1, 
-                39, 
-                91
-            ]
-        }
-    }, 
-    {
-        "pk": 25, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 50, 
-            "name": "Eat Your Vegetables", 
-            "members": [
-                50, 
-                61
-            ]
-        }
-    }, 
-    {
-        "pk": 92, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 40, 
-            "name": "Ellie Quincy", 
-            "members": [
-                40
-            ]
-        }
-    }, 
-    {
-        "pk": 56, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 41, 
-            "name": "Ellis", 
-            "members": [
-                41
-            ]
-        }
-    }, 
-    {
-        "pk": 57, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 42, 
-            "name": "Elwwod's House", 
-            "members": [
-                31, 
-                42, 
-                99
-            ]
-        }
-    }, 
-    {
-        "pk": 58, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 43, 
-            "name": "Elwwod's Kitchen", 
-            "members": [
-                43
-            ]
-        }
-    }, 
-    {
-        "pk": 32, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 2, 
-            "name": "Ewing's House", 
-            "members": [
-                2
-            ]
-        }
-    }, 
-    {
-        "pk": 22, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 37, 
-            "name": "Fake House", 
-            "members": [
-                12, 
-                15, 
-                25, 
-                37, 
-                91
-            ]
-        }
-    }, 
-    {
-        "pk": 60, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 46, 
-            "name": "Fiona Withers", 
-            "members": [
-                46
-            ]
-        }
-    }, 
-    {
-        "pk": 61, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 48, 
-            "name": "Francis Ewing", 
-            "members": [
-                37, 
-                48
-            ]
-        }
-    }, 
-    {
-        "pk": 63, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 52, 
-            "name": "Garth", 
-            "members": [
-                52, 
-                54
-            ]
-        }
-    }, 
-    {
-        "pk": 39, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 12, 
-            "name": "Gerald", 
-            "members": [
-                12
-            ]
-        }
-    }, 
-    {
-        "pk": 93, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 56, 
-            "name": "Gerald McHenry", 
-            "members": [
-                56
-            ]
-        }
-    }, 
-    {
-        "pk": 80, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 79, 
-            "name": "Goode", 
-            "members": [
-                3, 
-                79
-            ]
-        }
-    }, 
-    {
-        "pk": 65, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 58, 
-            "name": "Harris", 
-            "members": [
-                58
-            ]
-        }
-    }, 
-    {
-        "pk": 35, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 6, 
-            "name": "Harrison", 
-            "members": [
-                6
-            ]
-        }
-    }, 
-    {
-        "pk": 67, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 62, 
-            "name": "Harrison's Kitchen", 
-            "members": [
-                11, 
-                20, 
-                58, 
-                62
-            ]
-        }
-    }, 
-    {
-        "pk": 69, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 64, 
-            "name": "Harry's Kitchen", 
-            "members": [
-                52, 
-                64, 
-                79
-            ]
-        }
-    }, 
-    {
-        "pk": 83, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 85, 
-            "name": "Henderson's House", 
-            "members": [
-                30, 
-                58, 
-                85
-            ]
-        }
-    }, 
-    {
-        "pk": 54, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 35, 
-            "name": "House", 
-            "members": [
-                9, 
-                35
-            ]
-        }
-    }, 
-    {
-        "pk": 49, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 24, 
-            "name": "House's House", 
-            "members": [
-                7, 
-                24, 
-                33
-            ]
-        }
-    }, 
-    {
-        "pk": 88, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 94, 
-            "name": "James", 
-            "members": [
-                58, 
-                94
-            ]
-        }
-    }, 
-    {
-        "pk": 71, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 66, 
-            "name": "James's House", 
-            "members": [
-                26, 
-                66, 
-                95, 
-                97
-            ]
-        }
-    }, 
-    {
-        "pk": 73, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 68, 
-            "name": "Jim Michaels", 
-            "members": [
-                32, 
-                43, 
-                51, 
-                68
-            ]
-        }
-    }, 
-    {
-        "pk": 74, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 70, 
-            "name": "Joe's Kitchen", 
-            "members": [
-                35, 
-                70
-            ]
-        }
-    }, 
-    {
-        "pk": 75, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 71, 
-            "name": "Joey Franke", 
-            "members": [
-                27, 
-                37, 
-                71
-            ]
-        }
-    }, 
-    {
-        "pk": 94, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 72, 
-            "name": "Joey House", 
-            "members": [
-                72
-            ]
-        }
-    }, 
-    {
-        "pk": 76, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 73, 
-            "name": "Johnny's Kitchen", 
-            "members": [
-                20, 
-                46, 
-                73
-            ]
-        }
-    }, 
-    {
-        "pk": 79, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 78, 
-            "name": "Jon", 
-            "members": [
-                78
-            ]
-        }
-    }, 
-    {
-        "pk": 81, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 81, 
-            "name": "Josephine Davidson", 
-            "members": [
-                23, 
-                81
-            ]
-        }
-    }, 
-    {
-        "pk": 86, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 89, 
-            "name": "Kim Edwards", 
-            "members": [
-                89
-            ]
-        }
-    }, 
-    {
-        "pk": 87, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 90, 
-            "name": "Kim's Kitchen", 
-            "members": [
-                24, 
-                90, 
-                94
-            ]
-        }
-    }, 
-    {
-        "pk": 95, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 87, 
-            "name": "Kimberly Charles", 
-            "members": [
-                87
-            ]
-        }
-    }, 
-    {
-        "pk": 59, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 45, 
-            "name": "Lee", 
-            "members": [
-                18, 
-                45, 
-                77
-            ]
-        }
-    }, 
-    {
-        "pk": 89, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 95, 
-            "name": "Lee Jameson", 
-            "members": [
-                95
-            ]
-        }
-    }, 
-    {
-        "pk": 77, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 76, 
-            "name": "Lee's House", 
-            "members": [
-                51, 
-                76
-            ]
-        }
-    }, 
-    {
-        "pk": 84, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 86, 
-            "name": "Lemon", 
-            "members": [
-                86
-            ]
-        }
-    }, 
-    {
-        "pk": 85, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 88, 
-            "name": "Lemon's House", 
-            "members": [
-                27, 
-                28, 
-                47, 
-                89, 
-                88
-            ]
-        }
-    }, 
-    {
-        "pk": 18, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 49, 
-            "name": "Lick your chops", 
-            "members": [
-                49, 
-                51, 
-                66
-            ]
-        }
-    }, 
-    {
-        "pk": 98, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 101, 
-            "name": "Macbeth", 
-            "members": [
-                101
-            ]
-        }
-    }, 
-    {
-        "pk": 82, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 82, 
-            "name": "Mathews", 
-            "members": [
-                52, 
-                82
-            ]
-        }
-    }, 
-    {
-        "pk": 46, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 21, 
-            "name": "McHenry", 
-            "members": [
-                21
-            ]
-        }
-    }, 
-    {
-        "pk": 19, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 44, 
-            "name": "Meat and Potatoes", 
-            "members": [
-                44, 
-                99
-            ]
-        }
-    }, 
-    {
-        "pk": 99, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 102, 
-            "name": "Member Account", 
-            "members": [
-                102
-            ]
-        }
-    }, 
-    {
-        "pk": 90, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 97, 
-            "name": "Michael's Kitchen", 
-            "members": [
-                33, 
-                97
-            ]
-        }
-    }, 
-    {
-        "pk": 97, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 98, 
-            "name": "Moe Winter", 
-            "members": [
-                98
-            ]
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 9, 
-            "name": "My Dear Aunt Sally", 
-            "members": [
-                7, 
-                9
-            ]
-        }
-    }, 
-    {
-        "pk": 16, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 29, 
-            "name": "My Fear is Fried Food", 
-            "members": [
-                2, 
-                8, 
-                29
-            ]
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 69, 
-            "name": "Or Not?", 
-            "members": [
-                44, 
-                61, 
-                69
-            ]
-        }
-    }, 
-    {
-        "pk": 30, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 99, 
-            "name": "Our Name is Longer Than Your House Name", 
-            "members": [
-                7, 
-                31, 
-                50, 
-                84, 
-                99
-            ]
-        }
-    }, 
-    {
-        "pk": 64, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 54, 
-            "name": "Peters's House", 
-            "members": [
-                54, 
-                60, 
-                65
-            ]
-        }
-    }, 
-    {
-        "pk": 47, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 22, 
-            "name": "Quincy", 
-            "members": [
-                22, 
-                32, 
-                86
-            ]
-        }
-    }, 
-    {
-        "pk": 42, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 17, 
-            "name": "Quincy's House", 
-            "members": [
-                4, 
-                17
-            ]
-        }
-    }, 
-    {
-        "pk": 78, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 77, 
-            "name": "Quinn", 
-            "members": [
-                77
-            ]
-        }
-    }, 
-    {
-        "pk": 23, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 84, 
-            "name": "Real House", 
-            "members": [
-                42, 
-                84
-            ]
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 91, 
-            "name": "Rest In Peace", 
-            "members": [
-                21, 
-                78, 
-                91
-            ]
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 10, 
-            "name": "Rest in Peas", 
-            "members": [
-                10, 
-                36, 
-                60
-            ]
-        }
-    }, 
-    {
-        "pk": 27, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 83, 
-            "name": "Shoe String", 
-            "members": [
-                29, 
-                83
-            ]
-        }
-    }, 
-    {
-        "pk": 40, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 13, 
-            "name": "Smith", 
-            "members": [
-                13, 
-                54
-            ]
-        }
-    }, 
-    {
-        "pk": 100, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 103, 
-            "name": "Staff Account", 
-            "members": [
-                103
-            ]
-        }
-    }, 
-    {
-        "pk": 24, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 32, 
-            "name": "Surreal House", 
-            "members": [
-                32, 
-                34, 
-                37, 
-                89
-            ]
-        }
-    }, 
-    {
-        "pk": 72, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 67, 
-            "name": "Thomas", 
-            "members": [
-                4, 
-                67, 
-                85
-            ]
-        }
-    }, 
-    {
-        "pk": 20, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 39, 
-            "name": "Tofu and Potatoes", 
-            "members": [
-                27, 
-                33, 
-                39
-            ]
-        }
-    }, 
-    {
-        "pk": 29, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 61, 
-            "name": "Vegan, Shegan", 
-            "members": [
-                38, 
-                44, 
-                53, 
-                61
-            ]
-        }
-    }, 
-    {
-        "pk": 70, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": false, 
-            "contact": 65, 
-            "name": "Winter", 
-            "members": [
-                65
-            ]
-        }
-    }, 
-    {
-        "pk": 37, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 8, 
-            "name": "Woo", 
-            "members": [
-                4, 
-                8, 
-                47, 
-                77
-            ]
-        }
-    }, 
-    {
-        "pk": 91, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 100, 
-            "name": "Yarrow's House", 
-            "members": [
-                18, 
-                70, 
-                100
-            ]
-        }
-    }, 
-    {
-        "pk": 26, 
-        "model": "membership.account", 
-        "fields": {
-            "can_shop": true, 
-            "contact": 57, 
-            "name": "Zip Zap ", 
-            "members": [
-                42, 
-                57
-            ]
-        }
+  {
+    "pk": 102, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": 99, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 1, 
+      "date_joined": "2008-07-11"
     }
+  }, 
+  {
+    "pk": 103, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": 100, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 2, 
+      "date_joined": "2008-07-11"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "q", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 3, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 4, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "i", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 5, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "n", 
+      "user": 6, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 7, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": 17, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 8, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "n", 
+      "user": 9, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "i", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 10, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 11, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 12, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 13, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 14, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 15, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 16, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 17, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 18, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 19, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 20, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "i", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 21, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 22, 
+      "date_joined": "2006-08-07"
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 23, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 24, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 25, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 26, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 27, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "n", 
+      "user": 28, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 29, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 30, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 31, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 32, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 33, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "i", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 34, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 35, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 101, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "m", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 36, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 37, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 38, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 39, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 40, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 41, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 39, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "L", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 42, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 40, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 43, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 41, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "L", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 44, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 42, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 45, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 43, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 46, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 44, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 47, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 45, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 48, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 46, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "L", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 49, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 47, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 50, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 48, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 51, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 49, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 52, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 50, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 53, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 51, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 54, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 52, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 55, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 53, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 56, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 54, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 57, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 55, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 58, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 56, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 59, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 57, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "n", 
+      "user": 60, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 58, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "e", 
+      "user": 61, 
+      "date_joined": "1981-05-19"
+    }
+  }, 
+  {
+    "pk": 59, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 62, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 60, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 63, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 62, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 64, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 61, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 65, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 63, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "n", 
+      "user": 66, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 64, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 67, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 65, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 68, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 69, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 69, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 66, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 70, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 67, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "e", 
+      "user": 71, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 68, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 72, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 70, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 73, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 71, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 74, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 72, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 75, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 73, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 76, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 74, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 77, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 75, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 78, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 76, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 79, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 77, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 80, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 78, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 81, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 79, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 82, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 80, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 83, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 81, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 84, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 82, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "e", 
+      "user": 85, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 83, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 86, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 84, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 87, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 85, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "m", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 88, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 86, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 89, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 89, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 90, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 90, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 91, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 91, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 92, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 92, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 93, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 87, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 94, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 88, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "m", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 95, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 93, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 96, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 94, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 97, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 95, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "L", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 98, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 96, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "i", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 99, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 97, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 100, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 98, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 101, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 99, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "a", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 102, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 100, 
+    "model": "membership.member", 
+    "fields": {
+      "status": "i", 
+      "account": null, 
+      "contact_preference": "e", 
+      "has_key": false, 
+      "work_status": "w", 
+      "user": 103, 
+      "date_joined": "2008-02-29"
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 55, 
+      "name": "@ House", 
+      "members": [
+        43, 
+        55, 
+        80, 
+        88
+      ]
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 53, 
+      "name": "@ Space", 
+      "members": [
+        53, 
+        83, 
+        84, 
+        91
+      ]
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 3, 
+      "name": "Alice's Kitchen", 
+      "members": [
+        3, 
+        90
+      ]
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 33, 
+      "name": "Alice's Malice", 
+      "members": [
+        14, 
+        33, 
+        66, 
+        94
+      ]
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 14, 
+      "name": "Alley Kats", 
+      "members": [
+        14, 
+        61
+      ]
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 34, 
+      "name": "Allie Oppps", 
+      "members": [
+        19, 
+        34
+      ]
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 27, 
+      "name": "Allie's Cats ", 
+      "members": [
+        27
+      ]
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 5, 
+      "name": "And the winner is...", 
+      "members": [
+        5, 
+        22
+      ]
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 4, 
+      "name": "Andrew Quincy", 
+      "members": [
+        4, 
+        10, 
+        22, 
+        37, 
+        53, 
+        89
+      ]
+    }
+  }, 
+  {
+    "pk": 66, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 59, 
+      "name": "Andrews", 
+      "members": [
+        59, 
+        67, 
+        70
+      ]
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 7, 
+      "name": "Andy Smith", 
+      "members": [
+        7, 
+        43
+      ]
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 15, 
+      "name": "Are You Hungry?", 
+      "members": [
+        15
+      ]
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 11, 
+      "name": "Beatrice Davidson", 
+      "members": [
+        11, 
+        19, 
+        62
+      ]
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 28, 
+      "name": "Bedrest", 
+      "members": [
+        28
+      ]
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 47, 
+      "name": "Believe it!", 
+      "members": [
+        30, 
+        41, 
+        47, 
+        58, 
+        76, 
+        82
+      ]
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 53, 
+      "name": "Best in Peas", 
+      "members": [
+        9, 
+        39, 
+        53, 
+        99
+      ]
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 36, 
+      "name": "Best in show", 
+      "members": [
+        21, 
+        36, 
+        70
+      ]
+    }
+  }, 
+  {
+    "pk": 41, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 16, 
+      "name": "Bull's Kitchen", 
+      "members": [
+        16, 
+        20, 
+        47, 
+        53
+      ]
+    }
+  }, 
+  {
+    "pk": 68, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 63, 
+      "name": "Butterworth", 
+      "members": [
+        63
+      ]
+    }
+  }, 
+  {
+    "pk": 96, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 93, 
+      "name": "Butterworth's House", 
+      "members": [
+        93
+      ]
+    }
+  }, 
+  {
+    "pk": 43, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 18, 
+      "name": "C.'s Kitchen", 
+      "members": [
+        18, 
+        41, 
+        49, 
+        99
+      ]
+    }
+  }, 
+  {
+    "pk": 51, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 26, 
+      "name": "Carpenter", 
+      "members": [
+        15, 
+        26
+      ]
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 60, 
+      "name": "Cat House", 
+      "members": [
+        60, 
+        68
+      ]
+    }
+  }, 
+  {
+    "pk": 44, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 19, 
+      "name": "Charles", 
+      "members": [
+        11, 
+        19, 
+        44, 
+        76
+      ]
+    }
+  }, 
+  {
+    "pk": 45, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 20, 
+      "name": "Charles's House", 
+      "members": [
+        20
+      ]
+    }
+  }, 
+  {
+    "pk": 50, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 25, 
+      "name": "Charlie Nicols", 
+      "members": [
+        19, 
+        25
+      ]
+    }
+  }, 
+  {
+    "pk": 48, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 23, 
+      "name": "Charlie's House", 
+      "members": [
+        23, 
+        99
+      ]
+    }
+  }, 
+  {
+    "pk": 62, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 51, 
+      "name": "DaVinci", 
+      "members": [
+        3, 
+        35, 
+        51
+      ]
+    }
+  }, 
+  {
+    "pk": 52, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 30, 
+      "name": "Dave Edwards", 
+      "members": [
+        1, 
+        30, 
+        50, 
+        60, 
+        64
+      ]
+    }
+  }, 
+  {
+    "pk": 53, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 31, 
+      "name": "Debbie Cooper", 
+      "members": [
+        31, 
+        48, 
+        90
+      ]
+    }
+  }, 
+  {
+    "pk": 55, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 38, 
+      "name": "Dolores Yarrow", 
+      "members": [
+        14, 
+        38, 
+        83
+      ]
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 80, 
+      "name": "Dreams of Ice Cream ", 
+      "members": [
+        15, 
+        17, 
+        80
+      ]
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 1, 
+      "name": "Eat Your Peas!!", 
+      "members": [
+        1, 
+        39, 
+        91
+      ]
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 50, 
+      "name": "Eat Your Vegetables", 
+      "members": [
+        50, 
+        61
+      ]
+    }
+  }, 
+  {
+    "pk": 92, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 40, 
+      "name": "Ellie Quincy", 
+      "members": [
+        40
+      ]
+    }
+  }, 
+  {
+    "pk": 56, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 41, 
+      "name": "Ellis", 
+      "members": [
+        41
+      ]
+    }
+  }, 
+  {
+    "pk": 57, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 42, 
+      "name": "Elwwod's House", 
+      "members": [
+        31, 
+        42, 
+        99
+      ]
+    }
+  }, 
+  {
+    "pk": 58, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 43, 
+      "name": "Elwwod's Kitchen", 
+      "members": [
+        43
+      ]
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 2, 
+      "name": "Ewing's House", 
+      "members": [
+        2
+      ]
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 37, 
+      "name": "Fake House", 
+      "members": [
+        12, 
+        15, 
+        25, 
+        37, 
+        91
+      ]
+    }
+  }, 
+  {
+    "pk": 60, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 46, 
+      "name": "Fiona Withers", 
+      "members": [
+        46
+      ]
+    }
+  }, 
+  {
+    "pk": 61, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 48, 
+      "name": "Francis Ewing", 
+      "members": [
+        37, 
+        48
+      ]
+    }
+  }, 
+  {
+    "pk": 63, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 52, 
+      "name": "Garth", 
+      "members": [
+        52, 
+        54
+      ]
+    }
+  }, 
+  {
+    "pk": 39, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 12, 
+      "name": "Gerald", 
+      "members": [
+        12
+      ]
+    }
+  }, 
+  {
+    "pk": 93, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 56, 
+      "name": "Gerald McHenry", 
+      "members": [
+        56
+      ]
+    }
+  }, 
+  {
+    "pk": 80, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 79, 
+      "name": "Goode", 
+      "members": [
+        3, 
+        79
+      ]
+    }
+  }, 
+  {
+    "pk": 65, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 58, 
+      "name": "Harris", 
+      "members": [
+        58
+      ]
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 6, 
+      "name": "Harrison", 
+      "members": [
+        6
+      ]
+    }
+  }, 
+  {
+    "pk": 67, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 62, 
+      "name": "Harrison's Kitchen", 
+      "members": [
+        11, 
+        20, 
+        58, 
+        62
+      ]
+    }
+  }, 
+  {
+    "pk": 69, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 64, 
+      "name": "Harry's Kitchen", 
+      "members": [
+        52, 
+        64, 
+        79
+      ]
+    }
+  }, 
+  {
+    "pk": 83, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 85, 
+      "name": "Henderson's House", 
+      "members": [
+        30, 
+        58, 
+        85
+      ]
+    }
+  }, 
+  {
+    "pk": 54, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 35, 
+      "name": "House", 
+      "members": [
+        9, 
+        35
+      ]
+    }
+  }, 
+  {
+    "pk": 49, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 24, 
+      "name": "House's House", 
+      "members": [
+        7, 
+        24, 
+        33
+      ]
+    }
+  }, 
+  {
+    "pk": 88, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 94, 
+      "name": "James", 
+      "members": [
+        58, 
+        94
+      ]
+    }
+  }, 
+  {
+    "pk": 71, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 66, 
+      "name": "James's House", 
+      "members": [
+        26, 
+        66, 
+        95, 
+        97
+      ]
+    }
+  }, 
+  {
+    "pk": 73, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 68, 
+      "name": "Jim Michaels", 
+      "members": [
+        32, 
+        43, 
+        51, 
+        68
+      ]
+    }
+  }, 
+  {
+    "pk": 74, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 70, 
+      "name": "Joe's Kitchen", 
+      "members": [
+        35, 
+        70
+      ]
+    }
+  }, 
+  {
+    "pk": 75, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 71, 
+      "name": "Joey Franke", 
+      "members": [
+        27, 
+        37, 
+        71
+      ]
+    }
+  }, 
+  {
+    "pk": 94, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 72, 
+      "name": "Joey House", 
+      "members": [
+        72
+      ]
+    }
+  }, 
+  {
+    "pk": 76, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 73, 
+      "name": "Johnny's Kitchen", 
+      "members": [
+        20, 
+        46, 
+        73
+      ]
+    }
+  }, 
+  {
+    "pk": 79, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 78, 
+      "name": "Jon", 
+      "members": [
+        78
+      ]
+    }
+  }, 
+  {
+    "pk": 81, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 81, 
+      "name": "Josephine Davidson", 
+      "members": [
+        23, 
+        81
+      ]
+    }
+  }, 
+  {
+    "pk": 86, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 89, 
+      "name": "Kim Edwards", 
+      "members": [
+        89
+      ]
+    }
+  }, 
+  {
+    "pk": 87, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 90, 
+      "name": "Kim's Kitchen", 
+      "members": [
+        24, 
+        90, 
+        94
+      ]
+    }
+  }, 
+  {
+    "pk": 95, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 87, 
+      "name": "Kimberly Charles", 
+      "members": [
+        87
+      ]
+    }
+  }, 
+  {
+    "pk": 59, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 45, 
+      "name": "Lee", 
+      "members": [
+        18, 
+        45, 
+        77
+      ]
+    }
+  }, 
+  {
+    "pk": 89, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 95, 
+      "name": "Lee Jameson", 
+      "members": [
+        95
+      ]
+    }
+  }, 
+  {
+    "pk": 77, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 76, 
+      "name": "Lee's House", 
+      "members": [
+        51, 
+        76
+      ]
+    }
+  }, 
+  {
+    "pk": 84, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 86, 
+      "name": "Lemon", 
+      "members": [
+        86
+      ]
+    }
+  }, 
+  {
+    "pk": 85, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 88, 
+      "name": "Lemon's House", 
+      "members": [
+        27, 
+        28, 
+        47, 
+        89, 
+        88
+      ]
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 49, 
+      "name": "Lick your chops", 
+      "members": [
+        49, 
+        51, 
+        66
+      ]
+    }
+  }, 
+  {
+    "pk": 98, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 101, 
+      "name": "Macbeth", 
+      "members": [
+        101
+      ]
+    }
+  }, 
+  {
+    "pk": 82, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 82, 
+      "name": "Mathews", 
+      "members": [
+        52, 
+        82
+      ]
+    }
+  }, 
+  {
+    "pk": 46, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 21, 
+      "name": "McHenry", 
+      "members": [
+        21
+      ]
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 44, 
+      "name": "Meat and Potatoes", 
+      "members": [
+        44, 
+        99
+      ]
+    }
+  }, 
+  {
+    "pk": 99, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 102, 
+      "name": "Member Account", 
+      "members": [
+        102
+      ]
+    }
+  }, 
+  {
+    "pk": 90, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 97, 
+      "name": "Michael's Kitchen", 
+      "members": [
+        33, 
+        97
+      ]
+    }
+  }, 
+  {
+    "pk": 97, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 98, 
+      "name": "Moe Winter", 
+      "members": [
+        98
+      ]
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 9, 
+      "name": "My Dear Aunt Sally", 
+      "members": [
+        7, 
+        9
+      ]
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 29, 
+      "name": "My Fear is Fried Food", 
+      "members": [
+        2, 
+        8, 
+        29
+      ]
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 69, 
+      "name": "Or Not?", 
+      "members": [
+        44, 
+        61, 
+        69
+      ]
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 99, 
+      "name": "Our Name is Longer Than Your House Name", 
+      "members": [
+        7, 
+        31, 
+        50, 
+        84, 
+        99
+      ]
+    }
+  }, 
+  {
+    "pk": 64, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 54, 
+      "name": "Peters's House", 
+      "members": [
+        54, 
+        60, 
+        65
+      ]
+    }
+  }, 
+  {
+    "pk": 47, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 22, 
+      "name": "Quincy", 
+      "members": [
+        22, 
+        32, 
+        86
+      ]
+    }
+  }, 
+  {
+    "pk": 42, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 17, 
+      "name": "Quincy's House", 
+      "members": [
+        4, 
+        17
+      ]
+    }
+  }, 
+  {
+    "pk": 78, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 77, 
+      "name": "Quinn", 
+      "members": [
+        77
+      ]
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 84, 
+      "name": "Real House", 
+      "members": [
+        42, 
+        84
+      ]
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 91, 
+      "name": "Rest In Peace", 
+      "members": [
+        21, 
+        78, 
+        91
+      ]
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 10, 
+      "name": "Rest in Peas", 
+      "members": [
+        10, 
+        36, 
+        60
+      ]
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 83, 
+      "name": "Shoe String", 
+      "members": [
+        29, 
+        83
+      ]
+    }
+  }, 
+  {
+    "pk": 40, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 13, 
+      "name": "Smith", 
+      "members": [
+        13, 
+        54
+      ]
+    }
+  }, 
+  {
+    "pk": 100, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 103, 
+      "name": "Staff Account", 
+      "members": [
+        103
+      ]
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 32, 
+      "name": "Surreal House", 
+      "members": [
+        32, 
+        34, 
+        37, 
+        89
+      ]
+    }
+  }, 
+  {
+    "pk": 72, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 67, 
+      "name": "Thomas", 
+      "members": [
+        4, 
+        67, 
+        85
+      ]
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 39, 
+      "name": "Tofu and Potatoes", 
+      "members": [
+        27, 
+        33, 
+        39
+      ]
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 61, 
+      "name": "Vegan, Shegan", 
+      "members": [
+        38, 
+        44, 
+        53, 
+        61
+      ]
+    }
+  }, 
+  {
+    "pk": 70, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": false, 
+      "contact": 65, 
+      "name": "Winter", 
+      "members": [
+        65
+      ]
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 8, 
+      "name": "Woo", 
+      "members": [
+        4, 
+        8, 
+        47, 
+        77
+      ]
+    }
+  }, 
+  {
+    "pk": 91, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 100, 
+      "name": "Yarrow's House", 
+      "members": [
+        18, 
+        70, 
+        100
+      ]
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "membership.account", 
+    "fields": {
+      "can_shop": true, 
+      "contact": 57, 
+      "name": "Zip Zap ", 
+      "members": [
+        42, 
+        57
+      ]
+    }
+  }
 ]
