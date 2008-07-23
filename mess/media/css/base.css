@@ -173,15 +173,16 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		/*margin:100px 15px 0 15px;*/
 		position:relative;
-		top:100px;
+		top:103px;
 		left:15px;
 		}	
 		ul#global-nav li {
 			display:inline;
+			background:#246495;
+			padding:6px 3px 3px 3px;
 			}
 			ul#global-nav li a {
-				padding:6px;
-				background:#246495;
+				
 				color:#fff;
 				font-weight:bold;
 				font-size:1.2em;
