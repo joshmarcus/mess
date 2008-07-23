@@ -20,9 +20,6 @@ class Job(models.Model):
     class Meta:
         ordering = ['name']
 
-    class Admin:
-        pass
-
 class Task(models.Model):
     """
     A task is an instance of a job
@@ -31,9 +28,6 @@ class Task(models.Model):
     deadline = models.DateTimeField()
     start = models.DateTimeField(null=True, blank=True)
     hours = models.IntegerField()
-    
-    class Admin:
-        pass
 
 class Assignment(models.Model):
     """
@@ -41,8 +35,6 @@ class Assignment(models.Model):
     """
     member = models.ForeignKey(Member)
     task = models.ForeignKey(Task)
-    class Admin:
-        pass
 
 class Timecard(models.Model):
     """
@@ -51,5 +43,3 @@ class Timecard(models.Model):
     assignment = models.ForeignKey(Assignment)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    class Admin:
-        pass
