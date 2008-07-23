@@ -71,7 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'mess.base_url'
+ROOT_URLCONF = 'mess.urls'
 
 LOCATION = 'Cashier'
 
