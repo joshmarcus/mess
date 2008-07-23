@@ -129,8 +129,8 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 
 	/*h1*/
 	h1 {/*this needs work...*/
-		clear:right;
-		margin-left:15px;
+		position:absolute;
+		margin:60px 15px;
 		}
 	
 	h1 a {
@@ -171,11 +171,16 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		
 	/*global-nav*/
 	ul#global-nav {
+		float:left;
+		margin:94px 15px 0 15px;
+		
 		}	
 		ul#global-nav li {
 			display:inline;
 			}
 			ul#global-nav li a {
+				display:block;
+				padding:6px;
 				background:#246495;
 				color:#fff;
 				font-weight:bold;
