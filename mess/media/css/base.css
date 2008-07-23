@@ -171,8 +171,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		
 	/*global-nav*/
 	ul#global-nav {
-		margin:100px 15px 0 15px;
-		position:absolute;
+		/*margin:100px 15px 0 15px;*/
+		position:relative;
+		top:100px;
+		left:15px;
 		}	
 		ul#global-nav li {
 			display:inline;
