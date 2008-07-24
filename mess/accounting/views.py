@@ -2,9 +2,7 @@ from datetime import date
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
-#from django.utils import simplejson
 from django.template import RequestContext
-#from django.template.loader import render_to_string
 from django.template.loader import get_template
 from django.contrib.auth.models import User
 
@@ -24,6 +22,12 @@ def thanks(request):
         redirect = '/'
     return render_to_response('accounting/thanks.html', locals(),
                                 context_instance=RequestContext(request))
+def get_trans_of_type(type, d=date.today()):
+    #d = date.today()
+    return Transaction.objects.filter(date__year = d.year,
+                                    date__month = d.month,
+                                    date__day = d.day,
+                                    debit_type = type,)
 
 def save_credit_trans(request):
         d = TransactionForm(request.POST)
@@ -98,31 +102,55 @@ def cashier(request):
         return render_to_response('accounting/snippets/list.html', context)
     else:
         context['page_name'] = 'Cashier'
-        context['credit_choices'] = get_credit_choices('Cashier', 'Cashier')
-        context['debit_choices'] = get_debit_choices('Cashier', 'Cashier')
+        context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
+        context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
         form = TransactionForm()
         context['transactions_today'] = get_todays_transactions()
         return render_to_response('accounting/cashier.html', context,
                                     context_instance=RequestContext(request))
 
-def close_out(request):
+def close_out(request, type='all'):
     """Page to reconcile the day's transactions."""
     context = RequestContext(request)
-    if not request.method == 'POST':  
-        transactions = get_todays_transactions()
+    if request.method == 'POST':
+        post = request.POST
+        context['p'] = post
+        testing = {}
+        for key, value in post.items():
+            if key.split('_')[1] == 'reconcile':
+                transaction = key.split('_')[0]                
+                data = { 'transaction': transaction,
+                        'reconciled_by': post.get('id_reconciled_by'),
+                        'reconciled': True,
+                        }
+                f = CloseOutForm(data)
+                f.is_valid()
+                f.save()
+        context['testing'] = testing
+        template = get_template('accounting/thanks.html')
+        return HttpResponse(template.render(context))
+    if not request.method == 'POST':
+        if type == 'all':
+            transactions = get_todays_transactions()
+        else:
+            transactions = get_trans_of_type(type)
         tran_list = {}
         user = request.user
         context['user_name'] = user.person_set.all()[0].name
         for t in transactions:
+            if t.debit_type != 'N':
+                tran_type = t.get_debit_type_display()
+                amount = t.debit
+            if t.credit_type != 'N':
+                tran_type = t.get_credit_type_display()
+                amount = t.credit
             initial_data = {
                     'reconciled_by': user.person_set.all()[0].id,
-                    'transaction': t.id,
                     'reconciled': 0,
-                    #'reconciled_by_name': user.person_set.all()[0].name,
-                    'account': t.account,
-                    'member': t.member,
-                    'debit': t.debit,
-                    'credit': t.credit,
+                    'type': tran_type,
+                    'amount': amount,
+                    'ref': t.ref,
+                    'transaction': t,
                     }
             tran_list[t.id] = initial_data
         context['tran_list'] = tran_list
