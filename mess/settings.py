@@ -55,7 +55,7 @@ ADMIN_MEDIA_PREFIX = PROJECT_URL + 'admin/media/'
 SECRET_KEY = '4w-cz*to=zc-gjoqtrf=pi2m54i@ghqlnsdq=2mq7e^8fbgh#w'
 
 # Application and model that stores user profiles.
-AUTH_PROFILE_MODULE = 'profile.userprofile'
+AUTH_PROFILE_MODULE = 'profiles.userprofile'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
