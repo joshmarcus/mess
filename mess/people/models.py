@@ -19,11 +19,4 @@ class Person(models.Model):
         ordering = ['name']
 
     class Admin:
-        list_display = ('__unicode__', 'user')
-        # default field display is fine
-        #fields = (
-        #    (None, {
-        #        'fields': (('name', 'user'), 'addresses',
-        #                    'emails', 'phones')
-        #        }),)
-
+        pass
