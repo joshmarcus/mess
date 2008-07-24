@@ -123,6 +123,7 @@ def close_out(request, type='all'):
                         'reconciled_by': post.get('id_reconciled_by'),
                         'reconciled': True,
                         }
+                #testing[transaction] = data
                 f = CloseOutForm(data)
                 f.is_valid()
                 f.save()
@@ -145,11 +146,8 @@ def close_out(request, type='all'):
                 tran_type = t.get_credit_type_display()
                 amount = t.credit
             initial_data = {
-                    'reconciled_by': user.person_set.all()[0].id,
-                    'reconciled': 0,
                     'type': tran_type,
                     'amount': amount,
-                    'ref': t.ref,
                     'transaction': t,
                     }
             tran_list[t.id] = initial_data
