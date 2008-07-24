@@ -1,4 +1,4 @@
-from django import newforms as forms
+from django import forms
 
 from mess.accounting.models import Transaction, Reconciliation
 from mess.accounting.models import get_credit_choices, get_debit_choices
