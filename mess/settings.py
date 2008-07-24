@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'mess.contact',
     'mess.membership',
     'mess.people',
+    'mess.profiles',
     'mess.scheduling',
 )
 

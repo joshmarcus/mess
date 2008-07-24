@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 ADDRESS_TYPES = (
     ('h','Home'),
@@ -68,8 +69,8 @@ class UserProfile(models.Model):
     emails = models.ManyToManyField(Email, blank=True, null=True)
 
     def __unicode__(self):
-        return self.name
+        return self.user.username
 
     class Meta:
-        ordering = ['name']
+        ordering = ['user']
 
