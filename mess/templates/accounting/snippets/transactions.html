@@ -22,7 +22,7 @@
         <td>{{ trans.id }}</td>
         <td>{{ trans.date|date:"g:i:s A" }}</td>    
         <td>{{ trans.account }}</td>
-        <td>{{ trans.member }}</td>
+        <td>{{ trans.member.user.get_full_name }}</td>
         <td>{{ trans.note }}</td>
         <td>{% if trans.ref %}
                 {{ trans.ref }}
