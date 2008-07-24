@@ -2,6 +2,7 @@ from datetime import date
 
 from django.db import models
 from django.core import exceptions
+from django.contrib.auth.models import User
 
 from mess.settings import LOCATION
 from mess.membership.models import Account, Member
@@ -12,7 +13,7 @@ from mess.membership.models import Account, Member
 # will be a positive number.
 
 NO_CREDIT_CHOICES = (
-    ('N','None'),
+    ('N', None),
 )
 
 MEMBER_CREDIT_CHOICES = (
@@ -34,7 +35,7 @@ OTHER_CREDIT_CHOICES = (
 # A debit is looked at from the stores point of view.  A debit
 # will be a negative number.
 NO_DEBIT_CHOICES = (
-    ('N','None'),
+    ('N', None),
 )
 
 CASHIER_DEBIT_CHOICES = (
@@ -42,7 +43,7 @@ CASHIER_DEBIT_CHOICES = (
     ('D','Debit Card'),
     ('K','Check'),
     ('M','Money Order'),
-    ('E','EBT'),
+    ('F','EBT'),
 )
 
 OTHER_DEBIT_CHOICES = (
@@ -154,7 +155,7 @@ class Reconciliation(models.Model):
     # django.contrib.admin.LogEntry, should we choose to use that as a 
     # record keeper (would need to add LogEntry.objects.log_action() to this 
     # class's save() method).
-    reconciled_by = models.ForeignKey(Member)
+    reconciled_by = models.ForeignKey(User)
     transaction = models.ForeignKey(Transaction)
     reconciled = models.BooleanField()
     date = models.DateTimeField(auto_now_add=True)
