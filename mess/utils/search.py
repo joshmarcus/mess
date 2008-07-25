@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from mess.people.models import Person
 from mess.membership.models import Member, Account
 from mess.contact.models import Address, Email, Phone
@@ -62,7 +64,8 @@ def search_for_people(string):
     
     dict = {'primary_key': 'name'}
     """
-    list = Person.objects.filter(name__icontains=string)
+    list = Member.objects.filter(Q(user__first_name__icontains=string)
+                                | Q(user__last_name__icontains=string))
     return create_dictionary(list)
 
 def search_for_members(string):
@@ -70,7 +73,8 @@ def search_for_members(string):
     
     dict = {'primary_key': 'name'}
     """
-    list = Member.objects.filter(person__name__icontains=string)
+    list = Member.objects.filter(Q(user__first_name__icontains=string)
+                                | Q(user__last_name__icontains=string))
     return create_dictionary(list)
 
 def search_for_string(search, string):
