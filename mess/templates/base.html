@@ -26,7 +26,6 @@
           <span class="sub-title">{{ page_name }}</span>
         </h1>	
     	<ul id="global-nav">
-		  <div class="set-down">
           {% block main_menu %}
             {% if user.is_authenticated %}
               {% if perms.membership.can_view_list %}
@@ -37,11 +36,10 @@
 "><a href="{% url accounts %}">Accounts</a></li>
                 <li><a href="{% url summary_today %}">Reports</a></li>
                 <li><a href="{% url cashier %}">Cashier</a></li>
-                <li><a class="active" href="{% url staff-schedules month=None %}">Scheduling</a></li>
+                <li><a href="{% url staff-schedules month=None %}">Scheduling</a></li>
               {% endif %}
             {% endif %}
           {% endblock %}
-          </div>
         </ul>
       </div>
       <div id="content-wrapper">
