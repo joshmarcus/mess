@@ -1,6 +1,7 @@
-{% extends "reporting/base.html" %}
-
+{% extends 'base.html' %}
 {% block content %}
+
+{% include "reporting/snippets/page_menu.html" %}
 
 <h1>Totals for Today, {{ date }}</h1>
 <h2>Credits</h2>
