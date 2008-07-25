@@ -3,11 +3,11 @@
 /*
 COLORS:
 
-h1 yellow: 
+h1 yellow: #fddc08;
 
 dark blue: #004175
 slate blue: #246495
-body link blue:
+body link blue: #7DA2E7
 pale blue: #EFF0F9
 
 body type gray: #333
@@ -27,7 +27,7 @@ orange: #D18405
 
 body {
 	text-align:center;
-	background:#fff; /*url(http://www.greaterphilachamber.com/images/main-bg.gif) repeat-y top center;*/
+	background:#fff url(/media/images/bg-body.gif) repeat-y top center;
     color: #333;
     font-family:Helvetica, Arial, sans-serif;
     font-size:62.5%;
@@ -173,23 +173,31 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		/*margin:100px 15px 0 15px;*/
 		position:relative;
-		width:945px;
-		background:#00417d;;
-		top:101px;
-		padding-left:15px;
-		
+		margin-left:15px;
+		top:98px;
 		}	
+		/*.set-down { position:absolute; bottom:0px; z-index: 1; }*/
 		ul#global-nav li {
-			display:inline;
+			float:left;
+			margin-right:3px;
 			background:#246495;
-			padding:6px 3px 3px 3px;
 			}
 			ul#global-nav li a {
+				display:block;
 				color:#fff;
+				padding:.36em 1em .33em 1em;
 				font-weight:normal;
-				font-size:1.2em;
+				font-size:1.1em;
 				text-decoration:none;
 				}
+				ul#global-nav li a:hover {
+					text-decoration:underline;
+
+					}
+				ul#global-nav li a.active {
+					background:#ebebeb;
+					color:#333;
+					}
 				
 			
 /*--- ((( content-wrapper styles ))) ---*/
