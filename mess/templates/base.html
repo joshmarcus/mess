@@ -34,7 +34,7 @@
               {% if user.is_staff %}
                 <li class="active
 "><a href="{% url accounts %}">Accounts</a></li>
-                <li><a href="{% url summary_today %}">Reports</a></li>
+                <li><a href="{% url trans_summary_today %}">Reports</a></li>
                 <li><a href="{% url cashier %}">Cashier</a></li>
                 <li><a href="{% url staff-schedules month=None %}">Scheduling</a></li>
               {% endif %}
