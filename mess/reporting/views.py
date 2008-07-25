@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -7,32 +7,35 @@ from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
 from mess.accounting.models import get_trans_total
 
-def daily_report(request):
-    """Page to summerize the day's transactions."""
+
+def transaction_report(request,
+                start_date=date(1900, 01, 01),
+                end_date=date.today()):
+    """View to summerize transactions by type."""
     context = {}
-    context['page_name'] = 'Close Out'
+    context['page_name'] = 'Transactions'
     context['total_credits'] = 0
     context['total_debits'] = 0
     d = date.today()
     context['date'] = d.strftime('%A, %B %d, %Y')
     for type, name in get_credit_choices('Staff'):
-        name = name.lower().replace(' ','_')
-        total_name = 'total_' + name
-        context[name] = Transaction.objects.filter(date__year = d.year,
-                                                date__month = d.month,
-                                                date__day = d.day,
-                                                credit_type = type,)
-        context[total_name] = get_trans_total(context[name], 'credit')
-        context['total_credits'] += context[total_name]
+        if type != 'N':
+            name = name.lower().replace(' ','_')
+            total_name = 'total_' + name
+            context[name] = Transaction.objects.filter(date__range =
+                                                    (start_date, end_date),
+                                                    credit_type = type,)
+            context[total_name] = get_trans_total(context[name], 'credit')
+            context['total_credits'] += context[total_name]
     for type, name in get_debit_choices('Staff'):
-        name = name.lower().replace(' ','_')
-        total_name = 'total_' + name
-        context[name] = Transaction.objects.filter(date__year = d.year,
-                                                date__month = d.month,
-                                                date__day = d.day,
-                                                debit_type = type,)
-        context[total_name] = get_trans_total(context[name], 'debit')
-        context['total_debits'] += context[total_name]
+        if type != 'N':
+            name = name.lower().replace(' ','_')
+            total_name = 'total_' + name
+            context[name] = Transaction.objects.filter(date__range =
+                                                    (start_date, end_date),
+                                                    debit_type = type,)
+            context[total_name] = get_trans_total(context[name], 'debit')
+            context['total_debits'] += context[total_name]
 
     return render_to_response('reporting/daily_report.html', context,
                                 context_instance=RequestContext(request))
