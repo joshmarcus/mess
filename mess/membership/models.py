@@ -39,7 +39,7 @@ class Member(models.Model):
             choices=CONTACT_PREF, default='e')
 
     def __unicode__(self):
-        return self.user.username
+        return self.user.get_full_name()
 
     class Meta:
         permissions = (
