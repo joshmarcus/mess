@@ -24,8 +24,8 @@ def member(request, id):
     person = get_object_or_404(Person, user=user)
 	#the following line is broken, so I'm breaking it differently --Paul
     #member = get_object_or_404(Member, person=person)    
-    member = get_object_or_404(Member, user=user)    
-	member.person = person
+    member = get_object_or_404(Member, user=user)
+    member.person = person
     context['member'] = member
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
