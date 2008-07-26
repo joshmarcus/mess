@@ -19,6 +19,10 @@ urlpatterns = patterns('',
     ('^admin/(.*)', admin.site.root),
 )
 
+urlpatterns += patterns('django.views.generic.simple', 
+    (r'^styleguide$', 'direct_to_template', {'template': 'styleguide.html'}),
+)
+
 # We're going to use the Django server in development, so we'll serve
 # the static content for now.
 if settings.DEBUG:
