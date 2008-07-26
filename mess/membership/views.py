@@ -22,7 +22,7 @@ def member(request, id):
     context = RequestContext(request)
     user = get_object_or_404(User, id=id)
     person = get_object_or_404(Person, user=user)
-    member = get_object_or_404(Member, person=person)    
+    member = get_object_or_404(Member, user=user)    
     context['member'] = member
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
