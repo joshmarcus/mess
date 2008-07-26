@@ -46,14 +46,12 @@ body {
 	h3 {
 		font-size: 1.4em;
 		color:#666;
-		margin-left:15px;
 		margin-bottom:1.5em;
 		}
 	h4 {
 		font-size: 1.2em;
 		background:#D18405;
 		width:200px;
-		margin-left:15px;
 		padding:.75em;
 		color:#fff;
 		margin-bottom:.5em;
@@ -76,6 +74,8 @@ body {
 	form.standard {}
 		form.standard label {
 			font-size:1.1em;
+			display:block;
+			float:left;
 			}
 		form.standard input {
 			border:1px solid #D18405;
@@ -89,7 +89,6 @@ hr.left-clearer {display: block; clear: left; margin: -0.66em 0; visibility: hid
 hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: hidden;}
 .last-item {border:none !important;}
 
-.attention {border:1px solid #ddd; background:beige; padding:1em;}
 .action {background:url(/media/images/bg-action.gif) no-repeat 0 2px; padding-left:16px;}
 		
 /*--- ((( structure ))) ---*/
@@ -129,6 +128,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		background:#fff;
 		margin:15px 20px 15px 15px;
 		}
+		#primary-content-wrapper {
+			padding:0 15px;
+			}
 #footer {
 }
 
@@ -174,6 +176,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			}
 			ul#utility-nav li a {
 				color:#fff;
+				font-weight:bold;
 				}
 				ul#utility-nav li a:visited {
 					color:#fff;
@@ -236,14 +239,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					ul#local-nav li a:visited {}
 					
 		#left-column p, #double-column p {
-			margin-left:15px;
-			margin-right:15px;
 			}
 		#left-column h2, #double-column h2 {
-			margin-left:15px;
 			}
 		#left-column ul, #double-column ul {
-			margin-left:15px;
 			margin-bottom:1.5em;
 			}
 			#left-column ul li, #double-column ul li {
@@ -251,8 +250,17 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				padding-left:11px;
 				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
 				}
+				
+		#left-column div.attention, #double-column div.attention {
+			margin:.5em 0 1.2em 0;
+			background:beige;
+			padding:1em 1em .25em 1em;
+			border:1px solid #ddd;	
+			}
+			#left-column div.attention p, #double-column div.attention p {
+			}
+		
 		#left-column form.standard, #double-column form.standard {
-			margin:0 15px;
 			border:1px solid #ddd;
 			padding:1em;
 			}
@@ -269,28 +277,28 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	/*double-column*/
 	#double-column {
 		}
-		#double-column table {
+		#double-column table.data {
 			border:1px solid #ddd;
 			width:97%;
-			margin:15px;
+			margin-top:15px;
 			font-size:1.1em;
 			border-collapse:collapse;
 			}
-			#double-column table th {
+			#double-column table.data th {
 				background:#D18405;
 				color:#fff;
 				padding:.75em .25em .75em .5em;
 				}
-			#double-column table td {
+			#double-column table.data td {
 				padding:.75em .25em 1em .5em;
 				font-size:1em;
 				vertical-align:top;
 				border-bottom:1px solid #eee;
 				}
-				#double-column table td ul {
+				#double-column table.data td ul {
 					margin:0;
 					}
-					#double-column table td ul li {
+					#double-column table.data td ul li {
 						font-size:1em;
 						}
 				#double-column table tr.odd {
