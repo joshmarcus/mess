@@ -11,10 +11,10 @@
     {% for person in people_list %}
     <tr>
         <td>
-            <a href='{{ PROJECT_URL }}person/form/{{ person.id }}'>
+            <a href='{{ PROJECT_URL }}people/form/{{ person.id }}'>
             <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
         </a>
-        <a href='{{ PROJECT_URL }}person/{{ person.id }}' >
+        <a href='{{ PROJECT_URL }}people/{{ person.id }}' >
             {{ person.name }}
         </a>
     </td>
