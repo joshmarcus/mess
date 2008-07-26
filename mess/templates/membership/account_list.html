@@ -9,21 +9,22 @@
     <th>Balance</th>
     {% for account in account_list %}
     <tr>
+		<!-- FIXME: account/form/# does not yet exist -->
         <td><a href='{{ PROJECT_URL }}account/form/{{ account.id }}' >
             <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
         </a>
-        <a href={{ PROJECT_URL }}account/{{ account.id }}>
+        <a href={{ PROJECT_URL }}membership/account/{{ account.id }}>
             {{ account.name }}
         </a>
         </td>
         <td>{% for member in account.members.all %}
-                <a href='{{ PROJECT_URL }}member/{{ member.id }}' >
+                <a href='{{ PROJECT_URL }}membership/member/{{ member.id }}' >
                     {{ member }}
                 </a>
                 <br />
             {% endfor %}
         </td>
-        <td><a href='{{ PROJECT_URL }}account/{{ account.id }}'>
+        <td><a href='{{ PROJECT_URL }}membership/account/{{ account.id }}'>
                 {{ account.contact }}<br />
             </a>
             {{ account.contact.person.phones.all|first }}<br />
