@@ -3,5 +3,111 @@
 {% block title %}Styleguide for the MESS{% endblock %}
 
 {% block content %}
-<p>Stylish stuff.</p>
+<div id="left-column">
+  <ul id="local-nav"><!--this is just mock content to experiment with-->
+	<li><a href="">local nav item</a></li>
+	<li><a href="">another local item</a></li>
+	<li><a href="">current local nav</a></li>
+	<li class="last-item"><a href="">fourth local item</a></li>
+  </ul>	
+<div id="primary-content-wrapper">
+  <h2>This is an H2 Which is the Active Global Page</h2>
+  <h3>This is an h3 Which will be the active local page</h3>
+  <p>This page has two columns and should be coded inside the block content like so:</p>
+  <div class="attention">
+  <code>
+    &lang;div id="left-column"&rang;<br />
+      &lang;ul id="local-nav"&rang; &lang;/ul&rang;<br />
+      &lang;div id="primary-content-wrapper"&rang;<br />
+	    left column content goes here<br />
+	&lang;/div&rang; Ends the primary-content-wrapper<br />
+	&lang;/div&rang; Ends left-column<br />
+	&lang;div id="right-column"&rang;<br />
+		Right column content goes here.<br />
+	&lang;/div&rang; Ends the right-column
+	
+  </code>
+  </div>
+  <p>A page which is one large, undivided content area is coded inside of block content like so:</p>
+  <div class="attention">
+  <code>
+    &lang;div id="double-column"&rang;<br />
+      &lang;ul id="local-nav"&rang; &lang;/ul&rang;<br />
+      &lang;div id="primary-content-wrapper"&rang;<br />
+	    left column content goes here<br />
+	&lang;/div&rang; Ends the primary-content-wrapper<br />
+	&lang;/div&rang; Ends double-column<br />
+
+  </code>
+  </div>
+  <h4>Fourth level heading test</h4>
+  <p>This is just test content I want to see what happens when I do this. And What does <a href="">a link</a> look like?</p>
+  <ul>
+    <li>Unordered list after a paragraph</li>
+    <li>Another list item</li>
+    <li>Another unordered list item</li>
+    <li>And just one more</li>
+  </ul>
+  <p>Second paragraph. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec quis purus vitae neque auctor ultricies. Phasellus in risus. Vivamus cursus eros vel lectus. Etiam malesuada. Maecenas sapien mi, elementum vel, pretium sed, facilisis ac, risus. Aliquam erat volutpat. Suspendisse potenti. Morbi convallis turpis sagittis dolor.</p>
+  <h4>Another fourth level heading which will span two lines</h4>
+  <ul>
+    <li>Unordered list item</li>
+    <li>Another list item</li>
+    <li>Another unordered list item</li>
+    <li>And just one more</li>
+  </ul>
+  <div class="attention">
+  	<p>This is a div.attention p, which can be used to call attention to any section of content, such as instructions, or special notes.</p>
+  </div>
+  <p class="action">This is a p.action, which can be used to direct the user to some sort of action.</p>
+  <div class="attention">
+	<p class="action">This is a p.action in a div.attention.</p>
+  </div>
+  <h4>Forms</h4>
+<p>Below is an example of how I'm beginning to imagining some forms being styled. This is a form.standard, inside of which is a table.form-table. I know it's a little goofy to use tables to lay out forms, but considering time constraints, browser behavior, and the user-base, I think it's fine for our purposes.</p>
+  <form class="standard">
+	<table class="form-table">
+      <tr>
+	    <td><label for="first-item">First input label</label></td>
+	    <td><input type="text"/></td>
+	  </tr>
+      <tr>
+	    <td><label for="second-item">Second label</label></td>
+        <td><input type="text"/></td>
+	  </tr>
+	  <tr>
+	    <td><label for="third-item">Third label</label></td>
+        <td>
+          <select>
+	        <option>Option 1</option>
+	        <option>Option 2</option>
+	        <option>Option 3</option>
+	      </select>	
+        </td>
+	  </tr>
+	  <tr>
+	    <td><label for="third-item">Text area, still working on this</label></td>
+        <td>
+		  <textarea rows="10" cols="500"></textarea>
+        </td>
+	  </tr>
+	  <tr>
+		<td>
+		</td>
+	  </tr>
+	</table>
+  </form>
+</div>
+</div>
+<div id ="right-column">
+  <h3>Right column level 3 heading</h3>
+  <p>Right column paragraph. This is a secondary content column and could be used for such things as note, announcements, instructions, etc...Basically anything that would be inappropriate for the primary content column.</p>
+  <ul>
+	<li>right column list item</li>
+	<li>This list looks wacky, I'll tweak the CSS later</li>
+	<li>third right column list item which spans two lines looks like this</li>
+  </ul>
+  <h4>Right column level 4 heading</h4>
+</div>
 {% endblock %}
+

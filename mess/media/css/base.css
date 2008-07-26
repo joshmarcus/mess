@@ -32,9 +32,13 @@ body {
     font-family:Helvetica, Arial, sans-serif;
     font-size:62.5%;
 	}
+	code {
+		font-size:1.2em;
+		font-family:courier;
+		}
 	p {
 		font-size: 1.2em; 
-		line-height:1.5em;
+		line-height:1.4em;
 		margin-bottom:1.2em;
 		}
 	h2 {
@@ -282,12 +286,17 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			}
 
 	/*right-column*/
-	#right-column {}
+	#right-column {
+		color:#777;
+		}
 	
 		#right-column h3 {
 			background:#EFF0F9;
 			margin:0 0 1em 0;
 			padding:14px 5px;
+			}
+		#right-column p {
+			line-height:1.3em;
 			}
 			
 	/*double-column*/
