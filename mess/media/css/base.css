@@ -54,6 +54,7 @@ body {
 		width:200px;
 		padding:.75em;
 		color:#fff;
+		margin-top:2em;
 		margin-bottom:.5em;
 		}
 	a, a:link {
@@ -71,15 +72,32 @@ body {
 			font-size:1.2em;
 			}
 			
+	table {
+		border-collapse:collapse;
+		margin-top:15px;
+		}
+		tr {}
+			th {}
+			td {
+				vertical-align:top;
+				}
+			
 	form.standard {}
 		form.standard label {
 			font-size:1.1em;
 			display:block;
-			float:left;
+			margin:1.25em 2em .5em 0;
 			}
-		form.standard input {
+		form.standard input, form.standard select, form.standard textarea {
+			margin:.5em .25em;
+			width:200px;
 			border:1px solid #D18405;
 			}
+			form.standard textarea {
+
+				}
+
+
 		
 /*--- ((( tools ))) ---*/
 .clearAll {clear:both;}
@@ -257,8 +275,6 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			padding:1em 1em .25em 1em;
 			border:1px solid #ddd;	
 			}
-			#left-column div.attention p, #double-column div.attention p {
-			}
 		
 		#left-column form.standard, #double-column form.standard {
 			border:1px solid #ddd;
@@ -280,9 +296,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#double-column table.data {
 			border:1px solid #ddd;
 			width:97%;
-			margin-top:15px;
 			font-size:1.1em;
-			border-collapse:collapse;
 			}
 			#double-column table.data th {
 				background:#D18405;
@@ -292,7 +306,6 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#double-column table.data td {
 				padding:.75em .25em 1em .5em;
 				font-size:1em;
-				vertical-align:top;
 				border-bottom:1px solid #eee;
 				}
 				#double-column table.data td ul {
