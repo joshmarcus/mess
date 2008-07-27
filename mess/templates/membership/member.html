@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="left-column">
+  <div id="primary-content-wrapper">
+  <h2>Active Global Nav Item</h2>
+  <h3>Active Local Nav Item</h2>
+  <div class="member">
+	<h4>{{ member.user.get_full_name }}</h4>
+    <p><span class="label">{% for address in profile.addresses.all %}</span>
+	   {% include "contact/snippets/address.html" %}
+	   {% endfor %}</p>
+  </div>
+	
+  
+  <!--beginning of gabe's stuff-->
   <table>
     <tr>
       <th>Name</th>
@@ -52,4 +65,6 @@
       <td>{{ member.date_joined }}</td>
     </tr>
   </table>
+</div>
+</div>
 {% endblock %}

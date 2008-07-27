@@ -61,6 +61,14 @@ body {
 		margin-top:2em;
 		margin-bottom:.5em;
 		}
+	h5 {
+		text-transform:uppercase;
+		font-size:1.1em;
+		margin-bottom:.25em;
+		letter-spacing:1px;
+		color:#111;
+		}
+	
 	a, a:link {
 		color: #7DA2E7;/*#00417d;*/
 		}
@@ -127,7 +135,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	}
 #content-wrapper {
 	background:#EBEBEB;
-	}	
+}
 	#left-column { 
 		padding-bottom:50px;
 		border-top:1px solid #999;
@@ -260,30 +268,53 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					
 					ul#local-nav li a:visited {}
 					
-		#left-column p, #double-column p {
-			}
-		#left-column h2, #double-column h2 {
-			}
-		#left-column ul, #double-column ul {
+		/*primary-content-wrapper styles*/
+		#primary-content-wrapper ul {
 			margin-bottom:1.5em;
 			}
-			#left-column ul li, #double-column ul li {
+			#primary-content-wrapper ul li {
 				margin-bottom:.5em;
 				padding-left:11px;
 				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
 				}
 				
-		#left-column div.attention, #double-column div.attention {
+		#primary-content-wrapper div.attention {
 			margin:.5em 0 1.2em 0;
 			background:beige;
 			padding:1em 1em .25em 1em;
 			border:1px solid #ddd;	
 			}
 		
-		#left-column form.standard, #double-column form.standard {
+		#primary-content-wrapper form.standard {
 			border:1px solid #ddd;
 			padding:1em;
 			}
+			
+		#primary-content-wrapper table.data {
+			border:1px solid #ddd;
+			width:97%;
+			font-size:1.1em;
+			}
+			#primary-content-wrapper table.data th {
+				background:#D18405;
+				color:#fff;
+				padding:.75em .25em .75em .5em;
+				}
+			#primary-content-wrapper table.data td {
+				padding:.75em .25em 1em .5em;
+				font-size:1em;
+				border-bottom:1px solid #eee;
+				}
+				#primary-content-wrapper table.data td.odd {
+					background:#F7F7F7;
+					}
+				#primary-content-wrapper table.data td ul {
+					margin:0;
+					}
+					#primary-content-wrapper table.data td ul li {
+						font-size:1em;
+						}
+				
 
 	/*right-column*/
 	#right-column {
@@ -298,34 +329,6 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#right-column p {
 			line-height:1.3em;
 			}
-			
-	/*double-column*/
-	#double-column {
-		}
-		#double-column table.data {
-			border:1px solid #ddd;
-			width:97%;
-			font-size:1.1em;
-			}
-			#double-column table.data th {
-				background:#D18405;
-				color:#fff;
-				padding:.75em .25em .75em .5em;
-				}
-			#double-column table.data td {
-				padding:.75em .25em 1em .5em;
-				font-size:1em;
-				border-bottom:1px solid #eee;
-				}
-				#double-column table.data td ul {
-					margin:0;
-					}
-					#double-column table.data td ul li {
-						font-size:1em;
-						}
-				#double-column table tr.odd {
-					background:#F7F7F7;
-					}
 		
 
 
