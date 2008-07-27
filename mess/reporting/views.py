@@ -13,7 +13,7 @@ def transaction_report(request,
                 end_date=date.today()):
     """View to summerize transactions by type."""
     context = {}
-    context['page_name'] = 'Transactions'
+    context['page_name'] = 'Transaction Summaries'
     context['total_credits'] = 0
     context['total_debits'] = 0
     d = date.today()
@@ -37,6 +37,6 @@ def transaction_report(request,
             context[total_name] = get_trans_total(context[name], 'debit')
             context['total_debits'] += context[total_name]
 
-    return render_to_response('reporting/daily_report.html', context,
+    return render_to_response('reporting/transactions_summary.html', context,
                                 context_instance=RequestContext(request))
 
