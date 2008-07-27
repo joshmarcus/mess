@@ -1,10 +1,10 @@
-            <h2>{{ address.get_type_display }}</h2>
+            <h3>{{ address.get_type_display }}</h3>
             <p>
-              {% if address.address_1 %}
-                {{ address.address_1 }}<br />
+              {% if address.address1 %}
+                {{ address.address1 }}<br />
               {% endif %}
-              {% if address.address_2 %}
-                  {{ address.address_2 }}<br />
+              {% if address.address2 %}
+                  {{ address.address2 }}<br />
               {% endif %}
               {{ address.city }}, {{ address.state }}
               {{ address.postal_code }}<br />

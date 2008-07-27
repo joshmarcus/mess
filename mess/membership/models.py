@@ -3,8 +3,6 @@ from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 
-from mess.people.models import Person
-
 MEMBER_STATUS = (
     ('a', 'Active'),
     ('L', 'Leave of Absence'),
@@ -12,13 +10,11 @@ MEMBER_STATUS = (
     ('m', 'Missing'),  # Member has disappeared without notice.
     ('i', 'Inactive'),
 )
-
 WORK_STATUS = (
     ('e','Excused'),
     ('w', 'Working'),  # Member is active and has a job.
     ('n', 'Non-Working'),  # Such as a single parent.
 )
-
 CONTACT_PREF = (
     ('e', 'Email'),
     ('t', 'Telephone'),
@@ -46,7 +42,6 @@ class Member(models.Model):
             ('can_edit_own', 'Can edit own'),
             ('can_view_list', 'Can view list'),
         )
-        # can't order by ForeignKey
         ordering = ['user']
 
 class Account(models.Model):

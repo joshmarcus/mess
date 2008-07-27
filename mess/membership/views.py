@@ -7,7 +7,6 @@ from django.template.loader import get_template
 
 from mess.membership.forms import MemberForm
 from mess.membership.models import Member, Account
-from mess.people.models import Person
 
 @permission_required('membership.can_view_list')
 def member_list(request):
@@ -18,15 +17,18 @@ def member_list(request):
     return HttpResponse(template.render(context))
 
 @permission_required('membership.can_edit_own')
-def member(request, id):
+def member(request, username):
     context = RequestContext(request)
-    user = get_object_or_404(User, id=id)
-    person = get_object_or_404(Person, user=user)
-	#the following line is broken, so I'm breaking it differently --Paul
-    #member = get_object_or_404(Member, person=person)    
+    user = get_object_or_404(User, username=username)
+    profile = user.get_profile()
+    context['profile'] = profile
     member = get_object_or_404(Member, user=user)
-    member.person = person
     context['member'] = member
+    template = get_template('membership/member.html')
+    return HttpResponse(template.render(context))
+
+def member_form(request, id):
+    context = RequestContext(request)
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
         if form.is_valid():
@@ -35,14 +37,15 @@ def member(request, id):
     else:
         form = MemberForm(instance=member)
     context['form'] = form
-    template = get_template('membership/member.html')
+    template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
 def account_list(request):
-    page_name = 'Accounts'
+    context = RequestContext(request)
     account_list = Account.objects.all()
-    return render_to_response('membership/account_list.html', locals(),
-                                context_instance=RequestContext(request))
+    context['account_list'] = account_list
+    template = get_template('membership/account_list.html')
+    return HttpResponse(template.render(context))
 
 def account(request, id_num):
     name = Account.objects.get(id=id_num).name

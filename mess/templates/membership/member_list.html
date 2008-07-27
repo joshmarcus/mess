@@ -23,7 +23,7 @@
 	{% for member in member_list %}
     <tr class="{% cycle 'odd' 'even' %}">
       <td>
-        <a href='{% url member member.id %}'>{{ member }}</a>
+        <a href='{% url member member.user.username %}'>{{ member }}</a>
       </td>
       <td>
 	     <ul>

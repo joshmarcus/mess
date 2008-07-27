@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-ADDRESS_TYPES = (
+addressTYPES = (
     ('h','Home'),
     ('w','Work'),
     ('o','Other'),
@@ -20,7 +20,7 @@ EMAIL_TYPES = (
 )
  
 class Address(models.Model):
-    type = models.CharField(max_length=1, choices=ADDRESS_TYPES)
+    type = models.CharField(max_length=1, choices=addressTYPES)
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=50, default='Philadelphia')
@@ -31,10 +31,10 @@ class Address(models.Model):
     country = models.CharField(max_length=50, default='USA')
     
     def __unicode__(self):
-        if self.address_2:
-            return ('%s, %s' % (self.address_1, self.address_2))
+        if self.address2:
+            return ('%s, %s' % (self.address1, self.address2))
         else:
-            return self.address_1
+            return self.address1
 
     class Meta:
         verbose_name_plural = 'Addresses'
@@ -49,7 +49,7 @@ class Phone(models.Model):
         # Why doesn't get_type_display work here:
         #phone = ('%s: %s' % (self.get_type_display, self.number))
         if self.ext:
-            return ('%s Ext %s' % (self.number, self.ext))
+            return '%s Ext %s' % (self.number, self.ext)
         else:
             return self.number
 
