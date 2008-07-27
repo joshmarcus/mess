@@ -38,10 +38,6 @@ class Member(models.Model):
         return self.user.get_full_name()
 
     class Meta:
-        permissions = (
-            ('can_edit_own', 'Can edit own'),
-            ('can_view_list', 'Can view list'),
-        )
         ordering = ['user']
 
 class Account(models.Model):

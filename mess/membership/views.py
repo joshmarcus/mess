@@ -1,5 +1,6 @@
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -8,7 +9,7 @@ from django.template.loader import get_template
 from mess.membership.forms import MemberForm
 from mess.membership.models import Member, Account
 
-@permission_required('membership.can_view_list')
+@user_passes_test(lambda u: u.is_staff)
 def member_list(request):
     context = RequestContext(request)
     context['page_name'] = 'Members'
@@ -16,10 +17,12 @@ def member_list(request):
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 
-@permission_required('membership.can_edit_own')
 def member(request, username):
-    context = RequestContext(request)
     user = get_object_or_404(User, username=username)
+    if not request.user.is_staff and not (request.user.is_authenticated() 
+            and request.user.id == user.id):
+        return HttpResponseRedirect(reverse('login'))
+    context = RequestContext(request)
     profile = user.get_profile()
     context['profile'] = profile
     member = get_object_or_404(Member, user=user)
@@ -27,7 +30,11 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
-def member_form(request, id):
+def member_form(request, username):
+    user = get_object_or_404(User, username=username)
+    if not request.user.is_staff and not (request.user.is_authenticated() 
+            and request.user.id == user.id):
+        return HttpResponseRedirect(reverse('login'))
     context = RequestContext(request)
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
