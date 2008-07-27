@@ -26,21 +26,22 @@
     <tr>
         <td><label for="account_name">Account Name</label></td>
 	    <td>
-            <input type="text" size="40"        
+            <input tabindex="1" type="text" size="40"        
 			        id="account_name" name="account_name" />
         </td>
         <td><label for="id_ref" >Reference</label></td>
 	    <td>
-		    <input type="text" size="10" id="id_ref" name="ref" />
+		    <input tabindex="3" type="text" size="10" id="id_ref" name="ref" />
 	    </td>
     </tr>
     <tr>
         <td><label for="member_name" >Member Name</label></td>
 	    <td>
-		    <input type="text" size="40" id="member_name" name="member_name" />
+            <input tabindex="2" type="text" size="40"
+                    id="member_name" name="member_name" />
 	    </td>
         <td>
-            <select id="id_debit_type" name="debit_type" >
+            <select tabindex="4" id="id_debit_type" name="debit_type" >
                 <option value="N" selected>Select Payment</option>
                 {% for v, t in debit_choices %}
                     <option value={{ v }} >{{ t }}</option>
@@ -48,7 +49,8 @@
             </select>
         </td>
 	    <td>
-		    <input type="text" size="10" id="id_debit" name="debit" value="00" />
+            <input tabindex="5" type="text" size="10"
+                    id="id_debit" name="debit" value="00" />
 	    </td>
     </tr>
     <tr>
@@ -57,21 +59,22 @@
 		    <input type="text" size="40" id="id_note" name="note" value="" />
 	    </td>
         <td>
-        <select id="id_credit_type" name="credit_type" >
-            <option value="N" selected>Select Purchase</option>
-            {% for v, t in credit_choices %}
-                <option value={{ v }} >{{ t }}</option>
-            {% endfor %}
-        </select>
-    </td>
-	<td>
-		<input type="text" size="10" id="id_credit" name="credit" value="00"/>
-	</td>
-</tr>
-<tr>
-    <td colspan=4 >
+            <select tabindex="6" id="id_credit_type" name="credit_type" >
+                <option value="N" selected>Select Purchase</option>
+                {% for v, t in credit_choices %}
+                    <option value={{ v }} >{{ t }}</option>
+                {% endfor %}
+            </select>
+        </td>
+	    <td>
+            <input tabindex="7" type="text" size="10"
+                id="id_credit" name="credit" value="00"/>
+	    </td>
+    </tr>
+    <tr>
+        <td colspan=4 >
         <input type="reset" value="Reset Form" >
-        <input type="submit" value="Save Transaction" >
+        <input tabindex="8" type="submit" value="Save Transaction" >
     </td>
 </tr>
 </table>
