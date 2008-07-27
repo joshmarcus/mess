@@ -64,6 +64,7 @@ body {
 	h5 {
 		text-transform:uppercase;
 		font-size:1.1em;
+		margin-top:1.5em;
 		margin-bottom:.25em;
 		letter-spacing:1px;
 		color:#111;
@@ -314,6 +315,17 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					#primary-content-wrapper table.data td ul li {
 						font-size:1em;
 						}
+						
+		#primary-content-wrapper div.member {
+			border:1px solid #ddd;
+			padding:1em;
+			}
+			#primary-content-wrapper div.member h4 {
+				margin-top:0;
+				}
+			#primary-content-wrapper div.member p {
+				line-height:1.3em;
+				}
 				
 
 	/*right-column*/

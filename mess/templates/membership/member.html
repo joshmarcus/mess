@@ -7,9 +7,16 @@
   <h3>Active Local Nav Item</h2>
   <div class="member">
 	<h4>{{ member.user.get_full_name }}</h4>
-    <p><span class="label">{% for address in profile.addresses.all %}</span>
-	   {% include "contact/snippets/address.html" %}
-	   {% endfor %}</p>
+    {% for address in profile.addresses.all %}
+	{% include "contact/snippets/address.html" %}
+	   {% endfor %}
+  	{% for phone in profile.phones.all %}
+    <p>{{ phone }}<br />
+      {% endfor %}
+      {{ member.user.email }}
+      {% for email in profile.emails.all %}
+        <a href="mailto:{{ email }}">{{ email }}</a></p>
+      {% endfor %}
   </div>
 	
   
