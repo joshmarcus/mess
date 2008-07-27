@@ -5,64 +5,61 @@
         <a href="{% url trans_summary %}">All</a>
         <a href="{% url trans_summary_today %}">Today</a>
         <a href="{% url trans_summary_yesterday %}">Yesterday</a>
-        <a href="{% url trans_summary_yesterday %}">Week</a>
-        <a href="{% url trans_summary_yesterday %}">Year</a>
+        <a href="{% url trans_summary_week %}">Week</a>
+        <a href="{% url trans_summary_month %}">Month</a>
+        <a href="{% url trans_summary_year %}">Year</a>
         <a href="{% url trans_summary_custom %}">Custom</a>
         <a href="{% url trans_list %}">List Transactions</a>
 </ul>
 <div id="primary-content-wrapper" >
 
-<h2>Totals for Today, {{ date }}</h2>
+<h2>{{ report_title }}</h2>
 <table class="data" >
-    <caption>Credits</caption>
+    <tr>
+        <th colspan="2" >Credits</th>
+        <th colspan="2" >Debits</th>
+    </tr>
     <tr class="{% cycle 'odd' 'even' %}" > 
-        <th>Extras</th><td>{{ total_extras }}</td>
+        <td>Extras</td><td>{{ total_extras }}</td>
+        <td>Credit Cards</td><td>{{ total_credit_card }}</td>
+        
     </tr>
     <tr>
-        <th>Purchases</th><td>{{ total_purchase }}</td>
+        <td>Purchases</td><td>{{ total_purchase }}</td>
+        <td>Debit Cards</td><td>{{ total_debit_card }}</td>
+        
     </tr>
     <tr>
-        <th>Bulk Orders</th><td>{{ total_bulk_purchase }}</td>
+        <td>Bulk Orders</td><td>{{ total_bulk_purchase }}</td>
+        <td>Checks</td><td>{{ total_check}}</td>
+        
     </tr>
     <tr>
-        <th>Dues</th><td>{{ total_dues }}</td>
+        <td>Dues</td><td>{{ total_dues }}</td>
+        <td>Money Orders</td><td>{{ total_money_order}}</td>
+        
     </tr>
     <tr>
-        <th>Misc Sales</th><td> {{ total_misc_sales }}</td>
+        <td>Misc Sales</td><td> {{ total_misc_sales }}</td>
+        <td>EBT</td><td>{{ total_ebt }}</td>
+
     </tr>
     <tr>
-        <th>Trades</th><td>{{ total_trade }}</td>
+        <td>Trades</td><td>{{ total_trade }}</td>
+        <td>Deposits</td><td>{{ total_deposit }}</td>
+
     </tr>
     <tr>
-        <th>Work Credit</th><td>{{ total_work_credit }}</td>
+        <td>Work Credit</td><td>{{ total_work_credit }}</td>
+        <td>Key Deposits</td><td>{{ total_key_deposit }}</td>
+        
     </tr>
     <tr>
-        <th>Total Credits</th><td>{{ total_credits }}</td>
-    </tr>
-</table>
-<table class="data" >
-    <caption>Debits</caption>
+        <td></td><td></td>
+        <td>Misc Debits</td><td>{{ total_misc_debit }}</td>
     <tr>
-        <th>Credit Cards</th>
-        <th>Debit Cards</th>
-        <th>Checks</th>
-        <th>Money Orders</th>
-        <th>EBT</th>
-        <th>Deposits</th>
-        <th>Key Deposits</th>
-        <th>Misc Debits</th>
-        <th>Total Debits</th>
-    </tr>
-    <tr>
-        <td>{{ total_credit_card }}</td>
-        <td>{{ total_debit_card }}</td>
-        <td>{{ total_check}}</td>
-        <td>{{ total_money_order}}</td>
-        <td>{{ total_ebt }}</td>
-        <td>{{ total_deposit }}</td>
-        <td>{{ total_key_deposit }}</td>
-        <td>{{ total_misc_debit }}</td>
-        <td>{{ total_debits }}</h3>
+        <th>Total Credits</th><td>{{ total_credits }}</td>            
+        <th>Total Debits</th><td>{{ total_debits }}</h3>
     </tr>
 </table>
 </div>
