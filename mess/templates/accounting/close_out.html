@@ -10,8 +10,8 @@
         <a href={% url close_out_ebt %} >EBT</a>
     </ul>
 <div id="primary-content-wrapper">
-<h1>Close Out for {{ date }}</h1>
-<h2>Transactions are being reconciled by {{ user_name }}.</h2>
+<h2>Close Out for {{ date }}</h2>
+<h3>Transactions are being reconciled by {{ user_name }}.</h3>
 
 <form class="standard" id='form' name='form' method='post'>
     <input type="hidden"
@@ -62,5 +62,8 @@
         <input type='submit' value='Done' >
 </form>
 </div>
+</div>
+<div id="right-column">
+    <!--Right column content goes here.-->
 </div>
 {% endblock %}
