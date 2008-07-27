@@ -2,14 +2,14 @@
 {% block content %}
 <div id="left-column" >
     <ul id="local-nav" >
-        <a href="{% url trans_summary %}">All</a>
-        <a href="{% url trans_summary_today %}">Today</a>
-        <a href="{% url trans_summary_yesterday %}">Yesterday</a>
-        <a href="{% url trans_summary_week %}">Week</a>
-        <a href="{% url trans_summary_month %}">Month</a>
-        <a href="{% url trans_summary_year %}">Year</a>
-        <a href="{% url trans_summary_custom %}">Custom</a>
-        <a href="{% url trans_list %}">List Transactions</a>
+      <li><a href="{% url trans_summary %}">All</a></li>
+      <li><a href="{% url trans_summary_today %}">Today</a></li>
+      <li><a href="{% url trans_summary_yesterday %}">Yesterday</a></li>
+      <li><a href="{% url trans_summary_week %}">Week</a></li>
+      <li><a href="{% url trans_summary_month %}">Month</a></li>
+      <li><a href="{% url trans_summary_year %}">Year</a></li>
+      <li><a href="{% url trans_summary_custom %}">Custom</a></li>
+      <li class="last-item"><a href="{% url trans_list %}">List Transactions</a></li>
 </ul>
 <div id="primary-content-wrapper" >
 
