@@ -1,22 +1,24 @@
 {% extends "base.html" %}i
 
 {% block content %}
-{% include "accounting/snippets/page_menu.html" %}
+<div id="left-column" >
+    <ul id="local-nav">
+        <a href={% url close_out %} >All Transactions</a>
+        <a href={% url close_out_checks %} >Checks</a>
+        <a href={% url close_out_money_orders %} >Money Orders</a>
+        <a href={% url close_out_credit %} >Credit and Debit Cards</a>
+        <a href={% url close_out_ebt %} >EBT</a>
+    </ul>
+<div id="primary-content-wrapper">
 <h1>Close Out for {{ date }}</h1>
-<h2>Transactions are being reconciled by {{ user_name }}  id is {{ user.id }}</h2>
+<h2>Transactions are being reconciled by {{ user_name }}.</h2>
 
-<a href={% url close_out %} >All Transactions</a>
-<a href={% url close_out_checks %} >Checks</a>
-<a href={% url close_out_money_orders %} >Money Orders</a>
-<a href={% url close_out_credit %} >Credit and Debit Cards</a>
-<a href={% url close_out_ebt %} >EBT</a>
-
-<form id='form' name='form' method='post'>
+<form class="standard" id='form' name='form' method='post'>
     <input type="hidden"
             id="id_reconciled_by"
             name="id_reconciled_by"
             value={{ user.id }} >
-    <table>
+    <table class="form-table" >
         <th>Transaction</th>
         <th>Time</th>
         <th>Account</th>
@@ -26,7 +28,7 @@
         <th>amount</th>
         <th>Reconcile</th>
         {% for key, data  in tran_list.items %}
-            <tr>
+            <tr class="{% cycle 'odd' 'even' %}">
                 <td><input type="hidden"
                             id={{ key }}_transaction
                             name={{ key }}_transaction
@@ -59,4 +61,6 @@
             <input type='reset' value='Reset' >
         <input type='submit' value='Done' >
 </form>
+</div>
+</div>
 {% endblock %}
