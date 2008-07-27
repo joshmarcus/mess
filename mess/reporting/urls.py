@@ -13,8 +13,8 @@ dict_summary_yesterday = {'start_date': date_yesterday,
 
 urlpatterns = patterns('mess.reporting.views',
     url(r'^trans_summary/$', 'transaction_report', name='trans_summary'),
-    url(r'^summary_today/$', 'transaction_report', dict_summary_today,
+    url(r'^trans_summary_today/$', 'transaction_report', dict_summary_today,
                             name='trans_summary_today',),
-    url(r'^summary_yesterday/$', 'transaction_report', dict_summary_yesterday,
+    url(r'^trans_summary_yesterday/$', 'transaction_report', dict_summary_yesterday,
                             name='trans_summary_yesterday',),
 )
