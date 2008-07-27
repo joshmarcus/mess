@@ -223,8 +223,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		/*margin:100px 15px 0 15px;*/
 		position:relative;
-		margin-left:15px;
+		padding-left:15px;
 		top:98px;
+		height:20px;
+		background:#00417d;
 		}	
 		/*.set-down { position:absolute; bottom:0px; z-index: 1; }*/
 		ul#global-nav li {
