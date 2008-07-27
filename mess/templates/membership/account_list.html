@@ -3,20 +3,25 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
+	<h2>Active Global Item</h2>
+	<h3>Active local item</h3>
     <table class="data">
-      <th>Name</th>
-      <th>Members</th>
-      <th>Contact</th>
-      <th>Balance</th>
-       {% for account in account_list %}
       <tr>
+        <th>Name</th>
+        <th>Members</th>
+        <th>Contact</th>
+        <th>Balance</th>
+         {% for account in account_list %}
+      </tr>
+	  <tr class="{% cycle 'odd' 'even' %}">
 		<!-- FIXME: account/form/# does not yet exist -->
-        <td><a href='{{ PROJECT_URL }}account/form/{{ account.id }}' >
-            <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
-        </a>
-        <a href={{ PROJECT_URL }}membership/account/{{ account.id }}>
+        <td>
+	      <a href='{{ PROJECT_URL }}account/form/{{ account.id }}' >
+		    <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
+		  </a>
+          <a href={{ PROJECT_URL }}membership/account/{{ account.id }}>
             {{ account.name }}
-        </a>
+          </a>
         </td>
         <td>{% for member in account.members.all %}
                 <a href='{{ PROJECT_URL }}membership/member/{{ member.id }}' >
@@ -32,7 +37,7 @@
             {{ account.contact.person.emails.all|first }}
         </td>
 
-    </tr>
+      </tr>
 {% endfor %}
 </table>
 </div>
