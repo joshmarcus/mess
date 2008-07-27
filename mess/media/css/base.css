@@ -36,6 +36,12 @@ body {
 		font-size:1.2em;
 		font-family:courier;
 		}
+	img {
+		border:none;
+		}	
+	a img {
+		border:none;
+		}
 	p {
 		font-size: 1.2em; 
 		line-height:1.4em;
@@ -306,7 +312,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				font-size:1em;
 				border-bottom:1px solid #eee;
 				}
-				#primary-content-wrapper table.data tr.odd {
+				#primary-content-wrapper table.data tr .odd {
 					background:#F7F7F7;
 					}
 				#primary-content-wrapper table.data td ul {
