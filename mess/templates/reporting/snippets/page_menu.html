@@ -1,5 +1,5 @@
-{% block page_menu %}
-<a class='button' href="{% url trans_summary %}">Transaction Summary</a>
-<a class='button' href="{% url trans_summary_today %}">Today's Transactions Summary</a>
-<a class='button' href="{% url trans_summary_yesterday %}">Yesterday's Transactions Summary</a>
-{% endblock %}
+<a href="{% url member_reports %}">Members</a>
+<a href="{% url account_reports %}">Accounts</a>
+<a href="{% url trans_reports %}">Transactions</a>
+<a href="{% url scheduling_reports %}">Scheduling</a>
+
