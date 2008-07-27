@@ -15,7 +15,6 @@ urlpatterns = patterns('',
     
     url(r'^$', login, {'template_name': 'welcome.html'}, 'login'),
     url(r'^logout/$', logout_then_login, name='logout'),
-    url(r'^styleguide/$', 'mess.views.styleguide', name='styleguide'),
 
     ('^admin/(.*)', admin.site.root),
 )
