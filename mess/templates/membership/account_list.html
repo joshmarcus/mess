@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<table id='table' >
-    <th>Name</th>
-    <th>Members</th>
-    <th>Contact</th>
-    <th>Balance</th>
-    {% for account in account_list %}
-    <tr>
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <table class="data">
+      <th>Name</th>
+      <th>Members</th>
+      <th>Contact</th>
+      <th>Balance</th>
+       {% for account in account_list %}
+      <tr>
 		<!-- FIXME: account/form/# does not yet exist -->
         <td><a href='{{ PROJECT_URL }}account/form/{{ account.id }}' >
             <img class='b100em' src='{{ MEDIA_URL }}images/Edit.png' />
@@ -34,5 +35,7 @@
     </tr>
 {% endfor %}
 </table>
+</div>
+</div>
 {% endblock %}
 

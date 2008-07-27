@@ -1,5 +1,5 @@
 {% block page_menu %}
-<a class='button' href="{% url cashier %}">Cashier</a>
-<a class='button' href="{% url daily_report %}">Daily Report</a>
-<a class='button' href="{% url close_out %}">Close Out</a>
+  <li><a href="{% url cashier %}">Cashier</a></li>
+  <li><a href="{% url daily_report %}">Daily Report</a></li>
+  <li class="last-item"><a href="{% url close_out %}">Close Out</a></li>
 {% endblock %}
