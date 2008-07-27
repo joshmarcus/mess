@@ -138,7 +138,6 @@ def close_out(request, type='all'):
             transactions = get_trans_of_type(type)
         tran_list = {}
         user = request.user
-        context['user_name'] = user.person_set.all()[0].name
         for t in transactions:
             if t.debit_type != 'N':
                 tran_type = t.get_debit_type_display()
