@@ -7,17 +7,25 @@
   <h3>Active Local Nav Item</h2>
   <div class="member">
 	<h4>{{ member.user.get_full_name }}</h4>
-    {% for address in profile.addresses.all %}
-	{% include "contact/snippets/address.html" %}
+	<ul class="member-info">
+	  <li><img src="/media/images/icon-question-mark.gif" alt="Status"/> {{ member.get_status_display }}</li>
+	  <li><img src="/media/images/icon-clipboard.gif" alt="Work Status"/> {{ member.get_work_status_display }}</li>
+	  <li><img src="/media/images/icon-key.gif" alt="Has Key"/> {{ member.has_key }}</li>
+	  <li><img src="/media/images/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
+	</ul>
+	<div class="contact-info">
+      {% for address in profile.addresses.all %}
+	  {% include "contact/snippets/address.html" %}
 	   {% endfor %}
-  	{% for phone in profile.phones.all %}
-    <p>{{ phone }}<br />
-      {% endfor %}
-      {{ member.user.email }}
-      {% for email in profile.emails.all %}
-        <a href="mailto:{{ email }}">{{ email }}</a></p>
-      {% endfor %}
-  </div>
+  	  {% for phone in profile.phones.all %}
+      <p>{{ phone }}<br />
+        {% endfor %}
+        {{ member.user.email }}
+        {% for email in profile.emails.all %}
+          <a href="mailto:{{ email }}">{{ email }}</a></p>
+        {% endfor %}
+	 </div>
+   </div>
 	
   
   <!--beginning of gabe's stuff-->
@@ -73,5 +81,14 @@
     </tr>
   </table>
 </div>
+</div>
+<div id="right-column">
+  <h3>Icon Key</h3>
+  <ul id="icon-key">
+	<li><img src="/media/images/icon-question-mark.gif"/> Status</li>
+	<li><img src="/media/images/icon-clipboard.gif"/> Work Status</li>
+	<li><img src="/media/images/icon-key.gif"/> Has Key</li>
+	<li><img src="/media/images/icon-calendar.gif"/> Date Joined</li>
+  </ul>
 </div>
 {% endblock %}

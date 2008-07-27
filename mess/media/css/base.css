@@ -326,6 +326,26 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#primary-content-wrapper div.member p {
 				line-height:1.3em;
 				}
+			#primary-content-wrapper div.contact-info {
+				border:1px solid #ddd;
+				padding:1em;
+				background:beige;
+				}
+				#primary-content-wrapper ul.member-info {
+					width:200px;
+					margin-top:1.5em;
+					}
+					#primary-content-wrapper ul.member-info li {
+						background-image:none;
+						padding:0 0 3px 0;
+						border-bottom:1px solid #eee;
+						}
+						#primary-content-wrapper ul.member-info li img {
+							margin-right:1em;
+							}
+						/*#primary-content-wrapper ul.member-info li span.status {
+							background:url('/media/images/icon-question-mark.gif') no-repeat top left;
+							}*/
 				
 
 	/*right-column*/
@@ -341,6 +361,12 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#right-column p {
 			line-height:1.3em;
 			}
+		#right-column ul#icon-key {
+			}	
+			#right-column ul#icon-key li {
+				margin-bottom:.5em;
+				}
+		
 		
 
 
