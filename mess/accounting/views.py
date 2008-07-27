@@ -22,6 +22,7 @@ def thanks(request):
         redirect = '/'
     return render_to_response('accounting/thanks.html', locals(),
                                 context_instance=RequestContext(request))
+    
 def get_trans_of_type(type, d=date.today()):
     #d = date.today()
     return Transaction.objects.filter(date__year = d.year,
