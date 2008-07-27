@@ -332,6 +332,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#primary-content-wrapper div.member p {
 				line-height:1.3em;
 				}
+			#primary-content-wrapper div.account-links {
+                                float:right;
+				}
 			#primary-content-wrapper div.contact-info {
 				border:1px solid #ddd;
 				padding:1em;

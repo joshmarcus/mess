@@ -3,44 +3,55 @@
 {% block content %}
 <div id="left-column">
   <ul id="local-nav">
-	<li><a href="">local nav item</a></li>
-	<li><a href="">local nav item</a></li>
-	<li class="last-item"><a href="">local nav item</a></li>
+    <!--<li><a href="">local nav item</a></li>
+    <li><a href="">local nav item</a></li>-->
+    <li class="last-item"><a href="">edit profile</a></li>
   </ul>
   <div id="primary-content-wrapper">
-  <h2>Active Global Nav Item</h2>
-  <h3>Active Local Nav Item</h2>
-  <div class="member">
-	<h4>{{ member.user.get_full_name }}</h4>
-	<ul class="member-info">
-	  <li><img src="/media/images/twotiny/icon-question-mark.gif" alt="Status"/> {{ member.get_status_display }}</li>
-	  <li><img src="/media/images/twotiny/icon-clipboard.gif" alt="Work Status"/> {{ member.get_work_status_display }}</li>
-	  <li><img src="/media/images/twotiny/icon-key.gif" alt="Has Key"/> {{ member.has_key }}</li>
-	  <li><img src="/media/images/twotiny/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
-	</ul>
-	<div class="contact-info">
-      {% for address in profile.addresses.all %}
-	  {% include "contact/snippets/address.html" %}
-	   {% endfor %}
-  	  {% for phone in profile.phones.all %}
-      <p>{{ phone }}<br />
+    <h2>Members</h2>
+    <h3>Member Profile</h3>
+    <div class="member">
+      <div class="account-links">
+        <h5>Accounts</h5>
+        <ul>
+          {% for account in member.accounts.all %}
+            <li><a href="{% url account account.id %}">{{ account }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <h4>{{ member.user.get_full_name }}</h4>
+      <ul class="member-info">
+        <li><img src="/media/images/twotiny/icon-question-mark.gif" alt="Status"/> {{ member.get_status_display }}</li>
+        <li><img src="/media/images/twotiny/icon-clipboard.gif" alt="Work Status"/> {{ member.get_work_status_display }}</li>
+        <li><img src="/media/images/twotiny/icon-key.gif" alt="Has Key"/> {{ member.has_key }}</li>
+        <li><img src="/media/images/twotiny/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
+      </ul>
+      <div class="contact-info">
+        {% for address in profile.addresses.all %}
+          {% include "contact/snippets/address.html" %}
         {% endfor %}
-        {{ member.user.email }}
-        {% for email in profile.emails.all %}
-          <a href="mailto:{{ email }}">{{ email }}</a></p>
-        {% endfor %}
-	 </div>
-   </div>
-
-</div>
+        <p>
+          {% for phone in profile.phones.all %}
+            {{ phone }}<br />
+          {% endfor %}
+          {% if member.user.email %}
+            <a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a><br/>
+          {% endif %}
+          {% for email in profile.emails.all %}
+            <a href="mailto:{{ email }}">{{ email }}</a><br/>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 <div id="right-column">
   <h3>Icon Key</h3>
   <ul id="icon-key">
-	<li><img src="/media/images/twotiny/icon-question-mark.gif"/> Status</li>
-	<li><img src="/media/images/twotiny/icon-clipboard.gif"/> Work Status</li>
-	<li><img src="/media/images/twotiny/icon-key.gif"/> Has Key</li>
-	<li><img src="/media/images/twotiny/icon-calendar.gif"/> Date Joined</li>
+    <li><img src="/media/images/twotiny/icon-question-mark.gif"/> Status</li>
+    <li><img src="/media/images/twotiny/icon-clipboard.gif"/> Work Status</li>
+    <li><img src="/media/images/twotiny/icon-key.gif"/> Has Key</li>
+    <li><img src="/media/images/twotiny/icon-calendar.gif"/> Date Joined</li>
   </ul>
 </div>
 {% endblock %}
