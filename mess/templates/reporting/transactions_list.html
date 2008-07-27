@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="left-column" >
+    <ul id="local-nav" >
+        <a href="{% url trans_list %}">All</a>
+        <a href="{% url trans_list_today %}">Today</a>
+        <a href="{% url trans_list_yesterday %}">Yesterday</a>
+        <a href="{% url trans_list_week %}">Week</a>
+        <a href="{% url trans_list_month %}">Month</a>
+        <a href="{% url trans_list_year %}">Year</a>
+        <a href="{% url trans_list_custom %}">Custom</a>
+        <a href="{% url trans_summary %}">Transactions Summary</a>
+</ul>
+<div id="primary-content-wrapper" >
+
+<h2>{{ report_title }}</h2>
+{% include "reporting/snippets/transactions.html" %}
+
+</div>
+</div>
+<div id="right-column">
+    <h3>Report Sections</h3>
+<ul id="local-nav" >
+    {% include "reporting/snippets/report_sections_menu.html" %}
+</ul>
+
+</div>
+{% endblock %}
