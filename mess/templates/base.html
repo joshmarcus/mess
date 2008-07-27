@@ -5,11 +5,9 @@
   <head>
     <meta name="generator" content=""/>
     <meta name="author" content="Digger Vermont, Mike Ball, Gabriel Farrell"/>
-    <link href="{{ MEDIA_URL }}css/base.css"
-        type="text/css" rel="Stylesheet" media="screen" />
-    <title>
-      {% block title %}The MESS: {{ page_name }}{% endblock %}
-    </title>
+    <link href="{{ MEDIA_URL }}css/base.css" type="text/css" rel="Stylesheet" media="screen" />
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+    <title>{% block title %}The MESS: {{ page_name }}{% endblock %}</title>
     {% block head %}{% endblock %}
   </head>
   <body>
