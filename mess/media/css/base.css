@@ -333,8 +333,23 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				line-height:1.3em;
 				}
 			#primary-content-wrapper div.account-links {
-                                float:right;
+				float:right;
+				font-size:95%;
+				border:1px dashed #ddd;
+				padding:.5em;
 				}
+				#primary-content-wrapper div.account-links h5 {
+					margin:0 0 .75em 0;
+					letter-spacing:0;
+					color:#D18405;
+					}
+				#primary-content-wrapper div.account-links ul li {
+					background-image:none;
+					padding:0;
+					}
+					#primary-content-wrapper div.account-links ul li a {
+						color:#aaa;
+						}
 			#primary-content-wrapper div.contact-info {
 				border:1px solid #ddd;
 				padding:1em;
