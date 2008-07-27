@@ -361,11 +361,24 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#right-column p {
 			line-height:1.3em;
 			}
-		#right-column ul#icon-key {
-			}	
-			#right-column ul#icon-key li {
+		#right-column ul {
+			margin-bottom:1.5em;
+			}
+			#right-column ul li {
 				margin-bottom:.5em;
+				padding-left:11px;
+				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
 				}
+			#right-column ul#icon-key {
+				}	
+				#right-column ul#icon-key li {
+					background-image:none;
+					padding:0 0 3px 0;
+					border-bottom:1px solid #ddd;
+					}
+					#right-column ul#icon-key li img {
+						margin-right:1em;
+						}
 		
 		
 

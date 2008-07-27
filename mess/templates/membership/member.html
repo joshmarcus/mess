@@ -26,60 +26,7 @@
         {% endfor %}
 	 </div>
    </div>
-	
-  
-  <!--beginning of gabe's stuff-->
-  <table>
-    <tr>
-      <th>Name</th>
-      <td>
-        <div>{{ member.user.get_full_name }}</div>
-      </td>
-    </tr>
-    <tr>
-      <th>Addresses</th>
-      <td>
-        {% for address in profile.addresses.all %}
-          <div>
-            {% include "contact/snippets/address.html" %}
-          </div>
-        {% endfor %}
-      </td>
-    </tr>
-    <tr>
-      <th>Emails</th>
-      <td>
-        <p>{{ member.user.email }}</p>
-        {% for email in profile.emails.all %}
-          <p>{{ email }}</p>
-        {% endfor %}
-      </td>
-    </tr>
-    <tr>
-      <th>Phones</th>
-      <td>
-        {% for phone in profile.phones.all %}
-          <p>{{ phone }}</p>
-        {% endfor %}
-      </td>
-    </tr>
-    <tr>
-      <th>Status</th>
-      <td>{{ member.get_status_display }}</td>
-    </tr>
-    <tr>
-      <th>Work Status</th>
-      <td>{{ member.get_work_status_display }}</td>
-    </tr>
-    <tr>
-      <th>Has Key</th>
-      <td>{{ member.has_key }}</td>
-    </tr>
-    <tr>
-      <th>Joined</th>
-      <td>{{ member.date_joined }}</td>
-    </tr>
-  </table>
+
 </div>
 </div>
 <div id="right-column">
