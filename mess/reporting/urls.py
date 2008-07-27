@@ -1,20 +1,34 @@
-from datetime import date, timedelta
 from django.conf.urls.defaults import *
 
-date_today = date.today()
-date_yesterday = date_today - timedelta(days=1)
-date_tomorrow = date_today + timedelta(days=1)
-dict_summary_today = {'start_date': date_today,
-                    'end_date': date_tomorrow,
-}
-dict_summary_yesterday = {'start_date': date_yesterday,
-                    'end_date': date_today,
-}
-
 urlpatterns = patterns('mess.reporting.views',
-    url(r'^trans_summary/$', 'transaction_report', name='trans_summary'),
-    url(r'^trans_summary_today/$', 'transaction_report', dict_summary_today,
-                            name='trans_summary_today',),
-    url(r'^trans_summary_yesterday/$', 'transaction_report', dict_summary_yesterday,
+    url(r'^trans_summary/$', 'transaction_report',
+                            {'report': 'all'}, name='trans_summary'),
+    url(r'^trans_summary_today/$', 'transaction_report',
+                            {'report': 'today'}, name='trans_summary_today',),
+    url(r'^trans_summary_yesterday/$', 'transaction_report',
+                            {'report': 'yesterday'},
                             name='trans_summary_yesterday',),
+    url(r'^trans_summary_week/$', 'transaction_report',
+                            {'report': 'week'}, name='trans_summary_week',),
+    url(r'^trans_summary_month/$', 'transaction_report',
+                            {'report': 'month'}, name='trans_summary_month'),
+    url(r'^trans_summary_year/$', 'transaction_report',
+                            {'report': 'year'}, name='trans_summary_year'),
+    url(r'^trans_summary_custom/$', 'transaction_report',
+                            {'report': 'custom'}, name='trans_summary_custom'),
+    url(r'^trans_list/$', 'transaction_list_report',
+                            {'report': 'all'}, name='trans_list'),
+    url(r'^trans_list_today/$', 'transaction_list_report',
+                            {'report': 'today'}, name='trans_list_today',),
+    url(r'^trans_list_yesterday/$', 'transaction_list_report',
+                            {'report': 'yesterday'},
+                            name='trans_list_yesterday',),
+    url(r'^trans_list_week/$', 'transaction_list_report',
+                            {'report': 'week'}, name='trans_list_week',),
+    url(r'^trans_list_month/$', 'transaction_list_report',
+                            {'report': 'month'}, name='trans_list_month'),
+    url(r'^trans_list_year/$', 'transaction_list_report',
+                            {'report': 'year'}, name='trans_list_year'),
+    url(r'^trans_list_custom/$', 'transaction_list_report',
+                            {'report': 'custom'}, name='trans_list_custom'),
 )
