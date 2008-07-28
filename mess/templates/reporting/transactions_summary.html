@@ -1,74 +1,85 @@
 {% extends 'base.html' %}
 {% block content %}
 <div id="left-column" >
-    <ul id="local-nav" >
-      <li><a href="{% url trans_summary %}">All</a></li>
-      <li><a href="{% url trans_summary_today %}">Today</a></li>
-      <li><a href="{% url trans_summary_yesterday %}">Yesterday</a></li>
-      <li><a href="{% url trans_summary_week %}">Week</a></li>
-      <li><a href="{% url trans_summary_month %}">Month</a></li>
-      <li><a href="{% url trans_summary_year %}">Year</a></li>
-      <li><a href="{% url trans_summary_custom %}">Custom</a></li>
-      <li class="last-item"><a href="{% url trans_list %}">List Transactions</a></li>
-</ul>
-<div id="primary-content-wrapper" >
-
-<h2>{{ report_title }}</h2>
-<table class="data" >
-    <tr>
+  <ul id="local-nav" >
+    <li><a href="{% url trans_summary %}">All</a></li>
+    <li><a href="{% url trans_summary_today %}">Today</a></li>
+    <li><a href="{% url trans_summary_yesterday %}">Yesterday</a></li>
+    <li><a href="{% url trans_summary_week %}">Week</a></li>
+    <li><a href="{% url trans_summary_month %}">Month</a></li>
+    <li><a href="{% url trans_summary_year %}">Year</a></li>
+    <li><a href="{% url trans_summary_custom %}">Custom</a></li>
+    <li class="last-item"><a href="{% url trans_list %}">List Transactions</a></li>
+  </ul>
+  <div id="primary-content-wrapper" >
+    <h2>Active global item</h2>
+    <h3>{{ report_title }}</h3>
+    <table class="data" >
+      <tr>
         <th colspan="2" >Credits</th>
         <th colspan="2" >Debits</th>
-    </tr>
-    <tr class="{% cycle 'odd' 'even' %}" > 
-        <td>Extras</td><td>{{ total_extras }}</td>
-        <td>Credit Cards</td><td>{{ total_credit_card }}</td>
-        
-    </tr>
-    <tr>
-        <td>Purchases</td><td>{{ total_purchase }}</td>
-        <td>Debit Cards</td><td>{{ total_debit_card }}</td>
-        
-    </tr>
-    <tr>
-        <td>Bulk Orders</td><td>{{ total_bulk_purchase }}</td>
-        <td>Checks</td><td>{{ total_check}}</td>
-        
-    </tr>
-    <tr>
-        <td>Dues</td><td>{{ total_dues }}</td>
-        <td>Money Orders</td><td>{{ total_money_order}}</td>
-        
-    </tr>
-    <tr>
-        <td>Misc Sales</td><td> {{ total_misc_sales }}</td>
-        <td>EBT</td><td>{{ total_ebt }}</td>
-
-    </tr>
-    <tr>
-        <td>Trades</td><td>{{ total_trade }}</td>
-        <td>Deposits</td><td>{{ total_deposit }}</td>
-
-    </tr>
-    <tr>
-        <td>Work Credit</td><td>{{ total_work_credit }}</td>
-        <td>Key Deposits</td><td>{{ total_key_deposit }}</td>
-        
-    </tr>
-    <tr>
-        <td></td><td></td>
-        <td>Misc Debits</td><td>{{ total_misc_debit }}</td>
-    <tr>
-        <th>Total Credits</th><td>{{ total_credits }}</td>            
-        <th>Total Debits</th><td>{{ total_debits }}</h3>
-    </tr>
-</table>
-</div>
+      </tr>
+      <tr class="{% cycle 'odd' 'even' %}" > 
+        <td>Extras</td>
+		<td>{{ total_extras }}</td>
+        <td>Credit Cards</td>
+		<td>{{ total_credit_card }}</td> 
+      </tr>
+      <tr>
+        <td>Purchases</td>
+		<td>{{ total_purchase }}</td>
+        <td>Debit Cards</td>
+		<td>{{ total_debit_card }}</td>  
+      </tr>
+      <tr>
+        <td>Bulk Orders</td>
+		<td>{{ total_bulk_purchase }}</td>
+        <td>Checks</td>
+		<td>{{ total_check}}</td>  
+      </tr>
+      <tr>
+        <td>Dues</td>
+		<td>{{ total_dues }}</td>
+        <td>Money Orders</td>
+		<td>{{ total_money_order}}</td>
+      </tr>
+      <tr>
+        <td>Misc Sales</td>
+		<td> {{ total_misc_sales }}</td>
+        <td>EBT</td>
+		<td>{{ total_ebt }}</td>
+      </tr>
+      <tr>
+        <td>Trades</td>
+		<td>{{ total_trade }}</td>
+        <td>Deposits</td>
+		<td>{{ total_deposit }}</td>
+      </tr>
+      <tr>
+        <td>Work Credit</td>
+		<td>{{ total_work_credit }}</td>
+        <td>Key Deposits</td>
+		<td>{{ total_key_deposit }}</td>
+      </tr>
+      <tr>
+        <td></td>
+		<td></td>
+        <td>Misc Debits</td>
+		<td>{{ total_misc_debit }}</td>
+	  </tr>
+      <tr>
+        <th>Total Credits</th>
+		<td>{{ total_credits }}</td>            
+        <th>Total Debits</th>
+		<td>{{ total_debits }}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 <div id="right-column">
-    <h3>Report Sections</h3>
-<ul id="local-nav" >
+  <h3>Report Sections</h3>
+  <ul>
     {% include "reporting/snippets/report_sections_menu.html" %}
-</ul>
-
+  </ul>
 </div>
 {% endblock %}

@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
 <div id="left-column" >
-    <ul id="local-nav" >
-        <li><a href="{% url trans_list %}">All</a></li>
-        <li><a href="{% url trans_list_today %}">Today</a></li>
-        <li><a href="{% url trans_list_yesterday %}">Yesterday</a></li>
-        <li><a href="{% url trans_list_week %}">Week</a></li>
-        <li><a href="{% url trans_list_month %}">Month</a></li>
-        <li><a href="{% url trans_list_year %}">Year</a></li>
-        <li><a href="{% url trans_list_custom %}">Custom</a></li>
-        <li><a href="{% url trans_summary %}">Transactions Summary</a></li>
-</ul>
-<div id="primary-content-wrapper" >
-
-<h2>{{ report_title }}</h2>
-{% include "reporting/snippets/transactions.html" %}
-
-</div>
+  <ul id="local-nav" >
+    <li><a href="{% url trans_list %}">All</a></li>
+    <li><a href="{% url trans_list_today %}">Today</a></li>
+    <li><a href="{% url trans_list_yesterday %}">Yesterday</a></li>
+    <li><a href="{% url trans_list_week %}">Week</a></li>
+    <li><a href="{% url trans_list_month %}">Month</a></li>
+    <li><a href="{% url trans_list_year %}">Year</a></li>
+    <li><a href="{% url trans_list_custom %}">Custom</a></li>
+    <li><a href="{% url trans_summary %}">Transactions Summary</a></li>
+  </ul>
+  <div id="primary-content-wrapper" >
+    <h2>Active Global item</h2>
+    <h3>Active local item</h3>
+    <h4>{{ report_title }}</h4>
+    {% include "reporting/snippets/transactions.html" %}
+  </div>
 </div>
 <div id="right-column">
-    <h3>Report Sections</h3>
-<ul id="local-nav" >
+  <h3>Report Sections</h3>
+  <ul>
     {% include "reporting/snippets/report_sections_menu.html" %}
-</ul>
-
+  </ul>
 </div>
 {% endblock %}
