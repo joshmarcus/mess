@@ -1,17 +1,29 @@
 {% extends "membership/base.html" %}
 
-{% block content %}
-<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/live_address.js"></script>
+{% block head %}
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/live_address.js"></script>
+{% endblock %}
 
-<form method='post' action=''>
-    <h2>Name</h2>
-    <table>
-        <tr>
-            <th>Name</th><td>{{ form.person }}</td>
-            <th>User Name</th><td colspan='4' >{{ form.user }}</td>
-        </tr>
-    </table>
+{% block content %}
+  <div id="left-column">
+    <div id="primary-content-wrapper">
+      <h2>Members</h2>
+      <h3>Edit Profile</h3>
+      {% if member %}
+      {% endif %}
+      <form class="standard" method="post">
+        <table class="form-table">
+          {{ form }}
+        <tr><td></td><td><input type="submit" value="Save"/></td></tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div id="right-column">
+    Content here.
+  </div>
+
+<!--
     <h2>Addresses</h2>
     <table>
         {% for address in member.person.addresses.all %}
@@ -82,8 +94,7 @@
         </tr>
             {% endfor %}
         </table>
-        <input type='submit' value='Save' <td>
-</form>
+-->
 
 {% endblock %}
 

@@ -30,12 +30,19 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
-def member_form(request, username):
-    user = get_object_or_404(User, username=username)
-    if not request.user.is_staff and not (request.user.is_authenticated() 
-            and request.user.id == user.id):
-        return HttpResponseRedirect(reverse('login'))
+def member_form(request, username=None):
+    if username:
+        user = get_object_or_404(User, username=username)
+        if not request.user.is_staff and not (request.user.is_authenticated() 
+                and request.user.id == user.id):
+            return HttpResponseRedirect(reverse('login'))
+        member = get_object_or_404(Member, user=user)
+    else:
+        if not request.user.is_staff:
+            return HttpResponseRedirect(reverse('login'))
+        member = None
     context = RequestContext(request)
+    context['member'] = member
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
         if form.is_valid():
@@ -54,8 +61,16 @@ def account_list(request):
     template = get_template('membership/account_list.html')
     return HttpResponse(template.render(context))
 
-def account(request, id_num):
-    name = Account.objects.get(id=id_num).name
-    page_name = 'name'
-    return render_to_response('membership/account.html', locals(),
-                                context_instance=RequestContext(request))
+def account(request, id):
+    context = RequestContext(request)
+    account = get_object_or_404(Account, id=id)
+    context['account'] = account
+    template = get_template('membership/account.html')
+    return HttpResponse(template.render(context))
+
+def account_form(request, id):
+    context = RequestContext(request)
+    account_list = Account.objects.all()
+    context['account_list'] = account_list
+    template = get_template('membership/account_list.html')
+    return HttpResponse(template.render(context))
