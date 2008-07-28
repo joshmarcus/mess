@@ -4,16 +4,11 @@
 {% block logo %}The MESS{% endblock %}
 {% block content %}
 <div id="left-column">
-  <ul id="local-nav"><!--this is just mock content to experiment with-->
-	<li><a href="">local nav item</a></li>
-	<li><a href="">another local item</a></li>
-	<li><a href="">current local nav</a></li>
-	<li class="last-item"><a href="">fourth local item</a></li>
-  </ul>	
 <div id="primary-content-wrapper">
   <h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
-  <h3>This is an h3 Which will be the active local page</h3>
-  <h4>Fourth level heading test</h4>
+  <h3>Members and staff please log in</h3>
+  <div class="attention">
+  <h4>This is a good place for a general announcement</h4>
   <p>This is just test content I want to see what happens when I do this. And What does <a href="">a link</a> look like?</p>
   <ul>
     <li>Unordered list after a paragraph</li>
@@ -21,6 +16,7 @@
     <li>Another unordered list item</li>
     <li>And just one more</li>
   </ul>
+  </div>
   <p>Second paragraph. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec quis purus vitae neque auctor ultricies. Phasellus in risus. Vivamus cursus eros vel lectus. Etiam malesuada. Maecenas sapien mi, elementum vel, pretium sed, facilisis ac, risus. Aliquam erat volutpat. Suspendisse potenti. Morbi convallis turpis sagittis dolor.</p>
   <h4>Another fourth level heading which will span two lines</h4>
   <ul>
@@ -73,13 +69,12 @@
 </div>
 </div>
 <div id ="right-column">
-  <h3>Testing Right column h2s</h3>
+  <h3>Log in to MESS</h3>
   {% if not user.is_authenticated %}
     <div id="login">
-      <h4>Log in to the MESS</h4>
-      <form method="post" action=".">
+      <form class="standard" method="post" action=".">
         <input type="hidden" name="next" value="{{ next }}" />
-        <table>
+        <table class="form-table">
           {% if form.has_errors %}
           <tr>
             <td></td>
@@ -104,14 +99,13 @@
           </tr>
             <td></td>
             <td>
-              <input type="submit" value="Log in"/>
+              <input class="button" type="submit" value="Log in"/>
             </td>
           </tr>
         </table>
       </form>
     </div>
   {% endif %}
-  <p>This content currently appears in welcome.html. Is there anything that should appear here?</p>
 </div><!--end right-column-->
 {% endblock %}
 
