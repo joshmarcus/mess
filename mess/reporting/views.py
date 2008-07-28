@@ -37,7 +37,7 @@ def transaction_report(request, report='all'):
         formated_date = start_date.strftime('%B, %Y')        
         report_title = 'Transactions Summary for the Month of ' + formated_date
     elif report == 'year':
-        start_date = date.today() - timedelta(days=1)        
+        start_date =  date(date.today().year, 01, 01)
         end_date = date.today() + timedelta(days=1)
         formated_date = start_date.strftime('%Y')        
         report_title = 'Transaction Summary for Year of ' + formated_date
@@ -106,7 +106,7 @@ def transaction_list_report(request, report='all'):
         formated_date = start_date.strftime('%B, %Y')        
         report_title = 'Transactions Summary for the Month of ' + formated_date
     elif report == 'year':
-        start_date = date.today() - timedelta(days=1)        
+        start_date = date(date.today().year, 01, 01)  
         end_date = date.today() + timedelta(days=1)
         formated_date = start_date.strftime('%Y')        
         report_title = 'Transaction Summary for Year of ' + formated_date
