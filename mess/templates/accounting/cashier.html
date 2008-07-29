@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link href="{{ MEDIA_URL }}css/div_list.css"
-        type="text/css" rel="Stylesheet" media="screen" />        
+<link href="{{ MEDIA_URL }}css/div_list.css" type="text/css" rel="Stylesheet" media="screen" />        
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
 
@@ -32,54 +31,48 @@
         <tr>
           <td><label for="member_name" >Member Name</label></td>
 	      <td>
-            <input tabindex="2" type="text" size="40"
-                    id="member_name" name="member_name" />
-	    </td>
-        <td>
+            <input tabindex="2" type="text" size="40" id="member_name" name="member_name" />
+	      </td>
+          <td>
             <select tabindex="4" id="id_debit_type" name="debit_type" >
-                <option value="N" selected>Select Payment</option>
-                {% for v, t in debit_choices %}
-                    <option value={{ v }} >{{ t }}</option>
-                {% endfor %}
+              <option value="N" selected>Select Payment</option>
+              {% for v, t in debit_choices %}
+                <option value={{ v }} >{{ t }}</option>
+              {% endfor %}
             </select>
-        </td>
-	    <td>
-            <input tabindex="5" type="text" size="10"
-                    id="id_debit" name="debit" value="00" />
-	    </td>
-    </tr>
-    <tr>
-        <td><label for="id_note">Note</label></td>
-	    <td >
+          </td>
+	      <td>
+            <input tabindex="5" type="text" size="10" id="id_debit" name="debit" value="00" />
+	      </td>
+        </tr>
+        <tr>
+          <td><label for="id_note">Note</label></td>
+	      <td>
 		    <input type="text" size="40" id="id_note" name="note" value="" />
-	    </td>
-        <td>
+	      </td>
+          <td>
             <select tabindex="6" id="id_credit_type" name="credit_type" >
-                <option value="N" selected>Select Purchase</option>
-                {% for v, t in credit_choices %}
-                    <option value={{ v }} >{{ t }}</option>
-                {% endfor %}
+              <option value="N" selected>Select Purchase</option>
+              {% for v, t in credit_choices %}
+                <option value={{ v }} >{{ t }}</option>
+              {% endfor %}
             </select>
-        </td>
-	    <td>
-            <input tabindex="7" type="text" size="10"
-                id="id_credit" name="credit" value="00"/>
-	    </td>
-    </tr>
-    <tr>
-        <td colspan=4 >
-        <input type="reset" value="Reset Form" >
-        <input tabindex="8" type="submit" value="Save Transaction" >
-    </td>
-</tr>
-</table>
-</form>
-
-<div id="transactions" ></div>
-
+          </td>
+	      <td>
+            <input tabindex="7" type="text" size="10" id="id_credit" name="credit" value="00"/>
+	      </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <input type="reset" value="Reset Form" >
+            <input tabindex="8" type="submit" value="Save Transaction" >
+          </td>
+        </tr>
+      </table>
+    </form>
+    <div id="transactions" ></div>
 {% endblock %}
 {% block pop_up %}
-
 <div id="message" ></div>
 <div id="list" ></div>
 </div>

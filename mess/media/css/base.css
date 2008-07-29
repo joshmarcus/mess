@@ -110,7 +110,7 @@ body {
 		form.standard label {
 			font-size:1.1em;
 			display:block;
-			margin:1em 1.5em .25em 0;
+			margin:.5em .5em .25em 0;
 			
 			}
 		form.standard input, form.standard select, form.standard textarea {
@@ -224,7 +224,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		ul#utility-nav li {
 			display:inline;
 			color:#fff;
-			font-size:1em;
+			font-size:1.1em;
 			border-right:1px solid #fff;
 			padding:2px 7px 2px 3px;
 			}
@@ -425,6 +425,11 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			margin:0 0 1em 0;
 			padding:14px 5px;
 			}
+		#right-column h4 {
+			background:none;
+			padding:0;
+			color:#00417d;
+			}
 		#right-column p {
 			line-height:1.3em;
 			}
@@ -463,7 +468,6 @@ div#footer {
 		}
 		ul#global-footer-nav li {
 			display:inline;
-			font-weight:bold;
 			color:#fff;
 			}
 			ul#global-footer-nav li a, ul#footer-global-nav a:link {
@@ -480,7 +484,6 @@ div#footer {
 		}
 		ul#local-footer-nav li {
 			display:inline;
-			font-weight:bold;
 			color:#fff;
 			}
 			ul#local-footer-nav li a, ul#local-vooter-nav li a:link {
