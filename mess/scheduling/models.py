@@ -31,6 +31,9 @@ class Task(models.Model):
     start = models.DateTimeField(null=True, blank=True)
     hours = models.IntegerField()
     
+    class Meta:
+        ordering = ['-deadline', 'start']
+    
     def __unicode__(self):
         return u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
 
@@ -40,6 +43,9 @@ class Assignment(models.Model):
     """
     member = models.ForeignKey(Member)
     task = models.ForeignKey(Task)
+    
+    class Meta:
+        ordering = ['task']
     
     def __unicode__(self):
         return u"%s: %s" % (self.member, self.task)
