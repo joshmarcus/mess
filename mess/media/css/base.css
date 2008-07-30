@@ -360,6 +360,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				#primary-content-wrapper table.data tr.odd {
 					background:#F7F7F7;
 					}
+				#primary-content-wrapper table.data td p {
+					font-size:1em;
+					}
 				#primary-content-wrapper table.data td ul {
 					margin:0;
 					}
@@ -453,6 +456,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					#right-column ul#icon-key li img {
 						margin-right:1em;
 						}
+
 		
 		
 
