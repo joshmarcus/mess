@@ -26,9 +26,7 @@ class Member(models.Model):
                             default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
                             default='w')
-    account = models.ForeignKey('Account', related_name='primary_account',
-                                verbose_name='Primary Account',
-                                blank=True, null=True)
+    primary_account = models.ForeignKey('Account', blank=True, null=True)
     date_joined = models.DateField(default=date(1990, 01, 01))
     has_key = models.BooleanField(default=False)
     contact_preference = models.CharField(max_length=1, 

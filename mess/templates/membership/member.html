@@ -10,8 +10,8 @@
     <div id="primary-content-wrapper">
       <h2>Members</h2>
       <h3>Member Profile</h3>
-      <div class="member">
-        <div class="account-links">
+      <div class="profile">
+        <div class="profile-links">
           <h5>Accounts</h5>
           <ul>
             {% for account in member.accounts.all %}
@@ -20,13 +20,13 @@
           </ul>
         </div>
         <h4>{{ member.user.get_full_name }}</h4>
-        <ul class="member-info">
+        <ul class="quick-info">
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/> {{ member.get_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/> {{ member.get_work_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/> {{ member.has_key }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
         </ul>
-        <div class="contact-info">
+        <div class="details">
           {% for address in profile.addresses.all %}
             {% include "profiles/snippets/address.html" %}
           {% endfor %}

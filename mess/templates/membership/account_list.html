@@ -1,47 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="double-column">
-  <div id="primary-content-wrapper">
-	<h2>Active Global Item</h2>
-	<h3>Active local item</h3>
-    <table class="data">
-      <tr>
-        <th>Name</th>
-        <th>Members</th>
-        <th>Contact</th>
-        <th>Balance</th>
-         {% for account in account_list %}
-      </tr>
-	  <tr class="{% cycle 'odd' 'even' %}">
-		<!-- FIXME: account/form/# does not yet exist -->
-        <td>
-	      <a href='{{ PROJECT_URL }}account/form/{{ account.id }}' >
-		  </a>
-          <a href={{ PROJECT_URL }}membership/account/{{ account.id }}>
-            {{ account.name }}
-          </a>
-        </td>
-        <td>{% for member in account.members.all %}
-            <ul>
-	          <li><a href='{{ PROJECT_URL }}membership/member/{{ member.id }}' >
-                    {{ member }}
-                </a>
-              </li>
-            </ul>
-            {% endfor %}
-        </td>
-        <td><a href='{{ PROJECT_URL }}membership/account/{{ account.id }}'>
-                {{ account.contact }}<br />
-            </a>
-            {{ account.contact.person.phones.all|first }}<br />
-            {{ account.contact.person.emails.all|first }}
-        </td>
-
-      </tr>
-{% endfor %}
-</table>
-</div>
-</div>
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+      <h2>Accounts</h2>
+      <h3>Account List</h3>
+      <table class="data">
+        <tr>
+          <th>Name</th>
+          <th>Members</th>
+          <th>Contact</th>
+          <th>Balance</th>
+        </tr>
+        {% for account in account_list %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td>
+              <a href="{% url account account.id %}">{{ account.name }}</a>
+            </td>
+            <td>
+              {% for member in account.members.all %}
+                <ul>
+                  <li>
+                    <a href="{% url member member.user.username %}">{{ member }}</a>
+                  </li>
+                </ul>
+              {% endfor %}
+            </td>
+            <td>
+              <p>
+                <a href="{% url member account.contact.user.username %}">{{ account.contact }}</a>
+              </p>
+              <ul>
+                <li>{{ account.contact.user.get_profile.phones.all|first }}</li>
+                <li>{{ account.contact.user.get_profile.emails.all|first }}</li>
+              </ul>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
 {% endblock %}
 

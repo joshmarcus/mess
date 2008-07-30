@@ -371,49 +371,49 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 						font-size:1em;
 						}
 						
-		#primary-content-wrapper div.member {
+		#primary-content-wrapper div.profile {
 			border:1px solid #ddd;
 			padding:1em;
 			}
-			#primary-content-wrapper div.member h4 {
+			#primary-content-wrapper div.profile h4 {
 				margin-top:0;
 				}
-			#primary-content-wrapper div.member p {
+			#primary-content-wrapper div.profile p {
 				line-height:1.3em;
 				}
-			#primary-content-wrapper div.account-links {
+			#primary-content-wrapper div.profile-links {
 				float:right;
 				font-size:95%;
 				border:1px dashed #ddd;
 				padding:.5em;
 				}
-				#primary-content-wrapper div.account-links h5 {
+				#primary-content-wrapper div.profile-links h5 {
 					margin:0 0 .75em 0;
 					letter-spacing:0;
 					color:#D18405;
 					}
-				#primary-content-wrapper div.account-links ul li {
+				#primary-content-wrapper div.profile-links ul li {
 					background-image:none;
 					padding:0;
 					}
-					#primary-content-wrapper div.account-links ul li a {
+					#primary-content-wrapper div.profile-links ul li a {
 						color:#aaa;
 						}
-			#primary-content-wrapper div.contact-info {
+			#primary-content-wrapper div.details {
 				border:1px solid #ddd;
 				padding:1em;
 				background:beige;
 				}
-				#primary-content-wrapper ul.member-info {
+				#primary-content-wrapper ul.quick-info {
 					width:200px;
 					margin-top:1.5em;
 					}
-					#primary-content-wrapper ul.member-info li {
+					#primary-content-wrapper ul.quick-info li {
 						background-image:none;
 						padding:0 0 3px 0;
 						border-bottom:1px solid #eee;
 						}
-						#primary-content-wrapper ul.member-info li img {
+						#primary-content-wrapper ul.quick-info li img {
 							margin-right:1em;
 							}
 						/*#primary-content-wrapper ul.member-info li span.status {
