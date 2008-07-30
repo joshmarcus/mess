@@ -362,6 +362,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					}
 				#primary-content-wrapper table.data td p {
 					font-size:1em;
+					margin-bottom:1em;
 					}
 				#primary-content-wrapper table.data td ul {
 					margin:0;
