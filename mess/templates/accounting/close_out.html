@@ -10,8 +10,9 @@
         <a href={% url close_out_ebt %} >EBT</a>
     </ul>
 <div id="primary-content-wrapper">
-<h2>Close Out for {{ date }}</h2>
-<h3>Transactions are being reconciled by {{ user.get_full_name }}.</h3>
+<h2>Cashier</h2>
+<h3>Close Out for {{ date }}</h3>
+<h4>Transactions are being reconciled by {{ user.get_full_name }}.</h4>
 
 <form class="standard" id='form' name='form' method='post'>
     <input type="hidden"
@@ -19,6 +20,7 @@
             name="id_reconciled_by"
             value={{ user.id }} >
     <table class="form-table" >
+	  <tr>
         <th>Transaction</th>
         <th>Time</th>
         <th>Account</th>
@@ -27,23 +29,23 @@
         <th>Reference</th>
         <th>amount</th>
         <th>Reconcile</th>
+      </tr>
         {% for key, data  in tran_list.items %}
-            <tr class="{% cycle 'odd' 'even' %}">
-                <td><input type="hidden"
-                            id={{ key }}_transaction
-                            name={{ key }}_transaction
-                            value={{ key }} >
-                    {{ data.transaction.id }}
-                </td>
-                <td>{{ data.transaction.date|date:"g:i:s A" }}</td>
-                <td>{{ data.transaction.account }}</td>
-                <td>{{ data.transaction.member.user.get_full_name }}</td>
-                <td>{{ data.type }}</td>
-                <td>{{ data.transaction.ref|default_if_none:"" }}</td>
-                <td>{{ data.amount }}</td>
-                <td>{% for r in data.transaction.reconciliation_set.all %}
-                        {{ r.reconciled_by.get_full_name }}
-                        <input type="checkbox" id={{ key }}_reconciled 
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td><input type="hidden" id="{{ key }}_transaction"
+              name="{{ key }}_transaction"
+              value="{{ key }}">
+              {{ data.transaction.id }}
+        </td>
+        <td>{{ data.transaction.date|date:"g:i:s A" }}</td>
+        <td>{{ data.transaction.account }}</td>
+        <td>{{ data.transaction.member.user.get_full_name }}</td>
+        <td>{{ data.type }}</td>
+        <td>{{ data.transaction.ref|default_if_none:"" }}</td>
+        <td>{{ data.amount }}</td>
+        <td>{% for r in data.transaction.reconciliation_set.all %}
+             	{{ r.reconciled_by.get_full_name }}
+                <input type="checkbox" id="{{ key }}_reconciled" 
                             name={{ key }}_reconciled value="True"
                             {% if r.reconciled %}
                                 checked
