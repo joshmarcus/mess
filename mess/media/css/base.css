@@ -242,15 +242,16 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		/*margin:100px 15px 0 15px;*/
 		position:relative;
-		padding-left:15px;
-		top:98px;
-		height:2em;
+		padding:0 0 0 15px;
+		top:95px;
+		height:25px;
 		background:#00417d;
+		margin: 0px;
 		}	
 		/*.set-down { position:absolute; bottom:0px; z-index: 1; }*/
 		ul#global-nav li {
 			float:left;
-			margin-right:3px;
+			margin:0 3px 0 0;
 			background:#53648C;/*#246495;*/
 			}
 			ul#global-nav li a {
@@ -260,6 +261,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				font-weight:normal;
 				font-size:1.1em;
 				text-decoration:none;
+				margin:0px;
 				}
 				ul#global-nav li a:hover {
 					background:#246495;
