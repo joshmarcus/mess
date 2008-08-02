@@ -33,7 +33,8 @@ function xmlHttp()
  		catch (e) {
   			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		alert ("Browser does not support HTTP Request")
+		// I think these lines are broken, as they are outside the catch they will alert any IE user, browser-compliant or not... --Paul, 8/2/08
+		alert ("Browser does not support XML HTTP Request")
   		return
  	} 
  	
@@ -49,6 +50,7 @@ function xhr(query, element)
 
 	ajaxRequest.onreadystatechange = function ()
 	{
+		// what is the purpose of ajaxRequest.status == 200 ? --Paul 8/2/08
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
 		{	   
 	        var response = ajaxRequest.responseText
@@ -93,6 +95,7 @@ function show_message (id, m)
 	var c = "<div style='font-size: 0.75em; color: red; text-align: right;' >Click to close</div>";
 	m = m + c;
 	b.innerHTML = m;
+	// shouldn't this be style.display = 'block'?  Also below... --Paul 8/2/08
     b.style.display = 'inline';
     b.onclick = hide_message;
 
