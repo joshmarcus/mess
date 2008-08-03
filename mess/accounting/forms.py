@@ -10,6 +10,11 @@ class TransactionForm(forms.ModelForm):
         model = Transaction
 
     def clean_balance(self, credit=0, debit=0):
+		# This line is the cause of ticket #30.  If 'member' is undefined, this
+		# raises errors.
+		#    I'd like to find where this is called from, to see if the
+		# problem could be handled before it gets to this function, but 
+		# it seems to be called by Django Form-Handling itself??  --Paul 8/3/08
          return (get_account_balance(self.cleaned_data.get('member').id) -
                 self.cleaned_data.get('credit') +
                 self.cleaned_data.get('debit')

@@ -46,6 +46,10 @@ CASHIER_DEBIT_CHOICES = (
     ('F','EBT'),
 )
 
+# Ack!  Wait!  If a member makes a deposit, then they have to pay money for
+# example with a check.  If a member buys food, then they have to pay money for
+# example with a check.  Doesn't that mean that 'deposit' should be in the same
+# category as 'purchase'?  --Paul 8/3/08
 OTHER_DEBIT_CHOICES = (
     #('W','Work Credit'),
     #('T','Trade'),
@@ -131,6 +135,12 @@ class Transaction(models.Model):
     # If the transaction is to return a 'Key Deposit', say a refund of $10.00
     # does it go in debit as -10.00 or credit.  Okay so I my example may not
     # be accurate but I hope it illustrates what I mean.
+	# 
+	#    I like how you separate the debit and credit columns.  My opinion is
+	#    if they're going to be separated, there should be no exceptions, so if
+	#    a key deposit is $10 in one field, then a key deposit refund is $10
+	#    in the other field.  i.e., no mixing +/- in one column. --Paul 8/3/08
+	#
     credit = models.DecimalField(max_digits=5, decimal_places=2, default=0,)
     debit = models.DecimalField(max_digits=5, decimal_places=2, default=0,)
     #  If each Transaction has the account balance we probably don't need this.
