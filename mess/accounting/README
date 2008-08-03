@@ -1,1 +1,25 @@
-What does accounting do?  What is the minimal code required to achieve this?
+What do we want accounting to do?  
+
+Database Table:
+Account, Member, Date, Transaction Type/Desc, Amount Change, New Balance
+
+User Interface:
+Enter all above information, then click "submit".  Transaction added to DB.
+
+Features:
+Entering account name facilitated by ajax-list of account names
+Entering member name facilitated by ajax-list of members on account
+Reviewing account status facilitated by ajax-display of recent transactions (and perhaps other account status issues?)
+
+In Case of Errors:
+On submit, data should be checked; if errors form should be given back with an Alert Box telling the error.
+
+
+Close-Out:
+(I don't understand close-out requirements.  Can someone clarify them here? --Paul)
+
+
+
+What is the minimal code required to achieve this?
+
+(remains to be seen)
