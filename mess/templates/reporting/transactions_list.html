@@ -8,22 +8,37 @@
 	<li class="last-item"><a href="{% url scheduling_reports %}">Scheduling</a></li>
   </ul>	
   <div id="primary-content-wrapper" >
-    <h2>Active Global item</h2>
-    <h3>Active local item</h3>
     <div class="attention">  
-	  <p><strong>Filter:</strong></p>
-      <ul class="filter">
-	    <li><a href="{% url trans_list %}">All</a></li>
-	    <li><a href="{% url trans_list_today %}">Today</a></li>
-	    <li><a href="{% url trans_list_yesterday %}">Yesterday</a></li>
-	    <li><a href="{% url trans_list_week %}">Week</a></li>
-	    <li><a href="{% url trans_list_month %}">Month</a></li>
-	    <li><a href="{% url trans_list_year %}">Year</a></li>
-	    <li><a href="{% url trans_list_custom %}">Custom</a></li>
-	    <li class="last-item"><a href="{% url trans_summary %}">Transactions Summary</a></li>
-	  </ul>
+	  <form method="get">
+	  <p>
+	  	<strong>Account:</strong>
+		<input name="account" style="width:10em;" value="{{ account }}">
+		<strong>Member:</strong>
+		<input name="member" style="width:10em;" value="{{ member }}">
+		<strong>Start:</strong>
+		<input name="start" style="width:8em;" value="{{ start }}">
+		<strong>End:</strong>
+		<input name="end" style="width:8em;" value="{{ end }}">
+		<input type="submit" value="Filter">
+	</p>
+
+<!--	  Start: {{ start }}<br>
+	  End: {{ end }}<br>
+	  Account: {{ account }}<br>
+	  Member: {{ member }}<br> -->
+	DEBUGGING USERNAMES: {{ usernames }}<br> <!-- should only be 1! -->
 	</div>
-    {% include "reporting/snippets/transactions.html" %}
+{% include "reporting/snippets/transactions.html" %}
+<!-- no table for testing, just put it in <pre> -->
+<!-- transactions were filtered and extracted from the database in views.py -->
+<!--
+	<pre>
+	{% for trans in transactions %}
+{{trans.id}}	{{trans.date}}	{{trans.account|ljust:20}}	{{trans.member|ljust:20}}	{{trans.member.user.username|ljust:20}}	{{trans.get_credit_type_display|ljust:8}}	{{trans.credit|floatformat:2|rjust:6}}	{{trans.get_debit_type_display|ljust:8}}	{{trans.debit|floatformat:2|rjust:6}}	{{trans.balance|floatformat:2|rjust:6}}	{{trans.note}}	{{trans.ref}}
+	{% endfor %}
+	</pre>
+-->
+
   </div>
 </div>
 <!--><div id="right-column">

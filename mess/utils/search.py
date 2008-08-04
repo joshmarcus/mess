@@ -4,6 +4,8 @@ from mess.people.models import Person
 from mess.membership.models import Member, Account
 from mess.contact.models import Address, Email, Phone
 
+from django.contrib.auth.models import User
+
 def create_dictionary(list):
     """Create a dictionary from a given list.
     
@@ -89,3 +91,10 @@ def search_for_string(search, string):
     }
     dict = SEARCH_TYPES[search](string)
     return dict
+
+def list_usernames_from_fullname(fullname):
+	usernames = []
+	for user in User.objects.all():
+		if user.get_full_name() == fullname:
+			usernames.append(user.username)
+	return usernames

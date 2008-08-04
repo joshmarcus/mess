@@ -16,8 +16,10 @@ urlpatterns = patterns('mess.reporting.views',
                             {'report': 'year'}, name='trans_summary_year'),
     url(r'^trans_summary_custom/$', 'transaction_report',
                             {'report': 'custom'}, name='trans_summary_custom'),
-    url(r'^trans_list/$', 'transaction_list_report',
-                            {'report': 'all'}, name='trans_list'),
+    url(r'^trans_list/$', 'transaction_list_report', name='trans_list'),
+
+
+    # I'm deprecating these.  They will all be ?queries on trans_list --Paul
     url(r'^trans_list_today/$', 'transaction_list_report',
                             {'report': 'today'}, name='trans_list_today',),
     url(r'^trans_list_yesterday/$', 'transaction_list_report',
