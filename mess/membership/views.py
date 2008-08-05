@@ -98,7 +98,8 @@ def raw_list(request):
 		# if we have an account, find only members of the account
 		if request.GET.has_key('account'):
 			acct = request.GET.get('account')
-			member_list = Account.objects.get(name = acct).members.all()
+			try: member_list = Account.objects.get(name = acct).members.all()
+			except: return HttpResponse('')
 			# Why doesn't this reverse-lookup work?
 			#member_list = Member.objects.filter(accounts__contains = 'Bedrest')
 		else:
