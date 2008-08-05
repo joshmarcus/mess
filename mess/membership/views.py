@@ -80,7 +80,7 @@ def account_form(request, id):
 def raw_list(request):
 	# try.  Catches non-integers, blank field, and missing field
 	try: maxresults = int(request.GET.get('maxresults'))
-	except: maxresults = 20
+	except: maxresults = 30
 
 	# if we're listing accounts, list accounts matching pattern.
 	# don't bother checking the location of *'s, assume account=*pattern*
@@ -91,6 +91,27 @@ def raw_list(request):
 			account_list = account_list.filter(name__contains = pattern)
 		account_names = account_list.values_list('name',flat=True)[:maxresults]
 		return HttpResponse('\n'.join(account_names))
+
+	# if we're listing members, list members matching account and/or pattern
+	# note: This part may be SLOW due to [python-iteration] over all db entries
+	if request.GET.has_key('list') and request.GET.get('list') == 'members':
+		# if we have an account, find only members of the account
+		if request.GET.has_key('account'):
+			acct = request.GET.get('account')
+			member_list = Account.objects.get(name = acct).members.all()
+			# Why doesn't this reverse-lookup work?
+			#member_list = Member.objects.filter(accounts__contains = 'Bedrest')
+		else:
+			member_list = Member.objects.all()
+		mnames = [member.user.get_full_name() for member in member_list]
+
+		# if we have a member pattern, filter it case-insensitively
+		if request.GET.has_key('member'):
+			pattern = request.GET.get('member').replace('*','').lower()
+			mnames = [m for m in mnames if m.lower().find(pattern) >= 0]
+
+		mnames = mnames[:maxresults]
+		return HttpResponse('\n'.join(mnames))		
 
 	# if we're not sure what we're listing, fail
 	return HttpResponse('error in request for raw list')
