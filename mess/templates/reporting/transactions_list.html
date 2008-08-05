@@ -2,6 +2,7 @@
 {% block head %}
 <link type="text/css" href="{{ MEDIA_URL }}css/div_list.css" rel="stylesheet" />
 <script type="text/javascript" src="{{ MEDIA_URL }}js/trans_list.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/dates.js"></script>
 {% endblock head %}
 
 {% block content %}
@@ -22,12 +23,15 @@
 		<strong>Member:</strong>
 		<input name="member" id="member_name" style="width:10em;" 
 			value="{{ member }}">
-		<strong>Start:</strong>
-		<input name="start" id="start_date" style="width:8em;" 
-			value="{{ start }}">
-		<strong>End:</strong>
-		<input name="end" id="end_date" style="width:8em;" 
-			value="{{ end }}">
+		<span id="date_span"> <!-- for JS onblur hide_datep -->
+			<strong>Start:</strong>
+			<input name="start" id="start_date" style="width:8em;" 
+				value="{{ start }}">
+			<strong>End:</strong>
+			<input name="end" id="end_date" style="width:8em;" 
+				value="{{ end }}">
+			<div id="datep" style="display:none;"> </div>
+		</span>
 		<input type="submit" value="Filter">
 	</form>
 	</p>

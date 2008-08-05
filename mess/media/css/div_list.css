@@ -2,7 +2,7 @@
 
 /*///////////////////////////////////////////////////////////////////*/
 
-div#list {
+div#list, div#datep {
     display: none;    
     position: absolute;
     width: 300px;
@@ -57,3 +57,11 @@ div.confirm_member:hover {
     background: #cc9999;
 }    
 
+div#datep { font-size:10pt; width:150px;} 
+div#datep * { text-align:center; }
+div#datep a { color:black; text-decoration:none; }
+div#datep table {width:150px; margin-top:0pt;}
+div#datep .month {font-weight:bold;}
+div#datep .highlighted { background: #c99; }
+div#date_shortcuts {font-size:8pt; margin-bottom:4pt; margin-top:-2pt;}
+div#date_shortcuts a {text-decoration:underline;}
