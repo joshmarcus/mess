@@ -30,13 +30,25 @@ def delete_task(request, **kwargs):
     del_dict.update(kwargs)
     return delete_object(request, post_delete_redirect=reverse("staff-schedules"), **del_dict)
 
-
-
+def task_list(request, date=None):
+    if date == None:
+        date = datetime.date.today()
+    else:
+        year, month, day = date.split('-')
+        date = datetime.date(int(year), int(month), int(day))
+    
+    context = {
+        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
+    }
+    return render_to_response('scheduling/task_list.html', context,
+                                context_instance=RequestContext(request))
+        
 def monthly(request, date=None):
     if date == None:
         date = datetime.date.today()
     else:
-        date = datetime.datetime(date)
+        year, month, day = date.split('-')
+        date = datetime.date(int(year), int(month), int(day))
     
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)

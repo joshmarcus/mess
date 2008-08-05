@@ -4,9 +4,11 @@ from mess.scheduling.models import *
 # commented out until there are actual views to point at -- 
 # phantom urls wreak havoc with {% url %} and reverse()
 urlpatterns = patterns('mess.scheduling.views',
+    url(r'^task_list/(?P<date>\d{4}-\d{2}-\d{2})', 'task_list'),
+    url(r'^monthly/(?P<date>\d{4}-\d{2}-\d{2})', 'monthly'),
     url(r'^monthly/', 'monthly', name="staff-schedules"),
+#    url(r'^daily.html', 'daliy'),
 #    url(r'^weekly.html', 'weekly'),
-#    url(r'^daily.html', 'daily'),
 #    url(r'^job_list.html', 'job_list'),
 
     url(r'^task/new/', 'add_task', name="add-task"),
