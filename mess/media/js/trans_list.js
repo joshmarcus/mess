@@ -25,8 +25,8 @@ function ajax_request_accounts_list(account_name, e)
 	if (account_name.value == '')
 		hide_list();
 	else
-		xml_send_then_run('/membership/rawlist?list=accounts&account=' + 
-			account_name.value, ajax_list_accounts, '');
+		xml_send_then_run('/membership/rawlist/?account=%2A' + 
+			account_name.value+'%2A&list=accounts', ajax_list_accounts, '');
 } // end function ajax_request_accounts_list
 
 
@@ -71,4 +71,5 @@ function fillin(id, val)
 	f = document.getElementById(id);
 	f.value = val;
 	hide_list();
+	document.forms[0].submit();
 }
