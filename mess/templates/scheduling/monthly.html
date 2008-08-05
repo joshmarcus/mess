@@ -2,7 +2,9 @@
 
 {% block content %}
 <div id="double-column">
-<a href="{% url add-task %}">New Task</a>
+    <ul id="local-nav">
+    {% include "scheduling/snippets/page_menu.html" %}
+    </ul>
 	<ul>
 	{% for task in tasks %}
 		<li><a href="{% url update-task task.id %}">{{task}}</a> </li>
