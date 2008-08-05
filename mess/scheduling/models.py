@@ -34,6 +34,12 @@ class Task(models.Model):
     class Meta:
         ordering = ['-deadline', 'start']
     
+    def is_assigned(self):
+        if self.assignment:
+            return True
+        else:
+            return False
+    
     def __unicode__(self):
         return u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
 
@@ -42,7 +48,7 @@ class Assignment(models.Model):
     Associate a member with a task event
     """
     member = models.ForeignKey(Member)
-    task = models.ForeignKey(Task)
+    task = models.OneToOneField(Task)
     
     class Meta:
         ordering = ['task']
