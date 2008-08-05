@@ -13,8 +13,6 @@ task_dict =  {
     'login_required': True,
 }
 
-
-
 def add_task(request, **kwargs):
     add_dict = dict(task_dict)
     add_dict.update(kwargs)
