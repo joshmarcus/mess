@@ -9,4 +9,5 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^members/(\w+)$', 'member', name='member'),
     url(r'^members/(\w+)/edit$', 'member_form', name='member-edit'),
     url(r'^members/add$', 'member_form', name='member-add'),
+	url(r'^rawlist/$', 'raw_list', name='raw_list')
 )

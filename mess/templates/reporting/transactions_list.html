@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% block head %}
+<link type="text/css" href="{{ MEDIA_URL }}css/div_list.css" rel="stylesheet" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/trans_list.js"></script>
+{% endblock head %}
+
 {% block content %}
 <div id="double-column" >
   <ul id="local-nav">
@@ -9,26 +14,26 @@
   </ul>	
   <div id="primary-content-wrapper" >
     <div class="attention">  
-	  <form method="get">
-	  <p>
+	<p>
+	<form method="get">
 	  	<strong>Account:</strong>
-		<input name="account" style="width:10em;" value="{{ account }}">
+		<input name="account" id="account_name" style="width:10em;" 
+			value="{{ account }}">
 		<strong>Member:</strong>
-		<input name="member" style="width:10em;" value="{{ member }}">
+		<input name="member" id="member_name" style="width:10em;" 
+			value="{{ member }}">
 		<strong>Start:</strong>
-		<input name="start" style="width:8em;" value="{{ start }}">
+		<input name="start" id="start_date" style="width:8em;" 
+			value="{{ start }}">
 		<strong>End:</strong>
-		<input name="end" style="width:8em;" value="{{ end }}">
+		<input name="end" id="end_date" style="width:8em;" 
+			value="{{ end }}">
 		<input type="submit" value="Filter">
+	</form>
 	</p>
-
-<!--	  Start: {{ start }}<br>
-	  End: {{ end }}<br>
-	  Account: {{ account }}<br>
-	  Member: {{ member }}<br> -->
 	DEBUGGING USERNAMES: {{ usernames }}<br> <!-- should only be 1! -->
 	</div>
-{% include "reporting/snippets/transactions.html" %}
+	{% include "reporting/snippets/transactions.html" %}
 <!-- no table for testing, just put it in <pre> -->
 <!-- transactions were filtered and extracted from the database in views.py -->
 <!--
@@ -46,5 +51,11 @@
   <ul>
     {% include "reporting/snippets/report_sections_menu.html" %}
   </ul>
-</div>-->
+<div>-->
+{% endblock %}
+{% block pop_up %}
+<div id="message" ></div>
+<div id="list" ></div>
+</div>
+</div>
 {% endblock %}

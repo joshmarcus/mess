@@ -1,5 +1,9 @@
 //functions.js
 
+// Some functions take an object, while some functions take an ID and 
+// use getElementById to find the object themselves.  Ideally it should 
+// all be one way or the other.  --Paul 8/5/08
+
 function find_pos(obj)
 {
 	// Originally from
@@ -96,6 +100,7 @@ function show_message (id, m)
 	m = m + c;
 	b.innerHTML = m;
 	// shouldn't this be style.display = 'block'?  Also below... --Paul 8/2/08
+	// ...I guess inline squishes it all together in the msgbox  --Paul 8/4/08
     b.style.display = 'inline';
     b.onclick = hide_message;
 

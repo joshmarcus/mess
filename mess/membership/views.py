@@ -74,3 +74,23 @@ def account_form(request, id):
     context['account_list'] = account_list
     template = get_template('membership/account_list.html')
     return HttpResponse(template.render(context))
+
+# This raw_list function outputs raw data for use by ajax and xmlhttprequest.
+# Since the data is output raw, it doesn't use any template.
+def raw_list(request):
+	# try.  Catches non-integers, blank field, and missing field
+	try: maxresults = int(request.GET.get('maxresults'))
+	except: maxresults = 20
+
+	# if we're listing accounts, list accounts matching pattern.
+	# don't bother checking the location of *'s, assume account=*pattern*
+	if request.GET.has_key('list') and request.GET.get('list') == 'accounts':
+		account_list = Account.objects.all()
+		if request.GET.has_key('account'):
+			pattern = request.GET.get('account').replace('*','')
+			account_list = account_list.filter(name__contains = pattern)
+		account_names = account_list.values_list('name',flat=True)[:maxresults]
+		return HttpResponse('\n'.join(account_names))
+
+	# if we're not sure what we're listing, fail
+	return HttpResponse('error in request for raw list')
