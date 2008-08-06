@@ -1,7 +1,9 @@
 from datetime import date, timedelta
+import time
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 
 from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
@@ -10,7 +12,7 @@ from mess.accounting.models import get_trans_total
 from mess.utils.search import list_usernames_from_fullname
 
 def transaction_list_report(request):
-	# c   is the context to be passed to the template
+	# c is the context to be passed to the template
 	c = RequestContext(request)
 	c['page_name'] = 'Transaction List'
 	c['report_title'] = 'List of Transactions Matching Filter'
@@ -29,17 +31,20 @@ def transaction_list_report(request):
 			c['usernames'] = list_usernames_from_fullname(c['member'])
 			trans = trans.filter(member__user__username__in = c['usernames'])
 
-	# filter date range -- default to 1900-today
-	if request.GET.has_key('start'): c['start']=request.GET.get('start')
-	else: c['start'] = '1900-01-01'
-	if request.GET.has_key('end'): c['end']=request.GET.get('end')
-	else: c['end'] = date.today() + timedelta(days=1) 
-	trans = trans.filter(date__range = (c['start'], c['end']))
-		# ??? SHOULD END DATE BE INCLUSIVE OR EXCLUSIVE ???
-		# DEFAULT IS EXCLUSIVE, SO I'LL LEAVE THAT FOR NOW.
-		# BUT IT REALLY SHOULD BE INCLUSIVE.....   FIXME
-
-		# if query date is invalid, error is ugly.  but that shouldn't happen.
+	# Filter date range -- default to 1900-today.
+	# If query date is invalid, error is ugly.  But that shouldn't happen.
+	# strptime is hard to use, so here I do yyyy-mm-dd2date as slices.
+	# End would be midnight before, but we want midnight after, so timedelta.
+	if request.GET.has_key('start'):
+		ymd = request.GET.get('start')
+		c['start'] = date(int(ymd[:4]),int(ymd[5:7]),int(ymd[8:]))
+	else: c['start'] = date(1900,1,1)
+	if request.GET.has_key('end'): 
+		ymd = request.GET.get('end')
+		c['end'] = date(int(ymd[:4]),int(ymd[5:7]),int(ymd[8:]))
+	else: c['end'] = date.today()
+	if c['end'] < c['start']: (c['start'],c['end']) = (c['end'],c['start'])
+	trans = trans.filter(date__range=(c['start'], c['end']+timedelta(days=1)))
 
 	c['transactions'] = trans
 	return render_to_response('reporting/transactions_list.html', c)

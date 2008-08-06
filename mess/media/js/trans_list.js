@@ -108,7 +108,7 @@ function fillnmit(id, val)
 {
 	f = document.getElementById(id);
 	f.value = val;
-//	hide_list();
+	hide_helper('list','');
 	document.forms[0].submit();
 }
 
@@ -130,9 +130,12 @@ function hide_helper(box_id, field_id)
 {
 	// hide the helper box ONLY IF the box is still helping the field
 	// don't hide if the box.inclick == true, (box is being clicked)
+	// if passed field_id=='', we want to hide no matter what
 	var box = document.getElementById(box_id);
-	if (box.helped_field == field_id && box.inclick == false)
+	if ((box.helped_field == field_id && box.inclick == false) ||
+			field_id == '')
 		box.style.display = 'none';
+	
 } // end function hide_helper
 
 

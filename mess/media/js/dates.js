@@ -1,10 +1,13 @@
 // dates.js
 
+var d;	// global used by calendar code
+
 var old_window_onload = window.onload;
 window.onload = function()
 {
-	old_window_onload();
+	old_window_onload();	// call any previously specified onload event
 
+	// add show_helper and hide_helper events for input fields
 	var start_date = document.getElementById('start_date');
 	var end_date = document.getElementById('end_date');
 	var datep = document.getElementById('datep');
@@ -61,14 +64,44 @@ function date_shortcuts()
 
 function date_shortcut(period)
 {
-	today = new Date();
+	// fill in the date shortcut specified, and submit the form
+	var start_date = document.getElementById('start_date');
+	var end_date = document.getElementById('end_date');
+	var ending = new Date();  // today
+	var starting = new Date();
 	if (period == 'day')
-		alert(today);
+		starting = ending;
+	else if (period == 'week')
+		starting.setTime(ending.getTime() - 1000 * 60 * 60 * 24 * 7);
+	else if (period == 'month')
+		starting.setDate(1);
+	else if (period == 'year')
+	{
+		starting.setDate(1);
+		starting.setMonth(0);
+	}
+	start_date.value = to_yyyy_mm_dd(starting);
+	end_date.value = to_yyyy_mm_dd(ending);
+	hide_helper('datep','');
+	document.forms[0].submit();
+}	// end function date_shortcut
+
+
+function to_yyyy_mm_dd(d)
+{
+	// convert date object to yyyy-mm-dd string
+	var ret = d.getFullYear()+'-'
+	if (d.getMonth() < 9)
+		ret += '0';
+	ret += (d.getMonth()+1)+'-';
+	if (d.getDate() < 10)
+		ret += '0';
+	return ret + d.getDate();
 }
 
-//
+
 //       ************************************************************
-// ALL CODE BELOW IS TAKEN FROM xingguard.com/calendar.js WITH SOME CHANGES
+// THE CODE BELOW IS TAKEN FROM xingguard.com/calendar.js WITH SOME CHANGES
 //       ************************************************************
 //
 //
@@ -80,20 +113,13 @@ function date_shortcut(period)
 // specifying the day will highlight that day
 // the current day is highlighted by default
 //
-// dates are in the format YYYY/M/D
 
 function calendar_select(day){
 	datep = document.getElementById('datep');
 	helped_el = document.getElementById(datep.helped_field);
-	helped_el.value = d.getFullYear()+'-'
-	if (d.getMonth() < 9)
-		helped_el.value += '0'+(d.getMonth()+1)+'-';
-	else
-		helped_el.value += (d.getMonth()+1)+'-';
-	if (day < 10)
-		helped_el.value += '0'+day;
-	else
-		helped_el.value += day;
+	d.setDate(day);
+	helped_el.value = to_yyyy_mm_dd(d);
+	hide_helper('datep','');
 	document.forms[0].submit();
 }
 
@@ -139,12 +165,13 @@ function calendar(year,month,day){
 	}
 	calendar_html+='</table>';
 
+	// add shortcuts above the calendar
 	shortcut_html = date_shortcuts();
 	document.getElementById('datep').innerHTML=shortcut_html+calendar_html;
 
 	if (typeof highlightDay!='undefined'){
-		setTimeout("document.getElementById("+highlightDay+
-			").className='highlighted';",200);
+		setTimeout("document.getElementById('"+Math.round(highlightDay)+
+			"').className='highlighted';",200);
 		delete highlightDay;
 	}
 }
