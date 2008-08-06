@@ -8,12 +8,15 @@
   <div id="left-column">
     <div id="primary-content-wrapper">
       <h2>Members</h2>
-      <h3>Edit Profile</h3>
+      <h3>Edit Profile: {{ member.user.get_full_name }} 
+	  	({{ member.user.username }})</h3>
       {% if member %}
       {% endif %}
       <form class="standard" method="post">
         <table class="form-table">
-          {{ form }}
+          {% for f in form %}
+		  	{{ f }}
+		  {% endfor %}
         <tr><td></td><td><input type="submit" value="Save"/></td></tr>
         </table>
       </form>

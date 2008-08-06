@@ -21,7 +21,7 @@ CONTACT_PREF = (
 )
 
 class Member(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User, unique=True, editable=False)
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
                             default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,

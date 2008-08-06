@@ -6,7 +6,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 
-from mess.membership.forms import MemberForm, AccountForm
+from mess.membership.forms import AccountForm
+from mess.membership.forms import MemberForm, UserForm, UserProfileForm
 from mess.membership.models import Member, Account
 
 @user_passes_test(lambda u: u.is_staff)
@@ -44,14 +45,18 @@ def member_form(request, username=None):
     context = RequestContext(request)
     context['member'] = member
     if request.method == 'POST':
-        form = MemberForm(request.POST, instance=member)
-        if form.is_valid():
-			# PERMISSIONS # PERMISSIONS # PERMISSIONS #
-			#   this should check permissions here    #  FIXME ???
-            form.save()
+        form = [ MemberForm(request.POST, prefix="member", instance=member),
+			UserForm(request.POST, prefix="user", instance=user),
+			UserProfileForm(request.POST, prefix="userprofile", instance=user.get_profile()) ]
+        if form[0].is_valid() and form[1].is_valid() and form[2].is_valid():
+            # PERMISSIONS # PERMISSIONS # PERMISSIONS #
+            #   this should check permissions here    #  FIXME ???
+            for f in form: f.save()
             return HttpResponseRedirect('/membership/members/'+username)
     else:
-        form = MemberForm(instance=member)
+        form = [ MemberForm(instance=member, prefix="member"),
+            UserForm(instance=user, prefix="user"),
+            UserProfileForm(instance=user.get_profile(), prefix="userprofile") ]
     context['form'] = form
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
@@ -77,8 +82,8 @@ def account_form(request, id):
     if request.method == 'POST':
         form = AccountForm(request.POST, instance=account)
         if form.is_valid():
-			# PERMISSIONS # PERMISSIONS # PERMISSIONS #
-			#   this should check permissions here    #  FIXME ???
+            # PERMISSIONS # PERMISSIONS # PERMISSIONS #
+            #   this should check permissions here    #  FIXME ???
             form.save()
             return HttpResponseRedirect('/membership/accounts/'+id)
     context['account'] = account

@@ -63,7 +63,7 @@ class Email(models.Model):
 # possibly include IM and URL classes at some point
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User, unique=True, editable=False)
     addresses = models.ManyToManyField(Address, blank=True, null=True)
     phones = models.ManyToManyField(Phone, blank=True, null=True)
     emails = models.ManyToManyField(Email, blank=True, null=True)
