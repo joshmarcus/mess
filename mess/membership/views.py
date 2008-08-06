@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 
-from mess.membership.forms import MemberForm
+from mess.membership.forms import MemberForm, AccountForm
 from mess.membership.models import Member, Account
 
 @user_passes_test(lambda u: u.is_staff)
@@ -46,8 +46,10 @@ def member_form(request, username=None):
     if request.method == 'POST':
         form = MemberForm(request.POST, instance=member)
         if form.is_valid():
+			# PERMISSIONS # PERMISSIONS # PERMISSIONS #
+			#   this should check permissions here    #  FIXME ???
             form.save()
-            return HttpResponseRedirect('/member/list')
+            return HttpResponseRedirect('/membership/members/'+username)
     else:
         form = MemberForm(instance=member)
     context['form'] = form
@@ -70,10 +72,21 @@ def account(request, id):
 
 def account_form(request, id):
     context = RequestContext(request)
-    account_list = Account.objects.all()
-    context['account_list'] = account_list
-    template = get_template('membership/account_list.html')
+    account = get_object_or_404(Account, id=id)
+    # on POST, save data and return to account page
+    if request.method == 'POST':
+        form = AccountForm(request.POST, instance=account)
+        if form.is_valid():
+			# PERMISSIONS # PERMISSIONS # PERMISSIONS #
+			#   this should check permissions here    #  FIXME ???
+            form.save()
+            return HttpResponseRedirect('/membership/accounts/'+id)
+    context['account'] = account
+    form = AccountForm(instance=account)
+    context['form'] = form
+    template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
+
 
 # This raw_list function outputs raw data for use by ajax and xmlhttprequest.
 # Since the data is output raw, it doesn't use any template.
@@ -95,7 +108,6 @@ def raw_list(request):
 	# if we're listing members, list members matching account and/or pattern
 	# note: This part may be SLOW due to [python-iteration] over all db entries
 	if request.GET.has_key('list') and request.GET.get('list') == 'members':
-		# if we have an account, find only members of the account
 		if request.GET.has_key('account'):
 			acct = request.GET.get('account')
 			try: member_list = Account.objects.get(name = acct).members.all()
