@@ -1,2 +1,85 @@
 Suzy is membership coordinator:
 	To start a new sched period, she goes to the sched app and fills in all the known nessisary tasks. Members sign up for tasks they want (creating TaskAssignments). When the scheduling deadline aproaches, Suzy gets a report of the Tasks that are still lacking Assignments. She clicks on each unassigned Task and is given a list of members who could do the Task (ordered by debt of hours and how recently they worked).
+
+
+More use cases for scheduling (and a little for membership) from Shinara (noted
+by gsf):
+
+1. Having calendars -- visual with squares, so people can be written in -- 
+should be online so people can choose certain shifts.  Staff should be able
+to access downstairs (in the coop) -- then we could get rid of the physical
+calendars.  Though would be nice to print out the schedule for the day to
+post on the board.  So calendar views for week or month at a time, but also 
+get to per-day detail.  Per-day detail of most importance, then week, then
+month.  Certain number of shift slots that can be filled for each time of the
+day.  
+
+2. Number of slots per job needs to be adjustable per day, but with a template
+that repeats from week to week.  Setup changes for each day of the week, and 
+sometimes people come in early for their shifts.  
+
+3. Looking at Park Slope Food Coop website: Squad Times -- by day.  Also, 
+Online Shift Swap.  But really, the demo from the Weaver's Way guy had some
+good ideas.
+
+4. On weekly schedule, for example, staff could change things.  Members could
+only sign up.  Week should be Monday-Sunday.  Tomorrow (Thursday), I'll make 
+next week's schedule and the week after that.  
+
+5. Really important is generating the weekly schedule.  Currently it's 
+created from the sprawling Excel spreadsheet.  People work in rotations,
+lettered A-J.  A-D are 2-hour shifts (a mixture of things) (rotate every 4 
+weeks), E-J are 3-hour cashier shifts, rotating every 6 weeks.  So each week
+is a combination of one from A-D and one from E-J.  So this week would be a
+B/H week, for example.  
+
+6. Available shifts should remain visible until the moment they start.
+
+7. As things work now, people show up for their rotation, so being able to
+schedule a series is very important.  For example, member A works on 
+Thursdays every six weeks.
+
+8. Attendance.  I suppose staff would still have to enter attendance.  It would
+be nice to open a page that says "this account was responsible for these days"
+and staff could say if they showed up or not for that shift.  Ideally, it would
+be fast and easy enough to say a member had shown up that staff could do it on
+a daily or weekly basis.  The categories of attendance are Worked Shift, Makeup
+Shift, Excused, or Unexcused.  Different consequences result from missing a
+Worked Shift versus Makeup Shift.  
+
+9. If a member misses a makeup shift and it's unexcused, the MESS should
+automatically suspend the account (overridable by staff).
+
+10. Also categories for people that are exempt from workshifts.  These 
+exemptions do expire -- would be great if account is freezed and member is
+notified "You need to sign up for a shift now" when exemption expires.  Also
+good to know when an account has been frozen, and how long it's been frozen,
+because they need to be notified after a month that the account will be closed
+after two solid months of frozenness.  The MESS could send an email 
+automatically, and create weekly phone lists for those who wish to be 
+contacted by phone.  
+
+11. For general membership stuff, also need to keep track of join date, 
+departure date, and key access card information.  Should keys be attached 
+to members or accounts?  Currently attached to accounts, with accounts 
+possibly having more than one key.  If any member in an account misses a
+workshift, it suspends all of the keys for the account.
+
+12. History box of workshifts.  When I look at the member it would be nice
+to know what shifts the member had worked before.  (This could be on the
+member page -- nice for the member to see, too.)
+
+13. Be good to see in the workshift history that the member had attended a
+cashier training or other type of training.  Orientations and trainings
+should show up in their own filtered list as well so staff doesn't have to
+search through whole workshift history for them.  Attendance of trainings
+would allow staff to set the member's ability to work certain jobs.
+
+14. Here's how I (gsf) would like it to work:  Hours accrue to the account per
+active member (2 hours per active member per 4 weeks).  Hours get taken off as
+shifts are completed.  If hours remain on account for a certain amount of time
+the shift is frozen.  Not sure if this will work with the current setup.
+
+15. Still to be addressed:  Dancing shifts.  Farm and committee shifts.
+Banking hours (building up hours ahead).  
+
