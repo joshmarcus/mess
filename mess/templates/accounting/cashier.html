@@ -48,7 +48,7 @@
         <tr>
           <td><label for="id_note">Note</label></td>
 	      <td>
-		    <input type="text" size="40" id="id_note" name="note" value="" />
+		    <input type="textarea" size="40" id="id_note" name="note" value="" />
 	      </td>
           <td>
             <select tabindex="6" id="id_credit_type" name="credit_type" >
@@ -64,17 +64,18 @@
         </tr>
         <tr>
           <td colspan="4">
-            <input type="reset" value="Reset Form" >
-            <input tabindex="8" type="submit" value="Save Transaction" >
+            <input class="button" type="reset" value="Reset Form" >
+            <input class="button" tabindex="8" type="submit" value="Save Transaction" >
           </td>
         </tr>
       </table>
     </form>
     <div id="transactions" ></div>
+    </div>
+</div>
+
 {% endblock %}
 {% block pop_up %}
 <div id="message" ></div>
 <div id="list" ></div>
-</div>
-</div>
 {% endblock %}
