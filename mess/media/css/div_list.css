@@ -7,7 +7,7 @@ div#list, div#datep {
     position: absolute;
     width: 300px;
     height: auto;
-    background: #99CC99;
+    background: #EFF0F9;
 	color: #0000cc;        
 	padding: 4px;    
 	border: solid #990099;
@@ -35,11 +35,12 @@ div.other_member_choice {
 }
 
 div.account_choice:hover, div.member_choice:hover {
-    background: #cc9999;
+    background: #fddc08;
+    color: #333
 } 
 
 div#list_cancel:hover, div.other_choice:hover {
-    background: #cc9999;
+    background: #fddc08;
 	color: #0000cc;
 }
 
