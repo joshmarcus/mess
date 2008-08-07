@@ -1,0 +1,18 @@
+/* WEEKDAY (Su, Mo, Tu...) HEADER CELLS */
+.yui-skin-sam .yui-calendar .calweekdaycell {
+	color:#000;
+	font-weight:bold;
+	text-align:center;
+	width:6em;
+}
+
+/* NORMAL CELLS */
+.yui-skin-sam .yui-calendar td.calcell {
+	border:1px solid #cccccc;
+	background:#fff;
+	padding:2px;
+	height:4.6em;
+	line-height:1.6em; /* set line height equal to cell height to center vertically */
+	text-align:left;
+	white-space:nowrap;
+}
