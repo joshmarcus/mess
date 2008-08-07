@@ -71,12 +71,12 @@ def transaction_report(request, report='all'):
     elif report == 'week':
         d = date.today()
         start_date = d - timedelta(days=d.weekday())        
-        end_date = date.today()
+        end_date = date.today() + timedelta(days=1)
         formated_date = start_date.strftime('%A, %B %d, %Y')        
         report_title = 'Transaction Summary for the Week Beginning ' + formated_date
     elif report == 'month':
         start_date = date(date.today().year, date.today().month , 01)        
-        end_date = date.today()
+        end_date = date.today() + timedelta(days=1)
         formated_date = start_date.strftime('%B, %Y')        
         report_title = 'Transactions Summary for the Month of ' + formated_date
     elif report == 'year':
