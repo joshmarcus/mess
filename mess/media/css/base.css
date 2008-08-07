@@ -240,7 +240,35 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		
 	/*global-nav*/
 	ul#global-nav {
-		/*margin:100px 15px 0 15px;*/
+		width:100%;
+		position:relative;
+		top:82px;
+		height:27px;
+		font-size:11px;
+		padding:11px 0 0 0;
+		margin-left:15px;
+		}
+		ul#global-nav li {
+			display:block;
+			float:left;
+			margin:0 4px 0 0;
+			height:27px;
+			}
+			ul#global-nav li a {
+				display:block;
+				float:left;
+				color:#fff;
+				background:#53648C;
+				line-height:27px;
+				text-decoration:none;
+				padding:0 17px 0 18px;
+				height:27px;
+				}
+				ul#global-nav li a:hover {
+					background:#246495;
+					}
+					
+	/*ul#global-nav {
 		position:relative;
 		padding:0 0 0 15px;
 		top:95px;
@@ -248,11 +276,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		background:#00417d;
 		margin: 0px;
 		}	
-		/*.set-down { position:absolute; bottom:0px; z-index: 1; }*/
 		ul#global-nav li {
 			float:left;
 			margin:0 3px 0 0;
-			background:#53648C;/*#246495;*/
+			background:#53648C;
 			}
 			ul#global-nav li a {
 				display:block;
@@ -269,7 +296,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				ul#global-nav li a.active {
 					background:#ebebeb;
 					color:#333;
-					}
+					}*/
 				
 			
 /*--- ((( content-wrapper styles ))) ---*/
