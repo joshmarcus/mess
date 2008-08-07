@@ -1,0 +1,103 @@
+{% extends "scheduling/base.html" %}
+
+{% block content %}
+<div id="double-column">
+    <ul id="local-nav">
+    {% include "scheduling/snippets/page_menu.html" %}
+    </ul>
+    <div id="primary-content-wrapper">
+
+        <div id="cal1Container"></div>
+
+        <div id="task-form"></div>
+        
+        <div id="task-list"></div>
+		
+    </div>
+</div>
+
+<!--BEGIN SOURCE CODE FOR AJAX REQUEST =============================== -->
+{# <script type="text/javascript"> #}
+{#     function createRequest() { #}
+{#         try { #}
+{#             request = new XMLHttpRequest(); #}
+{#         } catch (trymicrosoft) { #}
+{#             try { #}
+{#                 request = new ActiveXObject("Msxml2.XMLHTTP"); #}
+{#             } catch (othermicrosoft) { #}
+{#                 try { #}
+{#                     request = new AcitveXObject("Microsoft.XMLHTTP"); #}
+{#                 } catch (failed) { #}
+{#                     request = null; #}
+{#                 } #}
+{#             } #}
+{#         } #}
+{#          #}
+{#         if (request == null) #}
+{#             alert("Error creating request object!"); #}
+{#     } #}
+{# </script> #}
+<!--END SOURCE CODE FOR AJAX REQUEST =============================== -->
+<!--BEGIN SOURCE CODE FOR CALENDAR =============================== -->
+<script type="text/javascript">			
+    // create namespace object
+	YAHOO.namespace("schedule.calendar");
+
+    //define the initConnection function
+	YAHOO.schedule.calendar.initConnection = function() {
+	    
+        //define the AJAX success handler
+        var successHandler = function(o) {
+   		    var eLog = YAHOO.util.Dom.get("task-list");
+    		var eCount = 1;
+
+    		function listTasks(tasks) {
+    			eLog.innerHTML = tasks + eLog.innerHTML;
+    		}
+        
+            function getTasks(url) {
+                 callback();
+                 request.open("GET", url, true);
+                 request.onreadystatechange = listTasks();
+                 request.send(null);
+            }
+
+    		function dateToLocaleString(dt, cal) {
+            	var dStr = dt.getDate();
+            	var mStr = dt.getMonth();
+           	 	var yStr = dt.getFullYear();
+            	return ("scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr);
+    		}
+
+    		function mySelectHandler(type, args, obj) {
+    			var selected = args[0];
+    			var selDate = this.toDate(selected[0]);
+			
+    			var url = dateToLocaleString(selDate, this);
+    			getTasks(url);
+    		};
+    		
+    		YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
+        	YAHOO.schedule.calendar.cal1.selectEvent.subscribe(mySelectHandler, YAHOO.schedule.calendar.cal1, true);
+        	YAHOO.schedule.calendar.cal1.render();
+    	}
+    	// define the AJAX failure handler
+    	var failureHandler = function(o) {
+    	    
+    	    //alert the status code and error text
+    	    alert(o.status + " : " + o.statusText);
+    	}
+    	
+    	//define the callback object
+    	var callback = {
+    	    success:successHandler,
+    	    failure:failureHandler
+    	}
+	};
+	
+
+	YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
+</script>
+<!--END SOURCE CODE FOR CALENDAR =============================== -->
+
+{% endblock content %}

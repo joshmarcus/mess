@@ -41,13 +41,9 @@ def task_list(request, date=None):
     return render_to_response('scheduling/task_list.html', context,
                                 context_instance=RequestContext(request))
         
-def monthly(request, date=None):
-    if date == None:
-        date = datetime.date.today()
-    else:
-        year, month, day = date.split('-')
-        date = datetime.date(int(year), int(month), int(day))
-    
+def monthly(request):
+    date = datetime.date.today()
+
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
     }
