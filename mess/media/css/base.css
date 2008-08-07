@@ -242,8 +242,8 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		width:100%;
 		position:relative;
-		top:82px;
-		height:27px;
+		top:84px;
+		height:25px;
 		font-size:11px;
 		padding:11px 0 0 0;
 		margin-left:15px;
@@ -252,21 +252,26 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			display:block;
 			float:left;
 			margin:0 4px 0 0;
-			height:27px;
+			height:25px;
 			}
 			ul#global-nav li a {
 				display:block;
 				float:left;
 				color:#fff;
-				background:#53648C;
-				line-height:27px;
+				background:#53648C url(/media/images/bg-global-nav.gif) no-repeat top right;
+				line-height:25px;
 				text-decoration:none;
-				padding:0 17px 0 18px;
-				height:27px;
+				padding:0 15px 0 16px;
+				height:25px;
 				}
 				ul#global-nav li a:hover {
-					background:#246495;
+					background:#246495 url(/media/images/bg-global-nav-hover.gif) no-repeat top right;;
 					}
+				ul#global-nav li a.active {
+					background:#ebebeb url(/media/images/bg-global-nav-active.gif) no-repeat top right;;
+					color:#333;
+					text-decoration:underline;
+					}					}
 					
 	/*ul#global-nav {
 		position:relative;
