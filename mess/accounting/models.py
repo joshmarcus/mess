@@ -46,10 +46,6 @@ CASHIER_DEBIT_CHOICES = (
     ('F','EBT'),
 )
 
-# Ack!  Wait!  If a member makes a deposit, then they have to pay money for
-# example with a check.  If a member buys food, then they have to pay money for
-# example with a check.  Doesn't that mean that 'deposit' should be in the same
-# category as 'purchase'?  --Paul 8/3/08
 OTHER_DEBIT_CHOICES = (
     #('W','Work Credit'),
     #('T','Trade'),

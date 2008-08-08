@@ -2,7 +2,6 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mess.accounting.views',
     (r'^thanks$','thanks'),
-	# It looks like transaction is deprecated.  If so, let's remoe it? --Paul 8/2/08
     url(r'^transaction/$', 'transaction_form', name='transaction'),
     url(r'^cashier$', 'cashier', name='cashier'),
     url(r'^close_out/$', 'close_out', name='close_out'),

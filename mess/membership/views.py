@@ -122,6 +122,7 @@ def raw_list(request):
 		else:
 			member_list = Member.objects.all()
 		mnames = [member.user.get_full_name() for member in member_list]
+# DO THIS AS A DATABASE FILTER ON member__user__get_full_name__contains
 
 		# if we have a member pattern, filter it case-insensitively
 		if request.GET.has_key('member'):

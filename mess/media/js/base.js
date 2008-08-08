@@ -1,9 +1,5 @@
 //functions.js
 
-// Some functions take an object, while some functions take an ID and 
-// use getElementById to find the object themselves.  Ideally it should 
-// all be one way or the other.  --Paul 8/5/08
-
 function find_pos(obj)
 {
 	// Originally from
@@ -37,7 +33,6 @@ function xmlHttp()
  		catch (e) {
   			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-		// I think these lines are broken, as they are outside the catch they will alert any IE user, browser-compliant or not... --Paul, 8/2/08
 		alert ("Browser does not support XML HTTP Request")
   		return
  	} 
@@ -54,7 +49,6 @@ function xhr(query, element)
 
 	ajaxRequest.onreadystatechange = function ()
 	{
-		// what is the purpose of ajaxRequest.status == 200 ? --Paul 8/2/08
 		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
 		{	   
 	        var response = ajaxRequest.responseText
@@ -83,6 +77,9 @@ function no_enter(e)
 
 ///////////////////////////////////////////////////////////////////////
 
+// Some functions take an object, while some functions take an ID and 
+// use getElementById to find the object themselves...  --Paul 8/5/08
+
 function show_message (id, m)
 {
 	p = find_pos (document.getElementById(id));
@@ -99,8 +96,6 @@ function show_message (id, m)
 	var c = "<div style='font-size: 0.75em; color: red; text-align: right;' >Click to close</div>";
 	m = m + c;
 	b.innerHTML = m;
-	// shouldn't this be style.display = 'block'?  Also below... --Paul 8/2/08
-	// ...I guess inline squishes it all together in the msgbox  --Paul 8/4/08
     b.style.display = 'inline';
     b.onclick = hide_message;
 

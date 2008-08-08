@@ -1,0 +1,25 @@
+{% extends "membership/base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+  <div id="left-column">
+    <div id="primary-content-wrapper">
+      <h2>Accounts</h2>
+      <h3>Edit Account</h3>
+      <form class="standard" method="post">
+        <table class="form-table">
+          {{ form }}
+        <tr><td></td><td><input type="submit" value="Save"/></td></tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div id="right-column">
+    Content here.
+  </div>
+{% endblock %}
+
+{% block pop_up %}
+{% endblock %}
