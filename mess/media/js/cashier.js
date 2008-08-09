@@ -21,7 +21,7 @@ function get_accounts(thisObj, e)
 	}
 	if (account_name.value.length > 0)
     {
-        var query = "cashier?search=accounts&string=" + account_name.value;
+        var query = "?search=accounts&string=" + account_name.value;
 
         xhr(query, 'list');
         show_list(thisObj);
@@ -47,7 +47,7 @@ function get_account_members()
 	{
         hide_list();
        		
-		var query = "cashier?search=members&account_id=" +
+		var query = "?search=members&account_id=" +
                     id_account.value;
 		
         xhr(query, 'list');
@@ -80,7 +80,7 @@ function get_members(e)
 		id_member.value = '';
 	}
 		
-	var query = "cashier?search=members&account_id=" +
+	var query = "?search=members&account_id=" +
                 document.getElementById('id_account').value +
                 "&string=" + member_name.value;
     
@@ -118,7 +118,7 @@ function set_account(this_obj)
 
 function get_transactions(id)
 {
-    var query = "cashier?search=transactions"
+    var query = "?search=transactions"
     if (id == parseInt(id))
     {  
         query += "&account_id=" + document.getElementById('id_account').value
