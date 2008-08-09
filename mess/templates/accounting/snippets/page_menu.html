@@ -1,5 +1,7 @@
-{% block page_menu %}
-  <li><a href="{% url cashier %}">Cashier</a></li>
-  <li><a href="{% url daily_report %}">Daily Report</a></li>
+{% block local_nav %}
+<ul>
+  <li><a href="{% url cashier_digger %}">digger's Cashier Page</a></li>
+  <li><a href="{% url cashier_mike %}">Mike's Cashier Page</a></li>
   <li class="last-item"><a href="{% url close_out %}">Close Out</a></li>
+</ul>
 {% endblock %}
