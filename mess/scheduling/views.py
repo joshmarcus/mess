@@ -4,6 +4,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import *
+from django.contrib.auth.decorators import login_required
+
 
 from mess.scheduling.models import *
 
@@ -27,6 +29,11 @@ def delete_task(request, **kwargs):
     del_dict = dict(task_dict)
     del_dict.update(kwargs)
     return delete_object(request, post_delete_redirect=reverse("staff-schedules"), **del_dict)
+
+@login_required
+def assign_task(request, member_id, task_id):
+    pass
+
 
 def task_list(request, date=None):
     if date == None:
