@@ -48,12 +48,12 @@ def task_list(request, date=None):
     return render_to_response('scheduling/task_list.html', context,
                                 context_instance=RequestContext(request))
         
-def monthly(request):
+def schedule(request):
     date = datetime.date.today()
 
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
     }
-    return render_to_response('scheduling/monthly.html', context,
+    return render_to_response('scheduling/schedule.html', context,
                                 context_instance=RequestContext(request))
 
