@@ -16,81 +16,61 @@
     </div>
 </div>
 
-<!--BEGIN SOURCE CODE FOR AJAX REQUEST =============================== -->
-<script type="text/javascript">
-    function createRequest() {
-        try {
-            request = new XMLHttpRequest();
-        } catch (trymicrosoft) {
-            try {
-                request = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (othermicrosoft) {
-                try {
-                    request = new AcitveXObject("Microsoft.XMLHTTP");
-                } catch (failed) {
-                    request = null;
-                }
-            }
-        }
-        
-        if (request == null)
-            alert("Error creating request object!");
-    }
-</script>
-<!--END SOURCE CODE FOR AJAX REQUEST =============================== -->
-<!--BEGIN SOURCE CODE FOR CALENDAR =============================== -->
+<!--BEGIN SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
 <script type="text/javascript">			
     // create namespace object
 	YAHOO.namespace("schedule.calendar");
 
     //define the initConnection
 	YAHOO.schedule.calendar.initConnection = function() {
-		var eLog = YAHOO.util.Dom.get("task-list");
-		var eCount = 1;
+        var div = YAHOO.util.Dom.get("task-list");
 
-		function listTasks(tasks) {
-            eLog.innerHTML = tasks + eLog.innerHTML;
-		}
-        
-        function getTasks(url) {
-            createRequest();
-            request.open("GET", url, true);
-            request.onreadystatechange = updatePage;
-            request.send(null);
+        function dateToLocaleString(dt, cal) {
+        	var dStr = dt.getDate();
+        	var mStr = dt.getMonth()+1;
+        	var yStr = dt.getFullYear();
+        	return ("/scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr);
         }
 
-		function dateToLocaleString(dt, cal) {
-        	var dStr = dt.getDate();
-        	var mStr = dt.getMonth();
-       	 	var yStr = dt.getFullYear();
-        	return ("scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr);
-		}
+        var handleSuccess = function(response){
+            if(response.responseText !== undefined){ 		    
+                div.innerHTML = response.responseText;
+            }
+        };
 
-		function mySelectHandler(type, args, obj) {
-			var selected = args[0];
-			var selDate = this.toDate(selected[0]);
-			var url = dateToLocaleString(selDate, this);
-			getTasks(url);
-			listTasks();
-		}
+        var handleFailure = function(response){ 
+            if(response.responseText !== undefined){ 
+                div.innerHTML = "Nothing for this Date"; 
+            } 
+        };
+        
+        var callback = 
+    	{ 
+    	    success: handleSuccess, 
+    	    failure: handleFailure,   
+    	};
 
-        function updatePage() {
-            if (request.readyState == 4) {
-                if (request.status == 200) {
-                    var response = request.responseText.split("|");
-                    document.getElementById("order").value = response[0];
-                    document.getElementById("address").innerHTML = response[1].replace(/\n/g, "");
-                } else
-             alert("status is " + request.status);
-         }
-       }
-       YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
-       YAHOO.schedule.calendar.cal1.selectEvent.subscribe(mySelectHandler, YAHOO.schedule.calendar.cal1, true);
-       YAHOO.schedule.calendar.cal1.render();
+        function mySelectHandler(type, args, obj) {
+        	var selected = args[0];
+        	var selDate = this.toDate(selected[0]);
+        	var sUrl = dateToLocaleString(selDate, this);
+        	YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
+        }
+        YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
+        YAHOO.schedule.calendar.cal1.selectEvent.subscribe(mySelectHandler, YAHOO.schedule.calendar.cal1, true);
+        YAHOO.schedule.calendar.cal1.render();
+        
+        // list todays tasks on page load
+        var dt = new Date();
+    	var dStr = dt.getDate();
+    	var mStr = dt.getMonth()+1;
+    	var yStr = dt.getFullYear();
+    	sUrl = "/scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr;
+        YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 	}
 
 	YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
 </script>
-<!--END SOURCE CODE FOR CALENDAR =============================== -->
+<!--END SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
 
 {% endblock content %}
