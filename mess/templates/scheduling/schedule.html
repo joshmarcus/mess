@@ -25,7 +25,7 @@
 	YAHOO.schedule.calendar.initConnection = function() {
         var div = YAHOO.util.Dom.get("task-list");
 
-        function dateToLocaleString(dt, cal) {
+        function dateToLocaleString(dt) {
         	var dStr = dt.getDate();
         	var mStr = dt.getMonth()+1;
         	var yStr = dt.getFullYear();
@@ -53,7 +53,7 @@
         function mySelectHandler(type, args, obj) {
         	var selected = args[0];
         	var selDate = this.toDate(selected[0]);
-        	var sUrl = dateToLocaleString(selDate, this);
+        	var sUrl = dateToLocaleString(selDate);
         	YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
         }
         YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
@@ -61,11 +61,7 @@
         YAHOO.schedule.calendar.cal1.render();
         
         // list todays tasks on page load
-        var dt = new Date();
-    	var dStr = dt.getDate();
-    	var mStr = dt.getMonth()+1;
-    	var yStr = dt.getFullYear();
-    	sUrl = "/scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr;
+        var sUrl = dateToLocaleString(new Date());
         YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 	}
 
