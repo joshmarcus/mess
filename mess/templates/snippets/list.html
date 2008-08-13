@@ -1,0 +1,35 @@
+<div id=list_cancel >Cancel</div>
+<div class="dropdown_list">
+{% if accounts %}
+<div id=account_list >
+    <ul>
+    {% for id, name in accounts.items %}
+        <li class=account_choice id={{ id }} >{{ name }}<li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if account_members %}
+    <div id=account_members >
+    <ul>
+    {% for id, name in account_members.items %}
+        <li class=member_choice id={{ id }} >{{ name }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+{% endif %}
+</div>
+{% if members %}
+<div id=other_members >
+    <ul>
+    <li class=other_choice >------- Other members ---------</li>
+        {% for id, name in members.items %}
+        <li class=other_choice id={{ id }} >{{ name }}</li>
+    {% endfor %}
+</ul>
+</div>
+</div>
+{% endif %}
+<div id="list_end" ></div>
+
