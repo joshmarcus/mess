@@ -101,7 +101,7 @@ def cashier(request):
             context['other_member_name'] = request.GET.get('om_name')
             context['account_name'] = request.GET.get('account_name')
             return render_to_response('accounting/snippets/confirm_other_member.html', context)
-        return render_to_response('accounting/snippets/list.html', context)
+        return render_to_response('snippets/dropdown_list.html', context)
     else:
         context['page_name'] = 'Cashier'
         context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
@@ -148,7 +148,7 @@ def cashier_digger(request):
             context['other_member_name'] = request.GET.get('om_name')
             context['account_name'] = request.GET.get('account_name')
             return render_to_response('accounting/snippets/confirm_other_member.html', context)
-        return render_to_response('snippets/list.html', context)
+        return render_to_response('snippets/dropdown_list.html', context)
     else:
         context['page_name'] = 'digger\'s Cashier Page'
         context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
@@ -195,7 +195,7 @@ def cashier_mike(request):
             context['other_member_name'] = request.GET.get('om_name')
             context['account_name'] = request.GET.get('account_name')
             return render_to_response('accounting/snippets/confirm_other_member.html', context)
-        return render_to_response('accounting/snippets/list.html', context)
+        return render_to_response('snippets/dropdown_list.html', context)
     else:
         context['page_name'] = 'Mike\'s Cashier Page'
         context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
