@@ -1,0 +1,71 @@
+/* list.css */
+
+/*///////////////////////////////////////////////////////////////////*/
+
+div#list {
+    display: none;    
+    position: absolute;
+    width: 300px;
+    height: auto;
+    background: #EFF0F9;
+	color: #0000cc;        
+	padding: 4px;    
+	border: solid #990099;
+	border-width: 1px 1px 1px 1px;
+	text-align: left;
+    z-index: 2;
+}
+
+div#message {
+    display: none;
+    position: absolute;
+	width: auto;
+	height: auto;
+	padding: 20px;
+	background: #cc9999;
+	color: #003333;
+	border: solid red 1px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-topright: 15px;
+	-moz-border-radius-bottomleft: 15px;
+	-moz-border-radius-bottomright: 30px;
+	font-size: 1.5em;
+	text-align: center;
+}
+
+li.account_choice:hover, li.member_choice:hover {
+    background:  #fddc08;
+    color: #333    
+} 
+
+div#list_cancel {
+	text-align: right;
+	padding-right: 20px;
+	color: #cc0000;
+}
+
+div#list_cancel:hover, li.other_choice:hover {
+    background: #fddc08;
+	color: #333;
+}
+
+li.other_choice {
+	padding-right: 20px;
+	color: #cc0000;
+}
+
+
+li.confirm_member {
+    background: #99CC99;
+	color: #0000cc;        
+	padding: 4px;    
+	border: solid #990099;
+	border-width: 1px;
+	text-align: left;
+    z-index: 2;
+}
+
+li.confirm_member:hover {
+    background: #cc9999;
+}    
+
