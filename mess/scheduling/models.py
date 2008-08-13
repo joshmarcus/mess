@@ -54,4 +54,4 @@ class Timecard(models.Model):
     
     def __unicode__(self):
         work = self.end - self.start
-        return u"%s hrs of %s" % (work.seconds / 3600, self.assignment.task.job)
+        return u"%s hrs of %s" % (work.seconds / 3600, self.task.job)
