@@ -49,16 +49,44 @@ function xhr(query, element)
 
 	ajaxRequest.onreadystatechange = function ()
 	{
-		if (ajaxRequest.readyState == 4 || ajaxRequest.status == 200 )
-		{	   
-	        var response = ajaxRequest.responseText
-            document.getElementById(element).innerHTML = response;
- 		}
+		if (ajaxRequest.readyState == 4)
+        {
+            if (ajaxRequest.status == 200 || ajaxRequest.status == 304 )
+	        {	   
+	            var response = ajaxRequest.responseText
+                document.getElementById(element).innerHTML = response;
+ 		    }
+        }
 	}
     ajaxRequest.send(null);
 } // End function xhr
 
 /////////////////////////////////////////////////////////////////////////////
+
+//function is_available(element, do_it)
+//{
+//    var timeout;
+//    var do_it;
+//    function not_available()
+//    {
+//        if ( !document.getElementById('element'))
+//        {
+//            //alert(document.getElementById('element'))
+//            timeout = setTimeout("not_available()", 0);
+//        }
+//        else
+//        {
+//            //alert("do it" + document.getElementById('element'));
+//            do_it;
+//        }
+//
+//    }
+//    clearTimeout(timeout)
+//} //End function is_available
+
+
+/////////////////////////////////////////////////////////////////////////////
+
 
 function no_enter(e)
 {
