@@ -3,9 +3,11 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('mess.accounting.views',
     (r'^thanks$','thanks'),
     url(r'^transaction/$', 'transaction_form', name='transaction'),
-    url(r'^cashier$', 'cashier', name='cashier'),
-    url(r'^close_out/$', 'close_out', name='close_out'),
+    url(r'^cashier/$', 'cashier', name='cashier'),
+    url(r'^cashier_digger/$', 'cashier_digger', name='cashier_digger'),
+    url(r'^cashier_mike/$', 'cashier_mike', name='cashier_mike'),
     
+    url(r'^close_out/$', 'close_out', name='close_out'),
     url(r'^close_out/checks/$', 'close_out',
         {'type': 'K'}, name='close_out_checks' ),
     url(r'^close_out/money_orders/$', 'close_out', 
