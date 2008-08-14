@@ -45,7 +45,7 @@ def task_list(request, date=None):
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
     }
-    return render_to_response('scheduling/task_list.html', context,
+    return render_to_response('scheduling/snippets/task_list.html', context,
                                 context_instance=RequestContext(request))
         
 def schedule(request):

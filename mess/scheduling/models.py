@@ -22,13 +22,34 @@ class Job(models.Model):
     class Meta:
         ordering = ['name']
 
+FREQUENCY_CHOICES = (
+    ('4','Every 4 Weeks'),
+    ('6','Every 6 Weeks'),
+)
+
+class RecurringShift(models.Model):
+    """
+    A recurring shift is members typical workshift made up of a series of tasks
+    """   
+    job = models.ForeignKey(Job)
+    member = models.ForeignKey(Member, null=True)
+    frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)
+    start = models.DateTimeField(null=True, blank=True)
+    hours = models.IntegerField()
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+
 class Task(models.Model):
     """
-    A task is an instance of a job
+    A task is an instance of a job that occurs once
     """
     job = models.ForeignKey(Job)
     deadline = models.DateTimeField()
     start = models.DateTimeField(null=True, blank=True)
+    member = models.ForeignKey(Member, null=True)
+    recurrence = models.ForeignKey(RecurringShift, null=True)
     hours = models.IntegerField()
     member = models.ForeignKey(Member, null=True, blank=True)
     
