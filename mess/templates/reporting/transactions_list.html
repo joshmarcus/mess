@@ -19,17 +19,17 @@
 	<form method="get">
 	  	<strong>Account:</strong>
 		<input name="account" id="account_name" style="width:10em;" 
-			value="{{ account }}">
+			value="{{ account }}" autocomplete="off">
 		<strong>Member:</strong>
 		<input name="member" id="member_name" style="width:10em;" 
-			value="{{ member }}">
+			value="{{ member }}" autocomplete="off">
 		<span id="date_span"> <!-- for JS onblur hide_datep -->
 			<strong>Start:</strong>
 			<input name="start" id="start_date" style="width:8em;" 
-				value="{{ start }}">
+				value="{{ start }}" autocomplete="off">
 			<strong>End:</strong>
 			<input name="end" id="end_date" style="width:8em;" 
-				value="{{ end }}">
+				value="{{ end }}" autocomplete="off">
 			<div id="datep" style="display:none;"> </div>
 		</span>
 		<input type="submit" value="Filter">

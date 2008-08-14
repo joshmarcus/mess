@@ -115,16 +115,13 @@ def raw_list(request):
 	if request.GET.has_key('list') and request.GET.get('list') == 'members':
 		if request.GET.has_key('account'):
 			acct = request.GET.get('account')
-			try: member_list = Account.objects.get(name = acct).members.all()
-			except: return HttpResponse('')
-			# Why doesn't this reverse-lookup work?
-			#member_list = Member.objects.filter(accounts__contains = 'Bedrest')
+			member_list = Member.objects.filter(accounts__name = acct)
 		else:
 			member_list = Member.objects.all()
 		mnames = [member.user.get_full_name() for member in member_list]
-# DO THIS AS A DATABASE FILTER ON member__user__get_full_name__contains
 
 		# if we have a member pattern, filter it case-insensitively
+# CAN'T SEEM TO DO A DATABASE FILTER ON member__user__get_full_name__contains
 		if request.GET.has_key('member'):
 			pattern = request.GET.get('member').replace('*','').lower()
 			mnames = [m for m in mnames if m.lower().find(pattern) >= 0]
