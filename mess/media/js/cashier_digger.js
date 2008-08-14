@@ -34,7 +34,8 @@ function get_accounts(thisObj, e)
         var query = "?search=accounts&string=" + account_name.value;
 
         xhr(query, 'list');
-        YAHOO.util.Event.onAvailable('account_list', account_list_click, this); 
+        YAHOO.util.Event.onAvailable('account_list',
+                                    account_list_click, this, true); 
         show_list(thisObj);
         //setTimeout('account_list_click()', 100);
     }
@@ -62,8 +63,8 @@ function get_account_members()
                     id_account.value;
 		
         xhr(query, 'list');
-        YAHOO.util.Event.onAvailable('account_list',
-                                    account_members_click, this);
+        YAHOO.util.Event.onAvailable('account_members',
+                                    account_members_click, this, true);
         show_list(member_name);
         //setTimeout('account_members_click()', 100);
 	//}
@@ -98,8 +99,8 @@ function get_members(e)
                 "&string=" + member_name.value;
     
     xhr(query, 'list');
-        YAHOO.util.Event.onAvailable('account_list',
-                                other_members_click, this); 
+        YAHOO.util.Event.onAvailable('other_members',
+                                other_members_click, this, true); 
     show_list(member_name);
     //setTimeout('other_members_click()', 100);
 
@@ -249,12 +250,8 @@ function account_list_click()
 {
     if (document.getElementById && document.getElementsByTagName)
     {
-        //if (!document.getElementById("account_list"))
-        //{
-        //    setTimeout('account_list_click()',100);
-        //}
-        //else
-        //{
+        if (document.getElementById('account_list'))
+        {
             list_cancel_click();
             var list = document.getElementById('account_list');
             var item = list.getElementsByTagName('li');
@@ -266,9 +263,9 @@ function account_list_click()
                         set_account(this);
                         get_account_members();
                         get_transactions(i);                        
-                        }
-                }
-        //}
+                    }
+            }
+        }
     }
 } // End function account_list_onclick
 
@@ -278,12 +275,8 @@ function account_members_click()
 {
     if (document.getElementById && document.getElementsByTagName)
     {
-        //if (!document.getElementById("account_members"))
-        //{
-        //    setTimeout('account_members_click()',100);
-        //}
-        //else
-        //{
+        if (document.getElementById('account_members'))
+        {
             var list = document.getElementById('account_members');
             var item = list.getElementsByTagName('li');
             for( var i=0; i < item.length; i++ )
@@ -294,7 +287,7 @@ function account_members_click()
                         set_member(this);
                     }
             }
-        //}
+        }
     }
 } // End function account_list_onclick
 
@@ -304,11 +297,7 @@ function other_members_click()
 {
     if (document.getElementById && document.getElementsByTagName)
     {
-        if (!document.getElementById("other_members"))
-        {
-            setTimeout('other_members_click()',100);
-        }
-        else
+        if (document.getElementById("other_members"))
         {
             var list = document.getElementById('other_members');
             var item = list.getElementsByTagName('li');
