@@ -70,21 +70,27 @@ function ajax_request_members_list()
 
 
 function ajax_list_field(rawlist, field_id)
-{
-	choices = rawlist.split('\n');
-	clickarray = '';
+{	// This fills the 'list' element with the rawlist,
+	// and attaches onclick events for each list item to fill in the field_id
+
+	var choices = rawlist.split('\n');
+	var clickarray = '';
 	for (i=0; i < choices.length; i++)
 	{
-		// in the JS, slash-escape any ' or "
 		// in the HTML, amp-escape any & or <
-		clickarray += '<div class="account_choice" onclick="fillnmit(\''+
-			field_id+'\', \''+
-			choices[i].replace(/'/g,'\\\'').replace(/"/g,'\\\"')+'\');">'+
+		clickarray += '<div class="account_choice" id="choice_'+i+'">'+
 			choices[i].replace(/&/g,'&amp;').replace(/</g,'&lt')+'</div>\n';
 	}
 	var l = document.getElementById('list');
 	l.innerHTML = clickarray;
-	//show_list(document.getElementById(field_id));
+	for (i=0; i < choices.length; i++)
+	{
+		var c = document.getElementById('choice_'+i);
+		c.value = choices[i];
+		c.onclick = function() {
+			fillnmit(field_id, this.value);
+		}
+	}
 	show_helper('list',field_id);
 }	// end function ajax_list_field
 
