@@ -1,4 +1,8 @@
-            <h5>{{ address.get_type_display }}</h5>
+            <h5>{{ address.get_type_display }}
+				{% if caneditprofile %}
+					<a href="{% url remove_contact member.user.username %}?medium=address&target={{ address|urlencode}}">remove</a>
+				{% endif %}
+			</h5> 
             <p>
               {% if address.address1 %}
                 {{ address.address1 }}<br />

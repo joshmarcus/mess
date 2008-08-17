@@ -20,7 +20,7 @@ EMAIL_TYPES = (
 )
  
 class Address(models.Model):
-    type = models.CharField(max_length=1, choices=addressTYPES)
+    type = models.CharField(max_length=1, choices=addressTYPES, default='h')
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=50, default='Philadelphia')
@@ -54,7 +54,7 @@ class Phone(models.Model):
             return self.number
 
 class Email(models.Model):
-    type = models.CharField(max_length=1, choices=EMAIL_TYPES)
+    type = models.CharField(max_length=1, choices=EMAIL_TYPES, default='p')
     email = models.EmailField()
 
     def __unicode__(self):

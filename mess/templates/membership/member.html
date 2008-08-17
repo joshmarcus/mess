@@ -33,27 +33,33 @@
         </ul>
         <div class="details">
 		  {% if caneditprofile %}
-		  	<a href="{% url add_address member.user.username %}">add address</a>
-		  	<a href="{% url add_phone member.user.username %}">add phone</a>
-		  	<a href="{% url add_email member.user.username %}">add email</a>
+			{% for medium in contactmedia %}
+				<a href="{% url add_contact member.user.username,medium %}">
+					add {{medium}}</a>
+			{% endfor %}
 		  {% endif %}
           {% for address in profile.addresses.all %}
             {% include "profiles/snippets/address.html" %}
           {% endfor %}
           <p>
             {% for phone in profile.phones.all %}
-              {{ phone }} ({{ phone.type }})
+              {{ phone }} ({{ phone.get_type_display }})
 			 	{% if caneditprofile %}
 <!--					<a href="{% url edit_phone member.user.username,phone %}">edit</a> -->
-					<a href="{% url remove_phone member.user.username %}?phone={{ phone|urlencode }}">remove</a>
+					<a href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
 				{% endif %}
 			  <br />
-            {% endfor %}
+            {% endfor %} 
+		</p><p>
             {% if member.user.email %}
+			  WARNING: MESS is not designed to handle member.user.email.<br>
               <a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a><br/>
             {% endif %}
             {% for email in profile.emails.all %}
-              <a href="mailto:{{ email }}">{{ email }}</a><br/>
+              <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
+			  {% if caneditprofile %}
+			  	<a href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
+			  {% endif %} <br/>
             {% endfor %}
           </p>
         </div>

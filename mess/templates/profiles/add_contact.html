@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- same template can be used for Address, Phone or Email -->
 <!-- template based on /templates/membership/member_form.html -->
 <div id="left-column">
 <div id="primary-content-wrapper">
 	<h2>Profiles</h2>
-	<h3>Add Phone for: {{ user.get_full_name }}
+	<h3>Add {{ medium }} for: {{ user.get_full_name }}
 		({{ user.username }})</h3>
 	<form class="standard" method="post">
 		<table class="form-table">

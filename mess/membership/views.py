@@ -30,6 +30,8 @@ def member(request, username):
     context['member'] = member
     template = get_template('membership/member.html')
     context['caneditprofile'] = True
+    # this list should live somewhere else, but I don't know where:
+    context['contactmedia'] = ['address', 'phone', 'email']
     return HttpResponse(template.render(context))
 
 def member_form(request, username=None):
