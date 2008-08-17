@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- template based on /templates/membership/member_form.html -->
+<div id="left-column">
+<div id="primary-content-wrapper">
+	<h2>Profiles</h2>
+	<h3>Add Phone for: {{ user.get_full_name }}
+		({{ user.username }})</h3>
+	<form class="standard" method="post">
+		<table class="form-table">
+		{{ form }}
+		<tr><td></td><td><input type="submit" value="Save"/></td></tr>
+		</table>
+	</form>
+</div>
+</div>
+{% endblock %}

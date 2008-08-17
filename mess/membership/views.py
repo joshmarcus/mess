@@ -29,6 +29,7 @@ def member(request, username):
     member = get_object_or_404(Member, user=user)
     context['member'] = member
     template = get_template('membership/member.html')
+    context['caneditprofile'] = True
     return HttpResponse(template.render(context))
 
 def member_form(request, username=None):
@@ -46,17 +47,17 @@ def member_form(request, username=None):
     context['member'] = member
     if request.method == 'POST':
         form = [ MemberForm(request.POST, prefix="member", instance=member),
-			UserForm(request.POST, prefix="user", instance=user),
-			UserProfileForm(request.POST, prefix="userprofile", instance=user.get_profile()) ]
-        if form[0].is_valid() and form[1].is_valid() and form[2].is_valid():
+			UserForm(request.POST, prefix="user", instance=user) ]
+#			UserProfileForm(request.POST, prefix="userprofile", instance=user.get_profile()) ]
+        if form[0].is_valid() and form[1].is_valid(): # and form[2].is_valid():
             # PERMISSIONS # PERMISSIONS # PERMISSIONS #
             #   this should check permissions here    #  FIXME ???
             for f in form: f.save()
             return HttpResponseRedirect('/membership/members/'+username)
     else:
         form = [ MemberForm(instance=member, prefix="member"),
-            UserForm(instance=user, prefix="user"),
-            UserProfileForm(instance=user.get_profile(), prefix="userprofile") ]
+            UserForm(instance=user, prefix="user") ]
+#           UserProfileForm(instance=user.get_profile(), prefix="userprofile") ]
     context['form'] = form
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))

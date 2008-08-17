@@ -40,7 +40,7 @@ class Address(models.Model):
         verbose_name_plural = 'Addresses'
 
 class Phone(models.Model):
-    type = models.CharField(max_length=1, choices=PHONE_TYPES)
+    type = models.CharField(max_length=1, choices=PHONE_TYPES, default='h')
     # PhoneNumberField is not international-compliant
     number = models.PhoneNumberField()
     ext = models.PositiveIntegerField(blank=True, null=True)

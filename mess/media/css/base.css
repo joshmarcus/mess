@@ -412,6 +412,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#primary-content-wrapper div.profile h4 {
 				margin-top:0;
 				}
+			#primary-content-wrapper div.profile h4 a {
+				display:block; float:right; color:#055;
+				}
 			#primary-content-wrapper div.profile p {
 				line-height:1.3em;
 				}

@@ -5,7 +5,7 @@
       <ul id="local-nav">
         <!--<li><a href="">local nav item</a></li>
         <li><a href="">local nav item</a></li>-->
-        <li class="last-item"><a href="{% url member-edit member.user.username%}">edit profile</a></li>
+		<!-- <li class="last-item"><a href="{% url member-edit member.user.username%}">edit profile</a></li> -->
       </ul>
     <div id="primary-content-wrapper">
       <h2>Members</h2>
@@ -19,7 +19,12 @@
             {% endfor %}
           </ul>
         </div>
-        <h4>{{ member.user.get_full_name }}</h4>
+        <h4>
+		{% if caneditprofile %}	
+			<a href="{% url member-edit member.user.username %}">edit</a>
+		{% endif %}
+		{{ member.user.get_full_name }} 
+		</h4>
         <ul class="quick-info">
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/> {{ member.get_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/> {{ member.get_work_status_display }}</li>
@@ -27,12 +32,22 @@
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
         </ul>
         <div class="details">
+		  {% if caneditprofile %}
+		  	<a href="{% url add_address member.user.username %}">add address</a>
+		  	<a href="{% url add_phone member.user.username %}">add phone</a>
+		  	<a href="{% url add_email member.user.username %}">add email</a>
+		  {% endif %}
           {% for address in profile.addresses.all %}
             {% include "profiles/snippets/address.html" %}
           {% endfor %}
           <p>
             {% for phone in profile.phones.all %}
-              {{ phone }}<br />
+              {{ phone }} ({{ phone.type }})
+			 	{% if caneditprofile %}
+<!--					<a href="{% url edit_phone member.user.username,phone %}">edit</a> -->
+					<a href="{% url remove_phone member.user.username %}?phone={{ phone|urlencode }}">remove</a>
+				{% endif %}
+			  <br />
             {% endfor %}
             {% if member.user.email %}
               <a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a><br/>
