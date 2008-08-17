@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- template based on /templates/membership/member_form.html -->
+<!-- THIS TEMPLATE SHOULD BE MERGED WITH OTHER "REMOVE" TEMPLATES -->
+<div id="left-column">
+<div id="primary-content-wrapper">
+	<h2>Profiles</h2>
+	<h3>Remove {{ medium }} for: {{ user.get_full_name }}
+		({{ user.username }})</h3>
+	<h3>{{ medium|capfirst }} to be removed: {{ target }}</h3>
+	<h3><a href="?medium={{ medium }}&target={{ target|urlencode }}&yes=yes">Remove</a>
+	<a href="/membership/members/{{ user.username }}">Cancel</a></h3>
+</div>
+</div>
+{% endblock %}
