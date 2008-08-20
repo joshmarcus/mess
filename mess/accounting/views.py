@@ -72,53 +72,6 @@ def cashier(request):
     if request.method == 'POST':
         save_credit_trans(request)
         save_debit_trans(request)
-        return HttpResponseRedirect('thanks')
-    elif 'search' in request.GET:
-        search = request.GET.get('search')
-        if search == 'transactions':
-            if 'account_id' in request.GET:
-                account_id = request.GET.get('account_id')
-                trans = Transaction.objects.filter(account = account_id)
-                context['account_name'] = Account.objects.get(id = account_id).name
-            else:
-                d = date.today()
-                trans = Transaction.objects.filter(date__year = d.year,
-                                            date__month = d.month,
-                                            date__day = d.day)
-            context['transactions'] = trans
-            return render_to_response('accounting/snippets/transactions.html', context)
-        if 'account_id' in request.GET:
-            account_id = request.GET.get('account_id')
-            account_members = account_members_dict(account_id)
-            context['account_members'] = account_members
-        if 'string' in request.GET:
-            string = request.GET.get('string')
-            if search == 'members':
-                context['members'] = search_for_string('members', string)
-            elif search == 'accounts':
-                context['accounts'] = search_for_string('accounts', string)
-        if search == 'other_member':
-            context['other_member_id'] =  request.GET.get('om_id')
-            context['other_member_name'] = request.GET.get('om_name')
-            context['account_name'] = request.GET.get('account_name')
-            return render_to_response('accounting/snippets/confirm_other_member.html', context)
-        return render_to_response('snippets/dropdown_list.html', context)
-    else:
-        context['page_name'] = 'Cashier'
-        context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
-        context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
-        form = TransactionForm()
-        context['transactions_today'] = get_todays_transactions()
-        return render_to_response('accounting/cashier.html', context,
-                                    context_instance=RequestContext(request))
-
-
-# This is temporary.  It is digger's playground.
-def cashier_digger(request):
-    context = {}
-    if request.method == 'POST':
-        save_credit_trans(request)
-        save_debit_trans(request)
         return HttpResponseRedirect('../thanks')
     elif 'search' in request.GET:
         search = request.GET.get('search')
@@ -167,52 +120,6 @@ def cashier_digger(request):
         return render_to_response('accounting/cashier_digger.html', context,
                                     context_instance=RequestContext(request))
 
-
-#  This view is temporary.  It is Mike's playground. 
-def cashier_mike(request):
-    context = {}
-    if request.method == 'POST':
-        save_credit_trans(request)
-        save_debit_trans(request)
-        return HttpResponseRedirect('thanks')
-    elif 'search' in request.GET:
-        search = request.GET.get('search')
-        if search == 'transactions':
-            if 'account_id' in request.GET:
-                account_id = request.GET.get('account_id')
-                trans = Transaction.objects.filter(account = account_id)
-                context['account_name'] = Account.objects.get(id = account_id).name
-            else:
-                d = date.today()
-                trans = Transaction.objects.filter(date__year = d.year,
-                                            date__month = d.month,
-                                            date__day = d.day)
-            context['transactions'] = trans
-            return render_to_response('accounting/snippets/transactions.html', context)
-        if 'account_id' in request.GET:
-            account_id = request.GET.get('account_id')
-            account_members = account_members_dict(account_id)
-            context['account_members'] = account_members
-        if 'string' in request.GET:
-            string = request.GET.get('string')
-            if search == 'members':
-                context['members'] = search_for_string('members', string)
-            elif search == 'accounts':
-                context['accounts'] = search_for_string('accounts', string)
-        if search == 'other_member':
-            context['other_member_id'] =  request.GET.get('om_id')
-            context['other_member_name'] = request.GET.get('om_name')
-            context['account_name'] = request.GET.get('account_name')
-            return render_to_response('accounting/snippets/confirm_other_member.html', context)
-        return render_to_response('snippets/dropdown_list.html', context)
-    else:
-        context['page_name'] = 'Mike\'s Cashier Page'
-        context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
-        context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
-        form = TransactionForm()
-        context['transactions_today'] = get_todays_transactions()
-        return render_to_response('accounting/cashier_mike.html', context,
-                                    context_instance=RequestContext(request))
 
 def close_out(request, type='all'):
     """Page to reconcile the day's transactions."""

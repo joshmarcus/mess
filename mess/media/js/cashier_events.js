@@ -2,39 +2,29 @@
 
 window.onload = function()
 {
+    //hideUnusedElements();
+    //getAccounts();
+    autoComp( "accountInput", "accountContainer", "accounts", setSelectedAccount)
+    autoComp( "memberInput", "memberContainer", "members", setSelectedMember)
     get_transactions();
     
-    var account_name = document.getElementById('account_name')
-    account_name.onclick = function()
+    //  Display form elements when needed    
+    document.getElementById('debit_type').onchange = function()
         {
-            show_message('account_name', 'Typing will display matches.');
-        }
-    account_name.onkeyup = function(e)
-        {
-            if (!e) var e = window.event;
-            get_accounts(this, e);
-        }
-    account_name.onkeypress = function(e)
-        {
-            if (!e) var e = window.event;
-            return no_enter(e);  
+            document.getElementById('debit').style.display = 'inline';
+            document.getElementById('ref').style.display = 'inline';
         }
 
-    var member_name = document.getElementById('member_name')
-    member_name.onclick = function()
+    document.getElementById('credit_type').onchange = function()
         {
-            if (!e) var e = window.event;        
-            get_account_members(e);
-        }
-    member_name.onkeyup = function(e)
-        {
-            if (!e) var e = window.event;
-            get_members(e);
-        }
-    member_name.onkeypress = function(e)
-        {
-            if (!e) var e = window.event;
-            return no_enter(e);  
+            if (document.getElementById('id_credit_type.value') != 'N')
+            {
+                document.getElementById('credit').style.display = 'inline';
+            }
+            else if (document.getElementById('id_credit_type.value') == 'N')
+            {
+                document.getElementById('credit').style.display = 'none';
+            }
         }
 
     var id_ref = document.getElementById('id_ref')
