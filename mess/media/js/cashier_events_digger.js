@@ -2,38 +2,12 @@
 
 window.onload = function()
 {
-    hide_unused_elements();
+    //hideUnusedElements();
+    //getAccounts();
+    autoComp( "accountInput", "accountContainer", "accounts", setSelectedAccount)
+    autoComp( "memberInput", "memberContainer", "members", setSelectedMember)
     get_transactions();
     
-    var account_name = document.getElementById('account_name')
-    account_name.onkeyup = function(e)
-        {
-            if (!e) var e = window.event;
-            get_accounts(this, e);
-        }
-    account_name.onkeypress = function(e)
-        {
-            if (!e) var e = window.event;
-            return no_enter(e);  
-        }
-
-    var member_name = document.getElementById('member_name')
-    member_name.onclick = function()
-        {
-            if (!e) var e = window.event;        
-            get_account_members(e);
-        }
-    member_name.onkeyup = function(e)
-        {
-            if (!e) var e = window.event;
-            get_members(e);
-        }
-    member_name.onkeypress = function(e)
-        {
-            if (!e) var e = window.event;
-            return no_enter(e);  
-        }
-
     //  Display form elements when needed    
     document.getElementById('debit_type').onchange = function()
         {
