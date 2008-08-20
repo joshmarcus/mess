@@ -155,10 +155,10 @@ function show_list (obj)
 
 function hide_list()
 {
-	document.getElementById("list").style.display = "none";        
+	document.getElementById('list').style.display = 'none';
 } //End function hideList
 
-////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 function reset_form ()
 {
