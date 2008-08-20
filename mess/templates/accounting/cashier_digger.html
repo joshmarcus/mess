@@ -3,11 +3,33 @@
 {% block head %}
 <link href="{{ MEDIA_URL }}css/dropdown_list.css" type="text/css" rel="Stylesheet" media="screen" />
 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo/yahoo-min.js&2.5.2/build/event/event-min.js">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/autocomplete/assets/skins/sam/autocomplete.css">
+
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/connection/connection-min.js&2.5.2/build/autocomplete/autocomplete-min.js"></script>
 
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_digger.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events_digger.js"></script>
+
+<style type="text/css">
+/* custom styles for multiple stacked instances */
+#account {
+    width:  30em; /* set width here */
+    padding-bottom: 2em;
+    z-index:    9000; /* z-index needed on top instance for ie & sf absolute inside relative issue */    
+}
+
+#member {
+    width:  30em; /* set width here */
+    padding-bottom:2em;
+}
+
+#accountInput,
+#memberInput {
+    _position:absolute; /* abs pos needed for ie quirks */
+}
+</style>
+
 {% endblock head %}
 
 {% block content %}
@@ -15,18 +37,21 @@
   <ul id="local-nav">
   {% include "accounting/snippets/local_nav.html" %}
   </ul>
+  <div id="account">
+    <label for="accountIput">Account Name</label>
+    <input id="accountInput" type="text">
+        <div id="accountContainer"></div>
+    </div>
+    <div id="member"> 
+        <label for="memberInput" >Member Name</label>
+        <input id="memberInput" />
+        <div id="memberContainer" ></div>
+    </div>
+
   <div id="primary-content-wrapper">
     <form class="standard" id="form" name="form" method="post" >
-        <div id="account">
-            <input type="hidden" id="id_account" name="account" value="" />
-            <label for="account_name">Account Name</label>
-            <input tabindex="1" type="text" size="40" autocomplete="off" id="account_name" name="account_name" />
-        </div>
-        <div id="member" > 
-            <input type="hidden" id="id_member" name="member" value="" />
-            <label for="member_name" >Member Name</label>
-            <input tabindex="2" type="text" size="40" autocomplete="off" id="member_name" name="member_name" />
-        </div>
+        <input type="hidden" id="id_member" name="member" value="" />
+        <input type="hidden" id="id_account" name="account" value="" />
         <div id="debit_type">
             <select tabindex="4" id="id_debit_type" name="debit_type" >
                 <option value="N" selected>Select Payment</option>
@@ -65,7 +90,6 @@
     <div id="transactions" ></div>
 </div>
 </div>
-
 {% endblock %}
 {% block pop_up %}
 <div id="message" ></div>
