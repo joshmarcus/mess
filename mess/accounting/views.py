@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.contrib.auth.models import User
+from django.utils import simplejson
 
 from mess.accounting.models import Transaction
 from mess.accounting.models import get_credit_choices, get_debit_choices
@@ -140,15 +141,23 @@ def cashier_digger(request):
         if 'string' in request.GET:
             string = request.GET.get('string')
             if search == 'members':
-                context['members'] = search_for_string('members', string)
+                result = []
+                dict = search_for_string('members', string)
+                for id, name in dict.items():
+                    result.append({'id': id, 'name': name})
+                result_set = {'results': result}
             elif search == 'accounts':
-                context['accounts'] = search_for_string('accounts', string)
+                result = []
+                dict = search_for_string('accounts', string)
+                for id, name in dict.items():
+                    result.append({'id': id, 'name': name})
+                result_set = {'results': result}
         if search == 'other_member':
             context['other_member_id'] =  request.GET.get('om_id')
             context['other_member_name'] = request.GET.get('om_name')
             context['account_name'] = request.GET.get('account_name')
             return render_to_response('accounting/snippets/confirm_other_member.html', context)
-        return render_to_response('snippets/dropdown_list.html', context)
+        return HttpResponse(simplejson.dumps(result_set), mimetype='application/javascript')
     else:
         context['page_name'] = 'digger\'s Cashier Page'
         context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
