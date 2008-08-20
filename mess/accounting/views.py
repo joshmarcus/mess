@@ -112,12 +112,12 @@ def cashier(request):
             return render_to_response('accounting/snippets/confirm_other_member.html', context)
         return HttpResponse(simplejson.dumps(result_set), mimetype='application/javascript')
     else:
-        context['page_name'] = 'digger\'s Cashier Page'
+        context['page_name'] = 'Cashier'
         context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
         context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
         form = TransactionForm()
         context['transactions_today'] = get_todays_transactions()
-        return render_to_response('accounting/cashier_digger.html', context,
+        return render_to_response('accounting/cashier.html', context,
                                     context_instance=RequestContext(request))
 
 
