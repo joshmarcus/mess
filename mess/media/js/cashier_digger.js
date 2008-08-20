@@ -1,138 +1,90 @@
 //cashier.js
 
 // Hide elements that aren't used yet
-function hide_unused_elements()
+function hideUnusedElements()
 {
-    document.getElementById("member").style.display = 'none';
-    document.getElementById("ref").style.display = 'none';
-    document.getElementById("credit").style.display = 'none';
-    document.getElementById("debit").style.display = 'none';
+    document.getElementById('member').style.display = 'none';
+    document.getElementById('ref').style.display = 'none';
+    document.getElementById('credit').style.display = 'none';
+    document.getElementById('debit').style.display = 'none';
 }
 
-function get_accounts(thisObj, e)
-{    
-    // List all accounts that match a pattern
-	var account_name = document.getElementById("account_name");
-	var member_name = document.getElementById("member_name");
-	
-	hide_message ();
-		     
-	// Try to check for the key
-	if (!e) var e = window.event;
-	if (e.keyCode) var keycode = e.keyCode;
-	else if (e.which) var keycode = e.which;
-	
-	if(keycode == 8 )
-	{
-		member_name.value = '';	
-        document.getElementById("id_account").value = '';
-        document.getElementById("id_member").value = '';
-	    document.getElementById("member").style.display = "none";
-	}
-	if (account_name.value.length > 0)
-    {
-        var query = "?search=accounts&string=" + account_name.value;
-
-        xhr(query, 'list');
-        YAHOO.util.Event.onAvailable('account_list',
-                                    account_list_click, this, true); 
-        show_list(thisObj);
-        //setTimeout('account_list_click()', 100);
-    }
-
-} //End function get_accounts
+function getAccounts()
+{
+        var query = '';
+        var mySchema = ['results', 'name', 'id'];
+        var myDataSource = new YAHOO.widget.DS_XHR(query, mySchema);
+        myDataSource.scriptQueryParam = 'string'
+        myDataSource.scriptQueryAppend = 'search=accounts'
+        myDataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
+        //myDataSource.responseType = YAHOO.widget.DS_XHR.TYPE_XML; 
+        var myAutoComp = new YAHOO.widget.AutoComplete("myInput","myContainer", myDataSource);
+        myAutoComp.forceSelection = true;
+        myAutoComp.allowBrowserAutocomplete = false;
+        myAutoComp.itemSelectEvent.subscribe(setSelectedAccount);
+}
 
 ////////////////////////////////////////////////////////////////////////
 
-function get_account_members()
+function setSelectedAccount(sType, aArgs)
 {
-	// Get members that belong to an account
-	var member_name = document.getElementById('member_name')
+	// aArgs[0] - AutoComplete instance
+	// aArgs[1] - the <li> element selected in the suggestion container
+    // aArgs[2] - array of the data for the item as returned by the DataSource
+    var idAccount = aArgs[2][1]        
+	document.getElementById('id_account').value = idAccount;
+	document.getElementById('memberInput').focus();
+	//document.getElementById('member').style.display = 'inline';
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+function autoComp( inputId, containerId, searchType, onSelectFunction)
+{
+    /*
+     * Create an autoComplete dropdown list.  Expects to get json
+     * in the form of
+     *
+     *      { results: { id1: name1}, {id2: name2}}}
+     * 
+     * HTML should have this format:
+     *      <div id="someName">
+     *          <input id="inputId" />
+     *          <div id="containerId" ></div>
+     *      </div>
+    */
+        var schema = ['results', 'name', 'id'];
+        var query = '';
+        var dataSource = new YAHOO.widget.DS_XHR(query, schema);
+        dataSource.scriptQueryParam = 'string';
+        dataSource.scriptQueryAppend = 'search=' + searchType;
+        dataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
+        var autoComp = new YAHOO.widget.AutoComplete(
+                                        inputId, containerId, dataSource);
+        autoComp.forceSelection = true;
+        autoComp.allowBrowserAutocomplete = false;
+        autoComp.itemSelectEvent.subscribe(onSelectFunction);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+function getMembers()
+{
     var id_account = document.getElementById('id_account')
+}
 
-	hide_message();	
-	
-	//if (!id_account.value)
-	//{
-	//	show_message("member_name", "Please select an account first." )
-	//} else
-	//{
-        hide_list();
-       		
-		var query = "?search=members&account_id=" +
-                    id_account.value;
-		
-        xhr(query, 'list');
-        YAHOO.util.Event.onAvailable('account_members',
-                                    account_members_click, this, true);
-        show_list(member_name);
-        //setTimeout('account_members_click()', 100);
-	//}
-} // End function get_account_members
 
-////////////////////////////////////////////////////////////////////////////////
-
-function get_members(e)
+function setSelectedMember(sType, aArgs)
 {
-	// List all members that match a pattern
+	// aArgs[0] - AutoComplete instance
+	// aArgs[1] - the <li> element selected in the suggestion container
+    // aArgs[2] - array of the data for the item as returned by the DataSource
+    var idMember = aArgs[2][1]        
+	document.getElementById('id_member').value = idMember;
+	//document.getElementById('member').style.display = 'inline';
+};
 
-    var member_name = document.getElementById('member_name')
-    var id_member = document.getElementById('id_member')
-    var id_account = document.getElementById('id_account')
-	
-	hide_message();
-    hide_list();    
-
-	// Try to check for the key
-	if (!e) var e = window.event;
-	if (e.keyCode) keycode = e.keyCode;
-	else if (e.which) keycode = e.which;
-		
-	if(keycode == 8 )
-	{
-		//member.value = '';	
-		id_member.value = '';
-	}
-		
-	var query = "?search=members&account_id=" +
-                document.getElementById('id_account').value +
-                "&string=" + member_name.value;
-    
-    xhr(query, 'list');
-        YAHOO.util.Event.onAvailable('other_members',
-                                other_members_click, this, true); 
-    show_list(member_name);
-    //setTimeout('other_members_click()', 100);
-
-} // End function getMembers
-
-////////////////////////////////////////////////////////////////////////
-
-function set_account(this_obj)
-{
-	hide_list();
-	//hide_message();
-    if ( this_obj.id == 'list_cancel')
-    {
-        account_name = '';
-        id_account = '';
-        display = 'none';
-
-    }
-    else
-    {
-        if (!this_obj.textContent) var account_name = this_obj.innerText;
-	    if (this_obj.textContent) var account_name = this_obj.textContent;
-    	id_account = this_obj.id;
-        display = 'inline';
-    }
-	document.getElementById("account_name").value = account_name;
-	document.getElementById("id_account").value = id_account;
-	document.getElementById("member").style.display = display;
-    
-} // End function set_account
-
-///////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 function get_transactions(id)
 {
@@ -231,114 +183,6 @@ function set_note (id_member, member_name)
 } //End function set_note
 
 ///////////////////////////////////////////////////////////////////////
-
-function list_cancel_click()
-{
-    if (document.getElementById('list_cancel'))
-    {
-        document.getElementById('list_cancel').onclick = function()
-            {
-                hide_list();
-                set_account(this);
-            }
-    }
-} // End function list_cancel_onclick
-
-/////////////////////////////////////////////////////////////////////////////
-
-function account_list_click()
-{
-    if (document.getElementById && document.getElementsByTagName)
-    {
-        if (document.getElementById('account_list'))
-        {
-            list_cancel_click();
-            var list = document.getElementById('account_list');
-            var item = list.getElementsByTagName('li');
-            for( var i=0; i < item.length; i++ )
-            {
-                item[i].onclick = function()
-                    {
-                        hide_list();
-                        set_account(this);
-                        get_account_members();
-                        get_transactions(i);                        
-                    }
-            }
-        }
-    }
-} // End function account_list_onclick
-
-/////////////////////////////////////////////////////////////////////////////
-
-function account_members_click()
-{
-    if (document.getElementById && document.getElementsByTagName)
-    {
-        if (document.getElementById('account_members'))
-        {
-            var list = document.getElementById('account_members');
-            var item = list.getElementsByTagName('li');
-            for( var i=0; i < item.length; i++ )
-            {
-                item[i].onclick = function()
-                    {
-                        hide_list();
-                        set_member(this);
-                    }
-            }
-        }
-    }
-} // End function account_list_onclick
-
-/////////////////////////////////////////////////////////////////////////////
-
-function other_members_click()
-{
-    if (document.getElementById && document.getElementsByTagName)
-    {
-        if (document.getElementById("other_members"))
-        {
-            var list = document.getElementById('other_members');
-            var item = list.getElementsByTagName('li');
-            for( var i=0; i < item.length; i++ )
-            {
-                item[i].onclick = function()
-                    {
-                        hide_list();
-                        confirm_other_member(this);
-                    }
-            }
-        }
-    }
-} // End function account_list_onclick
-
-/////////////////////////////////////////////////////////////////////////////
-
-//function hide_box (box)
-//{
-//	box.style.visibility = "hidden";
-//	box.style.height = "0px";
-//	box.style.width = "0px";
-//} //End function hideBox
-////////////////////////////////////////////////////////////////////////////////
-
-function show_shadow ()
-{
-    var l = document.getElementById("list");
-    var p = find_pos (l);
-	var px = (p[0] + 15) + "px";
-	var py = (p[1] + 15) + "px";
-
-    var s = document.getElementById("listShadow");
-	s.style.visibility = "visible";
-	s.style.left =  px;
-	s.style.top =  py;
-	s.style.width = l.style.width;
-    s.style.height = l.outerHeight;
-} // End function show_shadow
-
-/////////////////////////////////////////////////////////////////////////////
 
 function hide_hint ()
 {
