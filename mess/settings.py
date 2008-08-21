@@ -96,6 +96,7 @@ INSTALLED_APPS = (
     #'mess.people',
     'mess.profiles',
     'mess.scheduling',
+    'mess.template_library',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
