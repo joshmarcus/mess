@@ -68,14 +68,16 @@ def transaction_form(request):
 
 
 def cashier(request):
-    context = {}
-    context['cashier_page'] = True
+    context = RequestContext(request)
+    context['global_nav'] = 'cashier'
+    context['local_nav'] = 'cashier'
     if request.method == 'POST':
         save_credit_trans(request)
         save_debit_trans(request)
         return HttpResponseRedirect('../thanks')
     elif 'search' in request.GET:
         search = request.GET.get('search')
+        search_result = []
         if search == 'transactions':
             if 'account_id' in request.GET:
                 account_id = request.GET.get('account_id')
@@ -91,15 +93,15 @@ def cashier(request):
         if 'account_id' in request.GET:
             account_id = request.GET.get('account_id')
             account_members = account_members_dict(account_id)
-            context['account_members'] = account_members
+            for id, name in account_members.items():
+                search_result.append({'id': id, 'name': name, 'account_member': 'yes'})
         if 'string' in request.GET:
             string = request.GET.get('string')
             if search == 'members':
-                result = []
-                dict = search_for_string('members', string)
-                for id, name in dict.items():
-                    result.append({'id': id, 'name': name})
-                result_set = {'results': result}
+                members = search_for_string('members', string)
+                for id, name in members.items():
+                    search_result.append({'id': id, 'name': name, 'account_member': ' no'})
+                result_set = {'results': search_result}
             elif search == 'accounts':
                 result = []
                 dict = search_for_string('accounts', string)
@@ -118,8 +120,10 @@ def cashier(request):
         context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
         form = TransactionForm()
         context['transactions_today'] = get_todays_transactions()
-        return render_to_response('accounting/cashier.html', context,
-                                    context_instance=RequestContext(request))
+        #return render_to_response('accounting/cashier.html', context,
+        #                            context_instance=RequestContext(request))
+        template = get_template('accounting/cashier.html')
+        return HttpResponse(template.render(context))
 
 
 def close_out(request, type='all'):
