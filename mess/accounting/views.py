@@ -69,6 +69,7 @@ def transaction_form(request):
 
 def cashier(request):
     context = {}
+    context['cashier_page'] = True
     if request.method == 'POST':
         save_credit_trans(request)
         save_debit_trans(request)
@@ -124,6 +125,8 @@ def cashier(request):
 def close_out(request, type='all'):
     """Page to reconcile the day's transactions."""
     context = RequestContext(request)
+    context['global_nav'] = 'cashier'
+    context['local_nav'] = 'close_out'
     if request.method == 'POST':
         post = request.POST
         context['p'] = post

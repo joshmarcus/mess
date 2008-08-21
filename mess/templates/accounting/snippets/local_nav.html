@@ -1,5 +1,5 @@
 {% block local_nav %}
-<ul>
-  <li class="last-item"><a href="{% url close_out %}">Close Out</a></li>
+<ul class="local-nav">
+  <li {% ifequals local_nav "close_out" %} class="active"{% endif %} class="last-item"><a href="{% url close_out %}">Close Out</a></li>
 </ul>
 {% endblock %}

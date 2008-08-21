@@ -26,11 +26,19 @@
     	<ul id="global-nav">
           {% block main_menu %}
             {% if user.is_staff %}
-              <li><a href="{% url members %}">Members</a></li>
+
+		<!--	<div id="navigation">
+			    <a class="{% ifequal request.path "/" %}active{% endifequal %}" href="/">Home</a>
+			    <a class="{% ifequal request.path "/services/" %}active{% endifequal %}" href="/services/">Services</a>
+			    <a class="{% ifequal request.path "/contact/" %}active{% endifequal %}" href="/contact/">Contact</a>
+			</div>
+-->
+
+              <li><a class="{% ifequal request.path "/membership/" %}active{% endifequal %}" href="{% url members %}">Members</a></li>
               <li><a class="active" href="{% url accounts %}">Accounts</a></li>
               <li><a href="{% url trans_summary_today %}">Reports</a></li>
-              <li><a href="{% url cashier %}">Cashier</a></li>
-              <li><a href="{% url manage-schedule %}">Scheduling</a></li>
+              <li><a {% if cashier_page %}class="active"{% endif %} href="{% url cashier %}">Cashier</a></li>
+              <li><a {% if scheduling_page %}class="active"{% endif %} href="{% url manage-schedule %}">Scheduling</a></li>
             {% endif %}
           {% endblock %}
         </ul>
