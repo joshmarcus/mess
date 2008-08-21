@@ -12,42 +12,42 @@ from mess.accounting.models import get_trans_total
 from mess.utils.search import list_usernames_from_fullname
 
 def transaction_list_report(request):
-	# c is the context to be passed to the template
-	c = RequestContext(request)
-	c['page_name'] = 'Transaction List'
-	c['report_title'] = 'List of Transactions Matching Filter'
+    # c is the context to be passed to the template
+    c = RequestContext(request)
+    c['page_name'] = 'Transaction List'
+    c['report_title'] = 'List of Transactions Matching Filter'
 
-	# start with all transactions
-	trans = Transaction.objects
+    # start with all transactions
+    trans = Transaction.objects
 
-	# if account or member specified, filter that
-	if request.GET.has_key('account'): 
-		c['account']=request.GET.get('account')
-		if c['account'] != "":
-			trans = trans.filter(account__name = c['account'])
-	if request.GET.has_key('member'):
-		c['member'] = request.GET.get('member')
-		if c['member'] != "":
-			c['usernames'] = list_usernames_from_fullname(c['member'])
-			trans = trans.filter(member__user__username__in = c['usernames'])
+    # if account or member specified, filter that
+    if request.GET.has_key('account'): 
+        c['account']=request.GET.get('account')
+        if c['account'] != "":
+            trans = trans.filter(account__name = c['account'])
+    if request.GET.has_key('member'):
+        c['member'] = request.GET.get('member')
+        if c['member'] != "":
+            c['usernames'] = list_usernames_from_fullname(c['member'])
+            trans = trans.filter(member__user__username__in = c['usernames'])
 
-	# Filter date range -- default to 1900-today.
-	# If query date is invalid, error is ugly.  But that shouldn't happen.
-	# strptime is hard to use, so here I do yyyy-mm-dd2date as slices.
-	# End would be midnight before, but we want midnight after, so timedelta.
-	if request.GET.has_key('start'):
-		ymd = request.GET.get('start')
-		c['start'] = date(int(ymd[:4]),int(ymd[5:7]),int(ymd[8:]))
-	else: c['start'] = date(1900,1,1)
-	if request.GET.has_key('end'): 
-		ymd = request.GET.get('end')
-		c['end'] = date(int(ymd[:4]),int(ymd[5:7]),int(ymd[8:]))
-	else: c['end'] = date.today()
-	if c['end'] < c['start']: (c['start'],c['end']) = (c['end'],c['start'])
-	trans = trans.filter(date__range=(c['start'], c['end']+timedelta(days=1)))
+    # Filter date range -- default to 1900-today.
+    # If query date is invalid, error is ugly.  But that shouldn't happen.
+    # strptime is hard to use, so here I do yyyy-mm-dd2date as slices.
+    # End would be midnight before, but we want midnight after, so timedelta.
+    if request.GET.has_key('start'):
+        ymd = request.GET.get('start')
+        c['start'] = date(int(ymd[:4]),int(ymd[5:7]),int(ymd[8:]))
+    else: c['start'] = date(1900,1,1)
+    if request.GET.has_key('end'): 
+        ymd = request.GET.get('end')
+        c['end'] = date(int(ymd[:4]),int(ymd[5:7]),int(ymd[8:]))
+    else: c['end'] = date.today()
+    if c['end'] < c['start']: (c['start'],c['end']) = (c['end'],c['start'])
+    trans = trans.filter(date__range=(c['start'], c['end']+timedelta(days=1)))
 
-	c['transactions'] = trans
-	return render_to_response('reporting/transactions_list.html', c)
+    c['transactions'] = trans
+    return render_to_response('reporting/transactions_list.html', c)
 
 
 def transaction_report(request, report='all'):
@@ -101,8 +101,8 @@ def transaction_report(request, report='all'):
             name = name.lower().replace(' ','_')
             total_name = 'total_' + name
             context[name] = Transaction.objects.filter(date__range =
-                                                    (start_date, end_date),
-                                                    credit_type = type,)
+                    (start_date, end_date),
+                    credit_type = type,)
             context[total_name] = get_trans_total(context[name], 'credit')
             context['total_credits'] += context[total_name]
     for type, name in get_debit_choices('Staff'):
@@ -110,15 +110,15 @@ def transaction_report(request, report='all'):
             name = name.lower().replace(' ','_')
             total_name = 'total_' + name
             context[name] = Transaction.objects.filter(date__range =
-                                                    (start_date, end_date),
-                                                    debit_type = type,)
+                    (start_date, end_date),
+                    debit_type = type,)
             context[total_name] = get_trans_total(context[name], 'debit')
             context['total_debits'] += context[total_name]
 
     return render_to_response('reporting/transactions_summary.html', context,
-                                context_instance=RequestContext(request))
+            context_instance=RequestContext(request))
 
-#def transaction_list_report(request, report='all'):
+    #def transaction_list_report(request, report='all'):
 #    """View to list transactions."""
 #    context = {}
 #    context['page_name'] = 'Transactions'
@@ -165,6 +165,3 @@ def transaction_report(request, report='all'):
 #    
 #    return render_to_response('reporting/transactions_list.html', context,
 #                                context_instance=RequestContext(request))
-
-
-
