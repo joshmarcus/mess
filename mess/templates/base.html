@@ -36,11 +36,11 @@
 			</div>
 -->
 
-              <li><a class="{% ifequal request.path "/membership/" %}active{% endifequal %}" href="{% url members %}">Members</a></li>
-              <li><a class="active" href="{% url accounts %}">Accounts</a></li>
-              <li><a href="{% url trans_summary_today %}">Reports</a></li>
-              <li><a {% if cashier_page %}class="active"{% endif %} href="{% url cashier %}">Cashier</a></li>
-              <li><a {% if scheduling_page %}class="active"{% endif %} href="{% url manage-schedule %}">Scheduling</a></li>
+              <li><a {% ifequal global_nav "members" %}class="active"{% endifequal %} href="{% url members %}">Members</a></li>
+              <li><a {% ifequal global_nav "accounts" %}class="active"{% endifequal %} href="{% url accounts %}">Accounts</a></li>
+              <li><a {% ifequal global_nav "reports" %}class="active"{% endifequal %}href="{% url trans_summary_today %}">Reports</a></li>
+              <li><a {% ifequal global_nav "cashier" %}class="active"{% endifequal %} href="{% url cashier %}">Cashier</a></li>
+              <li><a {% ifequal global_nav "scheduling" %}class="active"{% endifequal %} href="{% url manage-schedule %}">Scheduling</a></li>
             {% endif %}
           {% endblock %}
         </ul>
