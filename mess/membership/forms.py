@@ -1,4 +1,4 @@
-from django import newforms as forms
+from django import forms
 
 from mess.membership.models import Member, Account
 from mess.profiles.models import UserProfile, Address, Phone, Email

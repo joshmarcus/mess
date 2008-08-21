@@ -7,9 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^accounting/', include('mess.accounting.urls')),        
-    (r'^contact/', include('mess.contact.urls')),            
+    #(r'^contact/', include('mess.contact.urls')),            
     (r'^membership/', include('mess.membership.urls')),        
-    (r'^people/', include('mess.people.urls')),
+    #(r'^people/', include('mess.people.urls')),
     (r'^profiles/', include('mess.profiles.urls')),
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
