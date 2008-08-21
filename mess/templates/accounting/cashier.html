@@ -10,23 +10,23 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
 
 <style type="text/css">
-/* custom styles for multiple stacked instances */
-/* mike: do what you want here duder - this can be removed and put in the base.css */
-#account {
+  /* custom styles for multiple stacked instances */
+  /* mike: do what you want here duder - this can be removed and put in the base.css */
+  #account {
     width:  30em; /* set width here */
     padding-bottom: 2em;
     z-index:    9000; /* z-index needed on top instance for ie & sf absolute inside relative issue */    
-}
+  }
 
-#member {
+  #member {
     width:  30em; /* set width here */
     padding-bottom:2em;
-}
+  }
 
-#accountInput,
-#memberInput {
+  #accountInput,
+  #memberInput {
     _position:absolute; /* abs pos needed for ie quirks */
-}
+  }
 </style>
 
 {% endblock head %}
@@ -34,62 +34,59 @@
 {% block content %}
 <div id="double-column" >
   <ul id="local-nav">
-  {% include "accounting/snippets/local_nav.html" %}
+    {% include "accounting/snippets/local_nav.html" %}
   </ul>
-  
-
   <div id="primary-content-wrapper">
-	
     <form class="standard" id="form" name="form" method="post" >
-		<div id="account">
-		    <label for="accountIput">Account Name</label>
-		    <input id="accountInput" type="text">
-		        <div id="accountContainer"></div>
-		    </div>
-		    <div id="member"> 
-		        <label for="memberInput" >Member Name</label>
-		        <input id="memberInput" />
-		        <div id="memberContainer" ></div>
-		    </div>
-        <input type="hidden" id="id_member" name="member" value="" />
-        <input type="hidden" id="id_account" name="account" value="" />
-        <div id="debit_type">
-            <select tabindex="4" id="id_debit_type" name="debit_type" >
-                <option value="N" selected>Select Payment</option>
-                {% for v, t in debit_choices %}
-                    <option value={{ v }} >{{ t }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div id="debit">
-            <label for="id_debit" >Debit Amount</label>        
-            <input tabindex="5" type="text" size="10" autocomplete="off" id="id_debit" name="debit" />
-        </div>
-        <div id="ref">
-            <label for="id_ref" >Reference</label>
-            <input tabindex="3" type="text" size="10" autocomplete="off" id="id_ref" name="ref" />
-        </div>
-        <div id="credit_type">
-            <select tabindex="6" id="id_credit_type" name="credit_type" >
-                <option value="N" selected>Select Purchase</option>
-                {% for v, t in credit_choices %}
-                    <option value={{ v }} >{{ t }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div id="credit">
-            <label for="id_credit" >Credit Amount</label>        
-            <input tabindex="7" type="text" size="10" autocomplete="off" id="id_credit" name="credit" />
-        </div>
-    <div id="div_id_note">
+      <input type="hidden" id="id_member" value="" />
+      <input type="hidden" id="id_account" value="" />
+      <div id="account">
+        <label for="accountIput">Account Name</label>
+        <input id="accountInput" type="text">
+        <div id="accountContainer"></div>
+      </div>
+      <div id="member"> 
+        <label for="memberInput" >Member Name</label>
+        <input id="memberInput" />
+        <div id="memberContainer" ></div>
+      </div>
+      <div id="debit_type">
+        <select tabindex="4" id="id_debit_type" name="debit_type" >
+          <option value="N" selected>Select Payment</option>
+          {% for v, t in debit_choices %}
+          <option value={{ v }} >{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div id="debit">
+        <label for="id_debit" >Debit Amount</label>        
+        <input tabindex="5" type="text" size="10" autocomplete="off" id="id_debit" name="debit" />
+      </div>
+      <div id="ref">
+        <label for="id_ref" >Reference</label>
+        <input tabindex="3" type="text" size="10" autocomplete="off" id="id_ref" name="ref" />
+      </div>
+      <div id="credit_type">
+        <select tabindex="6" id="id_credit_type" name="credit_type" >
+          <option value="N" selected>Select Purchase</option>
+          {% for v, t in credit_choices %}
+          <option value={{ v }} >{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div id="credit">
+        <label for="id_credit" >Credit Amount</label>        
+        <input tabindex="7" type="text" size="10" autocomplete="off" id="id_credit" name="credit" />
+      </div>
+      <div id="div_id_note">
         <label for="id_note">Note</label>
         <textarea size="40" id="id_note" name="note" autocomplete="off" value="" /></textarea>
-    </div>
-        <input class="button" type="reset" value="Reset Form" >
-        <input class="button" tabindex="8" type="submit" value="Save Transaction" >
+      </div>
+      <input class="button" type="reset" value="Reset Form" >
+      <input class="button" tabindex="8" type="submit" value="Save Transaction" >
     </form>
     <div id="transactions" ></div>
-</div>
+  </div>
 </div>
 {% endblock %}
 {% block pop_up %}
