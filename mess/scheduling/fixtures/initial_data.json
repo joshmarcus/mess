@@ -1,65 +1,107 @@
 [
-    {
-        "pk": 2, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Cashier"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Cheese Cutter"
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Cleaning"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Closing"
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "None"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Opening"
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Recyling"
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Stocking"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "scheduling.job", 
-        "fields": {
-            "name": "Storekeeper"
-        }
+  {
+    "pk": 2, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Cashier", 
+      "desc": ""
     }
+  }, 
+  {
+    "pk": 6, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Cheese Cutter", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Cleaning", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Closing", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "None", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Opening", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Recyling", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Stocking", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "scheduling.job", 
+    "fields": {
+      "type": "", 
+      "name": "Storekeeper", 
+      "desc": ""
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "scheduling.task", 
+    "fields": {
+      "hours": 2, 
+      "recurrence": null, 
+      "start": "2008-08-24 15:08:24", 
+      "job": 2, 
+      "member": 1, 
+      "deadline": "2008-08-24 15:08:23"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "scheduling.task", 
+    "fields": {
+      "hours": 2, 
+      "recurrence": null, 
+      "start": "2008-08-19 15:08:46", 
+      "job": 6, 
+      "member": 12, 
+      "deadline": "2008-08-19 15:08:34"
+    }
+  }
 ]

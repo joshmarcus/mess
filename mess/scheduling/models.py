@@ -49,7 +49,7 @@ class Task(models.Model):
     deadline = models.DateTimeField()
     start = models.DateTimeField(null=True, blank=True)
     member = models.ForeignKey(Member, null=True)
-    recurrence = models.ForeignKey(RecurringShift, null=True)
+    recurrence = models.ForeignKey(RecurringShift, null=True, blank=True)
     hours = models.IntegerField()
     member = models.ForeignKey(Member, null=True, blank=True)
     
