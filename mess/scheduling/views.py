@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import *
 from django.contrib.auth.decorators import login_required
+from django.forms import ModelForm
 
 
 from mess.scheduling.models import *
@@ -34,6 +35,26 @@ def delete_task(request, **kwargs):
 def assign_task(request, member_id, task_id):
     pass
 
+class TaskForm(ModelForm):
+    class Meta:
+        model = Task
+
+def task_form(request, task_id=None):
+    "return an html snippet consisting of a form for a task"
+    context = {}
+
+    if task_id == None:
+        context = {
+            'form': TaskForm(request.POST)
+        }
+    else:
+        task = Task.objects.get(id__exact=task_id)
+        context = {
+            'form': TaskForm(instance=task),
+            'task': task
+        }
+    return render_to_response('scheduling/snippets/task_form.html', context,
+                                context_instance=RequestContext(request))
 
 def task_list(request, date=None):
     if date == None:

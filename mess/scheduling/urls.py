@@ -6,6 +6,8 @@ from mess.scheduling.models import *
 urlpatterns = patterns('mess.scheduling.views',
     url(r'^task_list/(?P<date>\d{4}-\d+-\d+)$', 'task_list', name="task-list"),
     url(r'^task_list/$', 'task_list', name="task-list-today"),
+    url(r'^task_form/(?P<task_id>\d+)', 'task_form'),
+    url(r'^task_form/', 'task_form'),
     url(r'^schedule/(?P<date>\d{4}-\d+-\d+)', 'schedule'),
     url(r'^schedule/', 'schedule', name="manage-schedule"),
     url(r'^timecard/', 'timecard', name="manage-timecard"),

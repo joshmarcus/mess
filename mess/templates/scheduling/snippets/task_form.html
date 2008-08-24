@@ -1,5 +1,5 @@
-{% if object.id %}
-	<a href="{% url del-task object.id %}">Delete {{object}}</a>
+{% if task.id %}
+	<a href="{% url del-task task.id %}">Delete {{object}}</a>
 {% endif %}
 
 <form method="post" action="">
