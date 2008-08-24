@@ -104,7 +104,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
-    'mess.context_processors.project',
 )
 
 LOGIN_URL = PROJECT_URL
