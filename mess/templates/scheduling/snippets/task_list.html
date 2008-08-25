@@ -2,7 +2,7 @@
 {% if tasks %}
 <ul>
 {% for task in tasks %}
-	<li><a href="{% url update-task task.id %}">{{task}}</a> </li>
+<li><a href="javascript:getForm({{task.id}});">{{task}}</a> </li>
 {% endfor %}
 </ul>
 {% endif %}

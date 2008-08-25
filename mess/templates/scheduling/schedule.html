@@ -30,6 +30,8 @@
     <div id="primary-content-wrapper">
 
         <div id="cal1Container"></div>
+        
+        <div id="task-form"></div> 
 
         <div id="task-list"></div>
 		
@@ -86,6 +88,37 @@
 	}
 
 	YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
+</script>
+
+<script type="text/javascript">			
+// create namespace object
+YAHOO.namespace("schedule.tasks");
+
+var div = YAHOO.util.Dom.get("task-form");
+
+
+var handleSuccess = function(response){
+    if(response.responseText !== undefined){ 		    
+        div.innerHTML = response.responseText;
+    }
+};
+
+var handleFailure = function(response){ 
+    if(response.responseText !== undefined){ 
+        div.innerHTML = "Nothing for this Date"; 
+    } 
+};
+
+var callback = { 
+    success: handleSuccess, 
+    failure: handleFailure,   
+};
+
+function getForm(task_id) {
+    sUrl = '/scheduling/task_form/' + task_id;
+    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
+}
+
 </script>
 <!--END SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
 
