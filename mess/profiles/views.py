@@ -8,41 +8,42 @@ from mess.profiles.models import Address, Phone, Email
 from mess.profiles.forms import AddressForm, PhoneForm, EmailForm
 
 def add_contact(request, username, medium):
-	# medium may be 'address', 'phone', or 'email'
-	c = RequestContext(request)
-	c['user'] = get_object_or_404(User, username=username)
-	c['userprofile'] = p = c['user'].get_profile()
-	c['medium'] = medium
-	mediumform = {'address':AddressForm,'phone':PhoneForm,'email':EmailForm}[medium]
-	profilemediumlist = {'address':p.addresses,'phone':p.phones,'email':p.emails}[medium]
-	if request.method == 'POST':
-		form = mediumform(request.POST)
-		if form.is_valid:
-			form.save()
-			profilemediumlist.add(form.instance)
-			return HttpResponseRedirect('/membership/members/'+username)
-	c['form'] = mediumform()
-	return render_to_response('profiles/add_contact.html', c)
+    # FIXME this should request.GET.get('medium') just like remove_contact does
+    # medium may be 'address', 'phone', or 'email'
+    c = RequestContext(request)
+    c['user'] = get_object_or_404(User, username=username)
+    c['userprofile'] = p = c['user'].get_profile()
+    c['medium'] = medium
+    mediumform = {'address':AddressForm,'phone':PhoneForm,'email':EmailForm}[medium]
+    profilemediumlist = {'address':p.addresses,'phone':p.phones,'email':p.emails}[medium]
+    if request.method == 'POST':
+        form = mediumform(request.POST)
+        if form.is_valid:
+            form.save()
+            profilemediumlist.add(form.instance)
+            return HttpResponseRedirect('/membership/members/'+username)
+    c['form'] = mediumform()
+    return render_to_response('profiles/add_contact.html', c)
 
 
 def remove_contact(request, username):
-	c = RequestContext(request)
-	c['user'] = get_object_or_404(User, username=username)
-	p = c['userprofile'] = c['user'].get_profile()
-	medium = c['medium'] = request.GET.get('medium')
-	target = c['target'] = request.GET.get('target')
-	profilemediumlist = {'address':p.addresses,'phone':p.phones,'email':p.emails}[medium]
-	# syntax to actually remove it is ?medium=phone&target=1234&yes=yes
-	if request.GET.has_key('yes'):
-		listing = profilemediumlist.all()
-		for l in listing:
-			if (str(l) == target):
-				profilemediumlist.remove(l)
-				if l.userprofile_set.count() == 0: l.delete()
-		return HttpResponseRedirect('/membership/members/'+username)
-	# if missing the confirmation &yes=yes:
-	return render_to_response('profiles/remove_contact.html', c)
-	
+    c = RequestContext(request)
+    c['user'] = get_object_or_404(User, username=username)
+    p = c['userprofile'] = c['user'].get_profile()
+    medium = c['medium'] = request.GET.get('medium')
+    target = c['target'] = request.GET.get('target')
+    profilemediumlist = {'address':p.addresses,'phone':p.phones,'email':p.emails}[medium]
+    # syntax to actually remove it is ?medium=phone&target=1234&yes=yes
+    if request.GET.has_key('yes'):
+        listing = profilemediumlist.all()
+        for l in listing:
+            if (str(l) == target):
+                profilemediumlist.remove(l)
+                if l.userprofile_set.count() == 0: l.delete()
+        return HttpResponseRedirect('/membership/members/'+username)
+    # if missing the confirmation &yes=yes:
+    return render_to_response('profiles/remove_contact.html', c)
+    
 
 def address(request, id):
     context = RequestContext(request)
