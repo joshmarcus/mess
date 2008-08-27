@@ -8,9 +8,9 @@ function hideUnusedElements()
     document.getElementById('debit_row').style.display = 'none';
     document.getElementById('credit_row').style.display = 'none';
     document.getElementById('last_row').style.display = 'none';
-    document.getElementById('ref').style.display = 'none';
-    document.getElementById('credit').style.display = 'none';
-    document.getElementById('debit').style.display = 'none';
+    //document.getElementById('ref').style.display = 'none';
+    //document.getElementById('credit').style.display = 'none';
+    //document.getElementById('debit').style.display = 'none';
 }
 
 function getAccounts()
@@ -34,9 +34,9 @@ function setSelectedAccount(sType, aArgs)
 	// aArgs[0] - AutoComplete instance
 	// aArgs[1] - the <li> element selected in the suggestion container
     // aArgs[2] - array of the data for the item as returned by the DataSource
-    var idAccount = aArgs[2][1]        
+    var idAccount = aArgs[2][1];
 	document.getElementById('id_account').value = idAccount;
-	getMembers();
+	//getMembers();
     document.getElementById('member_row').style.display = 'block';
     document.getElementById('member-input').focus();
 };
@@ -51,16 +51,24 @@ function getAccountId()
 function getMembers()
 {
     var schema = ['results', 'name', 'id', 'account_member'];
-    var query = '';
-    var searchType = 'members&account_id=' + getAccountId();
-    var dataSource = new YAHOO.widget.DS_XHR(query, schema);
+    //var query = '';
+    var searchType = 'members&account_id=';
+    var dataSource = new YAHOO.widget.DS_XHR('', schema);
     dataSource.scriptQueryParam = 'string';
-    dataSource.scriptQueryAppend = 'search=' + searchType;
+    //dataSource.scriptQueryAppend = 'search=' + searchType;
     dataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
     var memberAutoComp = new YAHOO.widget.AutoComplete('member-input', 'member-container', dataSource);
     memberAutoComp.forceSelection = true;
     memberAutoComp.allowBrowserAutocomplete = false;
     memberAutoComp.itemSelectEvent.subscribe(setSelectedMember);
+    memberAutoComp.doBeforeSendQuery = function(query)
+    {
+        var queryString = [];
+        queryString.push(query);
+        queryString.push('&search=members&account_id=');   
+        queryString.push(document.getElementById('id_account').value);
+        return queryString.join('');
+    }
     memberAutoComp.formatResult = function(aResultItem, sQuery)
     {
         /* aResultItem[0] will always be the actual key data field returned
