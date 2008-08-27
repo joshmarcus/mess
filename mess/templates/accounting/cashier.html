@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block head %}
-<!--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/autocomplete/assets/skins/sam/autocomplete.css">-->
-
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/connection/connection-min.js&2.5.2/build/autocomplete/autocomplete-min.js"></script>
 
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
@@ -10,23 +8,112 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
 
 <style type="text/css">
-  /* custom styles for multiple stacked instances */
-  /* mike: do what you want here duder - this can be removed and put in the base.css */
-  #account {
-    width:  30em; /* set width here */
-    padding-bottom: 2em;
-    z-index:    9000; /* z-index needed on top instance for ie & sf absolute inside relative issue */    
-  }
+/* This is here so I can easily play. 
+ * Mike do what you want here.
+*/
+#primary-content-wrapper ul li
+{
+  /* How else to get rid of the bullet formatting/ */
+  background: #eff0f9; /* Pale blue from mess palette. */
+}
 
-  #member {
-    width:  30em; /* set width here */
+/* These are all the styles used by the autocomplete widget
+ * They by default use the yui-sam-skin if it is called.
+ * They are all prefaced with yui-ac.
+ */
+/* styles for entire widget */
+.yui-skin-sam .yui-ac {
+  position:relative;
+  font-family:arial;
+  font-size:100%;
+}
+
+/* styles for input field */
+.yui-skin-sam .yui-ac-input {
+  position:absolute;
+  width:  20em;
+}
+
+/* styles for results container */
+.yui-skin-sam .yui-ac-container {
+  position:absolute;
+  top:1.6em;
+  width: 20em;
+}
+
+/* styles for header/body/footer wrapper within container */
+.yui-skin-sam .yui-ac-content {
+  position:absolute;
+  width:100%;
+  border:1px solid #808080;
+  background: #eff0f9; /* Pale blue from mess palette. */
+  overflow:hidden;
+  z-index:9050;
+}
+
+/* styles for container shadow */
+.yui-skin-sam .yui-ac-shadow {
+  position:absolute;
+  margin:.3em;
+  width:100%;
+  background:#000;
+  -moz-opacity: 0.10;
+  opacity:.10;
+  filter:alpha(opacity=10);
+  z-index:9049;
+}
+
+/* styles for results list */
+.yui-skin-sam .yui-ac-content ul{
+  margin:0;
+  padding:0;
+  width:100%;
+}
+
+/* styles for result item */
+.yui-skin-sam .yui-ac-content li {
+  margin:0;
+  padding:2px 5px;
+  cursor:default;
+  white-space:nowrap;
+}
+
+/* styles for prehighlighted result item */
+.yui-skin-sam .yui-ac-content li.yui-ac-prehighlight {
+  background: #004175; /* Dark blue from the mess palette. */
+}
+
+/* styles for highlighted result item */
+.yui-skin-sam .yui-ac-content li.yui-ac-highlight {
+  background: #004175; /* Dark blue from the mess palette. */
+  color:#FFF;
+}
+
+/* I'm having trouble understanding this I needed to preface the
+ * styles for highlighted result item with #primary-content-wrapper
+ * to get pasted the formatting in base.css.
+ */
+#primary-content-wrapper .yui-ac-content li.yui-ac-highlight {
+  background: #004175; /* Dark blue from the mess palette. */
+  color:#FFF;
+}
+
+/* More stuff to make autocomplete happy */
+/* custom styles for multiple stacked instances */
+#account,
+#member {
+    width:15em; /* set width here */
     padding-bottom:2em;
+}
+#account {
+    z-index:9000; /* z-index needed on top instance for ie & sf absolute inside relative issue */
   }
 
-  #accountInput,
-  #memberInput {
+#account-input,
+#member-input {
     _position:absolute; /* abs pos needed for ie quirks */
-  }
+}
+
 </style>
 
 {% endblock head %}
@@ -40,50 +127,91 @@
     <form class="standard" id="form" name="form" method="post" >
       <input type="hidden" id="id_member" value="" />
       <input type="hidden" id="id_account" value="" />
-      <div id="account">
-        <label for="accountIput">Account Name</label>
-        <input id="accountInput" type="text">
-        <div id="accountContainer"></div>
-      </div>
-      <div id="member"> 
-        <label for="memberInput" >Member Name</label>
-        <input id="memberInput" />
-        <div id="memberContainer" ></div>
-      </div>
-      <div id="debit_type">
-        <select tabindex="4" id="id_debit_type" name="debit_type" >
-          <option value="N" selected>Select Payment</option>
-          {% for v, t in debit_choices %}
-          <option value={{ v }} >{{ t }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div id="debit">
-        <label for="id_debit" >Debit Amount</label>        
-        <input tabindex="5" type="text" size="10" autocomplete="off" id="id_debit" name="debit" />
-      </div>
-      <div id="ref">
-        <label for="id_ref" >Reference</label>
-        <input tabindex="3" type="text" size="10" autocomplete="off" id="id_ref" name="ref" />
-      </div>
-      <div id="credit_type">
-        <select tabindex="6" id="id_credit_type" name="credit_type" >
-          <option value="N" selected>Select Purchase</option>
-          {% for v, t in credit_choices %}
-          <option value={{ v }} >{{ t }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div id="credit">
-        <label for="id_credit" >Credit Amount</label>        
-        <input tabindex="7" type="text" size="10" autocomplete="off" id="id_credit" name="credit" />
-      </div>
-      <div id="div_id_note">
-        <label for="id_note">Note</label>
-        <textarea size="40" id="id_note" name="note" autocomplete="off" value="" /></textarea>
-      </div>
-      <input class="button" type="reset" value="Reset Form" >
-      <input class="button" tabindex="8" type="submit" value="Save Transaction" >
+      <table class="form-table">
+          <tr id="account_row" >
+            <th>
+              <label for="account-input">Account</label>
+            </th>
+            <td colspan="2" >
+              <div id="account">              
+                <input tabindex="1" id="account-input" type="text">
+                <div id="account-container"></div>
+              </div>              
+            </td>
+            <td colspan="2" ></td>            
+          </tr>
+          <tr id="member_row">
+            <th>
+              <label for="member-input" >Member</label>
+            </th>
+            <td colspan="2" >
+              <div id="member">              
+                <input tabindex="2" id="member-input" />
+                <div id="member-container" ></div>
+              </div>
+            </td>
+            <td colspan="2" ></td>
+          </tr>
+        <tr id="debit_row">
+          <td id="debit_type">
+            <select tabindex="3" id="id_debit_type" name="debit_type" >
+              <option value="" selected>Select Payment</option>
+              {% for v, t in debit_choices %}
+                <option value={{ v }} >{{ t }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <div id="debit">          
+            <th>
+              <label for="id_debit" >Amount</label>
+            </th>
+            <td>        
+              <input tabindex="4" type="text" size="5" autocomplete="off"
+                      id="id_debit" name="debit" />
+            </td>
+          </div>
+          <div id="ref">
+            <th>
+              <label for="id_ref" >Reference</label>
+            </th>
+            <td>
+              <input tabindex="5" type="text" size="5" autocomplete="off"
+                      id="id_ref" name="ref" />
+            </td>
+          </div>
+        </tr>
+        <tr id="credit_row" >
+          <td id="credit_type">
+            <select tabindex="6" id="id_credit_type" name="credit_type" >
+              <option value="" selected>Select Purchase</option>
+              {% for v, t in credit_choices %}
+                <option value={{ v }} >{{ t }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <div id="credit">
+            <th>
+              <label for="id_credit" >Amount</label>
+            </th>
+            <td>        
+              <input tabindex="7" type="text" size="5" autocomplete="off"
+                    id="id_credit" name="credit" />
+            </td>
+          </div>
+        </tr>
+        <tr id="last_row">
+          <th>
+            <label for="id_note">Note</label>
+          </th>
+          <td colspan="2" >
+            <textarea rows="1" cols="2" id="id_note" name="note" autocomplete="off" /></textarea>
+          </td>
+          <td id="buttons" colspan="2" >
+            <input class="button" type="reset" value="Reset Form" >
+            <input class="button" tabindex="8" type="submit" value="Save Transaction" >
+          </td>
+        </tr>
+      </table>
     </form>
     <div id="transactions" ></div>
   </div>
