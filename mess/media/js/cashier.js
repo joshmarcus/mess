@@ -6,11 +6,14 @@ function hideUnusedElements()
     document.getElementById('account_row').style.display = 'block';
     document.getElementById('member_row').style.display = 'none';
     document.getElementById('debit_row').style.display = 'none';
+    document.getElementById('debit_label').style.display = 'none';
+    document.getElementById('debit_amount').style.display = 'none';
     document.getElementById('credit_row').style.display = 'none';
+    document.getElementById('credit_label').style.display = 'none';
+    document.getElementById('credit_amount').style.display = 'none';
     document.getElementById('last_row').style.display = 'none';
-    //document.getElementById('ref').style.display = 'none';
-    //document.getElementById('credit').style.display = 'none';
-    //document.getElementById('debit').style.display = 'none';
+    document.getElementById('ref_label').style.display = 'none';
+    document.getElementById('ref_text').style.display = 'none';
 }
 
 function getAccounts()
@@ -79,9 +82,9 @@ function getMembers()
         var name = aResultItem[0];
         var accountMember = aResultItem[2];
         var html = [];
-        if (accountMember)
+        if (!accountMember)
         {
-            html.push('<span class=\"account_member\" >');
+            html.push('<span class=\"not-acct-mem\" >');
             html.push(name);
             html.push('</span>');
         }
