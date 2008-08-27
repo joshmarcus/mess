@@ -94,13 +94,13 @@ def cashier(request):
             account_id = request.GET.get('account_id')
             account_members = account_members_dict(account_id)
             for id, name in account_members.items():
-                search_result.append({'id': id, 'name': name, 'account_member': 'yes'})
+                search_result.append({'id': id, 'name': name, 'account_member': True})
         if 'string' in request.GET:
             string = request.GET.get('string')
             if search == 'members':
                 members = search_for_string('members', string)
                 for id, name in members.items():
-                    search_result.append({'id': id, 'name': name, 'account_member': ' no'})
+                    search_result.append({'id': id, 'name': name, 'account_member': False})
                 result_set = {'results': search_result}
             elif search == 'accounts':
                 result = []
