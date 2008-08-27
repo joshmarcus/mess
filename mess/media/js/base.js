@@ -63,6 +63,36 @@ function xhr(query, element)
 
 /////////////////////////////////////////////////////////////////////////////
 
+function autoComp( inputId, containerId, searchType, onSelectFunction)
+{
+    /*
+     * Create an autoComplete dropdown list.  Expects to get json
+     * in the form of
+     *
+     *      { results: { id1: name1}, {id2: name2}}}
+     * 
+     * HTML should have this format:
+     *      <div id="someName">
+     *          <input id="inputId" />
+     *          <div id="containerId" ></div>
+     *      </div>
+    */
+        var schema = ['results', 'name', 'id'];
+        var query = '';
+        var dataSource = new YAHOO.widget.DS_XHR(query, schema);
+        dataSource.scriptQueryParam = 'string';
+        dataSource.scriptQueryAppend = 'search=' + searchType;
+        dataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
+        var autoComp = new YAHOO.widget.AutoComplete(
+                                        inputId, containerId, dataSource);
+        autoComp.forceSelection = true;
+        autoComp.allowBrowserAutocomplete = false;
+        autoComp.itemSelectEvent.subscribe(onSelectFunction);
+} // End fuction autoComp
+
+/////////////////////////////////////////////////////////////////////////////
+
+
 //function is_available(element, do_it)
 //{
 //    var timeout;
