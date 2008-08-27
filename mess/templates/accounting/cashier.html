@@ -161,24 +161,20 @@
               {% endfor %}
             </select>
           </td>
-          <div id="debit">          
-            <th>
+            <th id="debit_label" >
               <label for="id_debit" >Amount</label>
             </th>
-            <td>        
+            <td id="debit_amount">        
               <input tabindex="4" type="text" size="5" autocomplete="off"
                       id="id_debit" name="debit" />
             </td>
-          </div>
-          <div id="ref">
-            <th>
+            <th id="ref_label">
               <label for="id_ref" >Reference</label>
             </th>
-            <td>
+            <td id="ref_text" >
               <input tabindex="5" type="text" size="5" autocomplete="off"
                       id="id_ref" name="ref" />
             </td>
-          </div>
         </tr>
         <tr id="credit_row" >
           <td id="credit_type">
@@ -189,15 +185,13 @@
               {% endfor %}
             </select>
           </td>
-          <div id="credit">
-            <th>
+            <th id="credit_label" >
               <label for="id_credit" >Amount</label>
             </th>
-            <td>        
+            <td id="credit_amount" >        
               <input tabindex="7" type="text" size="5" autocomplete="off"
                     id="id_credit" name="credit" />
             </td>
-          </div>
         </tr>
         <tr id="last_row">
           <th>
