@@ -334,12 +334,15 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#primary-content-wrapper ul {
 			margin-bottom:1.5em;
 			}
+            /*  This entry causes problems with the autocomplete
+             *  container.
+             */
 			#primary-content-wrapper ul li {
 				margin-bottom:.5em;
 				padding-left:11px;
 				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
 				}
-				
+    
 		#primary-content-wrapper div.attention {
 			margin:.5em 0 1.2em 0;
 			background:beige;
