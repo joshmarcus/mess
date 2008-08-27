@@ -3,7 +3,11 @@
 // Hide elements that aren't used yet
 function hideUnusedElements()
 {
-    document.getElementById('member').style.display = 'none';
+    document.getElementById('account_row').style.display = 'block';
+    document.getElementById('member_row').style.display = 'none';
+    document.getElementById('debit_row').style.display = 'none';
+    document.getElementById('credit_row').style.display = 'none';
+    document.getElementById('last_row').style.display = 'none';
     document.getElementById('ref').style.display = 'none';
     document.getElementById('credit').style.display = 'none';
     document.getElementById('debit').style.display = 'none';
@@ -17,7 +21,6 @@ function getAccounts()
         myDataSource.scriptQueryParam = 'string'
         myDataSource.scriptQueryAppend = 'search=accounts'
         myDataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
-        //myDataSource.responseType = YAHOO.widget.DS_XHR.TYPE_XML; 
         var myAutoComp = new YAHOO.widget.AutoComplete("myInput","myContainer", myDataSource);
         myAutoComp.forceSelection = true;
         myAutoComp.allowBrowserAutocomplete = false;
@@ -33,46 +36,59 @@ function setSelectedAccount(sType, aArgs)
     // aArgs[2] - array of the data for the item as returned by the DataSource
     var idAccount = aArgs[2][1]        
 	document.getElementById('id_account').value = idAccount;
-	document.getElementById('memberInput').focus();
-	//document.getElementById('member').style.display = 'inline';
+	getMembers();
+    document.getElementById('member_row').style.display = 'block';
+    document.getElementById('member-input').focus();
 };
 
 /////////////////////////////////////////////////////////////////////////////
 
-function autoComp( inputId, containerId, searchType, onSelectFunction)
+function getAccountId()
 {
-    /*
-     * Create an autoComplete dropdown list.  Expects to get json
-     * in the form of
-     *
-     *      { results: { id1: name1}, {id2: name2}}}
-     * 
-     * HTML should have this format:
-     *      <div id="someName">
-     *          <input id="inputId" />
-     *          <div id="containerId" ></div>
-     *      </div>
-    */
-        var schema = ['results', 'name', 'id'];
-        var query = '';
-        var dataSource = new YAHOO.widget.DS_XHR(query, schema);
-        dataSource.scriptQueryParam = 'string';
-        dataSource.scriptQueryAppend = 'search=' + searchType;
-        dataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
-        var autoComp = new YAHOO.widget.AutoComplete(
-                                        inputId, containerId, dataSource);
-        autoComp.forceSelection = true;
-        autoComp.allowBrowserAutocomplete = false;
-        autoComp.itemSelectEvent.subscribe(onSelectFunction);
+    return document.getElementById('id_account').value;
 }
-
-/////////////////////////////////////////////////////////////////////////////
 
 function getMembers()
 {
-    var id_account = document.getElementById('id_account')
+    var schema = ['results', 'name', 'id', 'account_member'];
+    var query = '';
+    var searchType = 'members&account_id=' + getAccountId();
+    var dataSource = new YAHOO.widget.DS_XHR(query, schema);
+    dataSource.scriptQueryParam = 'string';
+    dataSource.scriptQueryAppend = 'search=' + searchType;
+    dataSource.responseType = YAHOO.widget.DS_XHR.TYPE_JSON; 
+    var memberAutoComp = new YAHOO.widget.AutoComplete('member-input', 'member-container', dataSource);
+    memberAutoComp.forceSelection = true;
+    memberAutoComp.allowBrowserAutocomplete = false;
+    memberAutoComp.itemSelectEvent.subscribe(setSelectedMember);
+    memberAutoComp.formatResult = function(aResultItem, sQuery)
+    {
+        /* aResultItem[0] will always be the actual key data field returned
+         * for the query. All subsequent data held in aResultItem[1] to
+         * aResultItem[n] are the supplemental data points for the result,
+         * as defined by the schema in your DataSource constructor.
+         */
+        var name = aResultItem[0];
+        var accountMember = aResultItem[2];
+        var html = [];
+        if (accountMember)
+        {
+            html.push('<span class=\"account_member\" >');
+            html.push(name);
+            html.push('</span>');
+        }
+        else
+        {
+            html.push('<span class=\"\" >');
+            html.push(name);
+            html.push('</span>');
+        }
+        return (html.join(''));
+    }
+
 }
 
+/////////////////////////////////////////////////////////////////////////////
 
 function setSelectedMember(sType, aArgs)
 {
@@ -81,7 +97,9 @@ function setSelectedMember(sType, aArgs)
     // aArgs[2] - array of the data for the item as returned by the DataSource
     var idMember = aArgs[2][1]        
 	document.getElementById('id_member').value = idMember;
-	//document.getElementById('member').style.display = 'inline';
+	document.getElementById('debit_row').style.display = 'block';
+	document.getElementById('credit_row').style.display = 'block';
+	document.getElementById('last_row').style.display = 'block';
 };
 
 /////////////////////////////////////////////////////////////////////////////

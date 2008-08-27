@@ -2,10 +2,9 @@
 
 window.onload = function()
 {
-    //hideUnusedElements();
-    //getAccounts();
-    autoComp( "accountInput", "accountContainer", "accounts", setSelectedAccount)
-    autoComp( "memberInput", "memberContainer", "members", setSelectedMember)
+    hideUnusedElements();
+    autoComp( "account-input", "account-container", "accounts", setSelectedAccount)
+    getMembers()
     get_transactions();
     
     //  Display form elements when needed    
