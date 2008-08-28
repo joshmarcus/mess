@@ -1,8 +1,6 @@
 {% load active %}
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
     <meta name="generator" content=""/>
@@ -28,14 +26,6 @@
     	<ul id="global-nav">
           {% block main_menu %}
             {% if user.is_staff %}
-
-		<!--	<div id="navigation">
-			    <a class="{% ifequal request.path "/" %}active{% endifequal %}" href="/">Home</a>
-			    <a class="{% ifequal request.path "/services/" %}active{% endifequal %}" href="/services/">Services</a>
-			    <a class="{% ifequal request.path "/contact/" %}active{% endifequal %}" href="/contact/">Contact</a>
-			</div>
--->
-
               <li><a {% ifequal global_nav "members" %}class="active"{% endifequal %} href="{% url members %}">Members</a></li>
               <li><a {% ifequal global_nav "accounts" %}class="active"{% endifequal %} href="{% url accounts %}">Accounts</a></li>
               <li><a {% ifequal global_nav "reports" %}class="active"{% endifequal %}href="{% url trans_summary_today %}">Reports</a></li>
@@ -56,8 +46,8 @@
 			{% endblock %}
 		   </ul>-->
 		  {% block content %}{% endblock %}
-		<!--></div>--><!--end #left-column-->
-		<!--><div id="right-column">
+		<!--</div>--><!--end #left-column-->
+		<!--<div id="right-column">
 		  <h3>Testing Right column h2s</h3>
 		  <p>This content currently appears in base.html. Where should it go? Basically, we want the ability to write the local-nav, determine whether the layout is 1 or 2 columns, and write the content on a per page basis.</p> 
 		</div>--><!--end #right-column-->

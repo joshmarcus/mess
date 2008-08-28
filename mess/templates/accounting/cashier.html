@@ -1,127 +1,11 @@
 {% extends "base.html" %}
 
 {% block head %}
+<link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/connection/connection-min.js&2.5.2/build/autocomplete/autocomplete-min.js"></script>
-
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
-
-<style type="text/css">
-/* This is here so I can easily play. 
- * Mike do what you want here.
-*/
-#primary-content-wrapper ul li
-{
-  /* How else to get rid of the bullet formatting/ */
-  background: #eff0f9; /* Pale blue from mess palette. */
-}
-
-/* These are all the styles used by the autocomplete widget
- * They by default use the yui-sam-skin if it is called.
- * They are all prefaced with yui-ac.
- */
-/* styles for entire widget */
-.yui-skin-sam .yui-ac {
-  position:relative;
-  font-family:arial;
-  font-size:100%;
-}
-
-/* styles for input field */
-.yui-skin-sam .yui-ac-input {
-  position:absolute;
-  width:  20em;
-}
-
-/* styles for results container */
-.yui-skin-sam .yui-ac-container {
-  position:absolute;
-  top:1.6em;
-  width: 20em;
-}
-
-/* styles for header/body/footer wrapper within container */
-.yui-skin-sam .yui-ac-content {
-  position:absolute;
-  width:100%;
-  border:1px solid #808080;
-  background: #eff0f9; /* Pale blue from mess palette. */
-  overflow:hidden;
-  z-index:9050;
-}
-
-/* styles for container shadow */
-.yui-skin-sam .yui-ac-shadow {
-  position:absolute;
-  margin:.3em;
-  width:100%;
-  background:#000;
-  -moz-opacity: 0.10;
-  opacity:.10;
-  filter:alpha(opacity=10);
-  z-index:9049;
-}
-
-/* styles for results list */
-.yui-skin-sam .yui-ac-content ul{
-  margin:0;
-  padding:0;
-  width:100%;
-}
-
-/* styles for result item */
-.yui-skin-sam .yui-ac-content li {
-  margin:0;
-  padding:2px 5px;
-  cursor:default;
-  white-space:nowrap;
-}
-
-/* styles for prehighlighted result item */
-.yui-skin-sam .yui-ac-content li.yui-ac-prehighlight {
-  background: #004175; /* Dark blue from the mess palette. */
-}
-
-/* styles for highlighted result item */
-.yui-skin-sam .yui-ac-content li.yui-ac-highlight {
-  background: #004175; /* Dark blue from the mess palette. */
-  color:#FFF;
-}
-
-/* I'm having trouble understanding this I needed to preface the
- * styles for highlighted result item with #primary-content-wrapper
- * to get pasted the formatting in base.css.
- */
-#primary-content-wrapper .yui-ac-content li.yui-ac-highlight {
-  background: #004175; /* Dark blue from the mess palette. */
-  color:#FFF;
-}
-
-/* More stuff to make autocomplete happy */
-/* custom styles for multiple stacked instances */
-#account,
-#member {
-    width:15em; /* set width here */
-    padding-bottom:2em;
-}
-#account {
-    z-index:9000; /* z-index needed on top instance for ie & sf absolute inside relative issue */
-  }
-
-#account-input,
-#member-input
-{
-  _position:absolute; /* abs pos needed for ie quirks */
-}
-
-.not-acct-mem
-{
-  color: red;
-}
-
-</style>
-
 {% endblock head %}
 
 {% block content %}
@@ -130,6 +14,38 @@
     {% include "accounting/snippets/local_nav.html" %}
   </ul>
   <div id="primary-content-wrapper">
+	<!--<form class="standard">
+	  <table class="form-table">
+		<tr id="account">
+		  <td><label for="accountIput">Account</label></td>
+		  <td><input id="accountInput" type="text"></td>
+        </tr>
+        <tr id="member">
+	      <td><label for="memberInput" >Member</label></td>
+	      <td><input id="memberInput" /></td>
+	    </tr>
+	    <tr id="debit_type">
+		  <td><label for="id_debit_type">Payment</label></td>
+		  <td>	 
+			<select tabindex="4" id="id_debit_type" name="debit_type" >
+		      <option value="N" selected>Select Payment</option>
+		        {% for v, t in debit_choices %}
+		      <option value={{ v }} >{{ t }}</option>
+		        {% endfor %}
+		    </select>
+		  </td>
+		</tr>
+		<tr>
+		  <td><label for="id_debit" >Debit Amount</label></td>        
+	        <input tabindex="5" type="text" size="10" autocomplete="off" id="id_debit" name="debit" />
+		  </td>
+	    </tr>
+		  
+	     
+	      
+	  </table>
+	</form>-->
+	<!--digger's code begins here-->
     <form class="standard" id="form" name="form" method="post" >
       <input type="hidden" id="id_member" value="" />
       <input type="hidden" id="id_account" value="" />

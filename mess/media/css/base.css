@@ -105,7 +105,7 @@ body {
 	form.standard {
 		border:1px solid #ccc;
 		padding:.5em 1em;
-		margin-bottom:1em;
+		margin:15px 0;
 		}
 		form.standard label {
 			font-size:1.1em;
@@ -157,7 +157,8 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	}
 #header {
 	background: #00417d;
-	height:120px;
+	/*height:120px;*/
+	height:85px;
 	}
 #content-wrapper {
 	background:#EBEBEB;
@@ -198,7 +199,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	/*h1*/
 	h1 {/*this needs work...*/
 		position:absolute;
-		margin:60px 15px;
+		margin:25px 15px;
 		}
 	
 	h1 a {
@@ -242,7 +243,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		width:100%;
 		position:relative;
-		top:84px;
+		top:49px;
 		height:25px;
 		font-size:11px;
 		padding:11px 0 0 0;

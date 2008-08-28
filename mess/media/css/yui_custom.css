@@ -16,3 +16,96 @@
 	text-align:left;
 	white-space:nowrap;
 }
+
+/* --:((( AUTOCOMPLETE STUFF ))):-- */		
+.yui-skin-sam .yui-ac {
+ 	position:relative;
+}
+
+/* styles for input field */
+.yui-skin-sam .yui-ac-input {
+	position:absolute;
+	}
+
+/* styles for results container */
+.yui-skin-sam .yui-ac-container {
+	position:absolute;
+  	top:1.6em;
+  	width:20em;
+	}
+
+/* styles for header/body/footer wrapper within container */
+.yui-skin-sam .yui-ac-content {
+  	position:absolute;
+  	width:100%;
+  	border:1px solid #ccc;
+  	background: #eff0f9; /* Pale blue from mess palette. */
+  	overflow:hidden;
+  	z-index:9050;
+	}
+
+/* styles for container shadow */
+/*.yui-skin-sam .yui-ac-shadow {
+  position:absolute;
+  margin:.3em;
+  width:100%;
+  background:#000;
+  -moz-opacity: 0.10;
+  opacity:.10;
+  filter:alpha(opacity=10);
+  z-index:9049;
+}*/
+
+/* styles for results list */
+.yui-skin-sam .yui-ac-content ul{
+  	width:100%;
+	margin-top:1em;
+	}
+
+/* styles for result item */
+.yui-skin-sam .yui-ac-content li {
+	background-image:none !important;
+	padding:2px;
+	cursor:default;
+	white-space:nowrap;
+	}
+
+/* styles for prehighlighted result item */
+.yui-skin-sam .yui-ac-content li.yui-ac-prehighlight {
+	background: #004175;
+}
+
+/* styles for highlighted result item */
+.yui-skin-sam .yui-ac-content li.yui-ac-highlight {
+  background: #004175; 
+  color:#FFF;
+}
+
+/* I'm having trouble understanding this I needed to preface the
+ * styles for highlighted result item with #primary-content-wrapper
+ * to get pasted the formatting in base.css.
+ */
+#primary-content-wrapper .yui-ac-content li.yui-ac-highlight {
+  background: #004175; /* Dark blue from the mess palette. */
+  color:#FFF;
+}
+
+/* More stuff to make autocomplete happy */
+/* custom styles for multiple stacked instances */
+#account, #member {
+    width:15em; 
+    padding-bottom:2em;
+	}
+#account {
+    z-index:9000; /* z-index needed on top instance for ie & sf absolute inside relative issue */
+  }
+
+#account-input, #member-input {
+	_position:absolute; /* abs pos needed for ie quirks */
+	}
+
+.not-acct-mem {
+	color: #888;
+	}
+
+
