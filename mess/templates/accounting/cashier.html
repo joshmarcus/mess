@@ -14,37 +14,6 @@
     {% include "accounting/snippets/local_nav.html" %}
   </ul>
   <div id="primary-content-wrapper">
-	<!--<form class="standard">
-	  <table class="form-table">
-		<tr id="account">
-		  <td><label for="accountIput">Account</label></td>
-		  <td><input id="accountInput" type="text"></td>
-        </tr>
-        <tr id="member">
-	      <td><label for="memberInput" >Member</label></td>
-	      <td><input id="memberInput" /></td>
-	    </tr>
-	    <tr id="debit_type">
-		  <td><label for="id_debit_type">Payment</label></td>
-		  <td>	 
-			<select tabindex="4" id="id_debit_type" name="debit_type" >
-		      <option value="N" selected>Select Payment</option>
-		        {% for v, t in debit_choices %}
-		      <option value={{ v }} >{{ t }}</option>
-		        {% endfor %}
-		    </select>
-		  </td>
-		</tr>
-		<tr>
-		  <td><label for="id_debit" >Debit Amount</label></td>        
-	        <input tabindex="5" type="text" size="10" autocomplete="off" id="id_debit" name="debit" />
-		  </td>
-	    </tr>
-		  
-	     
-	      
-	  </table>
-	</form>-->
 	<!--digger's code begins here-->
     <form class="standard" id="form" name="form" method="post" >
       <input type="hidden" id="id_member" value="" />
@@ -75,6 +44,7 @@
             <td colspan="2" ></td>
           </tr>
         <tr id="debit_row">
+
           <td id="debit_type">
             <select tabindex="3" id="id_debit_type" name="debit_type" >
               <option value="" selected>Select Payment</option>
