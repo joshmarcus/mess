@@ -363,7 +363,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		
 			div.pagination span a {font-weight:bold; color:#D18405; border:1px solid #ddd; text-decoration:none; padding:5px;}
 		
-				div.pagination span a:hover {background:#d18405; color:#fff; border:none;}
+				div.pagination span a:hover { border:1px solid #d18405;}
 			
 		#primary-content-wrapper form.standard {
 			border:1px solid #ddd;
@@ -403,7 +403,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#primary-content-wrapper table.data td {
 				padding:.75em .25em 1em .5em;
 				font-size:1em;
-				border-bottom:1px solid #eee;
+				border-bottom:1px solid #ddd;
 				}
 				#primary-content-wrapper table.data td.last-row {
 					border-top:2px solid #999;
