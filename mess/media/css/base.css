@@ -271,8 +271,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				ul#global-nav li a.active {
 					background:#ebebeb url(/media/images/bg-global-nav-active.gif) no-repeat top right;;
 					color:#333;
-					text-decoration:underline;
-					}					}
+					}
 					
 	/*ul#global-nav {
 		position:relative;
@@ -359,11 +358,11 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin-top:12px;font-size:1.1em;}
+		div.pagination {margin-top:12px;font-size:1em; float:right; margin-right:27px;}
 		
-			div.pagination span a {font-weight:bold; color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:5px;}
+			div.pagination span a {font-weight:bold; color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		
-				div.pagination span a:hover { border:1px solid #ddd;}
+				div.pagination span a:hover { border:1px solid #ccc;}
 			
 		#primary-content-wrapper form.standard {
 			border:1px solid #ddd;
