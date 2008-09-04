@@ -325,13 +325,19 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				display:inline;
 				border-right:1px solid #999;
 				}
-				ul#local-nav li a, ul#local-nav li a:link {}
+				ul#local-nav li a, ul#local-nav li a:link {
+					padding:13px 0;
+					}
 				
 					ul#local-nav li a:hover {}
 					
 					ul#local-nav li a:visited {}
 					
-					ul#local-nav li a.active {color:#333; text-decoration:none;}
+					ul#local-nav li a.active {
+						color:#333; 
+						text-decoration:none;
+						background:url('/media/images/bg-local-nav-active.png') no-repeat center 26px;
+						}						
 					
 		/*primary-content-wrapper styles*/
 		#primary-content-wrapper ul {
