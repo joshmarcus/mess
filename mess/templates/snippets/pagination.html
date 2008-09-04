@@ -1,0 +1,13 @@
+  <div class="pagination">
+    {% if page.has_previous %}
+      <span>
+        <a href="{% url members %}?p={{ page.previous_page_number }}">&laquo;&nbsp;Previous page</a>
+      </span>
+    {% endif %}
+    {% if page.has_next %}
+      <span>
+        <a href="{% url members %}?p={{ page.next_page_number }}">Next page&nbsp;&raquo;</a>
+      </span>
+    {% endif %}
+  </div>
+

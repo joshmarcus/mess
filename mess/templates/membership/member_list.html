@@ -8,51 +8,53 @@
 	<li><a href="">current local nav</a></li>
 	<li class="last-item"><a href="">fourth local item</a></li>
   </ul>
-<div id="primary-content-wrapper">
-  <h2>Members</h2>
-  <h3>Member List</h2>
-  <p class="attention">This could be a good spot for any sort of forms through which the user can sort or limit info in the table.</p	>
-  <table class="data">
-	<tr>
-      <th>Name</th>
-      <th>Accounts</th>
-      <th>Job</th>
-      <th>Current<br /> Status</th>
-      <th>Email</th>
-      <th>Phone</th>
-    </tr>    
-	{% for member in member_list %}
-    <tr class="{% cycle 'odd' 'even' %}">
-      <td>
-        <a href='{% url member member.user.username %}'>{{ member }}</a>
-      </td>
-      <td>
-	     <ul>
-		   <li>{% for account in member.accounts.all %}</li>
-           <li> <a href='{% url account account.id %}'>{{ account }}</a></li>
-           {% endfor %}
-         </ul>
-	  </td>
-      <td>{{ member.job }}</td>
-      <td>{{ member.get_status_display }}</td>        
-      <td>
-          {% for email in member.person.emails.all %}
-            {{ email.get_type_display }}: {{ email.email }}<br />
-          {% endfor %}
+  <div id="primary-content-wrapper">
+    <h2>Members</h2>
+    <h3>Member List</h2>
+    <p class="attention">This could be a good spot for any sort of forms through which the user can sort or limit info in the table.</p	>
+    {% include "snippets/pagination.html" %}
+    <table class="data">
+          <tr>
+        <th>Name</th>
+        <th>Accounts</th>
+        <th>Job</th>
+        <th>Current<br /> Status</th>
+        <th>Email</th>
+        <th>Phone</th>
+      </tr>    
+          {% for member in page.object_list %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+          <a href='{% url member member.user.username %}'>{{ member }}</a>
         </td>
         <td>
-          {% for phone in member.person.phones.all %}
-            {{ phone.get_type_display }}: {{ phone.number }}
-            {% if phone.ext %}
-              Ext: {{ phone.ext }}
-            {% endif %}
-            <br />
-          {% endfor %}
-        </td>     
-      </tr>
-    {% endfor %}
-  </table>
-</div>
+               <ul>
+                     <li>{% for account in member.accounts.all %}</li>
+             <li> <a href='{% url account account.id %}'>{{ account }}</a></li>
+             {% endfor %}
+           </ul>
+            </td>
+        <td>{{ member.job }}</td>
+        <td>{{ member.get_status_display }}</td>        
+        <td>
+            {% for email in member.person.emails.all %}
+              {{ email.get_type_display }}: {{ email.email }}<br />
+            {% endfor %}
+          </td>
+          <td>
+            {% for phone in member.person.phones.all %}
+              {{ phone.get_type_display }}: {{ phone.number }}
+              {% if phone.ext %}
+                Ext: {{ phone.ext }}
+              {% endif %}
+              <br />
+            {% endfor %}
+          </td>     
+        </tr>
+      {% endfor %}
+    </table>
+    {% include "snippets/pagination.html" %}
+  </div>
 </div>
 {% endblock %}
 

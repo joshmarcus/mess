@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core import paginator as p
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -14,7 +15,12 @@ from mess.membership.models import Member, Account
 def member_list(request):
     context = RequestContext(request)
     context['page_name'] = 'Members'
-    context['member_list'] = Member.objects.all()
+    member_objs = Member.objects.all()
+    pager = p.Paginator(member_objs, 20)
+    context['page'] = pager.page(1)
+    page_number = request.GET.get('p')
+    if page_number:
+        context['page'] = pager.page(page_number)
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 
