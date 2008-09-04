@@ -2,7 +2,7 @@
 
 /*
 COLORS:
-4d79cc
+
 h1 yellow: #fddc08;
 
 dark blue: #004175
@@ -358,7 +358,13 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			padding:1em 1em .25em 1em;
 			border:1px solid #ddd;	
 			}
+			
+		div.pagination {margin-top:12px;font-size:1.1em;}
 		
+			div.pagination span a {font-weight:bold; color:#D18405; border:1px solid #ddd; text-decoration:none; padding:5px;}
+		
+				div.pagination span a:hover {background:#d18405; color:#fff; border:none;}
+			
 		#primary-content-wrapper form.standard {
 			border:1px solid #ddd;
 			padding:1em;
