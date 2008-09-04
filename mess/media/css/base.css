@@ -361,9 +361,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			
 		div.pagination {margin-top:12px;font-size:1.1em;}
 		
-			div.pagination span a {font-weight:bold; color:#D18405; border:1px solid #ddd; text-decoration:none; padding:5px;}
+			div.pagination span a {font-weight:bold; color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:5px;}
 		
-				div.pagination span a:hover { border:1px solid #d18405;}
+				div.pagination span a:hover { border:1px solid #ddd;}
 			
 		#primary-content-wrapper form.standard {
 			border:1px solid #ddd;
