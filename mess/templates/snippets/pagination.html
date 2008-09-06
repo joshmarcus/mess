@@ -3,7 +3,7 @@
       {% ifequal page_number page.number %}
         <span>{{ page_number }}</span>
       {% else %}
-        <a href="{{ request.path }}?p={{ page_number }}">{{ page_number }}</a>
+        <a href="?p={{ page_number }}">{{ page_number }}</a>
       {% endifequal %}
     {% endfor %}
 {% comment %}
