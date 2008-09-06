@@ -11,16 +11,17 @@ from mess.membership.forms import AccountForm
 from mess.membership.forms import MemberForm, UserForm, UserProfileForm
 from mess.membership.models import Member, Account
 
+# number of members or accounts to show per page in respective lists
+PER_PAGE = 20
+
 @user_passes_test(lambda u: u.is_staff)
 def member_list(request):
     context = RequestContext(request)
-    context['page_name'] = 'Members'
     member_objs = Member.objects.all()
-    pager = p.Paginator(member_objs, 20)
-    context['page'] = pager.page(1)
+    pager = p.Paginator(member_objs, PER_PAGE)
+    context['pager'] = pager
     page_number = request.GET.get('p')
-    if page_number:
-        context['page'] = pager.page(page_number)
+    context['page'] = get_current_page(pager, page_number)
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 
@@ -72,8 +73,11 @@ def member_form(request, username=None):
 
 def account_list(request):
     context = RequestContext(request)
-    account_list = Account.objects.all()
-    context['account_list'] = account_list
+    account_objs = Account.objects.all()
+    pager = p.Paginator(account_objs, PER_PAGE)
+    context['pager'] = pager
+    page_number = request.GET.get('p')
+    context['page'] = get_current_page(pager, page_number)
     template = get_template('membership/account_list.html')
     return HttpResponse(template.render(context))
 
@@ -100,6 +104,13 @@ def account_form(request, id):
     context['form'] = form
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
+
+def get_current_page(pager, page_number):
+    try:
+        current_page = pager.page(page_number)
+    except (p.PageNotAnInteger, TypeError):
+        current_page = pager.page(1)
+    return current_page
 
 
 # This raw_list function outputs raw data for use by ajax and xmlhttprequest.

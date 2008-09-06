@@ -28,12 +28,12 @@
           <a href='{% url member member.user.username %}'>{{ member }}</a>
         </td>
         <td>
-               <ul>
-                     <li>{% for account in member.accounts.all %}</li>
-             <li> <a href='{% url account account.id %}'>{{ account }}</a></li>
+           <ul>
+             {% for account in member.accounts.all %}
+                 <li><a href="{% url account account.id %}">{{ account }}</a></li>
              {% endfor %}
            </ul>
-            </td>
+        </td>
         <td>{{ member.job }}</td>
         <td>{{ member.get_status_display }}</td>        
         <td>

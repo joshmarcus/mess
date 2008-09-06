@@ -358,11 +358,13 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin-top:12px;font-size:1em; float:right; margin-right:27px;}
+		div.pagination {margin-top:12px; font-weight:bold; font-size:1em; float:right; margin-right:27px;}
 		
-			div.pagination span a {font-weight:bold; color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
+			div.pagination a {color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		
-				div.pagination span a:hover { border:1px solid #ccc;}
+				div.pagination a:hover { border:1px solid #ddd;}
+
+                        div.pagination span {border:1px solid #ddd; padding:6px;}
 			
 		#primary-content-wrapper form.standard {
 			border:1px solid #ddd;

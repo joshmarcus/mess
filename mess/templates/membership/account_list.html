@@ -5,6 +5,7 @@
     <div id="primary-content-wrapper">
       <h2>Accounts</h2>
       <h3>Account List</h3>
+      {% include "snippets/pagination.html" %}
       <table class="data">
         <tr>
           <th>Name</th>
@@ -12,7 +13,7 @@
           <th>Contact</th>
           <th>Balance</th>
         </tr>
-        {% for account in account_list %}
+        {% for account in page.object_list %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>
               <a href="{% url account account.id %}">{{ account.name }}</a>
@@ -38,6 +39,7 @@
           </tr>
         {% endfor %}
       </table>
+      {% include "snippets/pagination.html" %}
     </div>
   </div>
 {% endblock %}
