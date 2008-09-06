@@ -42,7 +42,7 @@ class Address(models.Model):
 class Phone(models.Model):
     type = models.CharField(max_length=1, choices=PHONE_TYPES, default='h')
     # PhoneNumberField is not international-compliant
-    number = models.PhoneNumberField()
+    number = models.CharField(max_length=20)
     ext = models.PositiveIntegerField(blank=True, null=True)
 
     def __unicode__(self):
