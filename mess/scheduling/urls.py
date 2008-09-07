@@ -12,7 +12,7 @@ urlpatterns = patterns('mess.scheduling.views',
     url(r'^schedule/', 'schedule', name="manage-schedule"),
     url(r'^timecard/', 'timecard', name="manage-timecard"),
     url(r'^jobs/', 'jobs', name="manage-jobs"),
-    
+   
 #    url(r'^daily.html', 'daliy'),
 #    url(r'^weekly.html', 'weekly'),
 #    url(r'^job_list.html', 'job_list'),
@@ -20,6 +20,6 @@ urlpatterns = patterns('mess.scheduling.views',
     url(r'^task/new/', 'add_task', name="add-task"),
     url(r'^task/update/(?P<object_id>\d+)', 'update_task', name="update-task"),
     url(r'^task/delete/(?P<object_id>\d+)', 'delete_task', name="del-task"),
-    
+   
     url(r'^task/(?P<task_id>\d+)/assign-to/(?P<member_id>\d+)', 'assign_task', name="assign-task")
 )

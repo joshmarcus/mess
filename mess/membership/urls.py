@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mess.membership.views',
-    url(r'^accounts/$', 'account_list', name='accounts'),
+    url(r'^accounts$', 'account_list', name='accounts'),
     url(r'^accounts/add$', 'account_form', name='account-add'),
     url(r'^accounts/(\d{1,4})$', 'account', name='account'),
     url(r'^accounts/(\d{1,4})/edit$', 'account_form', name='account-edit'),

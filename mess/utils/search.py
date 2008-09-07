@@ -1,8 +1,7 @@
 from django.db.models import Q
 
-from mess.people.models import Person
 from mess.membership.models import Member, Account
-from mess.contact.models import Address, Email, Phone
+from mess.profiles.models import Address, Email, Phone
 
 from django.contrib.auth.models import User
 

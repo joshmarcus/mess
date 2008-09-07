@@ -61,34 +61,34 @@ def transaction_report(request, report='all'):
     elif report == 'today':
         start_date = date.today()
         end_date = start_date + timedelta(days=1)                
-        formated_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transactions Summary for Today, ' + formated_date
+        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+        report_title = 'Transactions Summary for Today, %s' % formatted_date
     elif report == 'yesterday':
         start_date = date.today() - timedelta(days=1)        
         end_date = date.today()
-        formated_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transactions Summary for Yesterday, ' + formated_date
+        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+        report_title = 'Transactions Summary for Yesterday, ' + formatted_date
     elif report == 'week':
         d = date.today()
         start_date = d - timedelta(days=d.weekday())        
         end_date = date.today() + timedelta(days=1)
-        formated_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transaction Summary for the Week Beginning ' + formated_date
+        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+        report_title = 'Transaction Summary for the Week Beginning ' + formatted_date
     elif report == 'month':
         start_date = date(date.today().year, date.today().month , 01)        
         end_date = date.today() + timedelta(days=1)
-        formated_date = start_date.strftime('%B, %Y')        
-        report_title = 'Transactions Summary for the Month of ' + formated_date
+        formatted_date = start_date.strftime('%B, %Y')        
+        report_title = 'Transactions Summary for the Month of ' + formatted_date
     elif report == 'year':
         start_date =  date(date.today().year, 01, 01)
         end_date = date.today() + timedelta(days=1)
-        formated_date = start_date.strftime('%Y')        
-        report_title = 'Transaction Summary for Year of ' + formated_date
+        formatted_date = start_date.strftime('%Y')        
+        report_title = 'Transaction Summary for Year of ' + formatted_date
     elif report == 'custom':
         start_date = date.today() - timedelta(days=1)        
         end_date = date.today()
-        formated_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transaction Summary from ' + formated_date
+        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+        report_title = 'Transaction Summary from ' + formatted_date
         report_title += 'to ' + end_date.strftime('%A, %B %d, %Y')
 
     context['report_title'] = report_title
@@ -129,34 +129,34 @@ def transaction_report(request, report='all'):
 #    elif report == 'today':
 #        start_date = date.today()
 #        end_date = start_date + timedelta(days=1)                
-#        formated_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transactions Summary for Today, ' + formated_date
+#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+#        report_title = 'Transactions Summary for Today, ' + formatted_date
 #    elif report == 'yesterday':
 #        start_date = date.today() - timedelta(days=1)        
 #        end_date = date.today()
-#        formated_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transactions Summary for Yesterday, ' + formated_date
+#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+#        report_title = 'Transactions Summary for Yesterday, ' + formatted_date
 #    elif report == 'week':
 #        d = date.today()
 #        start_date = d - timedelta(days=d.weekday())        
 #        end_date = date.today()
-#        formated_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transaction Summary for the Week Beginning ' + formated_date
+#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+#        report_title = 'Transaction Summary for the Week Beginning ' + formatted_date
 #    elif report == 'month':
 #        start_date = date(date.today().year, date.today().month , 01)        
 #        end_date = date.today()
-#        formated_date = start_date.strftime('%B, %Y')        
-#        report_title = 'Transactions Summary for the Month of ' + formated_date
+#        formatted_date = start_date.strftime('%B, %Y')        
+#        report_title = 'Transactions Summary for the Month of ' + formatted_date
 #    elif report == 'year':
 #        start_date = date(date.today().year, 01, 01)  
 #        end_date = date.today() + timedelta(days=1)
-#        formated_date = start_date.strftime('%Y')        
-#        report_title = 'Transaction Summary for Year of ' + formated_date
+#        formatted_date = start_date.strftime('%Y')        
+#        report_title = 'Transaction Summary for Year of ' + formatted_date
 #    elif report == 'custom':
 #        start_date = date.today() - timedelta(days=1)        
 #        end_date = date.today()
-#        formated_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transaction Summary from ' + formated_date
+#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
+#        report_title = 'Transaction Summary from ' + formatted_date
 #        report_title += 'to ' + end_date.strftime('%A, %B %d, %Y')
 #
 #    context['report_title'] = report_title
