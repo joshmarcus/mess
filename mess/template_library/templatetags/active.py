@@ -6,21 +6,22 @@ from mess import urls
 register = template.Library()
 
 @register.simple_tag
-def active(request, pattern=''):
+def active_class(request, pattern):
     '''
-    Return '-active' if *pattern* matches *request.path* (the current location
-    in the browser). The empty string is returned otherwise.  The pattern is
-    either given by the user or taken from the URLconf.
+    Return ' class="active"' if request.path starts with pattern, else return 
+    an empty string.  
 
     *request* (required): an HttpRequest object
-    *pattern* (optional): a regular expression string
+    *pattern* (optional): a string
     '''
-    path = request.path[1:] # Strip the leading /
+    #path = request.path[1:] # Strip the leading /
 
-    if pattern == '':
-        return ''
+    #if pattern == '':
+    #    return ''
 
-    if re.search(pattern, path):
-        return '-active'
+    #return request.path
+
+    if request.path.startswith(pattern):
+        return ' class="active"'
     else:
         return ''
