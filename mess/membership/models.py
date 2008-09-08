@@ -26,11 +26,12 @@ class Member(models.Model):
                             default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
                             default='w')
+    has_key = models.BooleanField(default=False)
     primary_account = models.ForeignKey('Account', blank=True, null=True)
     date_joined = models.DateField(default=date(1990, 01, 01))
-    has_key = models.BooleanField(default=False)
-    contact_preference = models.CharField(max_length=1, 
-            choices=CONTACT_PREF, default='e')
+    # leave contact_preference out -- simply email if provided
+    #contact_preference = models.CharField(max_length=1, 
+    #        choices=CONTACT_PREF, default='e')
 
     def __unicode__(self):
         return self.user.get_full_name()

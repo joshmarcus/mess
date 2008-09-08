@@ -7,9 +7,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 
-from mess.membership.forms import AccountForm
-from mess.membership.forms import MemberForm, UserForm, UserProfileForm
-from mess.membership.models import Member, Account
+from mess.membership import forms, models
+from mess.profiles import forms as profile_forms
 
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 20
@@ -17,7 +16,7 @@ PER_PAGE = 20
 @user_passes_test(lambda u: u.is_staff)
 def member_list(request):
     context = RequestContext(request)
-    member_objs = Member.objects.all()
+    member_objs = models.Member.objects.all()
     pager = p.Paginator(member_objs, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
@@ -33,7 +32,7 @@ def member(request, username):
     context = RequestContext(request)
     profile = user.get_profile()
     context['profile'] = profile
-    member = get_object_or_404(Member, user=user)
+    member = get_object_or_404(models.Member, user=user)
     context['member'] = member
     template = get_template('membership/member.html')
     context['caneditprofile'] = True
@@ -42,38 +41,49 @@ def member(request, username):
     return HttpResponse(template.render(context))
 
 def member_form(request, username=None):
-    if username:
+    if username:  # edit member
         user = get_object_or_404(User, username=username)
         if not request.user.is_staff and not (request.user.is_authenticated() 
                 and request.user.id == user.id):
             return HttpResponseRedirect(reverse('login'))
-        member = get_object_or_404(Member, user=user)
-    else:
+        member = get_object_or_404(models.Member, user=user)
+    else:  # add member
         if not request.user.is_staff:
             return HttpResponseRedirect(reverse('login'))
         member = None
     context = RequestContext(request)
     context['member'] = member
     if request.method == 'POST':
-        form = [ MemberForm(request.POST, prefix="member", instance=member),
-			UserForm(request.POST, prefix="user", instance=user) ]
-#			UserProfileForm(request.POST, prefix="userprofile", instance=user.get_profile()) ]
+        user_form = forms.UserForm(request.POST, prefix='user', instance=user)
+        member_form = forms.MemberForm(request.POST, prefix='member', 
+            instance=member)
         if form[0].is_valid() and form[1].is_valid(): # and form[2].is_valid():
             # PERMISSIONS # PERMISSIONS # PERMISSIONS #
             #   this should check permissions here    #  FIXME ???
             for f in form: f.save()
             return HttpResponseRedirect('/membership/members/'+username)
     else:
-        form = [ MemberForm(instance=member, prefix="member"),
-            UserForm(instance=user, prefix="user") ]
-#           UserProfileForm(instance=user.get_profile(), prefix="userprofile") ]
-    context['form'] = form
+        user_form = forms.UserForm(instance=user, prefix='user')
+        member_form = forms.MemberForm(instance=member, prefix='member')
+        address_formset = profile_forms.AddressFormSet(
+                queryset=user.get_profile().addresses.all())
+        phone_formset = profile_forms.PhoneFormSet(
+                queryset=user.get_profile().phones.all())
+        email_formset = profile_forms.EmailFormSet(
+                queryset=user.get_profile().emails.all())
+    context['user_form'] = user_form
+    context['member_form'] = member_form
+    context['formsets'] = [
+        (address_formset, 'Addresses', 'address'), 
+        (phone_formset, 'Phones', 'phone'),
+        (email_formset, 'Email Addresses', 'email address'),
+    ]
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
 def account_list(request):
     context = RequestContext(request)
-    account_objs = Account.objects.all()
+    account_objs = models.Account.objects.all()
     pager = p.Paginator(account_objs, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
@@ -83,24 +93,24 @@ def account_list(request):
 
 def account(request, id):
     context = RequestContext(request)
-    account = get_object_or_404(Account, id=id)
+    account = get_object_or_404(models.Account, id=id)
     context['account'] = account
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 
 def account_form(request, id):
     context = RequestContext(request)
-    account = get_object_or_404(Account, id=id)
+    account = get_object_or_404(models.Account, id=id)
     # on POST, save data and return to account page
     if request.method == 'POST':
-        form = AccountForm(request.POST, instance=account)
+        form = forms.AccountForm(request.POST, instance=account)
         if form.is_valid():
             # PERMISSIONS # PERMISSIONS # PERMISSIONS #
             #   this should check permissions here    #  FIXME ???
             form.save()
             return HttpResponseRedirect('/membership/accounts/'+id)
     context['account'] = account
-    form = AccountForm(instance=account)
+    form = forms.AccountForm(instance=account)
     context['form'] = form
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
@@ -123,7 +133,7 @@ def raw_list(request):
 	# if we're listing accounts, list accounts matching pattern.
 	# don't bother checking the location of *'s, assume account=*pattern*
 	if request.GET.has_key('list') and request.GET.get('list') == 'accounts':
-		account_list = Account.objects.all()
+		account_list = models.Account.objects.all()
 		if request.GET.has_key('account'):
 			pattern = request.GET.get('account').replace('*','')
 			account_list = account_list.filter(name__contains = pattern)
@@ -135,9 +145,9 @@ def raw_list(request):
 	if request.GET.has_key('list') and request.GET.get('list') == 'members':
 		if request.GET.has_key('account'):
 			acct = request.GET.get('account')
-			member_list = Member.objects.filter(accounts__name = acct)
+			member_list = models.Member.objects.filter(accounts__name = acct)
 		else:
-			member_list = Member.objects.all()
+			member_list = models.Member.objects.all()
 		mnames = [member.user.get_full_name() for member in member_list]
 
 		# if we have a member pattern, filter it case-insensitively

@@ -14,10 +14,22 @@
       {% endif %}
       <form class="standard" method="post">
         <table class="form-table">
-          {% for f in form %}
-		  	{{ f }}
-		  {% endfor %}
-        <tr><td></td><td><input type="submit" value="Save"/></td></tr>
+          {{ user_form }}
+          {{ member_form }}
+        </table>
+        {% for formset, header, name in formsets %}
+          <h4>{{ header }}</h4>
+          <table class="form-table">
+            {% for form in formset.forms %}
+              {% if forloop.last %}
+                <tr><td></td><td id="new">Add a new {{ name }}:</td></tr>
+              {% endif %}
+              {{ form }}
+            {% endfor %}
+          </table>
+        {% endfor %}
+        <table class="form-table">
+          <tr><td></td><td><input type="submit" value="Save"/></td></tr>
         </table>
       </form>
     </div>

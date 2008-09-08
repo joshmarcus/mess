@@ -5,7 +5,6 @@
     "fields": {
       "status": "a", 
       "primary_account": 99, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 1, 
@@ -18,7 +17,6 @@
     "fields": {
       "status": "a", 
       "primary_account": 100, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 2, 
@@ -31,7 +29,6 @@
     "fields": {
       "status": "q", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 3, 
@@ -44,7 +41,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 4, 
@@ -57,7 +53,6 @@
     "fields": {
       "status": "i", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 5, 
@@ -70,7 +65,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "n", 
       "user": 6, 
@@ -83,7 +77,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 7, 
@@ -96,7 +89,6 @@
     "fields": {
       "status": "a", 
       "primary_account": 17, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 8, 
@@ -109,7 +101,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "n", 
       "user": 9, 
@@ -122,7 +113,6 @@
     "fields": {
       "status": "i", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 10, 
@@ -135,7 +125,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 11, 
@@ -148,7 +137,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 12, 
@@ -161,7 +149,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 13, 
@@ -174,7 +161,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 14, 
@@ -187,7 +173,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 15, 
@@ -200,7 +185,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 16, 
@@ -213,7 +197,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 17, 
@@ -226,7 +209,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 18, 
@@ -239,7 +221,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 19, 
@@ -252,7 +233,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 20, 
@@ -265,7 +245,6 @@
     "fields": {
       "status": "i", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 21, 
@@ -278,7 +257,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 22, 
@@ -291,7 +269,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 23, 
@@ -304,7 +281,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 24, 
@@ -317,7 +293,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 25, 
@@ -330,7 +305,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 26, 
@@ -343,7 +317,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 27, 
@@ -356,7 +329,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "n", 
       "user": 28, 
@@ -369,7 +341,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 29, 
@@ -382,7 +353,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 30, 
@@ -395,7 +365,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 31, 
@@ -408,7 +377,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 32, 
@@ -421,7 +389,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 33, 
@@ -434,7 +401,6 @@
     "fields": {
       "status": "i", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 34, 
@@ -447,7 +413,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 35, 
@@ -460,7 +425,6 @@
     "fields": {
       "status": "m", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 36, 
@@ -473,7 +437,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 37, 
@@ -486,7 +449,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 38, 
@@ -499,7 +461,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 39, 
@@ -512,7 +473,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 40, 
@@ -525,7 +485,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 41, 
@@ -538,7 +497,6 @@
     "fields": {
       "status": "L", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 42, 
@@ -551,7 +509,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 43, 
@@ -564,7 +521,6 @@
     "fields": {
       "status": "L", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 44, 
@@ -577,7 +533,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 45, 
@@ -590,7 +545,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 46, 
@@ -603,7 +557,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 47, 
@@ -616,7 +569,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 48, 
@@ -629,7 +581,6 @@
     "fields": {
       "status": "L", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 49, 
@@ -642,7 +593,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 50, 
@@ -655,7 +605,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 51, 
@@ -668,7 +617,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 52, 
@@ -681,7 +629,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 53, 
@@ -694,7 +641,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 54, 
@@ -707,7 +653,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 55, 
@@ -720,7 +665,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 56, 
@@ -733,7 +677,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 57, 
@@ -746,7 +689,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 58, 
@@ -759,7 +701,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 59, 
@@ -772,7 +713,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "n", 
       "user": 60, 
@@ -785,7 +725,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "e", 
       "user": 61, 
@@ -798,7 +737,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 62, 
@@ -811,7 +749,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 63, 
@@ -824,7 +761,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 64, 
@@ -837,7 +773,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 65, 
@@ -850,7 +785,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "n", 
       "user": 66, 
@@ -863,7 +797,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 67, 
@@ -876,7 +809,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 68, 
@@ -889,7 +821,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 69, 
@@ -902,7 +833,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 70, 
@@ -915,7 +845,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "e", 
       "user": 71, 
@@ -928,7 +857,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 72, 
@@ -941,7 +869,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 73, 
@@ -954,7 +881,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 74, 
@@ -967,7 +893,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 75, 
@@ -980,7 +905,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 76, 
@@ -993,7 +917,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 77, 
@@ -1006,7 +929,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 78, 
@@ -1019,7 +941,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 79, 
@@ -1032,7 +953,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 80, 
@@ -1045,7 +965,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 81, 
@@ -1058,7 +977,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 82, 
@@ -1071,7 +989,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 83, 
@@ -1084,7 +1001,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 84, 
@@ -1097,7 +1013,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "e", 
       "user": 85, 
@@ -1110,7 +1025,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 86, 
@@ -1123,7 +1037,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 87, 
@@ -1136,7 +1049,6 @@
     "fields": {
       "status": "m", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 88, 
@@ -1149,7 +1061,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 89, 
@@ -1162,7 +1073,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 90, 
@@ -1175,7 +1085,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 91, 
@@ -1188,7 +1097,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 92, 
@@ -1201,7 +1109,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 93, 
@@ -1214,7 +1121,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 94, 
@@ -1227,7 +1133,6 @@
     "fields": {
       "status": "m", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 95, 
@@ -1240,7 +1145,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 96, 
@@ -1253,7 +1157,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 97, 
@@ -1266,7 +1169,6 @@
     "fields": {
       "status": "L", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 98, 
@@ -1279,7 +1181,6 @@
     "fields": {
       "status": "i", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 99, 
@@ -1292,7 +1193,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 100, 
@@ -1305,7 +1205,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 101, 
@@ -1318,7 +1217,6 @@
     "fields": {
       "status": "a", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 102, 
@@ -1331,7 +1229,6 @@
     "fields": {
       "status": "i", 
       "primary_account": null, 
-      "contact_preference": "e", 
       "has_key": false, 
       "work_status": "w", 
       "user": 103, 

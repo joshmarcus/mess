@@ -45,7 +45,7 @@
             {% for phone in profile.phones.all %}
               {{ phone }} ({{ phone.get_type_display }})
 			 	{% if caneditprofile %}
-<!--					<a href="{% url edit_phone member.user.username,phone %}">edit</a> -->
+<!--					<a href="">edit</a> -->
 					<a href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
 				{% endif %}
 			  <br />
