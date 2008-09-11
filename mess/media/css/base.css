@@ -28,8 +28,8 @@ orange: #D18405
 body {
 	text-align:center;
 	background:#fff url(/media/images/bg-body.gif) repeat-y top center;
-    color: #333;
-    font-family:Helvetica, Arial, sans-serif;
+	color: #333;
+	font-family:Helvetica, Arial, sans-serif;
     font-size:62.5%;
 	}
 	code {
@@ -146,7 +146,15 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 .last-item {border:none !important;}
 .content-section {border:1px solid #ddd; padding:1em;}
 .action {background:url(/media/images/bg-action.gif) no-repeat 0 2px; padding-left:16px;}
-		
+
+/*clearfix - forces floated parent div to expand around its floated child elements*/
+.clearfix:after { content: ".";  display: block;  height: 0;  clear: both;  visibility: hidden;} 
+.clearfix {display: inline-table;}
+	/* Hides from IE-mac */
+	* html .clearfix {height: 1%;}
+	.clearfix {display: block;}
+	/* End hide from IE-mac */		
+
 /*--- ((( structure ))) ---*/
 
 #wrapper {
