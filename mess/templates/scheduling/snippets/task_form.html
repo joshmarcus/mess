@@ -2,7 +2,7 @@
 	<a href="{% url del-task task.id %}">Delete {{object}}</a>
 {% endif %}
 
-<form method="post" action="">
+<form method="post" action="{%url update-task task.id %}">
 	<table>{{ form }}</table>
 	<input value="Save" type="submit" />
 </form> 
