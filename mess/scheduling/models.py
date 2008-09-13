@@ -38,7 +38,7 @@ class RecurringShift(models.Model):
     hours = models.IntegerField()
 
     def __unicode__(self):
-        return unicode(self.name)
+        return u"%s hrs of %s every %s weeks" % (self.hours, self.job.name, self.frequency)
 
 
 class Task(models.Model):

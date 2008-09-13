@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mess.scheduling.models import Job, Task, Timecard
+from mess.scheduling.models import *
 
 class TaskAdmin(admin.ModelAdmin):
     list_filter = ['deadline']
@@ -7,3 +7,4 @@ class TaskAdmin(admin.ModelAdmin):
 admin.site.register(Job)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Timecard)
+admin.site.register(RecurringShift)
