@@ -1,8 +1,10 @@
 {% if task.id %}
-	<a href="{% url del-task task.id %}">Delete {{object}}</a>
-{% endif %}
+<a href="{% url del-task task.id %}">Delete {{object}}</a>
 
 <form method="post" action="{%url update-task task.id %}">
+{% else %}
+<form method="post" action="{%url add-task %}">
+{% endif %}
 	<table>{{ form }}</table>
 	<input value="Save" type="submit" />
 </form> 
