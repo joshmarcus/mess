@@ -8,7 +8,8 @@ from django.template import RequestContext
 from django.template.loader import get_template
 
 from mess.membership import forms, models
-from mess.profiles import forms as profile_forms
+from mess.profiles import forms as profiles_forms
+from mess.profiles import models as profiles_models
 
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 20
@@ -46,31 +47,68 @@ def member_form(request, username=None):
         if not request.user.is_staff and not (request.user.is_authenticated() 
                 and request.user.id == user.id):
             return HttpResponseRedirect(reverse('login'))
+        profile = user.get_profile()
         member = get_object_or_404(models.Member, user=user)
     else:  # add member
         if not request.user.is_staff:
             return HttpResponseRedirect(reverse('login'))
-        member = None
+        member = user = None
+        # a fake profile (no profile should have an id of 0) will return
+        # no addresses, phones, or emails
+        profile = profiles_models.UserProfile(id=0)
     context = RequestContext(request)
     context['member'] = member
     if request.method == 'POST':
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
             instance=member)
-        if form[0].is_valid() and form[1].is_valid(): # and form[2].is_valid():
+        address_formset = profiles_forms.AddressFormSet(request.POST, 
+                prefix='addresses',
+                queryset=profile.addresses.all())
+        phone_formset = profiles_forms.PhoneFormSet(request.POST,
+                prefix='phones',
+                queryset=profile.phones.all())
+        email_formset = profiles_forms.EmailFormSet(request.POST,
+                prefix='emails',
+                queryset=profile.emails.all())
+        if (user_form.is_valid() and member_form.is_valid() and 
+            address_formset.is_valid() and phone_formset.is_valid() and
+            email_formset.is_valid()):
             # PERMISSIONS # PERMISSIONS # PERMISSIONS #
             #   this should check permissions here    #  FIXME ???
-            for f in form: f.save()
-            return HttpResponseRedirect('/membership/members/'+username)
+            #
+            # TODO: need to grab user (and corresponding profile) from 
+            # user_form on added member
+            user_form.save()
+            member_form.save()
+            address_instances = address_formset.save(commit=False)
+            for address in address_instances:
+                matches = profiles_models.Address.objects.filter(
+                    type=address.type,
+                    address1=address.address1,
+                    address2=address.address2,
+                )
+                if matches:
+                    first_match = matches[0]
+                    profile.addresses.add(first_match)
+                else:
+                    address.save()
+                    profile.addresses.add(address)
+            #address_formset.save_m2m()
+            phone_formset.save()
+            #phone_formset.save_m2m()
+            email_formset.save()
+            #email_formset.save_m2m()
+            return HttpResponseRedirect(reverse('member', args=[username]))
     else:
         user_form = forms.UserForm(instance=user, prefix='user')
         member_form = forms.MemberForm(instance=member, prefix='member')
-        address_formset = profile_forms.AddressFormSet(
-                queryset=user.get_profile().addresses.all())
-        phone_formset = profile_forms.PhoneFormSet(
-                queryset=user.get_profile().phones.all())
-        email_formset = profile_forms.EmailFormSet(
-                queryset=user.get_profile().emails.all())
+        address_formset = profiles_forms.AddressFormSet(prefix='addresses',
+                queryset=profile.addresses.all())
+        phone_formset = profiles_forms.PhoneFormSet(prefix='phones',
+                queryset=profile.phones.all())
+        email_formset = profiles_forms.EmailFormSet(prefix='emails',
+                queryset=profile.emails.all())
     context['user_form'] = user_form
     context['member_form'] = member_form
     context['formsets'] = [

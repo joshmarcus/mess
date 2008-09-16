@@ -19,6 +19,7 @@
         </table>
         {% for formset, header, name in formsets %}
           <h4>{{ header }}</h4>
+          {{ formset.management_form }}
           <table class="form-table">
             {% for form in formset.forms %}
               {% if forloop.last %}
