@@ -41,21 +41,23 @@ def member(request, username):
     context['contactmedia'] = ['address', 'phone', 'email']
     return HttpResponse(template.render(context))
 
-def member_form(request, username=None):
-    if username:  # edit member
-        user = get_object_or_404(User, username=username)
-        if not request.user.is_staff and not (request.user.is_authenticated() 
-                and request.user.id == user.id):
-            return HttpResponseRedirect(reverse('login'))
-        profile = user.get_profile()
-        member = get_object_or_404(models.Member, user=user)
-    else:  # add member
-        if not request.user.is_staff:
-            return HttpResponseRedirect(reverse('login'))
-        member = user = None
-        # a fake profile (no profile should have an id of 0) will return
-        # no addresses, phones, or emails
-        profile = profiles_models.UserProfile(id=0)
+def member_add(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('login'))
+    member = user = None
+    # a fake profile (no profile should have an id of 0) will return
+    # no addresses, phones, or emails
+    profile = profiles_models.UserProfile(id=0)
+    # TODO: need to grab user (and corresponding profile) from 
+    # user_form on added member
+
+def member_edit(request, username):
+    user = get_object_or_404(User, username=username)
+    if not request.user.is_staff and not (request.user.is_authenticated() 
+            and request.user.id == user.id):
+        return HttpResponseRedirect(reverse('login'))
+    profile = user.get_profile()
+    member = get_object_or_404(models.Member, user=user)
     context = RequestContext(request)
     context['member'] = member
     if request.method == 'POST':
@@ -72,13 +74,8 @@ def member_form(request, username=None):
                 prefix='emails',
                 queryset=profile.emails.all())
         if (user_form.is_valid() and member_form.is_valid() and 
-            address_formset.is_valid() and phone_formset.is_valid() and
-            email_formset.is_valid()):
-            # PERMISSIONS # PERMISSIONS # PERMISSIONS #
-            #   this should check permissions here    #  FIXME ???
-            #
-            # TODO: need to grab user (and corresponding profile) from 
-            # user_form on added member
+                address_formset.is_valid() and phone_formset.is_valid() and
+                email_formset.is_valid()):
             user_form.save()
             member_form.save()
             address_instances = address_formset.save(commit=False)
@@ -94,11 +91,31 @@ def member_form(request, username=None):
                 else:
                     address.save()
                     profile.addresses.add(address)
-            #address_formset.save_m2m()
-            phone_formset.save()
-            #phone_formset.save_m2m()
-            email_formset.save()
-            #email_formset.save_m2m()
+            phone_instances = phone_formset.save(commit=False)
+            for phone in phone_instances:
+                matches = profiles_models.Phone.objects.filter(
+                    type=phone.type,
+                    number=phone.number,
+                    ext=phone.ext,
+                )
+                if matches:
+                    first_match = matches[0]
+                    profile.phones.add(first_match)
+                else:
+                    phone.save()
+                    profile.phones.add(phone)
+            email_instances = email_formset.save(commit=False)
+            for email in email_instances:
+                matches = profiles_models.Email.objects.filter(
+                    type=email.type,
+                    email=email.email,
+                )
+                if matches:
+                    first_match = matches[0]
+                    profile.emails.add(first_match)
+                else:
+                    email.save()
+                    profile.emails.add(email)
             return HttpResponseRedirect(reverse('member', args=[username]))
     else:
         user_form = forms.UserForm(instance=user, prefix='user')
