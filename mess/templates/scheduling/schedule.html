@@ -15,6 +15,13 @@
 <!-- YUI JS -->
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/calendar/calendar-min.js&2.5.2/build/connection/connection-min.js"></script>
 
+<!-- Calendar styles -->
+<style type="text/css">
+    {% for task in tasks %}
+        .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {font-weight: bold;}
+    {% endfor %}
+</style>
+
 {% endblock head %}
 
 {% block page_menu %}
