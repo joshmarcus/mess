@@ -45,7 +45,7 @@ def task_form(request, task_id=None):
 
     if task_id == None:
         context = {
-            'form': TaskForm(request.POST)
+            'form': TaskForm()
         }
     else:
         task = Task.objects.get(id__exact=task_id)
@@ -57,6 +57,7 @@ def task_form(request, task_id=None):
                                 context_instance=RequestContext(request))
 
 def task_list(request, date=None):
+    "return an html snippet listing tasks for the selected day"
     if date == None:
         date = datetime.date.today()
     else:

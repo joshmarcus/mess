@@ -2,7 +2,7 @@
 {% if tasks %}
 <ul>
 {% for task in tasks %}
-<li><a href="javascript:getForm({{task.id}});">{{task}}</a> </li>
+<li>{{task}} <a href="javascript:getForm({{task.id}});">[edit]</a> </li>
 {% endfor %}
 </ul>
 {% endif %}

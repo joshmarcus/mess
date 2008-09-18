@@ -40,8 +40,9 @@
     </div>
 </div>
 <div id="right-column">
-    <h3>Task Form</h3>
-    <div id="task-form"></div> 
+    <h3 id="right-column-heading">Task Form</h3>
+    <div id="task-form">
+    </div> 
 </div>
 
 <!--BEGIN SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
@@ -82,6 +83,7 @@
         	var selected = args[0];
         	var selDate = this.toDate(selected[0]);
         	var sUrl = dateToLocaleString(selDate);
+        	getForm();
         	YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
         }
         YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
@@ -100,31 +102,43 @@
 // create namespace object
 YAHOO.namespace("schedule.tasks");
 
-var div = YAHOO.util.Dom.get("task-form");
+var heading_div = YAHOO.util.Dom.get("right-column-heading");
+var form_div = YAHOO.util.Dom.get("task-form");
 
 
 var handleSuccess = function(response){
-    if(response.responseText !== undefined){ 		    
-        div.innerHTML = response.responseText;
+    if(response.responseText !== undefined){
+        form_div.innerHTML = response.responseText;
     }
+    heading_div.innerHTML = response.argument;
 };
 
 var handleFailure = function(response){ 
     if(response.responseText !== undefined){ 
-        div.innerHTML = "Nothing for this Date"; 
-    } 
+        form_div.innerHTML = "Nothing for this Date";
+    }
 };
 
-var callback = { 
-    success: handleSuccess, 
-    failure: handleFailure,   
-};
 
 function getForm(task_id) {
-    sUrl = '/scheduling/task_form/' + task_id;
+    if(task_id == null){
+        arg = 'new' ;
+        sUrl = '/scheduling/task_form/';
+        
+    } else {
+        arg = 'edit';
+        sUrl = '/scheduling/task_form/' + task_id;
+    }
+    var callback = { 
+        success: handleSuccess, 
+        failure: handleFailure,
+        argument: [arg,]   
+    };
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
 }
 
+// Load New Task Form on Page Load
+getForm();
 </script>
 <!--END SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
 

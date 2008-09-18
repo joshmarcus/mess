@@ -592,6 +592,9 @@ div#footer {
     display: inline-block;
 }
 
+div #task-form form p input, div #task-form form p label{
+    display: block;
+}
 
 /*-------------------------------old stuff begins here
 
