@@ -14,11 +14,14 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/connection/connection-min.js"></script>
 <!-- YUI JS -->
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/calendar/calendar-min.js&2.5.2/build/connection/connection-min.js"></script>
+<!-- Custom JS -->
+<script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
+
 
 <!-- Calendar styles -->
 <style type="text/css">
     {% for task in tasks %}
-        .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {font-weight: bold;}
+        .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {text-decoration: underline;}
     {% endfor %}
 </style>
 
@@ -44,102 +47,5 @@
     <div id="task-form">
     </div> 
 </div>
-
-<!--BEGIN SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
-<script type="text/javascript">			
-    // create namespace object
-	YAHOO.namespace("schedule.calendar");
-
-    //define the initConnection
-	YAHOO.schedule.calendar.initConnection = function() {
-        var div = YAHOO.util.Dom.get("task-list");
-
-        function dateToLocaleString(dt) {
-        	var dStr = dt.getDate();
-        	var mStr = dt.getMonth()+1;
-        	var yStr = dt.getFullYear();
-        	return ("/scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr);
-        }
-
-        var handleSuccess = function(response){
-            if(response.responseText !== undefined){ 		    
-                div.innerHTML = response.responseText;
-            }
-        };
-
-        var handleFailure = function(response){ 
-            if(response.responseText !== undefined){ 
-                div.innerHTML = "Nothing for this Date"; 
-            } 
-        };
-        
-        var callback = 
-    	{ 
-    	    success: handleSuccess, 
-    	    failure: handleFailure,   
-    	};
-
-        function mySelectHandler(type, args, obj) {
-        	var selected = args[0];
-        	var selDate = this.toDate(selected[0]);
-        	var sUrl = dateToLocaleString(selDate);
-        	getForm();
-        	YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
-        }
-        YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
-        YAHOO.schedule.calendar.cal1.selectEvent.subscribe(mySelectHandler, YAHOO.schedule.calendar.cal1, true);
-        YAHOO.schedule.calendar.cal1.render();
-        
-        // list todays tasks on page load
-        var sUrl = dateToLocaleString(new Date());
-        YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
-	}
-
-	YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
-</script>
-
-<script type="text/javascript">			
-// create namespace object
-YAHOO.namespace("schedule.tasks");
-
-var heading_div = YAHOO.util.Dom.get("right-column-heading");
-var form_div = YAHOO.util.Dom.get("task-form");
-
-
-var handleSuccess = function(response){
-    if(response.responseText !== undefined){
-        form_div.innerHTML = response.responseText;
-    }
-    heading_div.innerHTML = response.argument;
-};
-
-var handleFailure = function(response){ 
-    if(response.responseText !== undefined){ 
-        form_div.innerHTML = "Nothing for this Date";
-    }
-};
-
-
-function getForm(task_id) {
-    if(task_id == null){
-        arg = 'new' ;
-        sUrl = '/scheduling/task_form/';
-        
-    } else {
-        arg = 'edit';
-        sUrl = '/scheduling/task_form/' + task_id;
-    }
-    var callback = { 
-        success: handleSuccess, 
-        failure: handleFailure,
-        argument: [arg,]   
-    };
-    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
-}
-
-// Load New Task Form on Page Load
-getForm();
-</script>
-<!--END SCRIPTS FOR CALENDAR & TASK MANAGEMENT =============================== -->
 
 {% endblock content %}
