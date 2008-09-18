@@ -18,7 +18,11 @@ orange: #D18405
 
 */
 
-
+/*
+check this out, might be worth using here: 
+http://sandbox.pocoo.org/clevercss/ 
+http://code.google.com/p/django-clevercss/ 
+*/
 /*---((( global jawnt )))---*/
 * {
 	margin: 0;
@@ -576,6 +580,17 @@ div#footer {
 			color:#fff;
 			}
 		
+
+/* scheduling specific styles */
+
+
+#cal1Container {
+    display: inline-block;
+}
+#task-list {
+    margin: 20px 0 0 0;
+    display: inline-block;
+}
 
 
 /*-------------------------------old stuff begins here

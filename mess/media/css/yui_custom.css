@@ -3,7 +3,7 @@
 	color:#000;
 	font-weight:bold;
 	text-align:center;
-	width:6em;
+	width:8em;
 }
 
 /* NORMAL CELLS */
@@ -11,7 +11,7 @@
 	border:1px solid #cccccc;
 	background:#fff;
 	padding:2px;
-	height:4.6em;
+	height:6em;
 	line-height:1.6em; /* set line height equal to cell height to center vertically */
 	text-align:left;
 	white-space:nowrap;

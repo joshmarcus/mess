@@ -5,6 +5,6 @@
 {% else %}
 <form method="post" action="{%url add-task %}">
 {% endif %}
-	<table>{{ form }}</table>
+	{{ form.as_p }}
 	<input value="Save" type="submit" />
 </form> 
