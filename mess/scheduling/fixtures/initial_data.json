@@ -81,6 +81,54 @@
     }
   }, 
   {
+    "pk": 6, 
+    "model": "scheduling.task", 
+    "fields": {
+      "hours": 5, 
+      "recurrence": null, 
+      "start": "2008-09-18 02:15:09", 
+      "job": 8, 
+      "member": 21, 
+      "deadline": "2008-09-19 02:15:08"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "scheduling.task", 
+    "fields": {
+      "hours": 2, 
+      "recurrence": null, 
+      "start": "2008-09-18 02:14:44", 
+      "job": 7, 
+      "member": null, 
+      "deadline": "2008-09-18 02:14:43"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "scheduling.task", 
+    "fields": {
+      "hours": 2, 
+      "recurrence": null, 
+      "start": "2008-09-18 02:14:03", 
+      "job": 6, 
+      "member": 103, 
+      "deadline": "2008-09-18 02:14:01"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "scheduling.task", 
+    "fields": {
+      "hours": 2, 
+      "recurrence": null, 
+      "start": "2008-09-17 02:14:24", 
+      "job": 6, 
+      "member": 17, 
+      "deadline": "2008-09-17 02:14:18"
+    }
+  }, 
+  {
     "pk": 1, 
     "model": "scheduling.task", 
     "fields": {
