@@ -1,16 +1,51 @@
 // create namespace object
 YAHOO.namespace("schedule.calendar");
 
-//define the initConnection
+// date formatting
+
+var month=new Array(12);
+month[0]="January";
+month[1]="February";
+month[2]="March";
+month[3]="April";
+month[4]="May";
+month[5]="June";
+month[6]="July";
+month[7]="August";
+month[8]="September";
+month[9]="October";
+month[10]="November";
+month[11]="December";
+
+function formatDateForHeading(dt) {
+	var dStr = dt.getDate();
+	var mStr = month[dt.getMonth()];
+	var yStr = dt.getFullYear();
+	return (mStr + " " + dStr + ", " + yStr);
+}
+
+function formatDateForDeadline(dt) {
+	var dStr = dt.getDate();
+	var mStr = dt.getMonth()+1;
+	var yStr = dt.getFullYear();
+	return (yStr + "-" + mStr + "-" + dStr);
+}
+
+function dateToLocaleString(dt) {
+	var dStr = dt.getDate();
+	var mStr = dt.getMonth()+1;
+	var yStr = dt.getFullYear();
+	return (yStr + "-" + mStr + "-" + dStr);
+}
+	
+function taskUrl(dt) {
+    locale = dateToLocaleString(dt);
+	return ("/scheduling/task_list/" + locale);
+}
+
+// define the initConnection
 YAHOO.schedule.calendar.initConnection = function() {
     var div = YAHOO.util.Dom.get("task-list");
-
-    function dateToLocaleString(dt) {
-    	var dStr = dt.getDate();
-    	var mStr = dt.getMonth()+1;
-    	var yStr = dt.getFullYear();
-    	return ("/scheduling/task_list/" + yStr + "-" + mStr + "-" + dStr);
-    }
 
     var handleSuccess = function(response){
         if(response.responseText !== undefined){ 		    
@@ -33,7 +68,7 @@ YAHOO.schedule.calendar.initConnection = function() {
     function mySelectHandler(type, args, obj) {
     	var selected = args[0];
     	var selDate = this.toDate(selected[0]);
-    	var sUrl = dateToLocaleString(selDate);
+    	var sUrl = taskUrl(selDate);
     	getForm(null, selDate);
     	YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
     }
@@ -43,7 +78,7 @@ YAHOO.schedule.calendar.initConnection = function() {
     YAHOO.schedule.calendar.cal1.render();
     
     // list todays tasks on page load
-    var sUrl = dateToLocaleString(new Date());
+    var sUrl = taskUrl(new Date());
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
 
@@ -67,22 +102,24 @@ var handleFailure = function(response){
     form_div.innerHTML = "Nothing for this Date";
 };
 
-function getForm(task_id, date) {
+function getForm(task_id, dt) {
     if(task_id == null){
-        arg = 'Create new task: ' + date;
+        date = formatDateForHeading(dt);
+        header = 'Create new task: ' + date;
         sUrl = '/scheduling/task_form/';
+        date = formatDateForDeadline(dt);
     } else {
-        arg = 'Edit this task';
+        header = 'Edit this task:';
         sUrl = '/scheduling/task_form/' + task_id;
     }
     var callback = { 
         success: handleSuccess, 
         failure: handleFailure,
-        argument: [arg, date]   
+        argument: [header, date]   
     };
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
 }
 
 // Load New Task Form on Page Load
-date =
-getForm(null, date);
+var today = new Date();
+getForm(null, today);
