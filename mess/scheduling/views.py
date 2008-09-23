@@ -31,9 +31,6 @@ def delete_task(request, **kwargs):
     del_dict.update(kwargs)
     return delete_object(request, post_delete_redirect=reverse("manage-schedule"), **del_dict)
 
-@login_required
-def assign_task(request, member_id, task_id):
-    pass
 
 class TaskForm(ModelForm):
     class Meta:
