@@ -1,11 +1,24 @@
 {% extends "membership/base.html" %}
 
 {% block head %}
-  <script type="text/javascript" src="{{ MEDIA_URL }}js/live_address.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/calendar/calendar-min.js&2.5.2/build/connection/connection-min.js"></script>
   <script type="text/javascript">
-    function addNew(formsetPrefix) {
+    function addNew(formsetPrefix, baseURL) {
       var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
-      var writeRoot = document.getElementById(formsetPrefix + '-readroot');
+      var sUrl = baseURL + '?index=' + totalForms.value;
+      totalForms.value = parseInt(totalForms.value) + 1;
+      var callback = {
+        success: function(o) {
+          var newFields = document.createElement('table');
+          newFields.innerHTML = o.responseText;
+          var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
+          writeRoot.parentNode.insertBefore(newFields, writeRoot);
+          writeRoot.previousSibling.getElementsByTagName('select')[0].focus()
+        },
+        failure: function(o) {},
+        argument: [formsetPrefix],
+      };
+      var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
     }
   </script>
 {% endblock %}
@@ -23,25 +36,24 @@
           {{ user_form }}
           {{ member_form }}
         </table>
-        {% for formset, header, name in formsets %}
+        {% for formset, header in formsets %}
+        <h4 class="section">{{ header }}</h4>
+          {{ formset.management_form }}
+          {% for form in formset.forms %}
           <table>
-            <tr><td></td><th class="section">{{ header }}</th></tr>
-            {{ formset.management_form }}
-            {% for form in formset.forms %}
-              {% if forloop.last %}
-              <tr>
-                <td></td>
-                <td class="add">
-                  <a onclick="addNew('{{ formset.prefix }}'); return false;" href="{% url add_contact member.user.username,name %}" id="{{ formset.prefix }}-add">Add</a>
-                </td>
-              </tr>
-          </table>
-          <table id="{{ formset.prefix }}-readroot" class="hidden">
-              {% endif %}
             {{ form }}
-            {% endfor %}
           </table>
-          <span id="{{ formset.prefix }}-writeroot"></span>
+            {% if forloop.last %}
+          <table id="{{ formset.prefix }}-writeroot" class="add">
+            <tr>
+              <th></th>
+              <td>
+                <a onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add" href="{% url add_contact member.user.username,formset.prefix %}">Add</a>
+              </td>
+            </tr>
+          </table>
+            {% endif %}
+          {% endfor %}
         {% endfor %}
         <table>
           <tr><th></th><td><input type="submit" class="button" value="Save"/></td></tr>
@@ -52,80 +64,6 @@
   <div id="right-column">
     Content here.
   </div>
-
-<!--
-    <h2>Addresses</h2>
-    <table>
-        {% for address in member.person.addresses.all %}
-            <tr><th>{{ address.get_type_display }}</th>
-                    <td>{% if address.address_1 %}
-                            {{ address.address_1 }}<br />
-                        {% endif %}
-                        {% if address.address_2 %}
-                            {{ address.address_2 }}<br />
-                        {% endif %}
-                        {{ address.city }}, {{ address.state }}
-                        {{ address.postal_code }}<br />
-                        {{ address.country }}
-            </td>
-            <td><a href='{{ PROJECT_URL }}address/form/{{ address.id }}'>
-                    <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
-                </a>
-                <a href='{{ PROJECT_URL }}address/form/{{ address.id }}'>
-                    <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-        <tr><th>Add Address</th><td colspan='2' >
-                <input size='40' id='address' type='text' name='address' 
-                        onclick='show_message ("address",
-                                            "Typing will display matches.")'
-			            onkeyup='find_address(this, event)'/>
-            </td></tr>
-    </table>
-    <h2>Email Addresses</h2>
-    <table>
-        {% for email in member.person.emails.all %}
-            <tr><th>{{ email.get_location_display }}<br />
-                {{ email.get_type_display }}
-            </th>
-            <td>{{ email.email }}</td>
-            <td><a href='{{ MEDIA_URL }}email/form/{{ email.id }}'>
-                    <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
-                </a>
-                <a href='{{ MEDIA_URL }}email/form/{{ email.id }}'>
-                    <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
-                </a>
-            </td>
-        </tr>
-            {% endfor %}
-    </table>
-    <h2>Phone Numbers</h2>
-    <table>
-        {% for phone in member.person.phones.all %}
-        <tr>
-            <th>
-                {{ phone.get_location_display }}<br />
-                {{ phone.get_type_display }}
-            </th>
-            <td>
-                {{ phone.number }}
-                {% if phone.ext %}Ext: {{ phone.ext }}{% endif %}
-            </td>
-            <td><a href='{{ MEDIA_URL }}phone/form/{{ phone.id }}'>
-                    <img class=b125em src='{{ MEDIA_URL }}images/Pencil32.png' />
-                </a>
-                <a href='{{ MEDIA_URL }}phone/form/{{ phone.id }}'>
-                    <img class=b125em src='{{ MEDIA_URL }}images/Minus32.png' />
-                </a>
-            </td>
-
-        </tr>
-            {% endfor %}
-        </table>
--->
-
 {% endblock %}
 
 {% block pop_up %}

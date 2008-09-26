@@ -18,9 +18,9 @@ class EmailForm(forms.ModelForm):
     class Meta:
         model = Email
 
-AddressFormSet = modelformset_factory(Address, can_delete=True)
-PhoneFormSet = modelformset_factory(Phone, can_delete=True)
-EmailFormSet = modelformset_factory(Email, can_delete=True)
+AddressFormSet = modelformset_factory(Address, can_delete=True, extra=0)
+PhoneFormSet = modelformset_factory(Phone, can_delete=True, extra=0)
+EmailFormSet = modelformset_factory(Email, can_delete=True, extra=0)
 
 form_map = {
     'userprofile': UserProfileForm,

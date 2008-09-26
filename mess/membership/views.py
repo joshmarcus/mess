@@ -65,13 +65,13 @@ def member_edit(request, username):
         member_form = forms.MemberForm(request.POST, prefix='member', 
             instance=member)
         address_formset = profiles_forms.AddressFormSet(request.POST, 
-                prefix='addresses',
+                prefix='address',
                 queryset=profile.addresses.all())
         phone_formset = profiles_forms.PhoneFormSet(request.POST,
-                prefix='phones',
+                prefix='phone',
                 queryset=profile.phones.all())
         email_formset = profiles_forms.EmailFormSet(request.POST,
-                prefix='emails',
+                prefix='email',
                 queryset=profile.emails.all())
         if (user_form.is_valid() and member_form.is_valid() and 
                 address_formset.is_valid() and phone_formset.is_valid() and
@@ -79,6 +79,7 @@ def member_edit(request, username):
             user_form.save()
             member_form.save()
             address_instances = address_formset.save(commit=False)
+            # TODO: handle deletes correctly for m2m (remove instead)
             for address in address_instances:
                 matches = profiles_models.Address.objects.filter(
                     type=address.type,
@@ -96,7 +97,6 @@ def member_edit(request, username):
                 matches = profiles_models.Phone.objects.filter(
                     type=phone.type,
                     number=phone.number,
-                    ext=phone.ext,
                 )
                 if matches:
                     first_match = matches[0]
@@ -120,18 +120,18 @@ def member_edit(request, username):
     else:
         user_form = forms.UserForm(instance=user, prefix='user')
         member_form = forms.MemberForm(instance=member, prefix='member')
-        address_formset = profiles_forms.AddressFormSet(prefix='addresses',
+        address_formset = profiles_forms.AddressFormSet(prefix='address',
                 queryset=profile.addresses.all())
-        phone_formset = profiles_forms.PhoneFormSet(prefix='phones',
+        phone_formset = profiles_forms.PhoneFormSet(prefix='phone',
                 queryset=profile.phones.all())
-        email_formset = profiles_forms.EmailFormSet(prefix='emails',
+        email_formset = profiles_forms.EmailFormSet(prefix='email',
                 queryset=profile.emails.all())
     context['user_form'] = user_form
     context['member_form'] = member_form
     context['formsets'] = [
-        (address_formset, 'Addresses', 'address'), 
-        (phone_formset, 'Phones', 'phone'),
-        (email_formset, 'Email Addresses', 'email'),
+        (address_formset, 'Addresses'), 
+        (phone_formset, 'Phones'),
+        (email_formset, 'Email Addresses'),
     ]
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))

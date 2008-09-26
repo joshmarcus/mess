@@ -155,8 +155,9 @@ body {
                         }
                 #primary-content-wrapper ul.errorlist {
                         position: absolute;
-                        margin: 5px 0 0 225px;
+                        margin: 5px 0 0 245px;
                         font-size:0.8em;
+                        color: red;
                         }
                         #primary-content-wrapper ul.errorlist li {
                                 background-image: none;

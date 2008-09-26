@@ -78,14 +78,14 @@ def address_form(request, id=None):
     template = get_template('contact/address_form.html')
     return HttpResponse(template.render(context))
 
-# can this be made simpler?
-def formset_form(request, prefix, index=-1):
+def profiles_form(request, prefix):
     context = RequestContext(request)
     FormClass = forms.form_map[prefix]
-    if index == -1:
-        form = FormClass()
-    else:
+    index = request.GET.get('index')
+    if index:
         form = FormClass(prefix='%s-%s' % (prefix, index))
+    else:
+        form = FormClass()
     context['form'] = form
-    template = loader.get_template('profiles/formset_form.html')
+    template = loader.get_template('profiles/form.html')
     return HttpResponse(template.render(context))
