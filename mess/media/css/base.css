@@ -13,6 +13,7 @@ pale blue: #EFF0F9
 body type gray: #333
 pale gray: #ebebeb
 medium gray: #999
+form field border pale gray: #bbb
 
 orange: #D18405
 
@@ -99,6 +100,7 @@ body {
 			th {}
 			td {
 				vertical-align:top;
+				padding:.5em 0;
 				}
 			
 	form.standard {
@@ -107,11 +109,16 @@ body {
 		margin:15px 0;
                 font-size:1.1em;
 		}
-		form.standard input, form.standard select, form.standard textarea {
-			margin:.25em .25em;
-			width:225px;
-			border:1px solid #bbb;/*#D18405;*/
+		form.standard label {
+			font-size:1em;
 			}
+		form.standard input, form.standard select, form.standard textarea {
+			width:225px;
+			padding:3px;
+			border:1px solid #bbb;
+			margin-left:1em;
+			}
+			form.standard select {width:235px;}
 			#right-column form.standard input, #right-column form.standard select {
 				width:95%;
 				}
@@ -130,6 +137,7 @@ body {
 				}
                 form.standard th {
                         width:125px;
+                        padding:7px 0;
                         text-align: right;
                         }
                 form.standard th.section {
@@ -167,6 +175,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	* html .clearfix {height: 1%;}
 	.clearfix {display: block;}
 	/* End hide from IE-mac */		
+
 
 /*--- ((( structure ))) ---*/
 
