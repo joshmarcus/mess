@@ -21,3 +21,10 @@ class EmailForm(forms.ModelForm):
 AddressFormSet = modelformset_factory(Address, can_delete=True)
 PhoneFormSet = modelformset_factory(Phone, can_delete=True)
 EmailFormSet = modelformset_factory(Email, can_delete=True)
+
+form_map = {
+    'userprofile': UserProfileForm,
+    'phone': PhoneForm,
+    'address': AddressForm,
+    'email': EmailForm,
+}

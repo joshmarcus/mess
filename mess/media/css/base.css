@@ -110,13 +110,8 @@ body {
 		border:1px solid #ccc;
 		padding:.5em 1em;
 		margin:15px 0;
+                font-size:1.1em;
 		}
-		form.standard label {
-			font-size:1.1em;
-			display:block;
-			margin:.5em .5em .25em 0;
-			
-			}
 		form.standard input, form.standard select, form.standard textarea {
 			margin:.25em .25em;
 			width:225px;
@@ -138,6 +133,24 @@ body {
 				color:white;
 				background:#D18405;
 				}
+                form.standard th {
+                        width:125px;
+                        text-align: right;
+                        }
+                form.standard th.section {
+                        color:#666;
+                        font-size:1.3em;
+                        padding: 10px 0 5px 0;
+                        text-align: left;
+                        }
+                #primary-content-wrapper ul.errorlist {
+                        position: absolute;
+                        margin: 5px 0 0 225px;
+                        font-size:0.8em;
+                        }
+                        #primary-content-wrapper ul.errorlist li {
+                                background-image: none;
+                        }
 
 
 		
@@ -145,6 +158,7 @@ body {
 .clearAll {clear:both;}
 .float-left {float:left;}
 .float-right {float:right;}
+.hidden {display:none;}
 hr.left-clearer {display: block; clear: left; margin: -0.66em 0; visibility: hidden;}
 hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: hidden;}
 .last-item {border:none !important;}

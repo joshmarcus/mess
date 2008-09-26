@@ -131,7 +131,7 @@ def member_edit(request, username):
     context['formsets'] = [
         (address_formset, 'Addresses', 'address'), 
         (phone_formset, 'Phones', 'phone'),
-        (email_formset, 'Email Addresses', 'email address'),
+        (email_formset, 'Email Addresses', 'email'),
     ]
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))

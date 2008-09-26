@@ -2,6 +2,12 @@
 
 {% block head %}
   <script type="text/javascript" src="{{ MEDIA_URL }}js/live_address.js"></script>
+  <script type="text/javascript">
+    function addNew(formsetPrefix) {
+      var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
+      var writeRoot = document.getElementById(formsetPrefix + '-readroot');
+    }
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -13,24 +19,32 @@
       {% if member %}
       {% endif %}
       <form class="standard" method="post">
-        <table class="form-table">
+        <table>
           {{ user_form }}
           {{ member_form }}
         </table>
         {% for formset, header, name in formsets %}
-          <h4>{{ header }}</h4>
-          {{ formset.management_form }}
-          <table class="form-table">
+          <table>
+            <tr><td></td><th class="section">{{ header }}</th></tr>
+            {{ formset.management_form }}
             {% for form in formset.forms %}
               {% if forloop.last %}
-                <tr><td></td><td id="new">Add a new {{ name }}:</td></tr>
+              <tr>
+                <td></td>
+                <td class="add">
+                  <a onclick="addNew('{{ formset.prefix }}'); return false;" href="{% url add_contact member.user.username,name %}" id="{{ formset.prefix }}-add">Add</a>
+                </td>
+              </tr>
+          </table>
+          <table id="{{ formset.prefix }}-readroot" class="hidden">
               {% endif %}
-              {{ form }}
+            {{ form }}
             {% endfor %}
           </table>
+          <span id="{{ formset.prefix }}-writeroot"></span>
         {% endfor %}
-        <table class="form-table">
-          <tr><td></td><td><input type="submit" value="Save"/></td></tr>
+        <table>
+          <tr><th></th><td><input type="submit" class="button" value="Save"/></td></tr>
         </table>
       </form>
     </div>
