@@ -118,7 +118,14 @@ body {
 			border:1px solid #bbb;
 			margin-left:1em;
 			}
-			form.standard select {width:235px;}
+			form.standard select {
+				width:235px;
+				}
+				option {
+					padding-left:3px;
+					}
+				
+				
 			#right-column form.standard input, #right-column form.standard select {
 				width:95%;
 				}
