@@ -33,10 +33,12 @@
         </ul>
         <div class="details">
 		  {% if caneditprofile %}
+		  <ul class="edit-contact-info">
 			{% for medium in contactmedia %}
-				<a href="{% url add_contact member.user.username,medium %}">
-					add {{medium}}</a>
+			<li><a class="add" href="{% url add_contact member.user.username,medium %}">
+					add {{medium}}</a></li>
 			{% endfor %}
+	      </ul>
 		  {% endif %}
           {% for address in profile.addresses.all %}
             {% include "profiles/snippets/address.html" %}
@@ -46,7 +48,7 @@
               {{ phone }} ({{ phone.get_type_display }})
 			 	{% if caneditprofile %}
 <!--					<a href="">edit</a> -->
-					<a href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
+					<a class="remove" href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
 				{% endif %}
 			  <br />
             {% endfor %} 
@@ -58,7 +60,7 @@
             {% for email in profile.emails.all %}
               <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
 			  {% if caneditprofile %}
-			  	<a href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
+			  	<br /><a class="remove" href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
 			  {% endif %} <br/>
             {% endfor %}
           </p>

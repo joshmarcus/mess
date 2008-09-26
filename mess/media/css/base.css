@@ -122,7 +122,7 @@ body {
 				width:235px;
 				}
 				option {
-					padding-left:3px;
+					padding-left:p3px;
 					}
 				
 				
@@ -388,7 +388,16 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				padding-left:9px;
 				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
 				}
-    
+				
+		#primary-content-wrapper a.remove, #primary-content-wrapper a.add {
+					color:#888; 
+					padding-left:13px; 
+					font-size:.9em;
+					}
+					#primary-content-wrapper a.add:hover, #primary-content-wrapper a.remove:hover {color:#246495;}
+					#primary-content-wrapper a.remove {background:url('/media/images/bg-icon-remove.gif') no-repeat left;}
+					#primary-content-wrapper a.add {background:url('/media/images/bg-icon-add.gif') no-repeat left;}
+	
 		#primary-content-wrapper div.attention {
 			margin:.5em 0 1.2em 0;
 			background:beige;
@@ -481,7 +490,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#primary-content-wrapper div.profile p {
 				line-height:1.3em;
 				}
-			#primary-content-wrapper div.profile-links {
+			#primary-content-wrapper div.profile-links, #primary-content-wrapper ul.edit-contact-info {
 				float:right;
 				font-size:95%;
 				border:1px dashed #ddd;
@@ -492,21 +501,22 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					letter-spacing:0;
 					color:#D18405;
 					}
-				#primary-content-wrapper div.profile-links ul li {
+				#primary-content-wrapper div.profile-links ul li, #primary-content-wrapper ul.edit-contact-info li {
 					background-image:none;
 					padding:0;
 					}
-					#primary-content-wrapper div.profile-links ul li a {
-						color:#aaa;
+					#primary-content-wrapper div.profile-links ul li a, #primary-content-wrapper ul.edit-contact-info li a {
+						color:#888;
 						}
-						#primary-content-wrapper div.profile-links ul li a:hover {
+						#primary-content-wrapper div.profile-links ul li a:hover, #primary-content-wrapper ul.edit-contact-info a:hover {
 							color:#246495;
 							}
 			#primary-content-wrapper div.details {
 				border:1px solid #ddd;
 				padding:1em;
 				background:beige;
-				}
+				}	
+				
 				#primary-content-wrapper ul.quick-info {
 					width:200px;
 					margin-top:1.5em;

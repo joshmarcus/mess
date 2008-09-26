@@ -1,7 +1,5 @@
             <h5>{{ address.get_type_display }}
-				{% if caneditprofile %}
-					<a href="{% url remove_contact member.user.username %}?medium=address&target={{ address|urlencode}}">remove</a>
-				{% endif %}
+				
 			</h5> 
             <p>
               {% if address.address1 %}
@@ -12,6 +10,10 @@
               {% endif %}
               {{ address.city }}, {{ address.state }}
               {{ address.postal_code }}<br />
-              {{ address.country }}
-            </p>
+              {{ address.country }}<br />
+           
+            {% if caneditprofile %}
+			<a class="remove" href="{% url remove_contact member.user.username %}?medium=address&target={{ address|urlencode}}">remove</a>
+			{% endif %}
+			 </p>
 
