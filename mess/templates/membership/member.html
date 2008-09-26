@@ -31,7 +31,7 @@
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/> {{ member.has_key }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
         </ul>
-        <div class="details">
+        <div class="details clearfix">
 		  {% if caneditprofile %}
 		  <ul class="edit-contact-info">
 			{% for medium in contactmedia %}
