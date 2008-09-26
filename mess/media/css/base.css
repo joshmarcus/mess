@@ -33,8 +33,8 @@ body {
 	text-align:center;
 	background:#fff url(/media/images/bg-body.gif) repeat-y top center;
 	color: #333;
-	font-family:Helvetica, Arial, sans-serif;
-    font-size:62.5%;
+	font-family:helvetica, arial, sans-serif;
+	font-size:62.5%;
 	}
 	code {
 		font-size:1.2em;
@@ -63,13 +63,8 @@ body {
 		margin-bottom:1.5em;
 		}
 	h4 {
-		font-size: 1.2em;
-		line-height:1.4em;
-		background:#D18405;
-		width:200px;
-		padding:.65em;
-		color:#fff;
-		margin-top:2em;
+		color:#d18405;
+		font-size:1.4em;
 		margin-bottom:.5em;
 		}
 	h5 {
@@ -121,7 +116,7 @@ body {
 				width:95%;
 				}
 			#right-column form.standard input.button {
-                                }
+                }
 			form.standard textarea {
 				}
 			form.standard input.button {
@@ -292,10 +287,11 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				height:25px;
 				}
 				ul#global-nav li a:hover {
-					background:#246495 url(/media/images/bg-global-nav-hover.gif) no-repeat top right;;
+					background:#246495 url(/media/images/bg-global-nav-hover.gif) no-repeat top right;
 					}
 				ul#global-nav li a.active {
-					background:#ebebeb url(/media/images/bg-global-nav-active.gif) no-repeat top right;;
+
+					background:#ebebeb url(/media/images/bg-global-nav-active.gif) no-repeat top right;
 					color:#333;
 					}
 					
@@ -455,10 +451,16 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			padding:1em;
 			}
 			#primary-content-wrapper div.profile h4 {
-				margin-top:0;
+				font-size: 1.2em;
+				line-height:1.4em;
+				background:#d18405;
+				width:200px;
+				padding:.65em;
+				color:#fff;
+				margin-bottom:.5em;
 				}
 			#primary-content-wrapper div.profile h4 a {
-				display:block; float:right; color:#055;
+				display:block; float:right; color:#ebebed; font-size:90%;
 				}
 			#primary-content-wrapper div.profile p {
 				line-height:1.3em;
@@ -481,6 +483,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					#primary-content-wrapper div.profile-links ul li a {
 						color:#aaa;
 						}
+						#primary-content-wrapper div.profile-links ul li a:hover {
+							color:#246495;
+							}
 			#primary-content-wrapper div.details {
 				border:1px solid #ddd;
 				padding:1em;
