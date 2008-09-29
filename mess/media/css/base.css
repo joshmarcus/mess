@@ -153,16 +153,12 @@ body {
                         padding: 10px 0 5px 0;
                         text-align: left;
                         }
-                #primary-content-wrapper ul.errorlist {
-                        position: absolute;
-                        margin: 5px 0 0 245px;
-                        font-size:0.8em;
-                        color: red;
-                        }
-                        #primary-content-wrapper ul.errorlist li {
-                                background-image: none;
-                        }
-
+            form.standard div.added {
+                margin: 10px 0 0 0;
+                padding: 5px 0 0 0;
+                overflow: hidden;
+                height: 0;
+                }
 
 		
 /*--- ((( tools ))) ---*/
@@ -532,6 +528,17 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 						#primary-content-wrapper ul.quick-info li img {
 							margin-right:1em;
 							}
+
+                #primary-content-wrapper ul.errorlist {
+                        position: absolute;
+                        margin: 5px 0 0 245px;
+                        font-size:0.8em;
+                        color: red;
+                        }
+                        #primary-content-wrapper ul.errorlist li {
+                                background-image: none;
+                        }
+
 						/*#primary-content-wrapper ul.member-info li span.status {
 							background:url('/media/images/icon-question-mark.gif') no-repeat top left;
 							}*/

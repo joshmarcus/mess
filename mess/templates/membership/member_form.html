@@ -2,6 +2,7 @@
 
 {% block head %}
   <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/calendar/calendar-min.js&2.5.2/build/connection/connection-min.js"></script>
+  <script src="http://yui.yahooapis.com/2.5.2/build/animation/animation-min.js" type="text/javascript"></script> 
   <script type="text/javascript">
     function addNew(formsetPrefix, baseURL) {
       var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
@@ -9,17 +10,28 @@
       totalForms.value = parseInt(totalForms.value) + 1;
       var callback = {
         success: function(o) {
-          var newFields = document.createElement('table');
-          newFields.innerHTML = o.responseText;
+          var newFieldsTable = document.createElement('table');
+          newFieldsTable.innerHTML = o.responseText;
+          var newFields = document.createElement('div');
+          newFields.className = 'added';
+          newFields.appendChild(newFieldsTable);
           var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
           writeRoot.parentNode.insertBefore(newFields, writeRoot);
-          writeRoot.previousSibling.getElementsByTagName('select')[0].focus()
+          newFields = writeRoot.previousSibling;
+          var addAnim = new YAHOO.util.Anim(newFields, 
+            {height: {to: 40}}, 1, YAHOO.util.Easing.easeIn);
+          addAnim.animate();
+          addAnim.onComplete.subscribe(function() {
+            newFields.style.height = 'auto';
+          });
+          newFields.getElementsByTagName('select')[0].focus()
         },
         failure: function(o) {},
         argument: [formsetPrefix],
       };
       var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
     }
+    //function 
   </script>
 {% endblock %}
 
@@ -38,20 +50,20 @@
         </table>
         {% for formset, header in formsets %}
         <h4 class="section">{{ header }}</h4>
-          {{ formset.management_form }}
+        {{ formset.management_form }}
           {% for form in formset.forms %}
-          <table>
-            {{ form }}
-          </table>
+        <table>
+          {{ form }}
+        </table>
             {% if forloop.last %}
-          <table id="{{ formset.prefix }}-writeroot" class="add">
-            <tr>
-              <th></th>
-              <td>
-                <a onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add" href="{% url add_contact member.user.username,formset.prefix %}">Add</a>
-              </td>
-            </tr>
-          </table>
+        <table id="{{ formset.prefix }}-writeroot" class="add">
+          <tr>
+            <th>Add:</th>
+            <td>
+              <input type="checkbox" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}'); this.checked = false;" id="{{ formset.prefix }}-add" />
+            </td>
+          </tr>
+        </table>
             {% endif %}
           {% endfor %}
         {% endfor %}
