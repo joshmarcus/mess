@@ -13,8 +13,26 @@
   <body class="yui-skin-sam">
     <div id="wrapper">	
       <div id="header">
+          {% if not user.is_authenticated %}
+        <ul class="login">
+          <form id="login" method="post" action=".">
+            <input type="hidden" name="next" value="{{ next }}" />
+              {# handle errors at login page #}
+            <li>
+              <label for="id_username">Username:</label>
+              {{form.username}}
+            </li>
+            <li>
+              <label for="id_password">Password:</label>
+              {{form.password}}
+            </li>
+            <li>
+              <input class="button" type="submit" value="Log in"/>
+            </li>
+          </form>
+        </ul>
+          {% else %}
         <ul id="utility-nav">
-          {% if user.is_authenticated %}
           <li>Logged in as <a href="{% url member user.username %}" >{{ user.username }}</a></li>
           <li class="last-item"><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
           {% endif %}

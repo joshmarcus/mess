@@ -4,7 +4,7 @@
   <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/calendar/calendar-min.js&2.5.2/build/connection/connection-min.js"></script>
   <script src="http://yui.yahooapis.com/2.5.2/build/animation/animation-min.js" type="text/javascript"></script> 
   <script type="text/javascript">
-    function addNew(formsetPrefix, baseURL) {
+    function addNew(formsetPrefix, baseURL, height) {
       var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
       var sUrl = baseURL + '?index=' + totalForms.value;
       totalForms.value = parseInt(totalForms.value) + 1;
@@ -19,12 +19,11 @@
           writeRoot.parentNode.insertBefore(newFields, writeRoot);
           newFields = writeRoot.previousSibling;
           var addAnim = new YAHOO.util.Anim(newFields, 
-            {height: {to: 40}}, 1, YAHOO.util.Easing.easeIn);
+            {height: {to: height}}, 1, YAHOO.util.Easing.easeIn);
           addAnim.animate();
           addAnim.onComplete.subscribe(function() {
-            newFields.style.height = 'auto';
+            newFields.getElementsByTagName('select')[0].focus()
           });
-          newFields.getElementsByTagName('select')[0].focus()
         },
         failure: function(o) {},
         argument: [formsetPrefix],
@@ -44,29 +43,34 @@
       {% if member %}
       {% endif %}
       <form class="standard" method="post">
-        <table>
-          {{ user_form }}
-          {{ member_form }}
-        </table>
+        <div class="section">
+          <h4>Main</h4>
+          <table>
+            {{ user_form }}
+            {{ member_form }}
+          </table>
+        </div>
         {% for formset, header in formsets %}
-        <h4 class="section">{{ header }}</h4>
-        {{ formset.management_form }}
-          {% for form in formset.forms %}
-        <table>
-          {{ form }}
-        </table>
-            {% if forloop.last %}
-        <table id="{{ formset.prefix }}-writeroot" class="add">
-          <tr>
-            <th>Add:</th>
-            <td>
-              <input type="checkbox" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}'); this.checked = false;" id="{{ formset.prefix }}-add" />
-            </td>
-          </tr>
-        </table>
-            {% endif %}
+        <div class="section">
+          <h4>{{ header }}</h4>
+          {{ formset.management_form }}
+            {% for form in formset.forms %}
+          <table>
+            {{ form }}
+          </table>
+              {% if forloop.last %}
+          <table id="{{ formset.prefix }}-writeroot" class="add">
+            <tr>
+              <th>Add:</th>
+              <td>
+                <input type="checkbox" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}400{% else %}100{% endifequal %}); this.checked = false;" id="{{ formset.prefix }}-add" />
+              </td>
+            </tr>
+          </table>
+        </div>
+              {% endif %}
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
         <table>
           <tr><th></th><td><input type="submit" class="button" value="Save"/></td></tr>
         </table>

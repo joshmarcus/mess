@@ -159,6 +159,13 @@ body {
                 overflow: hidden;
                 height: 0;
                 }
+            form.standard div.section {
+                border: 1px solid #bbb;
+                margin: 10px;
+                padding: 10px;
+                }
+                form.standard div.section h3 {
+                }
 
 		
 /*--- ((( tools ))) ---*/
@@ -255,6 +262,22 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		color:#fff;
 		}
 	
+    ul.login {
+        float: right;
+		margin:10px;
+        color:#fff;
+        }
+		ul.login li {
+			display:inline;
+			padding:2px 2px 2px 3px;
+			font-size:1.1em;
+            }
+        ul.login input {
+            width: 100px;
+            }
+        ul.login input.button {
+            width: auto;
+            }
 	/*utility-nav*/
 	ul#utility-nav {
 		float:right;

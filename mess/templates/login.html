@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+      {% if not user.is_authenticated %}
+      <form class="standard" id="login" method="post" action=".">
+        <input type="hidden" name="next" value="{{ next }}" />
+          {% if form.has_errors %}
+          <tr>
+            <td></td>
+            <td>
+              <ul class="errorlist">
+                <li>Your username and password didn't match. Please try again.</li>
+              </ul>
+            </td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th>
+              <label for="id_username">Username:</label>
+            </th>
+            <td>{{form.username}}</td>
+          </tr>
+          <tr>
+            <th>
+              <label for="id_password">Password:</label>
+            </th>
+            <td>{{form.password}}</td>
+          </tr>
+            <td></td>
+            <td>
+              <input class="button" type="submit" value="Log in"/>
+            </td>
+          </tr>
+        </table>
+      </form>
+        {% if form.has_errors %}
+      <p>If you are having trouble logging in, please contact a staff member.</p>
+        {% endif %}
+      {% else %}
+      <ul>
+        <li>Logged in as <a href="{% url member user.username %}" >{{ user.username }}</a></li>
+        <li class="last-item"><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

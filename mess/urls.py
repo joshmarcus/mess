@@ -15,13 +15,14 @@ urlpatterns = patterns('',
     (r'^scheduling/', include('mess.scheduling.urls')),        
     
     url(r'^$', login, {'template_name': 'welcome.html'}, 'login'),
-    url(r'^logout/$', logout_then_login, name='logout'),
+    url(r'^logout$', logout_then_login, name='logout'),
 
     ('^admin/(.*)', admin.site.root),
 )
 
 urlpatterns += patterns('django.views.generic.simple', 
     (r'^styleguide$', 'direct_to_template', {'template': 'styleguide.html'}),
+    (r'^login$', 'direct_to_template', {'template': 'login.html'}),
 )
 
 # We're going to use the Django server in development, so we'll serve
