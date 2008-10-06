@@ -98,9 +98,9 @@ def profiles_form(request, medium):
     MediumForm = forms.form_map[medium]
     index = request.GET.get('index')
     if index:
-        form = FormClass(prefix='%s-%s' % (medium, index))
+        form = MediumForm(prefix='%s-%s' % (medium, index))
     else:
-        form = FormClass()
+        form = MediumForm()
     context['form'] = form
     template = loader.get_template('profiles/form.html')
     return HttpResponse(template.render(context))

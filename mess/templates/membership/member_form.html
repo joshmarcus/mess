@@ -1,8 +1,11 @@
 {% extends "membership/base.html" %}
 
 {% block head %}
-  <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/calendar/calendar-min.js&2.5.2/build/connection/connection-min.js"></script>
-  <script src="http://yui.yahooapis.com/2.5.2/build/animation/animation-min.js" type="text/javascript"></script> 
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/yui/yahoo/yahoo-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/yui/event/event-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/yui/connection/connection-min.js"></script> 
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/yui/animation/animation-min.js"></script> 
   <script type="text/javascript">
     function addNew(formsetPrefix, baseURL, height) {
       var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
@@ -59,7 +62,7 @@
           </table>
               {% if forloop.last %}
           <div id="{{ formset.prefix }}-writeroot" class="add">
-            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}400{% else %}100{% endifequal %}); this.checked = false;" id="{{ formset.prefix }}-add">Add</a>
+            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}400{% else %}100{% endifequal %}); return false;" id="{{ formset.prefix }}-add">Add</a>
           </div>
         </div>
               {% endif %}
