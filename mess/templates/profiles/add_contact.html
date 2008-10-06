@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
+{# same template can be used for Address, Phone or Email #}
 {% block content %}
-<!-- same template can be used for Address, Phone or Email -->
-<!-- template based on /templates/membership/member_form.html -->
 <div id="left-column">
-<div id="primary-content-wrapper">
-	<h2>Profiles</h2>
-	<h3>Add {{ medium }} for: {{ user.get_full_name }}
-		({{ user.username }})</h3>
+  <div id="primary-content-wrapper">
+	<h2>Add {{ medium }} for {{ this_user.get_full_name }} 
+      ({{ this_user.username }})</h2>
 	<form class="standard" method="post">
-		<table class="form-table">
-		{{ form }}
-		<tr><td></td><td><input class="button" type="submit" value="Save"/></td></tr>
-		</table>
+      <table class="form-table">
+        {{ form }}
+        <tr>
+          <td></td>
+          <td><input class="button" type="submit" value="Save"/></td>
+        </tr>
+      </table>
 	</form>
-</div>
+  </div>
 </div>
 {% endblock %}

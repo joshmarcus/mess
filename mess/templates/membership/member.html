@@ -2,14 +2,8 @@
 
 {% block content %}
   <div id="left-column">
-      <ul id="local-nav">
-        <!--<li><a href="">local nav item</a></li>
-        <li><a href="">local nav item</a></li>-->
-		<!-- <li class="last-item"><a href="{% url member-edit member.user.username%}">edit profile</a></li> -->
-      </ul>
     <div id="primary-content-wrapper">
-      <h2>Members</h2>
-      <h3>Member Profile</h3>
+      <h2>Member Profile</h2>
       <div class="profile">
         <div class="profile-links">
           <h5>Accounts</h5>
@@ -35,8 +29,9 @@
 		  {% if caneditprofile %}
 		  <ul class="edit-contact-info">
 			{% for medium in contactmedia %}
-			<li><a class="add" href="{% url add_contact member.user.username,medium %}">
-					add {{medium}}</a></li>
+			<li>
+              <a class="add" href="{% url add_contact member.user.username,medium %}">add {{medium}}</a>
+            </li>
 			{% endfor %}
 	      </ul>
 		  {% endif %}

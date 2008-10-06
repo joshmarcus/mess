@@ -6,10 +6,10 @@
 <div id="left-column">
 <div id="primary-content-wrapper">
 	<h2>Profiles</h2>
-	<h3>Remove {{ medium }} for: {{ user.get_full_name }}
-		({{ user.username }})</h3>
+	<h3>Remove {{ medium }} for {{ this_user.get_full_name }}
+		({{ this_user.username }})</h3>
 	<h3>{{ medium|capfirst }} to be removed: {{ target }}</h3>
-	<h3><a href="?medium={{ medium }}&target={{ target|urlencode }}&yes=yes">Remove</a>
+	<h3><a href="?medium={{ medium }}&target={{ target|urlencode }}&confirmed=yes">Remove</a>
 	<a href="/membership/members/{{ user.username }}">Cancel</a></h3>
 </div>
 </div>

@@ -37,14 +37,13 @@
 {% block content %}
   <div id="left-column">
     <div id="primary-content-wrapper">
-      <h2>Members</h2>
-      <h3>Edit Profile: {{ member.user.get_full_name }} 
-	  	({{ member.user.username }})</h3>
+      <h2>Edit Profile: {{ member.user.get_full_name }} 
+	  	({{ member.user.username }})</h2>
       {% if member %}
       {% endif %}
       <form class="standard" method="post">
         <div class="section">
-          <h4>Main</h4>
+          <h3>Main</h3>
           <table>
             {{ user_form }}
             {{ member_form }}
@@ -52,21 +51,16 @@
         </div>
         {% for formset, header in formsets %}
         <div class="section">
-          <h4>{{ header }}</h4>
+          <h3>{{ header }}</h3>
           {{ formset.management_form }}
             {% for form in formset.forms %}
           <table>
             {{ form }}
           </table>
               {% if forloop.last %}
-          <table id="{{ formset.prefix }}-writeroot" class="add">
-            <tr>
-              <th>Add:</th>
-              <td>
-                <input type="checkbox" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}400{% else %}100{% endifequal %}); this.checked = false;" id="{{ formset.prefix }}-add" />
-              </td>
-            </tr>
-          </table>
+          <div id="{{ formset.prefix }}-writeroot" class="add">
+            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}400{% else %}100{% endifequal %}); this.checked = false;" id="{{ formset.prefix }}-add">Add</a>
+          </div>
         </div>
               {% endif %}
             {% endfor %}

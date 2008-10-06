@@ -61,7 +61,7 @@ body {
 	h3 {
 		font-size: 1.4em;
 		color:#666;
-		margin-bottom:1.5em;
+		margin-bottom:.5em;
 		}
 	h4 {
 		color:#d18405;
@@ -562,6 +562,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
                                 background-image: none;
                         }
 
+                #primary-content-wrapper div.add {
+                        margin: 0 0 0 125px;
+                        }
 						/*#primary-content-wrapper ul.member-info li span.status {
 							background:url('/media/images/icon-question-mark.gif') no-repeat top left;
 							}*/
