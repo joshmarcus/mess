@@ -5,7 +5,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     pass
 
 class AddressAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['address1', 'address2']
 
 class PhoneAdmin(admin.ModelAdmin):
     pass

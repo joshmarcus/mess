@@ -144,8 +144,9 @@ body {
 				}
                 form.standard th {
                         width:125px;
-                        padding:7px 0;
                         text-align: right;
+                        }
+                form.standard td {
                         }
                 form.standard th.section {
                         color:#666;
@@ -562,8 +563,8 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
                                 background-image: none;
                         }
 
-                #primary-content-wrapper div.add {
-                        margin: 0 0 0 125px;
+                #primary-content-wrapper form.standard div.add {
+                        text-align: right;
                         }
 						/*#primary-content-wrapper ul.member-info li span.status {
 							background:url('/media/images/icon-question-mark.gif') no-repeat top left;

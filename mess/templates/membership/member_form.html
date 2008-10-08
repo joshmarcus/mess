@@ -22,7 +22,7 @@
           writeRoot.parentNode.insertBefore(newFields, writeRoot);
           newFields = writeRoot.previousSibling;
           var addAnim = new YAHOO.util.Anim(newFields, 
-            {height: {to: height}}, 1, YAHOO.util.Easing.easeIn);
+            {height: {to: height}}); //, 1, YAHOO.util.Easing.easeIn);
           addAnim.animate();
           addAnim.onComplete.subscribe(function() {
             newFields.getElementsByTagName('select')[0].focus()
@@ -33,7 +33,6 @@
       };
       var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
     }
-    //function 
   </script>
 {% endblock %}
 
@@ -45,29 +44,34 @@
       {% if member %}
       {% endif %}
       <form class="standard" method="post">
+        {% if is_errors %}
+          <div class="error-message">
+            <h3>You have problems.</h3>
+            <p>Please see specific errors in the form below.</p>
+          </div>
+        {% endif %}
         <div class="section">
           <h3>Main</h3>
           <table>
             {{ user_form }}
             {{ member_form }}
+            {{ related_accounts_form }}
           </table>
         </div>
         {% for formset, header in formsets %}
         <div class="section">
           <h3>{{ header }}</h3>
           {{ formset.management_form }}
-            {% for form in formset.forms %}
+          {% for form in formset.forms %}
           <table>
             {{ form }}
           </table>
-              {% if forloop.last %}
+          {% endfor %}
           <div id="{{ formset.prefix }}-writeroot" class="add">
-            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}400{% else %}100{% endifequal %}); return false;" id="{{ formset.prefix }}-add">Add</a>
+            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}250{% else %}80{% endifequal %}); return false;" id="{{ formset.prefix }}-add">Add</a>
           </div>
         </div>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
+        {% endfor %}
         <table>
           <tr><th></th><td><input type="submit" class="button" value="Save"/></td></tr>
         </table>

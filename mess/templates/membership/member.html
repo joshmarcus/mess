@@ -9,24 +9,23 @@
           <h5>Accounts</h5>
           <ul>
             {% for account in member.accounts.all %}
-              <li><a href="{% url account account.id %}">{{ account }}</a></li>
+              <li><a href="{% url account account.id %}">{{ account }}</a>{% ifequal account member.primary_account %} (primary){% endifequal %}</li>
             {% endfor %}
           </ul>
         </div>
         <h4>
-		{% if caneditprofile %}	
-			<a href="{% url member-edit member.user.username %}">edit</a>
+		{% if user.is_staff %}	
+        <a href="{% url member-edit member.user.username %}">edit</a>
 		{% endif %}
 		{{ member.user.get_full_name }} 
 		</h4>
         <ul class="quick-info">
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/> {{ member.get_status_display }}</li>
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/> {{ member.get_work_status_display }}</li>
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/> {{ member.has_key }}</li>
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/> {{ member.date_joined }}</li>
+          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.get_status_display }}</li>
+          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/>{{ member.get_work_status_display }}</li>
+          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/>{{ member.has_key }}</li>
+          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/>{{ member.date_joined }}</li>
         </ul>
         <div class="details clearfix">
-		  {% if caneditprofile %}
 		  <ul class="edit-contact-info">
 			{% for medium in contactmedia %}
 			<li>
@@ -34,30 +33,24 @@
             </li>
 			{% endfor %}
 	      </ul>
-		  {% endif %}
           {% for address in profile.addresses.all %}
             {% include "profiles/snippets/address.html" %}
           {% endfor %}
           <p>
-            {% for phone in profile.phones.all %}
-              {{ phone }} ({{ phone.get_type_display }})
-			 	{% if caneditprofile %}
-<!--					<a href="">edit</a> -->
-					<a class="remove" href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
-				{% endif %}
-			  <br />
-            {% endfor %} 
-		</p><p>
-            {% if member.user.email %}
-			  WARNING: MESS is not designed to handle member.user.email.<br>
-              <a href="mailto:{{ member.user.email }}">{{ member.user.email }}</a><br/>
-            {% endif %}
-            {% for email in profile.emails.all %}
-              <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
-			  {% if caneditprofile %}
-			  	<br /><a class="remove" href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
-			  {% endif %} <br/>
-            {% endfor %}
+          {% for phone in profile.phones.all %}
+            {{ phone }} ({{ phone.get_type_display }})
+            <a class="remove" href="">edit</a>
+            <a class="remove" href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
+            <br />
+          {% endfor %} 
+          </p>
+          <p>
+          {% for email in profile.emails.all %}
+            <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
+            <a class="remove" href="">edit</a>
+            <a class="remove" href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
+            <br />
+          {% endfor %}
           </p>
         </div>
       </div>
@@ -66,10 +59,10 @@
   <div id="right-column">
     <h3>Icon Key</h3>
     <ul id="icon-key">
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif"/> Status</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/> Work Status</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif"/> Has Key</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/> Date Joined</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif"/>Status</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/>Work Status</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif"/>Has Key</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/>Date Joined</li>
     </ul>
   </div>
 {% endblock %}

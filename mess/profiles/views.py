@@ -4,37 +4,56 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext, loader
 
+from mess.membership import models as membership_models
 from mess.profiles import forms, models
 
+# TODO: profile page at /profiles/<username>
+
 def add_contact(request, username, medium):
-    # FIXME this should request.GET.get('medium') just like remove_contact does
-    # medium may be 'address', 'phone', or 'email'
     context = RequestContext(request)
+    referer = request.META.get('HTTP_REFERER', '')
     this_user = get_object_or_404(User, username=username)
-    # context['user'] overrides logged-in user in context
+    # use 'this_user' because context['user'] overrides logged-in user 
     context['this_user'] = this_user
+    # medium may be 'address', 'phone', or 'email'
     context['medium'] = medium
     MediumForm = forms.form_map[medium]
     if request.method == 'POST':
         form = MediumForm(request.POST)
+        referer = request.POST.get('referer')
         if form.is_valid():
-            form.save()
-            # TODO: isn't there a way to handle the m2m with the form.save()?
+            field_dict = {}
+            for key in form.cleaned_data:
+                if key not in ('DELETE', 'id'):
+                    field_dict[key] = form.cleaned_data[key]
+            try:
+                match = form._meta.model.objects.get(**field_dict)
+            except form._meta.model.DoesNotExist:
+                match = None
+            if match:
+                medium_obj = match
+            else:
+                medium_obj = form.save()
             profile = this_user.get_profile()
             profile_medium_objs = {
                 'address': profile.addresses,
                 'phone': profile.phones,
                 'email': profile.emails
             }[medium]
-            profile_medium_objs.add(form.instance)
-            # TODO: should redirect to referer
-            return HttpResponseRedirect('/membership/members/'+username)
+            profile_medium_objs.add(medium_obj)
+            if referer:
+                return HttpResponseRedirect(referer)
+            else:
+                # should direct to "profile" page when it works
+                return HttpResponseRedirect(reverse('member', 
+                        args=[this_user.username]))
     else:
         form = MediumForm()
     context['form'] = form
+    context['referer'] = referer
     return render_to_response('profiles/add_contact.html', context)
 
-def remove_contact(request, username):
+def remove_contact(request, username, medium):
     context = RequestContext(request)
     this_user = get_object_or_404(User, username=username)
     context['this_user'] = this_user

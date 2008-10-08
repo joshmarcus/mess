@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import paginator as p
+from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -36,11 +37,11 @@ def member(request, username):
     member = get_object_or_404(models.Member, user=user)
     context['member'] = member
     template = get_template('membership/member.html')
-    context['caneditprofile'] = True
     # this list should live somewhere else, but I don't know where:
     context['contactmedia'] = ['address', 'phone', 'email']
     return HttpResponse(template.render(context))
 
+@user_passes_test(lambda u: u.is_staff)
 def member_add(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('login'))
@@ -51,6 +52,7 @@ def member_add(request):
     # TODO: need to grab user (and corresponding profile) from 
     # user_form on added member
 
+@user_passes_test(lambda u: u.is_staff)
 def member_edit(request, username):
     user = get_object_or_404(User, username=username)
     if not request.user.is_staff and not (request.user.is_authenticated() 
@@ -60,10 +62,13 @@ def member_edit(request, username):
     member = get_object_or_404(models.Member, user=user)
     context = RequestContext(request)
     context['member'] = member
+    is_errors = False
     if request.method == 'POST':
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
-            instance=member)
+                instance=member)
+        related_accounts_form = forms.RelatedAccountsForm(member, request.POST,
+                prefix='related')
         address_formset = profiles_forms.AddressFormSet(request.POST, 
                 prefix='address',
                 queryset=profile.addresses.all())
@@ -74,52 +79,26 @@ def member_edit(request, username):
                 prefix='email',
                 queryset=profile.emails.all())
         if (user_form.is_valid() and member_form.is_valid() and 
-                address_formset.is_valid() and phone_formset.is_valid() and
-                email_formset.is_valid()):
+                related_accounts_form.is_valid() and address_formset.is_valid()
+                and phone_formset.is_valid() and email_formset.is_valid()):
             user_form.save()
             member_form.save()
-            address_instances = address_formset.save(commit=False)
-            # TODO: handle deletes correctly for m2m (remove instead)
-            for address in address_instances:
-                matches = profiles_models.Address.objects.filter(
-                    type=address.type,
-                    address1=address.address1,
-                    address2=address.address2,
-                )
-                if matches:
-                    first_match = matches[0]
-                    profile.addresses.add(first_match)
-                else:
-                    address.save()
-                    profile.addresses.add(address)
-            phone_instances = phone_formset.save(commit=False)
-            for phone in phone_instances:
-                matches = profiles_models.Phone.objects.filter(
-                    type=phone.type,
-                    number=phone.number,
-                )
-                if matches:
-                    first_match = matches[0]
-                    profile.phones.add(first_match)
-                else:
-                    phone.save()
-                    profile.phones.add(phone)
-            email_instances = email_formset.save(commit=False)
-            for email in email_instances:
-                matches = profiles_models.Email.objects.filter(
-                    type=email.type,
-                    email=email.email,
-                )
-                if matches:
-                    first_match = matches[0]
-                    profile.emails.add(first_match)
-                else:
-                    email.save()
-                    profile.emails.add(email)
+            related_accounts = related_accounts_form.cleaned_data['accounts']
+            member.accounts = related_accounts
+            member.save()
+            # have to handle formset-saving manually because of m2m
+            profile.addresses = fancy_save(address_formset)
+            profile.phones = fancy_save(phone_formset)
+            profile.emails = fancy_save(email_formset)
+            profile.save()
             return HttpResponseRedirect(reverse('member', args=[username]))
+        else:
+            is_errors = True
     else:
         user_form = forms.UserForm(instance=user, prefix='user')
         member_form = forms.MemberForm(instance=member, prefix='member')
+        related_accounts_form = forms.RelatedAccountsForm(member, 
+                prefix='related')
         address_formset = profiles_forms.AddressFormSet(prefix='address',
                 queryset=profile.addresses.all())
         phone_formset = profiles_forms.PhoneFormSet(prefix='phone',
@@ -128,14 +107,41 @@ def member_edit(request, username):
                 queryset=profile.emails.all())
     context['user_form'] = user_form
     context['member_form'] = member_form
+    context['related_accounts_form'] = related_accounts_form
     context['formsets'] = [
         (address_formset, 'Addresses'), 
         (phone_formset, 'Phones'),
         (email_formset, 'Email Addresses'),
     ]
+    context['is_errors'] = is_errors
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
+def fancy_save(formset):
+    object_list = []
+    for form in formset.forms:
+        if form.cleaned_data['DELETE']:
+            continue
+        field_dict = {}
+        for key in form.cleaned_data:
+            if key not in ('DELETE', 'id'):
+                field_dict[key] = form.cleaned_data[key]
+        try:
+            match = formset.model.objects.get(**field_dict)
+        except formset.model.DoesNotExist:
+            match = None
+        if match:
+            object_list.append(match)
+        else:
+            instance = formset.model()
+            for key in form.cleaned_data:
+                if key != 'id':
+                    instance.__dict__[key] = form.cleaned_data[key]
+            instance.save()
+            object_list.append(instance)
+    return object_list
+
+@user_passes_test(lambda u: u.is_staff)
 def account_list(request):
     context = RequestContext(request)
     account_objs = models.Account.objects.all()
@@ -147,12 +153,17 @@ def account_list(request):
     return HttpResponse(template.render(context))
 
 def account(request, id):
-    context = RequestContext(request)
     account = get_object_or_404(models.Account, id=id)
+    request_member = models.Member.objects.get(user=request.user)
+    if not request.user.is_staff and not (request.user.is_authenticated() 
+            and request_member in account.members.all()):
+        return HttpResponseRedirect(reverse('login'))
+    context = RequestContext(request)
     context['account'] = account
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 
+@user_passes_test(lambda u: u.is_staff)
 def account_form(request, id):
     context = RequestContext(request)
     account = get_object_or_404(models.Account, id=id)

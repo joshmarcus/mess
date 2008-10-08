@@ -5,12 +5,19 @@ from django.forms import formsets
 from mess.membership.models import Member, Account
 
 class MemberForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(MemberForm, self).__init__(*args, **kwargs)
-        self.fields['accounts'] = forms.ModelMultipleChoiceField(queryset=Account.objects.all(), initial=[obj.pk for obj in self.instance.accounts.all()])
     class Meta:
         model = Member
         fields = ('status', 'work_status', 'has_key', 'primary_account')
+    # TODO: add validator for primary_account in accounts
+
+class RelatedAccountsForm(forms.Form):
+    def __init__(self, member_instance, *args, **kwargs):
+        super(RelatedAccountsForm, self).__init__(*args, **kwargs)
+        # TODO: make this a dropdown multiple choice
+        self.fields['accounts'] = forms.ModelMultipleChoiceField(
+            queryset=Account.objects.all(), 
+            initial=[obj.pk for obj in member_instance.accounts.all()],
+            help_text='Hold down "Control", or "Command" on a Mac, to select more than one.')
 
 class UserForm(forms.ModelForm):
     class Meta:
