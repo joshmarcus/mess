@@ -32,7 +32,7 @@ http://code.google.com/p/django-clevercss/
 
 body {
 	text-align:center;
-	background:#fff url(/media/images/bg-body.gif) repeat-y top center;
+	background:#fff url(../images/bg-body.gif) repeat-y top center;
 	color: #333;
 	font-family:helvetica, arial, sans-serif;
 	font-size:62.5%;
@@ -178,8 +178,8 @@ hr.left-clearer {display: block; clear: left; margin: -0.66em 0; visibility: hid
 hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: hidden;}
 .last-item {border:none !important;}
 .content-section {border:1px solid #ddd; padding:1em;}
-.action {background:url(/media/images/bg-action.gif) no-repeat 0 2px; padding-left:16px;}
-.error-message {border:2px solid #cc0000; background:#ffcccc url('/media/images/bg-error-message.gif') no-repeat 10px 10px; padding:13px 10px 1em 50px; margin-bottom:1em;}
+.action {background:url(../images/bg-action.gif) no-repeat 0 2px; padding-left:16px;}
+.error-message {border:2px solid #cc0000; background:#ffcccc url('../images/bg-error-message.gif') no-repeat 10px 10px; padding:13px 10px 1em 50px; margin-bottom:1em;}
 	.error-message h3 {margin-bottom:0;}
 	
 /*clearfix - forces floated parent div to expand around its floated child elements*/
@@ -319,18 +319,18 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				display:block;
 				float:left;
 				color:#fff;
-				background:#53648C url(/media/images/bg-global-nav.gif) no-repeat top right;
+				background:#53648C url(../images/bg-global-nav.gif) no-repeat top right;
 				line-height:25px;
 				text-decoration:none;
 				padding:0 15px 0 16px;
 				height:25px;
 				}
 				ul#global-nav li a:hover {
-					background:#246495 url(/media/images/bg-global-nav-hover.gif) no-repeat top right;
+					background:#246495 url(../images/bg-global-nav-hover.gif) no-repeat top right;
 					}
 				ul#global-nav li a.active {
 
-					background:#ebebeb url(/media/images/bg-global-nav-active.gif) no-repeat top right;
+					background:#ebebeb url(../images/bg-global-nav-active.gif) no-repeat top right;
 					color:#333;
 					}
 					
@@ -396,7 +396,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					ul#local-nav li a.active {
 						color:#333; 
 						text-decoration:none;
-						background:url('/media/images/bg-local-nav-active.png') no-repeat center 26px;
+						background:url('../images/bg-local-nav-active.png') no-repeat center 26px;
 						}						
 					
 		/*primary-content-wrapper styles*/
@@ -409,7 +409,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#primary-content-wrapper ul li {
 				margin-bottom:.5em;
 				padding-left:9px;
-				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
+				background:url(../images/bg-bullet.gif) no-repeat 0 2px;
 				}
 				
 		#primary-content-wrapper a.remove, #primary-content-wrapper a.add, #primary-content-wrapper a.edit {
@@ -419,8 +419,8 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
                                         margin-right:.5em;
 					}
 					#primary-content-wrapper a.add:hover, #primary-content-wrapper a.remove:hover, #primary-content-wrapper a.edit:hover {color:#246495;}
-					#primary-content-wrapper a.remove {background:url('/media/images/bg-icon-remove.gif') no-repeat left;}
-					#primary-content-wrapper a.add {background:url('/media/images/bg-icon-add.gif') no-repeat left;}
+					#primary-content-wrapper a.remove {background:url('../images/bg-icon-remove.gif') no-repeat left;}
+					#primary-content-wrapper a.add {background:url('../images/bg-icon-add.gif') no-repeat left;}
                                         #primary-content-wrapper a.edit {background:url('/media/images/bg-icon-edit.gif') no-repeat left;}
 	
 		#primary-content-wrapper div.attention {
@@ -573,7 +573,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
                         text-align: right;
                         }
 						/*#primary-content-wrapper ul.member-info li span.status {
-							background:url('/media/images/icon-question-mark.gif') no-repeat top left;
+							background:url('../images/icon-question-mark.gif') no-repeat top left;
 							}*/
 				
 
@@ -603,7 +603,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			#right-column ul li {
 				margin-bottom:.5em;
 				padding-left:11px;
-				background:url(/media/images/bg-bullet.gif) no-repeat 0 2px;
+				background:url(../images/bg-bullet.gif) no-repeat 0 2px;
 				}
 			#right-column ul#icon-key {
 				}	

@@ -53,17 +53,17 @@ def add_contact(request, username, medium):
     context['referer'] = referer
     return render_to_response('profiles/add_contact.html', context)
 
-def remove_contact(request, username, medium):
+def remove_contact(request, username, medium, id):
     context = RequestContext(request)
     this_user = get_object_or_404(User, username=username)
     context['this_user'] = this_user
-    medium = request.GET.get('medium')
+    MediumClass = models.__getattribute__(medium.capitalize())
     context['medium'] = medium
-    target = request.GET.get('target')
-    context['target'] = target
+    contact = get_object_or_404(MediumClass, id=id)
+    context['contact'] = contact
     # syntax to actually remove it is ?medium=phone&target=1234&yes=yes
     # TODO: change to POST
-    if request.GET.has_key('confirmed'):
+    if request.method == 'POST':
         profile = this_user.get_profile()
         profile_medium_objs = {
             'address': profile.addresses,

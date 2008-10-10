@@ -36,9 +36,13 @@ def member(request, username):
     context['profile'] = profile
     member = get_object_or_404(models.Member, user=user)
     context['member'] = member
-    template = get_template('membership/member.html')
+    # to get around silly {% url %} limits
+    context['address_name'] = 'address'
+    context['phone_name'] = 'phone'
+    context['email_name'] = 'email'
     # this list should live somewhere else, but I don't know where:
-    context['contactmedia'] = ['address', 'phone', 'email']
+    context['contact_media'] = ['address', 'phone', 'email']
+    template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_staff)
@@ -120,7 +124,7 @@ def member_edit(request, username):
 def fancy_save(formset):
     object_list = []
     for form in formset.forms:
-        if form.cleaned_data['DELETE']:
+        if form.cleaned_data.get('DELETE') or not form.cleaned_data:
             continue
         field_dict = {}
         for key in form.cleaned_data:

@@ -27,7 +27,7 @@
         </ul>
         <div class="details clearfix">
 		  <ul class="edit-contact-info">
-			{% for medium in contactmedia %}
+			{% for medium in contact_media %}
 			<li>
               <a class="add" href="{% url add_contact member.user.username,medium %}">add {{medium}}</a>
             </li>
@@ -40,7 +40,7 @@
           {% for phone in profile.phones.all %}
             {{ phone }} ({{ phone.get_type_display }})
             <a class="edit" href="">edit</a>
-            <a class="remove" href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
+            <a class="remove" href="{% url remove_contact member.user.username,phone_name,phone.id %}">remove</a>
             <br />
           {% endfor %} 
           </p>
@@ -48,7 +48,7 @@
           {% for email in profile.emails.all %}
             <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
             <a class="edit" href="">edit</a>
-            <a class="remove" href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
+            <a class="remove" href="{% url remove_contact member.user.username,email_name,email.id %}">remove</a>
             <br />
           {% endfor %}
           </p>

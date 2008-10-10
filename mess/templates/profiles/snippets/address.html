@@ -13,6 +13,6 @@
               {{ address.country }}<br />
            
               <a class="edit" href="">edit</a>
-              <a class="remove" href="{% url remove_contact member.user.username %}?medium=address&target={{ address|urlencode}}">remove</a>
+              <a class="remove" href="{% url remove_contact member.user.username,address_name,address.id %}">remove</a>
 			</p>
 
