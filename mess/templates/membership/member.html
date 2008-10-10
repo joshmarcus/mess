@@ -9,7 +9,7 @@
           <h5>Accounts</h5>
           <ul>
             {% for account in member.accounts.all %}
-              <li><a href="{% url account account.id %}">{{ account }}</a>{% ifequal account member.primary_account %} (primary){% endifequal %}</li>
+              <li{% ifequal account member.primary_account %} id="primary-acct"{% endifequal %}><a href="{% url account account.id %}">{{ account }}</a></li>
             {% endfor %}
           </ul>
         </div>
@@ -39,7 +39,7 @@
           <p>
           {% for phone in profile.phones.all %}
             {{ phone }} ({{ phone.get_type_display }})
-            <a class="remove" href="">edit</a>
+            <a class="edit" href="">edit</a>
             <a class="remove" href="{% url remove_contact member.user.username %}?medium=phone&target={{ phone|urlencode }}">remove</a>
             <br />
           {% endfor %} 
@@ -47,7 +47,7 @@
           <p>
           {% for email in profile.emails.all %}
             <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
-            <a class="remove" href="">edit</a>
+            <a class="edit" href="">edit</a>
             <a class="remove" href="{% url remove_contact member.user.username %}?medium=email&target={{ email|urlencode}}">remove</a>
             <br />
           {% endfor %}
@@ -63,6 +63,6 @@
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/>Work Status</li>
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif"/>Has Key</li>
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/>Date Joined</li>
-    </ul>
+     </ul>
   </div>
 {% endblock %}

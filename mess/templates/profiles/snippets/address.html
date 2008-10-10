@@ -12,7 +12,7 @@
               {{ address.postal_code }}<br />
               {{ address.country }}<br />
            
-              <a class="remove" href="">edit</a>
+              <a class="edit" href="">edit</a>
               <a class="remove" href="{% url remove_contact member.user.username %}?medium=address&target={{ address|urlencode}}">remove</a>
 			</p>
 
