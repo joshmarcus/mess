@@ -2,7 +2,10 @@
 
 {% block head %}
 <link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/connection/connection-min.js&2.5.2/build/autocomplete/autocomplete-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/connection/connection-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/autocomplete/autocomplete-min.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>

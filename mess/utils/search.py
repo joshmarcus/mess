@@ -5,6 +5,7 @@ from mess.profiles.models import Address, Email, Phone
 
 from django.contrib.auth.models import User
 
+# shouldn't use "list" as a variable -- collision with built-in
 def create_dictionary(list):
     """Create a dictionary from a given list.
     

@@ -1,18 +1,17 @@
 from datetime import date
 
-from django.shortcuts import render_to_response
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import get_template
-from django.contrib.auth.models import User
 from django.utils import simplejson
 
-from mess.accounting.models import Transaction
-from mess.accounting.models import get_credit_choices, get_debit_choices
-from mess.accounting.models import get_todays_transactions
-from mess.accounting.models import get_trans_total
-from mess.membership.models import Member, Account
 from mess.accounting.forms import TransactionForm, CloseOutForm
+from mess.accounting.models import Transaction, get_credit_choices, \
+    get_debit_choices, get_todays_transactions, get_trans_total, Member, \
+    Account
 from mess.utils.search import search_for_string, account_members_dict
 
 def thanks(request):
@@ -74,15 +73,15 @@ def cashier(request):
     if request.method == 'POST':
         save_credit_trans(request)
         save_debit_trans(request)
-        return HttpResponseRedirect('../thanks')
-    elif 'search' in request.GET:
-        search = request.GET.get('search')
+        return HttpResponseRedirect(reverse('accounting-thanks'))
+    if 'search' in request.GET:
+        search = request.GET['search']
         search_result = []
         if search == 'transactions':
             if 'account_id' in request.GET:
                 account_id = request.GET.get('account_id')
-                trans = Transaction.objects.filter(account = account_id)
-                context['account_name'] = Account.objects.get(id = account_id).name
+                trans = Transaction.objects.filter(account=account_id)
+                context['account_name'] = Account.objects.get(id=account_id).name
             else:
                 d = date.today()
                 trans = Transaction.objects.filter(date__year = d.year,
