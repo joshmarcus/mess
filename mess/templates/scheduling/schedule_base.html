@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link href="{{MEDIA_URL}}css/div_list.css"
-        type="text/css" rel="stylesheet" media="screen" />
-
 <!--CSS file (default YUI Sam Skin) -->
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/calendar/assets/calendar.css">
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/calendar/assets/skins/sam/calendar.css" media="screen" >
 <!-- Custom CSS -->
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css">
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/div_list.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css" media="screen" >
 <!-- Dependencies -->
-<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
 <!-- Custom JS -->
