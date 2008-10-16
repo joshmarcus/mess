@@ -5,17 +5,23 @@
 {% block content %}
   <div id="left-column">
     <div id="primary-content-wrapper">
+      {% if user.is_anonymous %}
       <h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
-      <h3>Members and staff please log in</h3>
       <div class="attention">
-      <h4>This is a good place for a general announcement</h4>
-      <p>This is just test content I want to see what happens when I do this. And What does <a href="">a link</a> look like?</p>
-      <ul>
-        <li>Unordered list after a paragraph</li>
-        <li>Another list item</li>
-        <li>Another unordered list item</li>
-        <li>And just one more</li>
-      </ul>
+        <h3>Members and staff, please log in.</h3>
+      </div>
+      {% else %}
+      <h2>Hello, {{ user.first_name }}!</h2>
+      {% endif %}
+      <div class="attention">
+        <h4>This is a good place for a general announcement</h4>
+        <p>This is just test content I want to see what happens when I do this. And What does <a href="">a link</a> look like?</p>
+        <ul>
+          <li>Unordered list after a paragraph</li>
+          <li>Another list item</li>
+          <li>Another unordered list item</li>
+          <li>And just one more</li>
+        </ul>
       </div>
       <p>Second paragraph. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec quis purus vitae neque auctor ultricies. Phasellus in risus. Vivamus cursus eros vel lectus. Etiam malesuada. Maecenas sapien mi, elementum vel, pretium sed, facilisis ac, risus. Aliquam erat volutpat. Suspendisse potenti. Morbi convallis turpis sagittis dolor.</p>
       <h4>Another fourth level heading which will span two lines</h4>
