@@ -73,7 +73,7 @@ def schedule(request):
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
     }
-    return render_to_response('scheduling/schedule.html', context,
+    return render_to_response('scheduling/schedule_base.html', context,
                                 context_instance=RequestContext(request))
 
 def timecard(request):

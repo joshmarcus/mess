@@ -22,15 +22,14 @@ class Job(models.Model):
     class Meta:
         ordering = ['name']
 
-FREQUENCY_CHOICES = (
-    ('4','Every 4 Weeks'),
-    ('6','Every 6 Weeks'),
-)
-
 class RecurringShift(models.Model):
     """
     A recurring shift is members typical workshift made up of a series of tasks
-    """   
+    """  
+    FREQUENCY_CHOICES = (
+        ('4','Every 4 Weeks'),
+        ('6','Every 6 Weeks'),
+    ) 
     job = models.ForeignKey(Job)
     member = models.ForeignKey(Member, null=True)
     frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)

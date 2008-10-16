@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link href="{{MEDIA_URL}}css/div_list.css"
+        type="text/css" rel="stylesheet" media="screen" />
+
+<!--CSS file (default YUI Sam Skin) -->
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/calendar/assets/calendar.css">
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/fonts/fonts-min.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css">
+<!-- Dependencies -->
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
+<!-- Custom JS -->
+<script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
+
+
+<!-- Calendar styles -->
+<style type="text/css">
+    {% for task in tasks %}
+        .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {text-decoration: underline;}
+    {% endfor %}
+</style>
+
+{% endblock head %}
+
+{% block page_menu %}
+<a class='button' href="schedule.html">Schedule</a>
+<a class='button' href="job_list.html">Job List</a>
+{% endblock %}
+
+{% block content %}
+<div id="left-column">
+    {% include "scheduling/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+        <div id="cal1Container"></div>
+        <div id="task-list"></div>
+    </div>
+</div>
+<div id="right-column">
+    <h3 id="right-column-heading">Task Form</h3>
+    <div id="task-form">
+    </div> 
+</div>
+
+{% endblock content %}
