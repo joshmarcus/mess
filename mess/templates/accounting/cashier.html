@@ -2,10 +2,10 @@
 
 {% block head %}
 <link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
-<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/datasource/datasource-min.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/connection/connection-min.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/yui/autocomplete/autocomplete-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
@@ -14,7 +14,8 @@
 {% block content %}
 <div id="double-column" >
   <ul id="local-nav">
-    {% include "accounting/snippets/local_nav.html" %}
+    <li><a {% ifequal local_nav "cashier" %} class="active"{% endifequal %} href="{% url close_out %}">Cashier</a></li>
+    <li><a {% ifequal local_nav "close_out" %} class="active"{% endifequal %} class="last-item"><a href="{% url close_out %}">Close Out</a></li>
   </ul>
   <div id="primary-content-wrapper">
 	<!--digger's code begins here-->
