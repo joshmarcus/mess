@@ -1,3 +1,4 @@
+
 /* --:((( CALENDAR STUFF ))):-- */		
 
 /* WEEKDAY (Su, Mo, Tu...) HEADER CELLS */
@@ -22,14 +23,20 @@
 /* TODAY'S DATE */
 .yui-skin-sam .yui-calendar td.calcell.today a{
     background:#fff280;
-    border: none;
 }
 
-.yui-skin-sam .yui-calendar td.calcell.selected a{
-    background-color:#b3d4ff;color:#000;
-}
+.yui-skin-sam .yui-calendar td.calcell.today{background-color:#fff280;}
+
+/* selected cell */
+
+.yui-skin-sam .yui-calendar td.calcell.selected a{background-color:#fff;color:#000;}
+.yui-skin-sam .yui-calendar td.calcell.selected{background-color:#000;color:#000;}
 
 .yui-skin-sam .yui-calendar td.calcell.calcellhover a{
+    background-color:#426fd9;color:#fff;
+}
+
+.yui-skin-sam .yui-calendar td.calcell.calcellhover{
     background-color:#426fd9;color:#fff;
 }
 
