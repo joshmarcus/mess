@@ -5,7 +5,8 @@
 {% endif %}
 	{{ form.as_p }}
 	<input value="Save" type="submit" />
-	{% if task.id %}
-    <a href="{% url del-task task.id %}">Delete {{object}}</a>
-    {% endif %}
 </form> 
+
+{# {% if task.id %} #}
+{# <a href="{% url del-task task.id %}">Delete {{object}}</a> #}
+{# {% endif %} #}

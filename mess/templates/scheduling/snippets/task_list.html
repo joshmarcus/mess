@@ -1,8 +1,14 @@
 {# prints the list of tasks for currently selected day #}
 {% if tasks %}
-<ul>
-{% for task in tasks %}
-<li>{{task}} <a href="javascript:getForm({{task.id}});">[edit]</a> </li>
-{% endfor %}
-</ul>
+<div class="details clearfix">
+    <ol>
+        {% for task in tasks %}
+            <li>
+                {{task}} 
+                <a class="edit" href="javascript:getForm({{task.id}});">edit</a> 
+                <a class="remove" href="javascript:deleteTask({{task.id}});">remove</a>
+            </li>
+        {% endfor %}
+    </ol>
+</div>
 {% endif %}

@@ -120,6 +120,12 @@ function getForm(task_id, dt) {
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
 }
 
+function deleteTask(task_id) {
+    if (confirm("Are you sure you want to remove this task?")){
+        location='/scheduling/task/delete/' + task_id;
+    }
+}
+
 // Load New Task Form on Page Load
 var today = new Date();
 getForm(null, today);
