@@ -14,14 +14,13 @@ def active_class(request, pattern):
     *request* (required): an HttpRequest object
     *pattern* (optional): a string
     '''
-    #path = request.path[1:] # Strip the leading /
+    path = request.path[1:] # Strip the leading /
 
-    #if pattern == '':
-    #    return ''
-
-    #return request.path
-
-    if request.path.startswith(pattern):
-        return ' class="active"'
-    else:
+    if pattern == '':
         return ''
+
+    if re.search(pattern, path):
+        return 'class="active"'
+    
+    return ''
+
