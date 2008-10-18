@@ -1,7 +1,7 @@
 {# prints the list of tasks for currently selected day #}
 <div class="actions">
     <ul>
-        <li><a href="javascript:void(0);" onClick="return DeleteLoggedHours();">Remove</a></li>
+        <li><a href="javascript:deleteTask({{task.id}});">remove</a></li>
     </ul>
     <div class="clBoth"></div>
 </div>
@@ -16,7 +16,6 @@
                 <input type="checkbox" name="" value="' + {{task.id}} + '">
                 {{task}} 
                 <a class="edit" href="javascript:getForm({{task.id}});">edit</a> 
-                {# <a class="remove" href="javascript:deleteTask({{task.id}});">remove</a> #}
             </li>
         {% endfor %}
     </ul>
