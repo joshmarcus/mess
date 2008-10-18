@@ -1,7 +1,15 @@
 /* @override http://localhost:8000/media/css/yui_custom.css */
 
 
-/* --:((( CALENDAR STUFF ))):-- */		
+/* --:((( CALENDAR STUFF ))):-- */
+
+#cal1Container {
+    margin: 22px 0 0 6px ;
+}
+
+#left-column { 
+	padding-bottom:22px;
+}
 
 /* WEEKDAY (Su, Mo, Tu...) HEADER CELLS */
 .yui-skin-sam .yui-calendar .calweekdaycell {
