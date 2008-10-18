@@ -122,7 +122,17 @@ function getForm(task_id, dt) {
 
 function deleteTask(task_id) {
     if (confirm("Are you sure you want to remove this task?")){
-        location='/scheduling/task/delete/' + task_id;
+        var handleSuccess = function(response){
+            // var task_id_div = YAHOO.util.Dom.get('task'+task_id);
+            // task_id_div.innerHTML = response.argument[0];
+            // YAHOO.util.Dom.removeClass(element, 'class-name');          
+        };
+        var callback = { 
+            success: handleSuccess
+        };
+        sUrl='/scheduling/task/delete/' + task_id;
+        YAHOO.util.Connect.asyncRequest('POST', sUrl, callback, null);
+        // location ='/scheduling/task/delete/' + task_id;
     }
 }
 

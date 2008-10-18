@@ -3,7 +3,7 @@
 <div class="details clearfix">
     <ol>
         {% for task in tasks %}
-            <li>
+            <li id="task-{{task.id}}">
                 {{task}} 
                 <a class="edit" href="javascript:getForm({{task.id}});">edit</a> 
                 <a class="remove" href="javascript:deleteTask({{task.id}});">remove</a>
