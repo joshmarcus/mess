@@ -1,7 +1,7 @@
 {# prints the list of tasks for currently selected day #}
 {% if tasks %}
 <div class="details clearfix">
-    <ol>
+    <ol class="details_list">
         {% for task in tasks %}
             <li id="task-{{task.id}}">
                 {{task}} 
