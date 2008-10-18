@@ -1,9 +1,18 @@
 {# prints the list of tasks for currently selected day #}
+<div class="actions">
+    <ul>
+        <li><a href="javascript:void(0);" onClick="return DeleteLoggedHours();">Delete</a></li>
+    </ul>
+    <div class="clBoth"></div>
+</div>
+    
+</div>
 {% if tasks %}
 <div class="details clearfix">
     <ol class="details_list">
         {% for task in tasks %}
             <li id="task-{{task.id}}">
+                <input type="checkbox" name="log_item[]" value="' + logid + '">
                 {{task}} 
                 <a class="edit" href="javascript:getForm({{task.id}});">edit</a> 
                 <a class="remove" href="javascript:deleteTask({{task.id}});">remove</a>
@@ -11,4 +20,8 @@
         {% endfor %}
     </ol>
 </div>
+{% else %}
+<div class="details clearfix">
+    no tasks scheduled for this day
+<div>
 {% endif %}

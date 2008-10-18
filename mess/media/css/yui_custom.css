@@ -3,12 +3,50 @@
 
 /* --:((( CALENDAR STUFF ))):-- */
 
+.actions {
+    background-color: #eeeeee;
+    font-size: 12px;
+    line-height: 24px;
+    background-image: url(../images/checkboxArrow.gif);
+    background-repeat: no-repeat;
+    background-position: 12px 10px;
+    clear: both;
+    padding: 0px 5px;
+    height: 27px;
+}
+
+.actions li {
+    float: left;
+    margin: 1px 2px 0 0;
+}
+
+.actions li a:link, .actions li a:visited, .actions li a:active {
+    background-color: #fff;
+    font-size: 11px;
+    color: #000;
+    text-decoration: none;
+    border: 1px solid #aaa;
+    padding: 1px 4px;
+    margin: 2px;
+}
+
+.actions li a:hover {
+  background-color: #0075CE;
+  color: #fff;
+  border: 1px solid #0075CE;
+}
+
+
 #cal1Container {
     margin: 22px 0 0 6px ;
 }
 
 #left-column { 
 	padding-bottom:22px;
+}
+
+#task-list {
+    margin-left: 15px;
 }
 
 /* WEEKDAY (Su, Mo, Tu...) HEADER CELLS */
