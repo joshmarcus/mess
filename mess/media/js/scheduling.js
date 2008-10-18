@@ -123,9 +123,9 @@ function getForm(task_id, dt) {
 function deleteTask(task_id) {
     if (confirm("Are you sure you want to remove this task?")){
         var handleSuccess = function(response){
-            // var task_id_div = YAHOO.util.Dom.get('task'+task_id);
-            // task_id_div.innerHTML = response.argument[0];
-            // YAHOO.util.Dom.removeClass(element, 'class-name');          
+            var task_id_div = YAHOO.util.Dom.get('task'+task_id);
+            task_id_div.innerHTML = response.argument[0];
+            YAHOO.util.Dom.replaceClass(task_id_div, 'hidden');          
         };
         var callback = { 
             success: handleSuccess

@@ -44,6 +44,7 @@
     	<ul id="global-nav">
           {% block main_menu %}
             {% if user.is_staff %}
+              <li><a href="{% url login %}"{% active_class request 'welcome.html' %}>Dashboard</a></li>
               <li><a href="{% url members %}"{% active_class request '/membership/members' %}>Members</a></li>
               <li><a href="{% url accounts %}"{% active_class request '/membership/accounts' %}>Accounts</a></li>
               <li><a href="{% url trans_summary_today %}"{% active_class request '/reporting' %}>Reports</a></li>
