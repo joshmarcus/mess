@@ -4,7 +4,30 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
     <h2>Member List</h2>
-    <p class="attention">This could be a good spot for any sort of forms through which the user can sort or limit info in the table.</p	>
+    <form class="standard">
+      <table class="form-table">
+        <tr>
+          <th><label for="">Sort by:</label></th>
+            <td>
+              <select>
+                <option/>
+              </select>
+            </td>
+         </tr>
+         <tr>
+           <th><label for="">Show active:</label></th>
+           <td><input type="checkbox" value=""/></td>
+         </tr>
+         <tr>
+           <th><label for="">Show inactive</label></td>
+           <td><input type="checkbox"/></td>
+         </tr>
+         <tr>
+           <th><label>Show quit</label></th>
+           <td><input type="checkbox" value=""/></td>
+        </tr>
+       </table>
+     </form>  
     {% include "snippets/pagination.html" %}
     <table class="data">
           <tr>

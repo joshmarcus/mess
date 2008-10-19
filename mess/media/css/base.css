@@ -166,9 +166,7 @@ body {
                 padding: 10px;
                 }
                 form.standard div.section h3 {
-                }
-
-		
+                    }	
 /*--- ((( tools ))) ---*/
 .clearAll {clear:both;}
 .float-left {float:left;}
@@ -232,8 +230,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#primary-content-wrapper {
 			padding:0 15px;
 			}
-#footer {
-}
+#footer {}
 
 
 /*--- ((( #header styles ))) ---*/
@@ -241,15 +238,17 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 #header {}
 
 	/*h1*/
-	h1 {/*this needs work...*/
+	h1 {
 		position:absolute;
-		margin:30px 15px;
+		margin:10px 15px;
+		background:url(../images/mess-logo.png) no-repeat top left;
 		}
 	
 	h1 a {
-		font-size:1.2em; 
-		color:#fddc08;
-		text-decoration:none;
+		text-indent:-5000px;
+		width:249px;
+		height:49px;
+		display:block;
 		}
 	h1 a:visited {
 		color:#fddc08;
@@ -615,6 +614,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					#right-column ul#icon-key li img {
 						margin-right:1em;
 						}
+                                                #right-column ul#icon-key li#primary-acct-key img {margin-right:17px; padding-top:.5em}
 
 		
 		
