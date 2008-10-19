@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.template.loader import get_template
 from django.utils import simplejson
 
+from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
 from mess.accounting.models import Transaction, get_credit_choices, \
     get_debit_choices, get_todays_transactions, get_trans_total, Member, \
@@ -56,20 +57,17 @@ def save_debit_trans(request):
 def transaction_form(request):
     transactions = get_todays_transactions()
     page_name = 'Transactions'
-    if not request.method == 'POST':  
-        form = TransactionForm()
-    else:
+    if request.method == 'POST':  
         save_credit_trans(request)        
         save_debit_trans(request)        
         return HttpResponseRedirect('thanks')
+    form = TransactionForm()
     return render_to_response('accounting/transaction_form.html', locals(),
                                 context_instance=RequestContext(request))
 
 
 def cashier(request):
     context = RequestContext(request)
-    context['global_nav'] = 'cashier'
-    context['local_nav'] = 'cashier'
     if request.method == 'POST':
         save_credit_trans(request)
         save_debit_trans(request)
@@ -113,17 +111,26 @@ def cashier(request):
             context['account_name'] = request.GET.get('account_name')
             return render_to_response('accounting/snippets/confirm_other_member.html', context)
         return HttpResponse(simplejson.dumps(result_set), mimetype='application/javascript')
-    else:
-        context['page_name'] = 'Cashier'
-        context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
-        context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
-        form = TransactionForm()
-        context['transactions_today'] = get_todays_transactions()
-        #return render_to_response('accounting/cashier.html', context,
-        #                            context_instance=RequestContext(request))
-        template = get_template('accounting/cashier.html')
-        return HttpResponse(template.render(context))
+    context['page_name'] = 'Cashier'
+    context['credit_choices'] = get_credit_choices('Staff', 'Cashier')
+    context['debit_choices'] = get_debit_choices('Staff', 'Cashier')
+    #form = TransactionForm()
+    context['form'] = form
+    context['transactions_today'] = get_todays_transactions()
+    #return render_to_response('accounting/cashier.html', context,
+    #                            context_instance=RequestContext(request))
+    template = get_template('accounting/cashier.html')
+    return HttpResponse(template.render(context))
 
+def new_cashier(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        form = forms.CashierForm(request.POST)
+    else:
+        form = forms.CashierForm()
+    context['form'] = form
+    template = get_template('accounting/cashier.html')
+    return HttpResponse(template.render(context))
 
 def close_out(request, type='all'):
     """Page to reconcile the day's transactions."""

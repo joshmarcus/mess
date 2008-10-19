@@ -1,9 +1,13 @@
 from django import forms
 
+from mess.accounting import models
 from mess.accounting.models import Transaction, Reconciliation
 from mess.accounting.models import get_credit_choices, get_debit_choices
 from mess.accounting.models import get_account_balance, get_todays_transactions
 
+class CashierForm(forms.ModelForm):
+    class Meta:
+        model = models.CashierTransaction
 
 class TransactionForm(forms.ModelForm):
     class Meta:

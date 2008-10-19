@@ -2,6 +2,7 @@
 
 // Hide elements that aren't used yet
 function hideUnusedElements() {
+/*
   document.getElementById('account_row').style.display = 'block';
   document.getElementById('member_row').style.display = 'none';
   document.getElementById('debit_row').style.display = 'none';
@@ -13,6 +14,7 @@ function hideUnusedElements() {
   document.getElementById('last_row').style.display = 'none';
   document.getElementById('ref_label').style.display = 'none';
   document.getElementById('ref_text').style.display = 'none';
+*/
 }
 function getAccounts() {
   var query = '';

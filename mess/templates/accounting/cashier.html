@@ -1,35 +1,42 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
-<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
+  <link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
 {% endblock head %}
 
 {% block content %}
-<div id="double-column" >
-  <ul id="local-nav">
-    <li><a {% ifequal local_nav "cashier" %} class="active"{% endifequal %} href="{% url close_out %}">Cashier</a></li>
-    <li><a {% ifequal local_nav "close_out" %} class="active"{% endifequal %} class="last-item"><a href="{% url close_out %}">Close Out</a></li>
-  </ul>
-  <div id="primary-content-wrapper">
-	<!--digger's code begins here-->
-    <form class="standard" id="form" name="form" method="post" >
-      <input type="hidden" id="id_member" value="" />
-      <input type="hidden" id="id_account" value="" />
-      <table class="form-table">
+  <div id="double-column" >
+    <ul id="local-nav">
+      <li><a class="active" href="{% url cashier %}">Cashier</a></li>
+      <li class="last-item"><a href="{% url close_out %}">Close Out</a></li>
+    </ul>
+    <div id="primary-content-wrapper">
+      <form class="standard" id="form" name="form" method="post" >
+        <table>
+          {{ form }}
+          <tr>
+            <th></th>
+            <td><input class="button" type="submit" value="Submit" /></td>
+          </tr>
+        </table>
+        {% comment %}
+        <input type="hidden" id="id_member" value="" />
+        <input type="hidden" id="id_account" value="" />
+        <table class="form-table">
           <tr id="account_row" >
             <th>
               <label for="account-input">Account</label>
             </th>
             <td colspan="2" >
               <div id="account">              
-                <input tabindex="1" id="account-input" type="text">
+                <input id="account-input" name="account" type="text">
                 <div id="account-container"></div>
               </div>              
             </td>
@@ -41,73 +48,73 @@
             </th>
             <td colspan="2" >
               <div id="member">              
-                <input tabindex="2" id="member-input" />
+                <input id="member-input" name="member" />
                 <div id="member-container" ></div>
               </div>
             </td>
             <td colspan="2" ></td>
           </tr>
-        <tr id="debit_row">
-
-          <td id="debit_type">
-            <select tabindex="3" id="id_debit_type" name="debit_type" >
-              <option value="" selected>Select Payment</option>
-              {% for v, t in debit_choices %}
-                <option value={{ v }} >{{ t }}</option>
-              {% endfor %}
-            </select>
-          </td>
-            <th id="debit_label" >
-              <label for="id_debit" >Amount</label>
-            </th>
-            <td id="debit_amount">        
-              <input tabindex="4" type="text" size="5" autocomplete="off"
-                      id="id_debit" name="debit" />
+          <tr id="debit_row">
+            <td id="debit_type">
+              <select id="id_debit_type" name="debit_type" >
+                <option value="" selected>Select Payment</option>
+                {% for v, t in debit_choices %}
+                  <option value={{ v }} >{{ t }}</option>
+                {% endfor %}
+              </select>
             </td>
-            <th id="ref_label">
-              <label for="id_ref" >Reference</label>
-            </th>
-            <td id="ref_text" >
-              <input tabindex="5" type="text" size="5" autocomplete="off"
-                      id="id_ref" name="ref" />
+              <th id="debit_label" >
+                <label for="id_debit" >Amount</label>
+              </th>
+              <td id="debit_amount">        
+                <input type="text" size="5" autocomplete="off"
+                        id="id_debit" name="debit" />
+              </td>
+              <th id="ref_label">
+                <label for="id_ref" >Reference</label>
+              </th>
+              <td id="ref_text" >
+                <input type="text" size="5" autocomplete="off"
+                        id="id_ref" name="ref" />
+              </td>
+          </tr>
+          <tr id="credit_row" >
+            <td id="credit_type">
+              <select id="id_credit_type" name="credit_type" >
+                <option value="" selected>Select Purchase</option>
+                {% for v, t in credit_choices %}
+                  <option value={{ v }} >{{ t }}</option>
+                {% endfor %}
+              </select>
             </td>
-        </tr>
-        <tr id="credit_row" >
-          <td id="credit_type">
-            <select tabindex="6" id="id_credit_type" name="credit_type" >
-              <option value="" selected>Select Purchase</option>
-              {% for v, t in credit_choices %}
-                <option value={{ v }} >{{ t }}</option>
-              {% endfor %}
-            </select>
-          </td>
-            <th id="credit_label" >
-              <label for="id_credit" >Amount</label>
+              <th id="credit_label" >
+                <label for="id_credit" >Amount</label>
+              </th>
+              <td id="credit_amount" >        
+                <input type="text" size="5" autocomplete="off"
+                      id="id_credit" name="credit" />
+              </td>
+          </tr>
+          <tr id="last_row">
+            <th>
+              <label for="id_note">Note</label>
             </th>
-            <td id="credit_amount" >        
-              <input tabindex="7" type="text" size="5" autocomplete="off"
-                    id="id_credit" name="credit" />
+            <td colspan="2" >
+              <textarea rows="3" cols="2" id="id_note" name="note" /></textarea>
             </td>
-        </tr>
-        <tr id="last_row">
-          <th>
-            <label for="id_note">Note</label>
-          </th>
-          <td colspan="2" >
-            <textarea rows="1" cols="2" id="id_note" name="note" autocomplete="off" /></textarea>
-          </td>
-          <td id="buttons" colspan="2" >
-            <input class="button" type="reset" value="Reset Form" >
-            <input class="button" tabindex="8" type="submit" value="Save Transaction" >
-          </td>
-        </tr>
-      </table>
-    </form>
-    <div id="transactions" ></div>
+            <td id="buttons" colspan="2" >
+              <input class="button" type="submit" value="Save Transaction" >
+            </td>
+          </tr>
+        </table>
+        {% endcomment %}
+      </form>
+      <div id="transactions" ></div>
+    </div>
   </div>
-</div>
 {% endblock %}
+
 {% block pop_up %}
-<div id="message" ></div>
-<div id="list" ></div>
+  <div id="message" ></div>
+  <div id="list" ></div>
 {% endblock %}

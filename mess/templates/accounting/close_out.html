@@ -1,63 +1,66 @@
-{% extends "base.html" %}i
+{% extends "base.html" %}
 
 {% block content %}
-<div id="left-column" >
-  <ul id="local-nav">
-    <li><a href={% url close_out %} >All Transactions</a></li>
-    <li><a href={% url close_out_checks %} >Checks</a></li>
-    <li><a href={% url close_out_money_orders %} >Money Orders</a></li>
-    <li><a href={% url close_out_credit %} >Credit and Debit Cards</a></li>
-    <li class="last-item"><a href={% url close_out_ebt %} >EBT</a></li>
-  </ul>
-  <div id="primary-content-wrapper">
-    <h2>Cashier</h2>
-    <h3>Close Out for {{ date }}</h3>
-    <h4>Transactions are being reconciled by {{ user.get_full_name }}.</h4>
-
-    <form class="standard" id='form' name='form' method='post'>
-      <input type="hidden" id="id_reconciled_by" name="id_reconciled_by" value={{ user.id }} >
-      <table class="form-table" >
-        <tr>
-          <th>Transaction</th>
-          <th>Time</th>
-          <th>Account</th>
-          <th>Member</th>
-          <th>Type</th>
-          <th>Reference</th>
-          <th>amount</th>
-          <th>Reconcile</th>
-        </tr>
-      {% for key, data  in tran_list.items %}
-        <tr class="{% cycle 'odd' 'even' %}">
-          <td>
-            <input type="hidden" id="{{ key }}_transaction" name="{{ key }}_transaction" value="{{ key }}">
-            {{ data.transaction.id }}
-          </td>
-          <td>{{ data.transaction.date|date:"g:i:s A" }}</td>
-          <td>{{ data.transaction.account }}</td>
-          <td>{{ data.transaction.member.user.get_full_name }}</td>
-          <td>{{ data.type }}</td>
-          <td>{{ data.transaction.ref|default_if_none:"" }}</td>
-          <td>{{ data.amount }}</td>
-          <td>
-        {% for r in data.transaction.reconciliation_set.all %}
-            {{ r.reconciled_by.get_full_name }}
-            <input type="checkbox" id="{{ key }}_reconciled" name={{ key }}_reconciled value="True"
-            {% if r.reconciled %}checked{% endif%}>
-            <br />
+  <div id="left-column" >
+    <ul id="local-nav">
+      <li><a href="{% url cashier %}">Cashier</a></li>
+      <li class="last-item"><a class="active" href="{% url close_out %}">Close Out</a></li>
+    </ul>
+    <div id="primary-content-wrapper">
+      <h2>Cashier</h2>
+      <h3>Close Out for {{ date }}</h3>
+      <h4>Transactions are being reconciled by {{ user.get_full_name }}.</h4>
+      <form class="standard" id='form' name='form' method='post'>
+        <input type="hidden" id="id_reconciled_by" name="id_reconciled_by" value={{ user.id }} >
+        <table class="form-table" >
+          <tr>
+            <th>Transaction</th>
+            <th>Time</th>
+            <th>Account</th>
+            <th>Member</th>
+            <th>Type</th>
+            <th>Reference</th>
+            <th>amount</th>
+            <th>Reconcile</th>
+          </tr>
+        {% for key, data  in tran_list.items %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td>
+              <input type="hidden" id="{{ key }}_transaction" name="{{ key }}_transaction" value="{{ key }}">
+              {{ data.transaction.id }}
+            </td>
+            <td>{{ data.transaction.date|date:"g:i:s A" }}</td>
+            <td>{{ data.transaction.account }}</td>
+            <td>{{ data.transaction.member.user.get_full_name }}</td>
+            <td>{{ data.type }}</td>
+            <td>{{ data.transaction.ref|default_if_none:"" }}</td>
+            <td>{{ data.amount }}</td>
+            <td>
+          {% for r in data.transaction.reconciliation_set.all %}
+              {{ r.reconciled_by.get_full_name }}
+              <input type="checkbox" id="{{ key }}_reconciled" name={{ key }}_reconciled value="True"
+              {% if r.reconciled %}checked{% endif%}>
+              <br />
+          {% endfor %}
+              Reconcile Now
+              <input type="checkbox" id={{ key }}_reconcile name={{ key }}_reconcile value={{ data.reconciled }}>
+            </td>
+          </tr>
         {% endfor %}
-            Reconcile Now
-            <input type="checkbox" id={{ key }}_reconcile name={{ key }}_reconcile value={{ data.reconciled }}>
-          </td>
-        </tr>
-      {% endfor %}
-      </table>
-      <input type='reset' value='Reset' >
-      <input type='submit' value='Done' >
-    </form>
+        </table>
+        <input type='reset' value='Reset' >
+        <input type='submit' value='Done' >
+      </form>
+    </div>
   </div>
-</div>
-<div id="right-column">
-  <!--Right column content goes here.-->
-</div>
+  <div id="right-column">
+    <h3>Transaction Types</h3>
+    <ul>
+      <li><a href={% url close_out %} >All Transactions</a></li>
+      <li><a href={% url close_out_checks %} >Checks</a></li>
+      <li><a href={% url close_out_money_orders %} >Money Orders</a></li>
+      <li><a href={% url close_out_credit %} >Credit and Debit Cards</a></li>
+      <li class="last-item"><a href={% url close_out_ebt %} >EBT</a></li>
+    </ul>
+  </div>
 {% endblock %}

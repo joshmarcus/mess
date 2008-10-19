@@ -34,7 +34,7 @@ body {
 	text-align:center;
 	background:#fff url(../images/bg-body.gif) repeat-y top center;
 	color: #333;
-	font-family:helvetica, arial, sans-serif;
+	font-family: "DejaVu Sans", Arial, sans-serif;
 	font-size:62.5%;
 	}
 	code {
@@ -136,15 +136,16 @@ body {
 			form.standard input.button {
 				width:auto;
 				cursor:pointer;
+                /*
 				font-size:1.1em;
 				padding:.25em;
 				border:none;
 				color:white;
 				background:#D18405;
+                */
 				}
                 form.standard th {
-                        width:125px;
-                        text-align: right;
+                        width: 130px;
                         }
                 form.standard td {
                         }

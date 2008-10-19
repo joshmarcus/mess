@@ -7,6 +7,40 @@ from django.contrib.auth.models import User
 from mess.settings import LOCATION
 from mess.membership.models import Account, Member
 
+PURCHASE_CHOICES = (
+    ('B','Bulk Purchase'),
+    ('U','Dues'),
+    ('S','Misc Sales'),
+    ('T','Trade'),
+    ('W','Work Credit'),
+)
+
+PAYMENT_CHOICES = (
+    ('C','Credit Card'),
+    ('D','Debit Card'),
+    ('K','Check'),
+    ('M','Money Order'),
+    ('F','EBT'),
+)
+
+class CashierTransaction(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    account = models.ForeignKey(Account)
+    member = models.ForeignKey(Member)
+    purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,
+        blank=True)
+    purchase_amount = models.DecimalField(max_digits=5, decimal_places=2, 
+        default=0, blank=True)
+    payment_type = models.CharField(max_length=1, choices=PAYMENT_CHOICES,
+        blank=True)
+    payment_amount = models.DecimalField(max_digits=5, decimal_places=2, 
+        default=0, blank=True)
+    note = models.CharField(max_length=256, blank=True)
+
+    def __unicode__(self):
+        return str(self.date)
+
+
 # Is it better to have these lists in the model or out?
 
 # Credit is looked at from the store's point of view.  A credit
