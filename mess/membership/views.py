@@ -23,6 +23,8 @@ def member_list(request):
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = get_current_page(pager, page_number)
+    form = forms.MemberListFilterForm()
+    context['form'] = form
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 

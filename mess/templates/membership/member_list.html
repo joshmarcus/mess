@@ -4,8 +4,14 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
     <h2>Member List</h2>
-    <form class="standard">
-      <table class="form-table">
+    <form class="standard" method="GET">
+        <table class="form-table">
+        {{ form }}
+        <tr>
+            <th></th>
+            <td><input type="submit" value="Filter" class="button"/></td>
+        </tr>
+        {% comment %}
         <tr>
           <th><label for="">Sort by:</label></th>
             <td>
@@ -25,7 +31,8 @@
          <tr>
            <th><label>Show quit</label></th>
            <td><input type="checkbox" value=""/></td>
-        </tr>
+       </tr>
+       {% endcomment %}
        </table>
      </form>  
     {% include "snippets/pagination.html" %}

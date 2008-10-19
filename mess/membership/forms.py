@@ -29,3 +29,14 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
 
+SORT_CHOICES = (
+        ('alpha', 'Alphabetical'),
+        ('newjoin', 'Date Joined (newest first)'),
+        ('oldjoin', 'Date Joined (oldest first)'),
+)
+
+class MemberListFilterForm(forms.Form):
+    sort_by = forms.ChoiceField(choices=SORT_CHOICES)
+    show_active = forms.BooleanField(initial=True)
+    show_inactive = forms.BooleanField(initial=True)
+    show_quit = forms.BooleanField(initial=True)
