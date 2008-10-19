@@ -19,12 +19,19 @@ PER_PAGE = 20
 def member_list(request):
     context = RequestContext(request)
     member_objs = models.Member.objects.all()
+    if 'sort_by' in request.GET:
+        form = forms.MemberListFilterForm(request.GET)
+        if form.is_valid():
+            sort = form.cleaned_data['sort_by']
+            if sort == 'alpha':
+                member_objs.order_by('user__username')
+    else: 
+        form = forms.MemberListFilterForm() 
+    context['form'] = form
     pager = p.Paginator(member_objs, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = get_current_page(pager, page_number)
-    form = forms.MemberListFilterForm()
-    context['form'] = form
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 
