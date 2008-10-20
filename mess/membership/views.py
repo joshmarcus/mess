@@ -25,8 +25,12 @@ def member_list(request):
             sort = form.cleaned_data['sort_by']
             if sort == 'alpha':
                 member_objs.order_by('user__username')
-    else: 
-        form = forms.MemberListFilterForm() 
+            if sort == 'oldjoin':
+                member_objs.order_by('date_joined')
+            if sort == 'newjoin':
+                member_objs.order_by('-date_joined')
+    else:
+        form = forms.MemberListFilterForm()
     context['form'] = form
     pager = p.Paginator(member_objs, PER_PAGE)
     context['pager'] = pager
