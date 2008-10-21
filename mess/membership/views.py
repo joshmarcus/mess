@@ -158,10 +158,16 @@ def fancy_save(formset):
             object_list.append(instance)
     return object_list
 
-@user_passes_test(lambda u: u.is_staff)
+#@user_passes_test(lambda u: u.is_staff)
 def account_list(request):
     context = RequestContext(request)
-    account_objs = models.Account.objects.all()
+    if request.user.is_staff:
+        account_objs = models.Account.objects.all()
+    elif request.user.is_authenticated():
+        member = models.Member.objects.get(user=request.user)
+        account_objs = member.accounts.all()
+    else:
+        return HttpResponseRedirect(reverse('login'))
     pager = p.Paginator(account_objs, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')

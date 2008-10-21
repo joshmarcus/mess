@@ -41,7 +41,7 @@
           <a href="{% url login %}">The Mess</a>
         </h1>	
     	<ul id="global-nav">
-          {% block main_menu %}
+          {% if user.is_authenticated %}
             {% if user.is_staff %}
               <li><a href="{% url login %}"{% active_class request '^$' %}>Dashboard</a></li>
               <li><a href="{% url members %}"{% active_class request '^membership/members' %}>Members</a></li>
@@ -49,8 +49,12 @@
               <li><a href="{% url trans_summary_today %}"{% active_class request '^reporting' %}>Reports</a></li>
               <li><a href="{% url cashier %}"{% active_class request '^accounting' %}>Cashier</a></li>
               <li><a href="{% url manage-schedule %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
+            {% else %}
+              <li><a href="{% url login %}"{% active_class request '^$' %}>Dashboard</a></li>
+              <li><a href="{% url member user.username %}"{% active_class request '^membership/members' %}>Profile</a></li>
+              <li><a href="{% url accounts %}"{% active_class request '^membership/accounts' %}>Accounts</a></li>
             {% endif %}
-          {% endblock %}
+          {% endif %}
         </ul>
       </div>
       <div id="content-wrapper" class="clearfix">

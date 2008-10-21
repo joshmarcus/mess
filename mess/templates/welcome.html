@@ -75,8 +75,18 @@
     </div>
   </div>
   <div id ="right-column">
-    <h3>News</h3>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec quis purus vitae neque auctor ultricies. Phasellus in risus. Vivamus cursus eros vel lectus. Etiam malesuada. Maecenas sapien mi, elementum vel, pretium sed, facilisis ac, risus. Aliquam erat volutpat. Suspendisse potenti. Morbi convallis turpis sagittis dolor.</p>
+    <h3>Accounts</h3>
+    <table>
+      {# should ever only be one member in member_set #}
+      {% for member in user.member_set.all %}
+      {% for account in member.accounts.all %}
+      <tr>
+        <th><a href="{% url account account.id %}">{{ account }}</a></th>
+        <td>{{ account.balance|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+      {% endfor %}
+    </table>
   </div><!--end right-column-->
 {% endblock %}
 

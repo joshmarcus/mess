@@ -35,6 +35,7 @@
                 <li>{{ account.contact.user.get_profile.emails.all|first }}</li>
               </ul>
             </td>
+            <td>{{ account.balance|floatformat:2 }}</td>
           </tr>
         {% endfor %}
       </table>
