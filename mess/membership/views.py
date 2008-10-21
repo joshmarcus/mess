@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 
+#from mess.accounting import models as a_models
 from mess.membership import forms, models
 from mess.profiles import forms as profiles_forms
 from mess.profiles import models as profiles_models
@@ -183,6 +184,8 @@ def account(request, id):
         return HttpResponseRedirect(reverse('login'))
     context = RequestContext(request)
     context['account'] = account
+    transactions = account.transaction_set.all()
+    context['transactions'] = transactions
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 

@@ -31,6 +31,37 @@
         <div class="details">
           Notes or things will go here.
         </div>
+        <div id="transactions">
+          <h2>Transaction Log</h2>
+          <table class="data" >
+            <tr>
+              <th>ID</th>
+              <th>Time</th>
+              <th>Member</th>
+              <th>Note</th>
+              <th>Reference</th>
+              <th>Purchase Type</th>
+              <th>Purchase Amount</th>
+              <th>Payment Type</th>
+              <th>Payment Amount</th>
+              <th>Account Balance</th>
+            </tr>
+            {% for transaction in transactions|dictsortreversed:"id" %}
+            <tr class="{% cycle 'odd' 'even' %}" >
+              <td>{{ transaction.id }}</td>
+              <td>{{ transaction.timestamp|date:"g:i:s A" }}</td>    
+              <td>{{ transaction.member.user.get_full_name }}</td>
+              <td>{{ transaction.note }}</td>
+              <td>{{ transaction.ref }}</td>
+              <td>{{ transaction.get_purchase_type_display }}</td>
+              <td>{{ transaction.purchase_amount|floatformat:2 }}</td>
+              <td>{{ transaction.get_payment_type_display }}</td>
+              <td>{{ transaction.payment_amount|floatformat:2 }}</td>
+              <td>{{ transaction.account.balance|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
     </div>
   </div>

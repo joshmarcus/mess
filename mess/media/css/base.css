@@ -428,7 +428,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin-top:12px; font-weight:bold; font-size:1em; float:right; margin-right:27px;}
+		div.pagination {margin:12px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
 		
 			div.pagination a {color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		
@@ -453,7 +453,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				}
 		#primary-content-wrapper table.data {
 			border:1px solid #ddd;
-			width:97%;
+			width:100%;
 			font-size:1.1em;
 			}
 			#primary-content-wrapper table.data caption {
