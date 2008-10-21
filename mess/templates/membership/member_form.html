@@ -25,7 +25,7 @@
         failure: function(o) {},
         argument: [formsetPrefix],
       };
-      var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+      YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
     }
     /*
     window.onload = function() {

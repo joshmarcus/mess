@@ -6,8 +6,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 
 from mess.accounting.models import Transaction
-from mess.accounting.models import get_credit_choices, get_debit_choices
-from mess.accounting.models import get_trans_total
+#from mess.accounting.models import get_credit_choices, get_debit_choices
+#from mess.accounting.models import get_trans_total
 
 from mess.utils.search import list_usernames_from_fullname
 

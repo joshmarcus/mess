@@ -16,16 +16,16 @@
     {% for transaction in transactions|dictsortreversed:"id" %}
   <tr class="{% cycle 'odd' 'even' %}" >
     <td>{{ transaction.id }}</td>
-    <td>{{ transaction.timestamp|date:"g:i:s A" }}</td>    
-    <td>{{ transaction.account }}</td>
-    <td>{{ transaction.member.user.get_full_name }}</td>
+    <td>{{ transaction.timestamp|date:"g:i:s A" }}</td>
+    <td><a href="{% url account transaction.account.id %}">{{ transaction.account }}</a></td>
+    <td><a href="{% url member transaction.member.user.username %}">{{ transaction.member.user.get_full_name }}</a></td>
     <td>{{ transaction.note }}</td>
-    <td>{{ transaction.ref }}</td>
+    <td>{{ transaction.reference }}</td>
     <td>{{ transaction.get_purchase_type_display }}</td>
     <td>{{ transaction.purchase_amount|floatformat:2 }}</td>
     <td>{{ transaction.get_payment_type_display }}</td>
     <td>{{ transaction.payment_amount|floatformat:2 }}</td>
-    <td>{{ transaction.account.balance|floatformat:2 }}</td>
+    <td>{{ transaction.account_balance|floatformat:2 }}</td>
   </tr>
     {% endfor %}
   {% endif %}
