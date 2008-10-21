@@ -20,7 +20,7 @@
             <th>Member</th>
             <th>Type</th>
             <th>Reference</th>
-            <th>amount</th>
+            <th>Amount</th>
             <th>Reconcile</th>
           </tr>
         {% for key, data  in tran_list.items %}
@@ -29,7 +29,7 @@
               <input type="hidden" id="{{ key }}_transaction" name="{{ key }}_transaction" value="{{ key }}">
               {{ data.transaction.id }}
             </td>
-            <td>{{ data.transaction.date|date:"g:i:s A" }}</td>
+            <td>{{ data.transaction.timestamp|date:"g:i:s A" }}</td>
             <td>{{ data.transaction.account }}</td>
             <td>{{ data.transaction.member.user.get_full_name }}</td>
             <td>{{ data.type }}</td>

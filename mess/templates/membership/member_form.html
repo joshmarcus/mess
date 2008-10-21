@@ -20,7 +20,9 @@
           var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
           writeRoot.parentNode.insertBefore(newFields, writeRoot);
           newFields = writeRoot.previousSibling;
-          newFields.getElementsByTagName('select')[0].focus()
+          newFields.getElementsByTagName('select')[0].focus();
+          //var nfPos = YAHOO.util.Dom.getXY(newFields);
+          //window.scrollTo(0, nfPos[1]-200);
         },
         failure: function(o) {},
         argument: [formsetPrefix],

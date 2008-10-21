@@ -166,22 +166,22 @@ def close_out(request, type='all'):
                 f.is_valid()
                 f.save()
         context['testing'] = testing
-        template = get_template('accounting/thanks.html')
-        return HttpResponse(template.render(context))
+        return HttpResponseRedirect(reverse('close_out'))
     if not request.method == 'POST':
         if type == 'all':
-            transactions = get_todays_transactions()
+            transactions = models.Transaction.objects.filter(
+                    timestamp__day=date.today().day)
         else:
             transactions = get_trans_of_type(type)
         tran_list = {}
         user = request.user
         for t in transactions:
-            if t.debit_type != 'N':
-                tran_type = t.get_debit_type_display()
-                amount = t.debit
-            if t.credit_type != 'N':
-                tran_type = t.get_credit_type_display()
-                amount = t.credit
+            if t.purchase_type:
+                tran_type = t.get_purchase_type_display()
+                amount = t.purchase_amount
+            if t.payment_type:
+                tran_type = t.get_payment_type_display()
+                amount = t.payment_amount
             initial_data = {
                     'type': tran_type,
                     'amount': amount,
@@ -196,3 +196,11 @@ def close_out(request, type='all'):
     template = get_template('accounting/close_out.html')
     return HttpResponse(template.render(context))
 
+#def get_account_transactions(id):
+#    return models.Transaction.objects.filter(member=id)
+#
+#def get_todays_transactions():
+#    d = date.today()
+#    return models.Transaction.objects.filter(date__year = d.year,
+#                                        date__month = d.month,
+#                                        date__day = d.day)
