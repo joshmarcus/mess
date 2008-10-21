@@ -19,21 +19,27 @@ PER_PAGE = 20
 @user_passes_test(lambda u: u.is_staff)
 def member_list(request):
     context = RequestContext(request)
-    member_objs = models.Member.objects.all()
+    members = models.Member.objects.all()
     if 'sort_by' in request.GET:
         form = forms.MemberListFilterForm(request.GET)
         if form.is_valid():
             sort = form.cleaned_data['sort_by']
             if sort == 'alpha':
-                member_objs.order_by('user__username')
+                members = members.order_by('user__username')
             if sort == 'oldjoin':
-                member_objs.order_by('date_joined')
+                members = members.order_by('date_joined')
             if sort == 'newjoin':
-                member_objs.order_by('-date_joined')
+                members = members.order_by('-date_joined')
+            if not form.cleaned_data['show_active']:
+                members = members.exclude(status='a')
+            if not form.cleaned_data['show_inactive']:
+                members = members.exclude(status='i')
+            if not form.cleaned_data['show_quit']:
+                members = members.exclude(status='q')
     else:
         form = forms.MemberListFilterForm()
     context['form'] = form
-    pager = p.Paginator(member_objs, PER_PAGE)
+    pager = p.Paginator(members, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = get_current_page(pager, page_number)
@@ -82,6 +88,8 @@ def member_edit(request, username):
     context['member'] = member
     is_errors = False
     if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member', args=[username]))
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)

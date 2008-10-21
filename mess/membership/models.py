@@ -37,7 +37,7 @@ class Member(models.Model):
         return self.user.get_full_name()
 
     class Meta:
-        ordering = ['user']
+        ordering = ['user__username']
 
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
