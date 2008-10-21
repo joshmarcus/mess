@@ -40,6 +40,13 @@ class CashierTransaction(models.Model):
     def __unicode__(self):
         return str(self.date)
 
+    def save(self, force_insert=False, force_update=False):
+        balance = self.account.balance
+        new_balance = balance + self.purchase_amount - self.payment_amount
+        self.account.balance = new_balance
+        self.account.save()
+        super(CashierTransaction, self).save(force_insert, force_update)
+
 
 # Is it better to have these lists in the model or out?
 

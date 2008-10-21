@@ -52,7 +52,7 @@ class Account(models.Model):
     # transaction.save().
     # Also, people really shouldn't have null balances.  Even if it's a 
     # new account, a deposit should have been made.
-    # balance = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
     def __unicode__(self):
         return self.name

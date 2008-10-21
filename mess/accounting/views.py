@@ -122,10 +122,14 @@ def cashier(request):
     template = get_template('accounting/cashier.html')
     return HttpResponse(template.render(context))
 
+# TODO: permissions for cashier view
 def new_cashier(request):
     context = RequestContext(request)
     if request.method == 'POST':
         form = forms.CashierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('accounting-thanks'))
     else:
         form = forms.CashierForm()
     context['form'] = form
