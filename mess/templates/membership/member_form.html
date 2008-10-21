@@ -5,9 +5,8 @@
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/event/event-min.js"></script>
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script> 
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script type="text/javascript" src="{{ MEDIA_URL }}yui/animation/animation-min.js"></script> 
   <script type="text/javascript">
-    function addNew(formsetPrefix, baseURL, height) {
+    function addNew(formsetPrefix, baseURL) {
       var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
       var sUrl = baseURL + '?index=' + totalForms.value;
       totalForms.value = parseInt(totalForms.value) + 1;
@@ -21,18 +20,18 @@
           var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
           writeRoot.parentNode.insertBefore(newFields, writeRoot);
           newFields = writeRoot.previousSibling;
-          var addAnim = new YAHOO.util.Anim(newFields, 
-            {height: {to: height}}); //, 1, YAHOO.util.Easing.easeIn);
-          addAnim.animate();
-          addAnim.onComplete.subscribe(function() {
-            newFields.getElementsByTagName('select')[0].focus()
-          });
+          newFields.getElementsByTagName('select')[0].focus()
         },
         failure: function(o) {},
         argument: [formsetPrefix],
       };
       var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
     }
+    /*
+    window.onload = function() {
+      document.forms[0].elements[0].select();
+    }
+    */
   </script>
 {% endblock %}
 
@@ -68,7 +67,7 @@
           </table>
           {% endfor %}
           <div id="{{ formset.prefix }}-writeroot" class="add">
-            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}', {% ifequal formset.prefix 'address' %}250{% else %}80{% endifequal %}); return false;" id="{{ formset.prefix }}-add">Add</a>
+            <a href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
           </div>
         </div>
         {% endfor %}

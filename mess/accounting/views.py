@@ -129,10 +129,14 @@ def new_cashier(request):
         form = forms.CashierForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('accounting-thanks'))
+            return HttpResponseRedirect(reverse('cashier'))
     else:
         form = forms.CashierForm()
     context['form'] = form
+    today = date.today()
+    transactions = models.CashierTransaction.objects.filter(
+            timestamp__day=today.day)
+    context['transactions'] = transactions
     template = get_template('accounting/cashier.html')
     return HttpResponse(template.render(context))
 

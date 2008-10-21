@@ -94,7 +94,7 @@ body {
 			
 	table {
 		border-collapse:collapse;
-		margin-top:15px;
+		margin-top:5px;
 		}
 		tr {}
 			th {}
@@ -105,7 +105,7 @@ body {
 			
 	form.standard {
 		border:1px solid #ccc;
-		padding:.5em 1em;
+		padding:5px 1em;
 		margin:15px 0;
                 font-size:1.1em;
 		}
@@ -158,8 +158,6 @@ body {
             form.standard div.added {
                 margin: 10px 0 0 0;
                 padding: 5px 0 0 0;
-                overflow: hidden;
-                height: 0;
                 }
             form.standard div.section {
                 border: 1px solid #bbb;

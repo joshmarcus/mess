@@ -1,50 +1,39 @@
 {% if account_name %}
-    <h2>Recent transactions for {{ account_name }}</h2>
+  <h2>Recent transactions for {{ account_name }}</h2>
 {% else %}
-    <h2>Today's Transactions</h2>
+  <h2>Today's Transactions</h2>
 {% endif %}
 
 <table class="data" >
-    <tr>
-        <th>Trans ID</th>
-        <th>Time</th>
-        <th>Account</th>
-        <th>Member</th>
-        <th>Note</th>
-        <th>Reference</th>
-        <th>Type</th>
-        <th>Purchase</th>
-        <th>Payment</th>
-        <th>Account<br />Balance</th>
-    </tr>
-    {% for trans in transactions|dictsortreversed:"id" %}
-    <tr class="{% cycle 'odd' 'even' %}" >
-        <td>{{ trans.id }}</td>
-        <td>{{ trans.date|date:"g:i:s A" }}</td>    
-        <td>{{ trans.account }}</td>
-        <td>{{ trans.member.user.get_full_name }}</td>
-        <td>{{ trans.note }}</td>
-        <td>{% if trans.ref %}
-                {{ trans.ref }}
-            {% endif %}
-        </td>
-        <td>{% ifnotequal trans.credit_type "N" %}
-                {{ trans.get_credit_type_display }}
-            {% endifnotequal %}
-            {% ifnotequal trans.debit_type "N" %}
-                {{ trans.get_debit_type_display }}
-            {% endifnotequal %}
-        </td>
-        <td>{% ifnotequal trans.credit 0 %}
-                {{ trans.credit|floatformat:2 }}
-            {% endifnotequal %}
-        </td>
-        <td>{% ifnotequal trans.debit 0 %}
-                {{ trans.debit|floatformat:2 }}
-            {% endifnotequal %}
-        </td>
-        <td>{{ trans.balance|floatformat:2 }}</td>
-    </tr>
+  <tr>
+    <th>ID</th>
+    <th>Time</th>
+    <th>Account</th>
+    <th>Member</th>
+    <th>Note</th>
+    <th>Reference</th>
+    <th>Purchase Type</th>
+    <th>Purchase Amount</th>
+    <th>Payment Type</th>
+    <th>Payment Amount</th>
+    <th>Account<br />Balance</th>
+  </tr>
+  {% if transactions %}
+    {% for transaction in transactions|dictsortreversed:"id" %}
+  <tr class="{% cycle 'odd' 'even' %}" >
+    <td>{{ transaction.id }}</td>
+    <td>{{ transaction.timestamp|date:"g:i:s A" }}</td>    
+    <td>{{ transaction.account }}</td>
+    <td>{{ transaction.member.user.get_full_name }}</td>
+    <td>{{ transaction.note }}</td>
+    <td>{{ transaction.ref }}</td>
+    <td>{{ transaction.get_purchase_type_display }}</td>
+    <td>{{ transaction.purchase_amount|floatformat:2 }}</td>
+    <td>{{ transaction.get_payment_type_display }}</td>
+    <td>{{ transaction.payment_amount|floatformat:2 }}</td>
+    <td>{{ transaction.account.balance|floatformat:2 }}</td>
+  </tr>
     {% endfor %}
+  {% endif %}
 </table>
 

@@ -1,6 +1,13 @@
 // cashier_events.js
 
 window.onload = function() {
+  document.forms[0].elements[0].focus();
+  var account = document.getElementById('id_account');
+  account.onblur = memberFilter;
+}
+
+/*
+window.onload = function() {
   hideUnusedElements();
   autoComp( "account-input", "account-container", "accounts", 
       setSelectedAccount);
@@ -45,3 +52,4 @@ window.onload = function() {
     hide_message();  
   }
 }
+*/

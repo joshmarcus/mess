@@ -18,7 +18,7 @@
       <li class="last-item"><a href="{% url close_out %}">Close Out</a></li>
     </ul>
     <div id="primary-content-wrapper">
-      <form class="standard" id="form" name="form" method="post" >
+      <form class="standard" method="post" >
         <table>
           {{ form }}
           <tr>
@@ -109,7 +109,9 @@
         </table>
         {% endcomment %}
       </form>
-      <div id="transactions" ></div>
+      <div id="transactions">
+        {% include "accounting/snippets/transactions.html" %}
+      </div>
     </div>
   </div>
 {% endblock %}
