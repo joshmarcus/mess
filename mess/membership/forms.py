@@ -17,7 +17,7 @@ class RelatedAccountsForm(forms.Form):
         self.fields['accounts'] = forms.ModelMultipleChoiceField(
             queryset=Account.objects.all(), 
             initial=[obj.pk for obj in member_instance.accounts.all()],
-            help_text='Hold down "Control", or "Command" on a Mac, to select more than one.')
+            help_text='<p class="helptext">Hold down "Control", or "Command" on a Mac, to select more than one.</p>')
 
 class UserForm(forms.ModelForm):
     class Meta:

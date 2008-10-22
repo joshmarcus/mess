@@ -38,7 +38,8 @@ class Transaction(models.Model):
         default=0, blank=True)
     note = models.CharField(max_length=256, blank=True)
     account_balance = models.DecimalField(max_digits=5, decimal_places=2)
-    reference = models.PositiveIntegerField(blank=True, null=True)
+    # reference is for check numbers, etc.  will uncomment when necessary
+    #reference = models.PositiveIntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return str(self.date)

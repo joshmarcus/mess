@@ -179,6 +179,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	* html .clearfix {height: 1%;}
 	.clearfix {display: block;}
 	/* End hide from IE-mac */		
+.nowrap {white-space:nowrap;}
 
 
 /*--- ((( structure ))) ---*/

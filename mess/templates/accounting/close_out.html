@@ -19,7 +19,6 @@
             <th>Account</th>
             <th>Member</th>
             <th>Type</th>
-            <th>Reference</th>
             <th>Amount</th>
             <th>Reconcile</th>
           </tr>
@@ -29,11 +28,10 @@
               <input type="hidden" id="{{ key }}_transaction" name="{{ key }}_transaction" value="{{ key }}">
               {{ data.transaction.id }}
             </td>
-            <td>{{ data.transaction.timestamp|date:"g:i:s A" }}</td>
+            <td class="nowrap">{{ data.transaction.timestamp|date:"g:i:s A" }}</td>
             <td>{{ data.transaction.account }}</td>
             <td>{{ data.transaction.member.user.get_full_name }}</td>
             <td>{{ data.type }}</td>
-            <td>{{ data.transaction.ref|default_if_none:"" }}</td>
             <td>{{ data.amount }}</td>
             <td>
           {% for r in data.transaction.reconciliation_set.all %}
