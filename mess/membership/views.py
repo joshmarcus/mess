@@ -18,7 +18,7 @@ from mess.membership import forms, models
 PER_PAGE = 20
 
 @user_passes_test(lambda u: u.is_authenticated())
-def member_list(request):
+def members(request):
     context = RequestContext(request)
     if not request.user.is_staff:
         return member(request, request.user.username)
@@ -57,7 +57,7 @@ def member_list(request):
     context['page'] = get_current_page(pager, page_number)
     # drop any p= queries from the query string
     context['query_string'] = request.META['QUERY_STRING'].split('&p=', 1)[0]
-    template = get_template('membership/member_list.html')
+    template = get_template('membership/members.html')
     return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_authenticated())
@@ -153,7 +153,7 @@ def member_edit(request, username):
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
-def account_list(request):
+def accounts(request):
     context = RequestContext(request)
     if request.user.is_staff:
         account_objs = models.Account.objects.all()
@@ -166,7 +166,7 @@ def account_list(request):
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = get_current_page(pager, page_number)
-    template = get_template('membership/account_list.html')
+    template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_authenticated())
