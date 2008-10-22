@@ -51,8 +51,8 @@ class RelatedAccountsForm(forms.Form):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        # only change is_staff and is_superuser in the admin
         fields = ('username', 'first_name', 'last_name')
+        # TODO: better error checking on username -- no spaces!
 
 class AccountForm(forms.ModelForm):
     class Meta:
