@@ -104,7 +104,6 @@ body {
 				}
 	
 	label {font-size:1.1em;}
-	input, select, textarea {border:1px solid #bbb;}
 	input.button {width:auto; cursor:pointer; padding:.5em;}
 	
 			
@@ -118,6 +117,7 @@ body {
 			width:225px;
 			padding:3px;
 			margin-left:1em;
+			/*border:1px solid #bbb;*/
 			}
 			form.standard select {
 				width:235px;
@@ -149,7 +149,7 @@ body {
                     }	
 		form.sorter {float:left;}
 		
-			form.sorter ul {background:beige; border:1px solid #ddd;padding:1em 1em 0 1em; width:420px;}
+			form.sorter ul {background:#f2f2f2; border:1px solid #ccc;padding:1em 1em 0 1em; width:420px;}
 			
 				#primary-content-wrapper form.sorter ul li {margin-bottom:1em; float:left; margin-right:1.2em; background-image:none; padding:0;}
 				
@@ -383,7 +383,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin:95px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
+		div.pagination {margin:125px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
 		
 			div.pagination a {color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		
