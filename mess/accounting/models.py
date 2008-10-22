@@ -159,15 +159,6 @@ class Reconciliation(models.Model):
 #                                        date__month = d.month,
 #                                        date__day = d.day)
 #
-#def get_trans_total(trans, type='all'):
-#    total = 0
-#    if type == 'all' or type == 'debit':
-#        for tran in trans:
-#            total += tran.debit
-#    if type == 'all' or type == 'credit':
-#        for tran in trans:
-#            total += tran.credit
-#    return total
 
 #class Transaction(models.Model):
 #    credit_choices = get_credit_choices('Staff')

@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 
+from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
 #from mess.accounting.models import get_credit_choices, get_debit_choices
 #from mess.accounting.models import get_trans_total
@@ -96,27 +97,40 @@ def transaction_report(request, report='all'):
     context['total_debits'] = 0
     #d = date.today()
     #context['date'] = d.strftime('%A, %B %d, %Y')
-    for type, name in get_credit_choices('Staff'):
-        if type != 'N':
-            name = name.lower().replace(' ','_')
-            total_name = 'total_' + name
-            context[name] = Transaction.objects.filter(date__range =
-                    (start_date, end_date),
-                    credit_type = type,)
-            context[total_name] = get_trans_total(context[name], 'credit')
-            context['total_credits'] += context[total_name]
-    for type, name in get_debit_choices('Staff'):
-        if type != 'N':
-            name = name.lower().replace(' ','_')
-            total_name = 'total_' + name
-            context[name] = Transaction.objects.filter(date__range =
-                    (start_date, end_date),
-                    debit_type = type,)
-            context[total_name] = get_trans_total(context[name], 'debit')
-            context['total_debits'] += context[total_name]
+    for type, name in a_models.PURCHASE_CHOICES:
+        name = name.lower().replace(' ','_')
+        total_name = 'total_' + name
+        transactions = Transaction.objects.filter(
+                timestamp__range=(start_date, end_date),
+                purchase_type=type)
+        context[name] = transactions
+        context[total_name] = get_trans_total(transactions, 'purchase')
+        context['total_credits'] += context[total_name]
+    for type, name in a_models.PAYMENT_CHOICES:
+        name = name.lower().replace(' ','_')
+        total_name = 'total_' + name
+        transactions = Transaction.objects.filter(
+                timestamp__range=(start_date, end_date),
+                payment_type=type)
+        context[name] = transactions
+        context[total_name] = get_trans_total(transactions, 'payment')
+        context['total_debits'] += context[total_name]
 
     return render_to_response('reporting/transactions_summary.html', context,
             context_instance=RequestContext(request))
+
+
+# helper functions below
+
+def get_trans_total(trans, type='all'):
+    total = 0
+    if type == 'all' or type == 'purchase':
+        for tran in trans:
+            total += tran.purchase_amount
+    if type == 'all' or type == 'payment':
+        for tran in trans:
+            total += tran.payment_amount
+    return total
 
     #def transaction_list_report(request, report='all'):
 #    """View to list transactions."""
