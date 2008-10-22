@@ -201,6 +201,7 @@ def account_form(request, id):
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
 
+# TODO: split out into add_address, add_email, add_phone for simplicity
 @user_passes_test(lambda u: u.is_authenticated())
 def add_contact(request, username, medium):
     context = RequestContext(request)
@@ -209,7 +210,6 @@ def add_contact(request, username, medium):
     # use 'this_user' because context['user'] overrides logged-in user 
     context['this_user'] = this_user
     # medium may be 'address', 'phone', or 'email'
-    context['medium'] = medium
     MediumForm = forms.contact_form_map[medium]
     if request.method == 'POST':
         form = MediumForm(request.POST)
@@ -237,15 +237,151 @@ def add_contact(request, username, medium):
             if referer:
                 return HttpResponseRedirect(referer)
             else:
-                return HttpResponseRedirect(reverse('member', 
-                        args=[this_user.username]))
+                return HttpResponseRedirect(reverse('member', args=[username]))
     else:
         form = MediumForm()
+    context['add'] = True
     context['form'] = form
+    context['medium'] = medium
     context['referer'] = referer
-    return render_to_response('membership/add_contact.html', context)
+    return render_to_response('membership/contact_form.html', context)
 
 @user_passes_test(lambda u: u.is_authenticated())
+def edit_address(request, username, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    address = get_object_or_404(models.Address, id=id)
+    # need to strip ID so new address is created instead of m2m
+    address_dict = {}
+    for key in address.__dict__:
+        if key != 'id':
+            address_dict[key] = address.__dict__[key]
+    if request.method == 'POST':
+        form = forms.AddressForm(request.POST, initial=address_dict)
+        if form.is_valid():
+            new_address = form.save()
+            member = this_user.get_profile()
+            member.addresses.remove(address)
+            member.addresses.add(new_address)
+        return HttpResponseRedirect(reverse('member', args=[username]))
+    else:
+        form = forms.AddressForm(initial=address_dict)
+    context['medium'] = 'address'
+    context['form'] = form
+    template = get_template('membership/contact_form.html')
+    return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_authenticated())
+def edit_email(request, username, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    email = get_object_or_404(models.Email, id=id)
+    # need to strip ID so new email is created instead of m2m
+    email_dict = {}
+    for key in email.__dict__:
+        if key != 'id':
+            email_dict[key] = email.__dict__[key]
+    if request.method == 'POST':
+        form = forms.EmailForm(request.POST, initial=email_dict)
+        if form.is_valid():
+            new_email = form.save()
+            member = this_user.get_profile()
+            member.emails.remove(email)
+            member.emails.add(new_email)
+        return HttpResponseRedirect(reverse('member', args=[username]))
+    else:
+        form = forms.EmailForm(initial=email_dict)
+    context['medium'] = 'email'
+    context['form'] = form
+    template = get_template('membership/contact_form.html')
+    return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_authenticated())
+def edit_phone(request, username, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    phone = get_object_or_404(models.Phone, id=id)
+    # need to strip ID so new phone is created instead of m2m
+    phone_dict = {}
+    for key in phone.__dict__:
+        if key != 'id':
+            phone_dict[key] = phone.__dict__[key]
+    if request.method == 'POST':
+        form = forms.PhoneForm(request.POST, initial=phone_dict)
+        if form.is_valid():
+            new_phone = form.save()
+            member = this_user.get_profile()
+            member.phones.remove(phone)
+            member.phones.add(new_phone)
+        return HttpResponseRedirect(reverse('member', args=[username]))
+    else:
+        form = forms.PhoneForm(initial=phone_dict)
+    context['medium'] = 'phone'
+    context['form'] = form
+    template = get_template('membership/contact_form.html')
+    return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_authenticated())
+def remove_address(request, username, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    address = get_object_or_404(models.Address, id=id)
+    context['contact'] = address
+    context['medium'] = 'address'
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member', args=[username]))
+        member = this_user.get_profile()
+        member.addresses.remove(address)
+        # keep old addresses around for later matching
+        return HttpResponseRedirect(reverse('member', args=[username]))
+    template = get_template('membership/remove_contact.html')
+    return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_authenticated())
+def remove_phone(request, username, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    phone = get_object_or_404(models.Phone, id=id)
+    context['contact'] = phone
+    context['medium'] = 'phone'
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member', args=[username]))
+        member = this_user.get_profile()
+        member.phones.remove(phone)
+        # delete phone if it's not attached to anyone
+        if not phone.member_set.count():
+            phone.delete()
+        return HttpResponseRedirect(reverse('member', args=[username]))
+    template = get_template('membership/remove_contact.html')
+    return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_authenticated())
+def remove_email(request, username, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    email = get_object_or_404(models.Email, id=id)
+    context['contact'] = email
+    context['medium'] = 'email'
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member', args=[username]))
+        member = this_user.get_profile()
+        member.emails.remove(email)
+        # delete email if it's not attached to anyone
+        if not email.member_set.count():
+            email.delete()
+        return HttpResponseRedirect(reverse('member', args=[username]))
+    template = get_template('membership/remove_contact.html')
+    return HttpResponse(template.render(context))
+
 def remove_contact(request, username, medium, id):
     context = RequestContext(request)
     this_user = get_object_or_404(User, username=username)
@@ -255,26 +391,28 @@ def remove_contact(request, username, medium, id):
     contact = get_object_or_404(MediumClass, id=id)
     context['contact'] = contact
     # syntax to actually remove it is ?medium=phone&target=1234&yes=yes
-    # TODO: change to POST
     if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member', args=[username]))
         member = this_user.get_profile()
         member_medium_objs = {
             'address': member.addresses,
             'phone': member.phones,
             'email': member.emails
         }[medium]
-        listing = member_medium_objs.all()
-        for l in listing:
-            if (str(l) == target):
-                member_medium_objs.remove(l)
-                if l.member_set.count() == 0: 
-                    l.delete()
-        # TODO: should redirect to referer
-        return HttpResponseRedirect('/membership/members/'+username)
+        listings = member_medium_objs.all()
+        target = request.POST.get('target')
+        for listing in listings:
+            raise Exception
+            if listing == contact:
+                member_medium_objs.remove(listing)
+                if not listing.member_set.count():
+                    listing.delete()
+        return HttpResponseRedirect(reverse('member', args=[username]))
     # if missing the confirmation &yes=yes:
     return render_to_response('membership/remove_contact.html', context)
     
-def contact_form_for_formset(request, medium):
+def contact_formset_form(request, medium):
     context = RequestContext(request)
     MediumForm = forms.contact_form_map[medium]
     index = request.GET.get('index')
@@ -283,7 +421,7 @@ def contact_form_for_formset(request, medium):
     else:
         form = MediumForm()
     context['form'] = form
-    template = get_template('membership/contact_form.html')
+    template = get_template('membership/snippets/contact_formset.html')
     return HttpResponse(template.render(context))
 
 

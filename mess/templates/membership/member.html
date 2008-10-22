@@ -43,16 +43,16 @@
           <p>
           {% for phone in member.phones.all %}
             {{ phone }} ({{ phone.get_type_display }})
-            <a class="edit" href="">edit</a>
-            <a class="remove" href="{% url membership-remove-contact member.user.username,phone_name,phone.id %}">remove</a>
+            <a class="edit" href="{% url membership-edit-phone member.user.username,phone.id %}">edit</a>
+            <a class="remove" href="{% url membership-remove-phone member.user.username,phone.id %}">remove</a>
             <br />
           {% endfor %} 
           </p>
           <p>
           {% for email in member.emails.all %}
             <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
-            <a class="edit" href="">edit</a>
-            <a class="remove" href="{% url membership-remove-contact member.user.username,email_name,email.id %}">remove</a>
+            <a class="edit" href="{% url membership-edit-email member.user.username,email.id %}">edit</a>
+            <a class="remove" href="{% url membership-remove-email member.user.username,email.id %}">remove</a>
             <br />
           {% endfor %}
           </p>

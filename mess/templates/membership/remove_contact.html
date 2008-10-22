@@ -7,8 +7,17 @@
       <h3>Remove {{ medium }} for {{ this_user.get_full_name }}
           ({{ this_user.username }})</h3>
       <h3>{{ medium|capfirst }} to be removed: {{ contact }}</h3>
+      <form method="POST">
+        <input type="hidden" name="target" value="{{ contact.id }}" />
+        <div>
+          <input type="submit" value="Remove" />
+          <input type="submit" value="Cancel" name="cancel" />
+        </div>
+      </form>
+      <!--
       <h3><a href="?medium={{ medium }}&target={{ contact|urlencode }}&confirmed=yes">Remove</a>
       <a href="/membership/members/{{ user.username }}">Cancel</a></h3>
+    -->
     </div>
   </div>
 {% endblock %}
