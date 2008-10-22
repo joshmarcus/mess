@@ -5,8 +5,23 @@
   <div id="primary-content-wrapper">
     <h2>Member List</h2>
     <form class="standard" method="GET">
+      <ul>
+        <li>
+          <label for="id_search">Search:</label> {{ form.search }} 
+          <label for="id_sort_by">Sort by:</label> {{ form.sort_by }}
+        </li>
+        <li>
+          {{ form.active }} <label for="id_active">active</label>
+          {{ form.inactive }} <label for="id_inactive">inactive</label>
+          {{ form.missing }} <label for="id_missing">missing</label>
+          {{ form.leave_of_absence }} 
+            <label for="id_leave_of_absence">leave of absence</label>
+          {{ form.quit }} <label for="id_quit">quit</label>
+        </li>
+        <li><input type="submit" value="Filter" class="button"/></li>
+      </ul>
+        <!--
         <table class="form-table">
-        {{ form }}
         <tr>
             <th></th>
             <td><input type="submit" value="Filter" class="button"/></td>
@@ -34,6 +49,7 @@
        </tr>
        {% endcomment %}
        </table>
+       -->
      </form>  
     {% include "snippets/pagination.html" %}
     <table class="data">

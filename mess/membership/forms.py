@@ -36,7 +36,10 @@ SORT_CHOICES = (
 )
 
 class MemberListFilterForm(forms.Form):
+    search = forms.CharField()
     sort_by = forms.ChoiceField(choices=SORT_CHOICES)
-    show_active = forms.BooleanField(initial=True, required=False)
-    show_inactive = forms.BooleanField(initial=True, required=False)
-    show_quit = forms.BooleanField(initial=True, required=False)
+    active = forms.BooleanField(initial=True, required=False)
+    inactive = forms.BooleanField(initial=True, required=False)
+    quit = forms.BooleanField(initial=True, required=False)
+    missing = forms.BooleanField(initial=True, required=False)
+    leave_of_absence = forms.BooleanField(initial=True, required=False)
