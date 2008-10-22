@@ -11,8 +11,8 @@ from django.template.loader import get_template
 
 #from mess.accounting import models as a_models
 from mess.membership import forms, models
-from mess.profiles import forms as profiles_forms
-from mess.profiles import models as profiles_models
+#from mess.profiles import forms as profiles_forms
+#from mess.profiles import models as profiles_models
 
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 20
@@ -53,6 +53,8 @@ def member_list(request):
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = get_current_page(pager, page_number)
+    # drop any p= queries from the query string
+    context['query_string'] = request.META['QUERY_STRING'].split('&p=', 1)[0]
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 
@@ -62,10 +64,7 @@ def member(request, username):
             and request.user.id == user.id):
         return HttpResponseRedirect(reverse('login'))
     context = RequestContext(request)
-    profile = user.get_profile()
-    context['profile'] = profile
-    member = get_object_or_404(models.Member, user=user)
-    context['member'] = member
+    context['member'] = user.get_profile()
     # to get around silly {% url %} limits
     context['address_name'] = 'address'
     context['phone_name'] = 'phone'
@@ -82,7 +81,7 @@ def member_add(request):
     member = user = None
     # a fake profile (no profile should have an id of 0) will return
     # no addresses, phones, or emails
-    profile = profiles_models.UserProfile(id=0)
+    #profile = profiles_models.UserProfile(id=0)
     # TODO: need to grab user (and corresponding profile) from 
     # user_form on added member
 
@@ -92,8 +91,7 @@ def member_edit(request, username):
     if not request.user.is_staff and not (request.user.is_authenticated() 
             and request.user.id == user.id):
         return HttpResponseRedirect(reverse('login'))
-    profile = user.get_profile()
-    member = get_object_or_404(models.Member, user=user)
+    member = user.get_profile()
     context = RequestContext(request)
     context['member'] = member
     is_errors = False
@@ -105,15 +103,15 @@ def member_edit(request, username):
                 instance=member)
         related_accounts_form = forms.RelatedAccountsForm(member, request.POST,
                 prefix='related')
-        address_formset = profiles_forms.AddressFormSet(request.POST, 
+        address_formset = forms.AddressFormSet(request.POST, 
                 prefix='address',
-                queryset=profile.addresses.all())
-        phone_formset = profiles_forms.PhoneFormSet(request.POST,
+                queryset=member.addresses.all())
+        phone_formset = forms.PhoneFormSet(request.POST,
                 prefix='phone',
-                queryset=profile.phones.all())
-        email_formset = profiles_forms.EmailFormSet(request.POST,
+                queryset=member.phones.all())
+        email_formset = forms.EmailFormSet(request.POST,
                 prefix='email',
-                queryset=profile.emails.all())
+                queryset=member.emails.all())
         if (user_form.is_valid() and member_form.is_valid() and 
                 related_accounts_form.is_valid() and address_formset.is_valid()
                 and phone_formset.is_valid() and email_formset.is_valid()):
@@ -121,12 +119,11 @@ def member_edit(request, username):
             member_form.save()
             related_accounts = related_accounts_form.cleaned_data['accounts']
             member.accounts = related_accounts
-            member.save()
             # have to handle formset-saving manually because of m2m
-            profile.addresses = fancy_save(address_formset)
-            profile.phones = fancy_save(phone_formset)
-            profile.emails = fancy_save(email_formset)
-            profile.save()
+            member.addresses = fancy_save(address_formset)
+            member.phones = fancy_save(phone_formset)
+            member.emails = fancy_save(email_formset)
+            member.save()
             return HttpResponseRedirect(reverse('member', args=[username]))
         else:
             is_errors = True
@@ -135,12 +132,12 @@ def member_edit(request, username):
         member_form = forms.MemberForm(instance=member, prefix='member')
         related_accounts_form = forms.RelatedAccountsForm(member, 
                 prefix='related')
-        address_formset = profiles_forms.AddressFormSet(prefix='address',
-                queryset=profile.addresses.all())
-        phone_formset = profiles_forms.PhoneFormSet(prefix='phone',
-                queryset=profile.phones.all())
-        email_formset = profiles_forms.EmailFormSet(prefix='email',
-                queryset=profile.emails.all())
+        address_formset = forms.AddressFormSet(prefix='address',
+                queryset=member.addresses.all())
+        phone_formset = forms.PhoneFormSet(prefix='phone',
+                queryset=member.phones.all())
+        email_formset = forms.EmailFormSet(prefix='email',
+                queryset=member.emails.all())
     context['user_form'] = user_form
     context['member_form'] = member_form
     context['related_accounts_form'] = related_accounts_form
@@ -152,30 +149,6 @@ def member_edit(request, username):
     context['is_errors'] = is_errors
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
-
-def fancy_save(formset):
-    object_list = []
-    for form in formset.forms:
-        if form.cleaned_data.get('DELETE') or not form.cleaned_data:
-            continue
-        field_dict = {}
-        for key in form.cleaned_data:
-            if key not in ('DELETE', 'id'):
-                field_dict[key] = form.cleaned_data[key]
-        try:
-            match = formset.model.objects.get(**field_dict)
-        except formset.model.DoesNotExist:
-            match = None
-        if match:
-            object_list.append(match)
-        else:
-            instance = formset.model()
-            for key in form.cleaned_data:
-                if key != 'id':
-                    instance.__dict__[key] = form.cleaned_data[key]
-            instance.save()
-            object_list.append(instance)
-    return object_list
 
 #@user_passes_test(lambda u: u.is_staff)
 def account_list(request):
@@ -225,6 +198,116 @@ def account_form(request, id):
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
 
+def add_contact(request, username, medium):
+    context = RequestContext(request)
+    referer = request.META.get('HTTP_REFERER', '')
+    this_user = get_object_or_404(User, username=username)
+    # use 'this_user' because context['user'] overrides logged-in user 
+    context['this_user'] = this_user
+    # medium may be 'address', 'phone', or 'email'
+    context['medium'] = medium
+    MediumForm = forms.contact_form_map[medium]
+    if request.method == 'POST':
+        form = MediumForm(request.POST)
+        referer = request.POST.get('referer')
+        if form.is_valid():
+            field_dict = {}
+            for key in form.cleaned_data:
+                if key not in ('DELETE', 'id'):
+                    field_dict[key] = form.cleaned_data[key]
+            try:
+                match = form._meta.model.objects.get(**field_dict)
+            except form._meta.model.DoesNotExist:
+                match = None
+            if match:
+                medium_obj = match
+            else:
+                medium_obj = form.save()
+            member = this_user.get_profile()
+            member_medium_objs = {
+                'address': member.addresses,
+                'phone': member.phones,
+                'email': member.emails
+            }[medium]
+            member_medium_objs.add(medium_obj)
+            if referer:
+                return HttpResponseRedirect(referer)
+            else:
+                return HttpResponseRedirect(reverse('member', 
+                        args=[this_user.username]))
+    else:
+        form = MediumForm()
+    context['form'] = form
+    context['referer'] = referer
+    return render_to_response('membership/add_contact.html', context)
+
+def remove_contact(request, username, medium, id):
+    context = RequestContext(request)
+    this_user = get_object_or_404(User, username=username)
+    context['this_user'] = this_user
+    MediumClass = models.__getattribute__(medium.capitalize())
+    context['medium'] = medium
+    contact = get_object_or_404(MediumClass, id=id)
+    context['contact'] = contact
+    # syntax to actually remove it is ?medium=phone&target=1234&yes=yes
+    # TODO: change to POST
+    if request.method == 'POST':
+        member = this_user.get_profile()
+        member_medium_objs = {
+            'address': member.addresses,
+            'phone': member.phones,
+            'email': member.emails
+        }[medium]
+        listing = member_medium_objs.all()
+        for l in listing:
+            if (str(l) == target):
+                member_medium_objs.remove(l)
+                if l.member_set.count() == 0: 
+                    l.delete()
+        # TODO: should redirect to referer
+        return HttpResponseRedirect('/membership/members/'+username)
+    # if missing the confirmation &yes=yes:
+    return render_to_response('membership/remove_contact.html', context)
+    
+def contact_form_for_formset(request, medium):
+    context = RequestContext(request)
+    MediumForm = forms.contact_form_map[medium]
+    index = request.GET.get('index')
+    if index:
+        form = MediumForm(prefix='%s-%s' % (medium, index))
+    else:
+        form = MediumForm()
+    context['form'] = form
+    template = get_template('membership/contact_form.html')
+    return HttpResponse(template.render(context))
+
+
+# helper functions below
+
+def fancy_save(formset):
+    object_list = []
+    for form in formset.forms:
+        if form.cleaned_data.get('DELETE') or not form.cleaned_data:
+            continue
+        field_dict = {}
+        for key in form.cleaned_data:
+            if key not in ('DELETE', 'id'):
+                field_dict[key] = form.cleaned_data[key]
+        try:
+            match = formset.model.objects.get(**field_dict)
+        except formset.model.DoesNotExist:
+            match = None
+        if match:
+            object_list.append(match)
+        else:
+            instance = formset.model()
+            for key in form.cleaned_data:
+                if key != 'id':
+                    instance.__dict__[key] = form.cleaned_data[key]
+            instance.save()
+            object_list.append(instance)
+    return object_list
+
 def get_current_page(pager, page_number):
     try:
         current_page = pager.page(page_number)
@@ -232,42 +315,41 @@ def get_current_page(pager, page_number):
         current_page = pager.page(1)
     return current_page
 
-
 # This raw_list function outputs raw data for use by ajax and xmlhttprequest.
 # Since the data is output raw, it doesn't use any template.
-def raw_list(request):
-	# try.  Catches non-integers, blank field, and missing field
-	try: maxresults = int(request.GET.get('maxresults'))
-	except: maxresults = 30
-
-	# if we're listing accounts, list accounts matching pattern.
-	# don't bother checking the location of *'s, assume account=*pattern*
-	if request.GET.has_key('list') and request.GET.get('list') == 'accounts':
-		account_list = models.Account.objects.all()
-		if request.GET.has_key('account'):
-			pattern = request.GET.get('account').replace('*','')
-			account_list = account_list.filter(name__contains = pattern)
-		account_names = account_list.values_list('name',flat=True)[:maxresults]
-		return HttpResponse('\n'.join(account_names))
-
-	# if we're listing members, list members matching account and/or pattern
-	# note: This part may be SLOW due to [python-iteration] over all db entries
-	if request.GET.has_key('list') and request.GET.get('list') == 'members':
-		if request.GET.has_key('account'):
-			acct = request.GET.get('account')
-			member_list = models.Member.objects.filter(accounts__name = acct)
-		else:
-			member_list = models.Member.objects.all()
-		mnames = [member.user.get_full_name() for member in member_list]
-
-		# if we have a member pattern, filter it case-insensitively
-# CAN'T SEEM TO DO A DATABASE FILTER ON member__user__get_full_name__contains
-		if request.GET.has_key('member'):
-			pattern = request.GET.get('member').replace('*','').lower()
-			mnames = [m for m in mnames if m.lower().find(pattern) >= 0]
-
-		mnames = mnames[:maxresults]
-		return HttpResponse('\n'.join(mnames))		
-
-	# if we're not sure what we're listing, fail
-	return HttpResponse('error in request for raw list')
+#def raw_list(request):
+#	# try.  Catches non-integers, blank field, and missing field
+#	try: maxresults = int(request.GET.get('maxresults'))
+#	except: maxresults = 30
+#
+#	# if we're listing accounts, list accounts matching pattern.
+#	# don't bother checking the location of *'s, assume account=*pattern*
+#	if request.GET.has_key('list') and request.GET.get('list') == 'accounts':
+#		account_list = models.Account.objects.all()
+#		if request.GET.has_key('account'):
+#			pattern = request.GET.get('account').replace('*','')
+#			account_list = account_list.filter(name__contains = pattern)
+#		account_names = account_list.values_list('name',flat=True)[:maxresults]
+#		return HttpResponse('\n'.join(account_names))
+#
+#	# if we're listing members, list members matching account and/or pattern
+#	# note: This part may be SLOW due to [python-iteration] over all db entries
+#	if request.GET.has_key('list') and request.GET.get('list') == 'members':
+#		if request.GET.has_key('account'):
+#			acct = request.GET.get('account')
+#			member_list = models.Member.objects.filter(accounts__name = acct)
+#		else:
+#			member_list = models.Member.objects.all()
+#		mnames = [member.user.get_full_name() for member in member_list]
+#
+#		# if we have a member pattern, filter it case-insensitively
+## CAN'T SEEM TO DO A DATABASE FILTER ON member__user__get_full_name__contains
+#		if request.GET.has_key('member'):
+#			pattern = request.GET.get('member').replace('*','').lower()
+#			mnames = [m for m in mnames if m.lower().find(pattern) >= 0]
+#
+#		mnames = mnames[:maxresults]
+#		return HttpResponse('\n'.join(mnames))		
+#
+#	# if we're not sure what we're listing, fail
+#	return HttpResponse('error in request for raw list')

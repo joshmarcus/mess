@@ -9,5 +9,8 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^members/add$', 'member_add', name='member-add'),
     url(r'^members/(\w+)$', 'member', name='member'),
     url(r'^members/(\w+)/edit$', 'member_edit', name='member-edit'),
-    url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
+    url(r'^contactform/(\w+)$', 'contact_form_for_formset', name='membership-contact-form'),
+    url(r'^(\w+)/add_(\w+)/$', 'add_contact', name='membership-add-contact'),
+    url(r'^(\w+)/remove_(\w+)/(\d+)$', 'remove_contact', name='membership-remove-contact'),
+    #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
 )

@@ -1,8 +1,34 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import formsets
+from django.forms.models import modelformset_factory
 
-from mess.membership.models import Member, Account
+from mess.membership.models import Member, Account, Address, Phone, Email
+
+class PhoneForm(forms.ModelForm):
+    class Meta:
+        model = Phone
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+
+class EmailForm(forms.ModelForm):
+    class Meta:
+        model = Email
+
+AddressFormSet = modelformset_factory(Address, can_delete=True, extra=0)
+        #min_num=1)
+PhoneFormSet = modelformset_factory(Phone, can_delete=True, extra=0)
+        #min_num=1)
+EmailFormSet = modelformset_factory(Email, can_delete=True, extra=0)
+        #min_num=1)
+
+contact_form_map = {
+    'phone': PhoneForm,
+    'address': AddressForm,
+    'email': EmailForm,
+}
 
 class MemberForm(forms.ModelForm):
     class Meta:

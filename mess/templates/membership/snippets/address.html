@@ -1,0 +1,18 @@
+            <h5>{{ address.get_type_display }}
+				
+			</h5> 
+            <p>
+              {% if address.address1 %}
+                {{ address.address1 }}<br />
+              {% endif %}
+              {% if address.address2 %}
+                  {{ address.address2 }}<br />
+              {% endif %}
+              {{ address.city }}, {{ address.state }}
+              {{ address.postal_code }}<br />
+              {{ address.country }}<br />
+           
+              <a class="edit" href="">edit</a>
+              <a class="remove" href="{% url membership-remove-contact member.user.username,address_name,address.id %}">remove</a>
+			</p>
+

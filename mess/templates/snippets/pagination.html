@@ -4,7 +4,7 @@
         {% ifequal page_number page.number %}
           <span>{{ page_number }}</span>
         {% else %}
-          <a href="?p={{ page_number }}">{{ page_number }}</a>
+          <a href="?{{ query_string }}&p={{ page_number }}">{{ page_number }}</a>
         {% endifequal %}
       {% endfor %}
     </div>

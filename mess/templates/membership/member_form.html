@@ -69,7 +69,7 @@
           </table>
           {% endfor %}
           <div id="{{ formset.prefix }}-writeroot" class="add">
-            <a class="add" href="{% url add_contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url profiles-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
+            <a class="add" href="{% url membership-add-contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url membership-contact-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
           </div>
         </div>
         {% endfor %}

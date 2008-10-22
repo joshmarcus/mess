@@ -11,8 +11,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-02-29 18:07:35", 
-      "account_balance": "5", 
-      "reference": null
+      "account_balance": "5"
     }
   }, 
   {
@@ -27,8 +26,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-03-04 17:23:42", 
-      "account_balance": "2", 
-      "reference": null
+      "account_balance": "2"
     }
   }, 
   {
@@ -43,8 +41,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-03-04 18:22:43", 
-      "account_balance": "20", 
-      "reference": null
+      "account_balance": "20"
     }
   }, 
   {
@@ -59,8 +56,7 @@
       "purchase_type": "E", 
       "payment_amount": "100", 
       "timestamp": "2008-03-04 21:16:17", 
-      "account_balance": "20", 
-      "reference": null
+      "account_balance": "20"
     }
   }, 
   {
@@ -75,8 +71,7 @@
       "purchase_type": "", 
       "payment_amount": "0", 
       "timestamp": "2008-03-04 21:48:27", 
-      "account_balance": "20", 
-      "reference": null
+      "account_balance": "20"
     }
   }, 
   {
@@ -91,8 +86,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 15:16:08", 
-      "account_balance": "20", 
-      "reference": null
+      "account_balance": "20"
     }
   }, 
   {
@@ -107,8 +101,7 @@
       "purchase_type": "", 
       "payment_amount": "24", 
       "timestamp": "2008-03-05 16:07:03", 
-      "account_balance": "44", 
-      "reference": null
+      "account_balance": "44"
     }
   }, 
   {
@@ -123,8 +116,7 @@
       "purchase_type": "B", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 16:10:24", 
-      "account_balance": "61.5", 
-      "reference": null
+      "account_balance": "61.5"
     }
   }, 
   {
@@ -139,8 +131,7 @@
       "purchase_type": "", 
       "payment_amount": "200", 
       "timestamp": "2008-03-05 16:49:52", 
-      "account_balance": "200", 
-      "reference": null
+      "account_balance": "200"
     }
   }, 
   {
@@ -155,8 +146,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 16:53:14", 
-      "account_balance": "235", 
-      "reference": null
+      "account_balance": "235"
     }
   }, 
   {
@@ -171,8 +161,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 17:00:07", 
-      "account_balance": "270", 
-      "reference": null
+      "account_balance": "270"
     }
   }, 
   {
@@ -187,8 +176,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 17:02:04", 
-      "account_balance": "170", 
-      "reference": null
+      "account_balance": "170"
     }
   }, 
   {
@@ -203,8 +191,7 @@
       "purchase_type": "B", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 17:02:49", 
-      "account_balance": "0", 
-      "reference": null
+      "account_balance": "0"
     }
   }, 
   {
@@ -219,8 +206,7 @@
       "purchase_type": "", 
       "payment_amount": "100", 
       "timestamp": "2008-03-05 17:04:12", 
-      "account_balance": "100", 
-      "reference": 103
+      "account_balance": "100"
     }
   }, 
   {
@@ -235,8 +221,7 @@
       "purchase_type": "", 
       "payment_amount": "7", 
       "timestamp": "2008-03-05 17:09:10", 
-      "account_balance": "7", 
-      "reference": null
+      "account_balance": "7"
     }
   }, 
   {
@@ -251,8 +236,7 @@
       "purchase_type": "", 
       "payment_amount": "7", 
       "timestamp": "2008-03-05 17:11:51", 
-      "account_balance": "14", 
-      "reference": null
+      "account_balance": "14"
     }
   }, 
   {
@@ -267,8 +251,7 @@
       "purchase_type": "S", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 17:20:33", 
-      "account_balance": "-42.9", 
-      "reference": null
+      "account_balance": "-42.9"
     }
   }, 
   {
@@ -283,8 +266,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 17:24:54", 
-      "account_balance": "-12", 
-      "reference": null
+      "account_balance": "-12"
     }
   }, 
   {
@@ -299,8 +281,7 @@
       "purchase_type": "", 
       "payment_amount": "45", 
       "timestamp": "2008-03-05 17:32:03", 
-      "account_balance": "45", 
-      "reference": null
+      "account_balance": "45"
     }
   }, 
   {
@@ -315,8 +296,7 @@
       "purchase_type": "S", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 17:55:08", 
-      "account_balance": "-2", 
-      "reference": null
+      "account_balance": "-2"
     }
   }, 
   {
@@ -331,8 +311,7 @@
       "purchase_type": "", 
       "payment_amount": "12.18", 
       "timestamp": "2008-03-05 18:03:39", 
-      "account_balance": "12.18", 
-      "reference": null
+      "account_balance": "12.18"
     }
   }, 
   {
@@ -347,8 +326,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 18:06:10", 
-      "account_balance": "-7.78", 
-      "reference": null
+      "account_balance": "-7.78"
     }
   }, 
   {
@@ -363,8 +341,7 @@
       "purchase_type": "", 
       "payment_amount": "10", 
       "timestamp": "2008-03-05 18:08:19", 
-      "account_balance": "10", 
-      "reference": 78
+      "account_balance": "10"
     }
   }, 
   {
@@ -379,8 +356,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 18:14:53", 
-      "account_balance": "-12.57", 
-      "reference": null
+      "account_balance": "-12.57"
     }
   }, 
   {
@@ -395,8 +371,7 @@
       "purchase_type": "", 
       "payment_amount": "800", 
       "timestamp": "2008-03-05 18:16:57", 
-      "account_balance": "800", 
-      "reference": 56
+      "account_balance": "800"
     }
   }, 
   {
@@ -411,8 +386,7 @@
       "purchase_type": "B", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 19:09:22", 
-      "account_balance": "44", 
-      "reference": null
+      "account_balance": "44"
     }
   }, 
   {
@@ -427,8 +401,7 @@
       "purchase_type": "", 
       "payment_amount": "10", 
       "timestamp": "2008-03-05 19:11:07", 
-      "account_balance": "36.5", 
-      "reference": null
+      "account_balance": "36.5"
     }
   }, 
   {
@@ -443,8 +416,7 @@
       "purchase_type": "", 
       "payment_amount": "100", 
       "timestamp": "2008-03-05 20:57:08", 
-      "account_balance": "100", 
-      "reference": null
+      "account_balance": "100"
     }
   }, 
   {
@@ -459,8 +431,7 @@
       "purchase_type": "B", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 21:17:53", 
-      "account_balance": "19", 
-      "reference": null
+      "account_balance": "19"
     }
   }, 
   {
@@ -475,8 +446,7 @@
       "purchase_type": "B", 
       "payment_amount": "17", 
       "timestamp": "2008-03-05 21:18:51", 
-      "account_balance": "-1.5", 
-      "reference": null
+      "account_balance": "-1.5"
     }
   }, 
   {
@@ -491,8 +461,7 @@
       "purchase_type": "E", 
       "payment_amount": "17", 
       "timestamp": "2008-03-05 21:22:10", 
-      "account_balance": "-3", 
-      "reference": null
+      "account_balance": "-3"
     }
   }, 
   {
@@ -507,8 +476,7 @@
       "purchase_type": "E", 
       "payment_amount": "17", 
       "timestamp": "2008-03-05 21:27:51", 
-      "account_balance": "14", 
-      "reference": null
+      "account_balance": "14"
     }
   }, 
   {
@@ -523,8 +491,7 @@
       "purchase_type": "P", 
       "payment_amount": "9", 
       "timestamp": "2008-03-05 21:53:03", 
-      "account_balance": "7", 
-      "reference": null
+      "account_balance": "7"
     }
   }, 
   {
@@ -539,8 +506,7 @@
       "purchase_type": "P", 
       "payment_amount": "2", 
       "timestamp": "2008-03-05 21:54:56", 
-      "account_balance": "8", 
-      "reference": null
+      "account_balance": "8"
     }
   }, 
   {
@@ -555,8 +521,7 @@
       "purchase_type": "E", 
       "payment_amount": "10", 
       "timestamp": "2008-03-05 21:56:01", 
-      "account_balance": "-30", 
-      "reference": null
+      "account_balance": "-30"
     }
   }, 
   {
@@ -571,8 +536,7 @@
       "purchase_type": "E", 
       "payment_amount": "10", 
       "timestamp": "2008-03-05 21:56:01", 
-      "account_balance": "-60", 
-      "reference": null
+      "account_balance": "-60"
     }
   }, 
   {
@@ -587,8 +551,7 @@
       "purchase_type": "E", 
       "payment_amount": "89", 
       "timestamp": "2008-03-05 21:57:50", 
-      "account_balance": "-27", 
-      "reference": null
+      "account_balance": "-27"
     }
   }, 
   {
@@ -603,8 +566,7 @@
       "purchase_type": "", 
       "payment_amount": "89", 
       "timestamp": "2008-03-05 21:57:50", 
-      "account_balance": "62", 
-      "reference": null
+      "account_balance": "62"
     }
   }, 
   {
@@ -619,8 +581,7 @@
       "purchase_type": "S", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 22:00:48", 
-      "account_balance": "3", 
-      "reference": null
+      "account_balance": "3"
     }
   }, 
   {
@@ -635,8 +596,7 @@
       "purchase_type": "", 
       "payment_amount": "45", 
       "timestamp": "2008-03-05 22:00:48", 
-      "account_balance": "48", 
-      "reference": null
+      "account_balance": "48"
     }
   }, 
   {
@@ -651,8 +611,7 @@
       "purchase_type": "S", 
       "payment_amount": "0", 
       "timestamp": "2008-03-05 22:02:44", 
-      "account_balance": "41", 
-      "reference": null
+      "account_balance": "41"
     }
   }, 
   {
@@ -667,8 +626,7 @@
       "purchase_type": "", 
       "payment_amount": "45", 
       "timestamp": "2008-03-05 22:02:44", 
-      "account_balance": "86", 
-      "reference": null
+      "account_balance": "86"
     }
   }, 
   {
@@ -683,8 +641,7 @@
       "purchase_type": "", 
       "payment_amount": "100", 
       "timestamp": "2008-03-08 00:04:33", 
-      "account_balance": "108", 
-      "reference": null
+      "account_balance": "108"
     }
   }, 
   {
@@ -699,8 +656,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-03-08 13:09:39", 
-      "account_balance": "-25.7", 
-      "reference": null
+      "account_balance": "-25.7"
     }
   }, 
   {
@@ -715,8 +671,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-08 13:13:40", 
-      "account_balance": "-34", 
-      "reference": null
+      "account_balance": "-34"
     }
   }, 
   {
@@ -731,8 +686,7 @@
       "purchase_type": "", 
       "payment_amount": "34", 
       "timestamp": "2008-03-08 13:13:41", 
-      "account_balance": "0", 
-      "reference": null
+      "account_balance": "0"
     }
   }, 
   {
@@ -747,8 +701,7 @@
       "purchase_type": "", 
       "payment_amount": "16", 
       "timestamp": "2008-03-08 14:06:59", 
-      "account_balance": "16", 
-      "reference": null
+      "account_balance": "16"
     }
   }, 
   {
@@ -763,8 +716,7 @@
       "purchase_type": "U", 
       "payment_amount": "0", 
       "timestamp": "2008-03-08 14:11:04", 
-      "account_balance": "-6", 
-      "reference": null
+      "account_balance": "-6"
     }
   }, 
   {
@@ -779,8 +731,7 @@
       "purchase_type": "", 
       "payment_amount": "7", 
       "timestamp": "2008-03-08 14:13:29", 
-      "account_balance": "7", 
-      "reference": null
+      "account_balance": "7"
     }
   }, 
   {
@@ -795,8 +746,7 @@
       "purchase_type": "B", 
       "payment_amount": "0", 
       "timestamp": "2008-03-08 14:23:23", 
-      "account_balance": "60.01", 
-      "reference": null
+      "account_balance": "60.01"
     }
   }, 
   {
@@ -811,8 +761,7 @@
       "purchase_type": "", 
       "payment_amount": "26", 
       "timestamp": "2008-03-08 14:23:23", 
-      "account_balance": "86.01", 
-      "reference": null
+      "account_balance": "86.01"
     }
   }, 
   {
@@ -827,8 +776,7 @@
       "purchase_type": "E", 
       "payment_amount": "0", 
       "timestamp": "2008-03-08 14:30:55", 
-      "account_balance": "91.55", 
-      "reference": null
+      "account_balance": "91.55"
     }
   }, 
   {
@@ -843,8 +791,7 @@
       "purchase_type": "", 
       "payment_amount": "19", 
       "timestamp": "2008-03-08 14:31:33", 
-      "account_balance": "19", 
-      "reference": 1134
+      "account_balance": "19"
     }
   }, 
   {
@@ -859,8 +806,7 @@
       "purchase_type": "", 
       "payment_amount": "12", 
       "timestamp": "2008-03-08 14:32:42", 
-      "account_balance": "12", 
-      "reference": null
+      "account_balance": "12"
     }
   }, 
   {
@@ -875,8 +821,7 @@
       "purchase_type": "S", 
       "payment_amount": "0", 
       "timestamp": "2008-03-08 14:35:10", 
-      "account_balance": "-157", 
-      "reference": null
+      "account_balance": "-157"
     }
   }, 
   {
@@ -891,8 +836,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-12 12:01:38", 
-      "account_balance": "52.01", 
-      "reference": null
+      "account_balance": "52.01"
     }
   }, 
   {
@@ -907,8 +851,7 @@
       "purchase_type": "", 
       "payment_amount": "34", 
       "timestamp": "2008-03-12 12:33:29", 
-      "account_balance": "34", 
-      "reference": null
+      "account_balance": "34"
     }
   }, 
   {
@@ -923,8 +866,7 @@
       "purchase_type": "", 
       "payment_amount": "23", 
       "timestamp": "2008-03-12 12:41:20", 
-      "account_balance": "23", 
-      "reference": 110
+      "account_balance": "23"
     }
   }, 
   {
@@ -939,8 +881,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-03-12 12:42:21", 
-      "account_balance": "-2", 
-      "reference": null
+      "account_balance": "-2"
     }
   }, 
   {
@@ -955,8 +896,7 @@
       "purchase_type": "", 
       "payment_amount": "23", 
       "timestamp": "2008-03-12 12:42:21", 
-      "account_balance": "21", 
-      "reference": null
+      "account_balance": "21"
     }
   }, 
   {
@@ -971,8 +911,7 @@
       "purchase_type": "", 
       "payment_amount": "10", 
       "timestamp": "2008-07-09 13:31:28", 
-      "account_balance": "10", 
-      "reference": null
+      "account_balance": "10"
     }
   }, 
   {
@@ -987,8 +926,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-09 14:59:02", 
-      "account_balance": "-15.67", 
-      "reference": null
+      "account_balance": "-15.67"
     }
   }, 
   {
@@ -1003,8 +941,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-09 15:06:22", 
-      "account_balance": "-5.78", 
-      "reference": null
+      "account_balance": "-5.78"
     }
   }, 
   {
@@ -1019,8 +956,7 @@
       "purchase_type": "", 
       "payment_amount": "10", 
       "timestamp": "2008-07-09 15:06:22", 
-      "account_balance": "4.22", 
-      "reference": null
+      "account_balance": "4.22"
     }
   }, 
   {
@@ -1035,8 +971,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-09 15:09:47", 
-      "account_balance": "-43.01", 
-      "reference": null
+      "account_balance": "-43.01"
     }
   }, 
   {
@@ -1051,8 +986,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-09 16:47:34", 
-      "account_balance": "-14", 
-      "reference": null
+      "account_balance": "-14"
     }
   }, 
   {
@@ -1067,8 +1001,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-11 15:37:37", 
-      "account_balance": "-10", 
-      "reference": null
+      "account_balance": "-10"
     }
   }, 
   {
@@ -1083,8 +1016,7 @@
       "purchase_type": "", 
       "payment_amount": "23", 
       "timestamp": "2008-07-11 15:44:56", 
-      "account_balance": "23", 
-      "reference": null
+      "account_balance": "23"
     }
   }, 
   {
@@ -1099,8 +1031,7 @@
       "purchase_type": "", 
       "payment_amount": "40", 
       "timestamp": "2008-07-11 15:45:26", 
-      "account_balance": "40", 
-      "reference": null
+      "account_balance": "40"
     }
   }, 
   {
@@ -1115,8 +1046,7 @@
       "purchase_type": "", 
       "payment_amount": "100", 
       "timestamp": "2008-07-11 15:45:56", 
-      "account_balance": "100", 
-      "reference": null
+      "account_balance": "100"
     }
   }, 
   {
@@ -1131,8 +1061,7 @@
       "purchase_type": "", 
       "payment_amount": "20", 
       "timestamp": "2008-07-11 15:46:24", 
-      "account_balance": "111.55", 
-      "reference": null
+      "account_balance": "111.55"
     }
   }, 
   {
@@ -1147,8 +1076,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-12 16:55:15", 
-      "account_balance": "95.1", 
-      "reference": null
+      "account_balance": "95.1"
     }
   }, 
   {
@@ -1163,8 +1091,7 @@
       "purchase_type": "", 
       "payment_amount": "20", 
       "timestamp": "2008-07-12 16:55:15", 
-      "account_balance": "115.1", 
-      "reference": null
+      "account_balance": "115.1"
     }
   }, 
   {
@@ -1179,8 +1106,7 @@
       "purchase_type": "P", 
       "payment_amount": "0", 
       "timestamp": "2008-07-12 16:55:59", 
-      "account_balance": "-46.89", 
-      "reference": null
+      "account_balance": "-46.89"
     }
   }, 
   {
@@ -1195,8 +1121,7 @@
       "purchase_type": "", 
       "payment_amount": "10", 
       "timestamp": "2008-07-12 16:57:28", 
-      "account_balance": "125.1", 
-      "reference": null
+      "account_balance": "125.1"
     }
   }, 
   {
@@ -1211,8 +1136,7 @@
       "purchase_type": "", 
       "payment_amount": "50", 
       "timestamp": "2008-07-12 16:58:23", 
-      "account_balance": "3.11", 
-      "reference": null
+      "account_balance": "3.11"
     }
   }
 ]

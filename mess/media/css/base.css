@@ -104,7 +104,7 @@ body {
 				}
 	
 	label {font-size:1.1em;}
-	input.button {width:auto; cursor:pointer; padding:.5em;}
+	input.button {cursor:pointer;}
 	
 			
 	form.standard {
@@ -113,11 +113,9 @@ body {
 		margin:15px 0;
                 font-size:1.1em;
 		}
-		form.standard input, form.standard select, form.standard textarea {
+		form.standard input[type="text"], form.standard select, form.standard textarea {
 			width:225px;
 			padding:3px;
-			margin-left:1em;
-			/*border:1px solid #bbb;*/
 			}
 			form.standard select {
 				width:235px;
@@ -126,7 +124,7 @@ body {
 					padding-left:3px;
 					}				
                 form.standard th {
-                        width: 130px;
+                        width: 135px;
                         }
                 form.standard td {
                         }
@@ -149,11 +147,12 @@ body {
                     }	
 		form.sorter {float:left;}
 		
-			form.sorter ul {background:#f2f2f2; border:1px solid #ccc;padding:1em 1em 0 1em; width:420px;}
+			form.sorter ul {background:#f2f2f2; border:1px solid #ccc;padding:1em 1em 0 1em; width:470px;}
 			
-				#primary-content-wrapper form.sorter ul li {margin-bottom:1em; float:left; margin-right:1.2em; background-image:none; padding:0;}
+				#primary-content-wrapper form.sorter ul li {float:left; margin: 0 4px 1em; background-image:none; padding:0;}
 				
 					form.sorter ul li label {font-size:.8em; }
+                    #primary-content-wrapper form.sorter li.button {margin-left: 98px; }
 				
 /*--- ((( tools ))) ---*/
 .clearAll {clear:both;}
@@ -263,7 +262,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			padding:2px 2px 2px 3px;
 			font-size:1.1em;
             }
-        ul.login input {
+        ul.login input[type="text"], ul.login input[type="password"] {
             width: 100px;
             }
 	/*utility-nav*/
@@ -383,7 +382,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin:125px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
+		div.pagination {margin:58px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
 		
 			div.pagination a {color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		

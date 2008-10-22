@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from mess.membership import models as m_models
+
 ADDRESS_TYPES = (
     ('h','Home'),
     ('w','Work'),
@@ -57,9 +59,9 @@ class Email(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True, editable=False)
-    addresses = models.ManyToManyField(Address, blank=True, null=True)
-    phones = models.ManyToManyField(Phone, blank=True, null=True)
-    emails = models.ManyToManyField(Email, blank=True, null=True)
+    addresses = models.ManyToManyField(m_models.Address, blank=True, null=True)
+    phones = models.ManyToManyField(m_models.Phone, blank=True, null=True)
+    emails = models.ManyToManyField(m_models.Email, blank=True, null=True)
 
     def __unicode__(self):
         return self.user.username

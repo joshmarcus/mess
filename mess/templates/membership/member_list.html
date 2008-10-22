@@ -12,55 +12,25 @@
       <ul class="clearfix">
         <li><label for="id_search">Search:</label> {{ form.search }} </li>
         <li><label for="id_sort_by">Sort by:</label> {{ form.sort_by }}</li>
-        <li class="clearAll">{{ form.active }} <label for="id_active">active</label></li>
+        <li>{{ form.active }} <label for="id_active">active</label></li>
         <li>{{ form.inactive }} <label for="id_inactive">inactive</label></li>
         <li>{{ form.missing }} <label for="id_missing">missing</label></li>
         <li>{{ form.leave_of_absence }} <label for="id_leave_of_absence">leave of absence</label></li>
         <li>{{ form.quit }} <label for="id_quit">quit</label></li>
-        <li class="clearAll"><input type="submit" value="Filter" class="button"/></li>
+        <li class="button"><input type="submit" value="Filter" class="button" /></li>
       </ul>
-        <!--
-        <table class="form-table">
-        <tr>
-            <th></th>
-            <td><input type="submit" value="Filter" class="button"/></td>
-        </tr>
-        {% comment %}
-        <tr>
-          <th><label for="">Sort by:</label></th>
-            <td>
-              <select>
-                <option/>
-              </select>
-            </td>
-         </tr>
-         <tr>
-           <th><label for="">Show active:</label></th>
-           <td><input type="checkbox" value=""/></td>
-         </tr>
-         <tr>
-           <th><label for="">Show inactive</label></td>
-           <td><input type="checkbox"/></td>
-         </tr>
-         <tr>
-           <th><label>Show quit</label></th>
-           <td><input type="checkbox" value=""/></td>
-       </tr>
-       {% endcomment %}
-       </table>
-       -->
-     </form>  
+    </form>  
     {% include "snippets/pagination.html" %}
     <table class="data">
-          <tr>
+      <tr>
         <th>Name</th>
         <th>Accounts</th>
-        <th>Job</th>
-        <th>Current<br /> Status</th>
+        <th>Status</th>
+        <th>Date Joined</th>
         <th>Email</th>
         <th>Phone</th>
       </tr>    
-          {% for member in page.object_list %}
+      {% for member in page.object_list %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>
           <a href='{% url member member.user.username %}'>{{ member }}</a>
@@ -72,23 +42,23 @@
              {% endfor %}
            </ul>
         </td>
-        <td>{{ member.job }}</td>
         <td>{{ member.get_status_display }}</td>        
+        <td>{{ member.date_joined }}</td>
         <td>
-            {% for email in member.person.emails.all %}
-              {{ email.get_type_display }}: {{ email.email }}<br />
+          <ul>
+            {% for email in member.emails.all %}
+            <li>{{ email.get_type_display }}: {{ email.email }}</li>
             {% endfor %}
-          </td>
-          <td>
-            {% for phone in member.person.phones.all %}
-              {{ phone.get_type_display }}: {{ phone.number }}
-              {% if phone.ext %}
-                Ext: {{ phone.ext }}
-              {% endif %}
-              <br />
+          </ul>
+        </td>
+        <td>
+          <ul>
+            {% for phone in member.phones.all %}
+            <li>{{ phone.get_type_display }}: {{ phone.number }}</li>
             {% endfor %}
-          </td>     
-        </tr>
+          </ul>
+        </td>     
+      </tr>
       {% endfor %}
     </table>
     {% include "snippets/pagination.html" %}
