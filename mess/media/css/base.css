@@ -99,9 +99,14 @@ body {
 		tr {}
 			th {}
 			td {
-				vertical-align:top;
+ 				vertical-align:top;
 				padding:.5em 0;
 				}
+	
+	label {font-size:1.1em;}
+	input, select, textarea {border:1px solid #bbb;}
+	input.button {width:auto; cursor:pointer; padding:.5em;}
+	
 			
 	form.standard {
 		border:1px solid #ccc;
@@ -109,13 +114,9 @@ body {
 		margin:15px 0;
                 font-size:1.1em;
 		}
-		form.standard label {
-			font-size:1.1em;
-			}
 		form.standard input, form.standard select, form.standard textarea {
 			width:225px;
 			padding:3px;
-			border:1px solid #bbb;
 			margin-left:1em;
 			}
 			form.standard select {
@@ -123,20 +124,7 @@ body {
 				}
 				option {
 					padding-left:3px;
-					}
-				
-				
-			#right-column form.standard input, #right-column form.standard select {
-				width:95%;
-				}
-			#right-column form.standard input.button {
-                }
-			form.standard textarea {
-				}
-			form.standard input.button {
-				width:auto;
-				cursor:pointer;
-				}
+					}				
                 form.standard th {
                         width: 130px;
                         }
@@ -159,6 +147,14 @@ body {
                 }
                 form.standard div.section h3 {
                     }	
+		form.sorter {float:left;}
+		
+			form.sorter ul {background:beige; border:1px solid #ddd;padding:1em 1em 0 1em; width:420px;}
+			
+				#primary-content-wrapper form.sorter ul li {margin-bottom:1em; float:left; margin-right:1.2em; background-image:none; padding:0;}
+				
+					form.sorter ul li label {font-size:.8em; }
+				
 /*--- ((( tools ))) ---*/
 .clearAll {clear:both;}
 .float-left {float:left;}
@@ -171,16 +167,18 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 .action {background:url(../images/bg-action.gif) no-repeat 0 2px; padding-left:16px;}
 .error-message {border:2px solid #cc0000; background:#ffcccc url('../images/bg-error-message.gif') no-repeat 10px 10px; padding:13px 10px 1em 50px; margin-bottom:1em;}
 	.error-message h3 {margin-bottom:0;}
+.helptext {font-size:1em;}
+.nowrap {white-space:nowrap;}
 	
 /*clearfix - forces floated parent div to expand around its floated child elements*/
+
 .clearfix:after { content: ".";  display: block;  height: 0;  clear: both;  visibility: hidden;} 
 .clearfix {display: inline-table;}
 	/* Hides from IE-mac */
 	* html .clearfix {height: 1%;}
 	.clearfix {display: block;}
 	/* End hide from IE-mac */		
-.nowrap {white-space:nowrap;}
-
+	
 
 /*--- ((( structure ))) ---*/
 
@@ -268,9 +266,6 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
         ul.login input {
             width: 100px;
             }
-        ul.login input.button {
-            width: auto;
-            }
 	/*utility-nav*/
 	ul#utility-nav {
 		float:right;
@@ -321,41 +316,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					background:#246495 url(../images/bg-global-nav-hover.gif) no-repeat top right;
 					}
 				ul#global-nav li a.active {
-
 					background:#ebebeb url(../images/bg-global-nav-active.gif) no-repeat top right;
 					color:#333;
 					}
-					
-	/*ul#global-nav {
-		position:relative;
-		padding:0 0 0 15px;
-		top:95px;
-		height:25px;
-		background:#00417d;
-		margin: 0px;
-		}	
-		ul#global-nav li {
-			float:left;
-			margin:0 3px 0 0;
-			background:#53648C;
-			}
-			ul#global-nav li a {
-				display:block;
-				color:#fff;
-				padding:.36em 1em .33em 1em;
-				font-weight:normal;
-				font-size:1.1em;
-				text-decoration:none;
-				margin:0px;
-				}
-				ul#global-nav li a:hover {
-					background:#246495;
-					}
-				ul#global-nav li a.active {
-					background:#ebebeb;
-					color:#333;
-					}*/
-				
 			
 /*--- ((( content-wrapper styles ))) ---*/
 
@@ -395,25 +358,23 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#primary-content-wrapper ul {
 			margin-bottom:1.5em;
 			}
-            /*  This entry causes problems with the autocomplete
-             *  container.
-             */
+			
 			#primary-content-wrapper ul li {
 				margin-bottom:.5em;
 				padding-left:9px;
-				background:url(../images/bg-bullet.gif) no-repeat 0 2px;
+				background:url(../images/bg-bullet.gif) no-repeat 0 3px;
 				}
 				
 		#primary-content-wrapper a.remove, #primary-content-wrapper a.add, #primary-content-wrapper a.edit {
-					color:#888; 
-					padding-left:13px; 
-					font-size:.9em;
-                                        margin-right:.5em;
-					}
-					#primary-content-wrapper a.add:hover, #primary-content-wrapper a.remove:hover, #primary-content-wrapper a.edit:hover {color:#246495;}
-					#primary-content-wrapper a.remove {background:url('../images/bg-icon-remove.gif') no-repeat left;}
-					#primary-content-wrapper a.add {background:url('../images/bg-icon-add.gif') no-repeat left;}
-                                        #primary-content-wrapper a.edit {background:url('/media/images/bg-icon-edit.gif') no-repeat left;}
+				color:#888; 
+				padding-left:13px; 
+				font-size:.9em;
+                margin-right:.5em;
+				}
+				#primary-content-wrapper a.add:hover, #primary-content-wrapper a.remove:hover, #primary-content-wrapper a.edit:hover {color:#246495;}
+				#primary-content-wrapper a.remove {background:url('../images/bg-icon-remove.gif') no-repeat left;}
+				#primary-content-wrapper a.add {background:url('../images/bg-icon-add.gif') no-repeat left;}
+                #primary-content-wrapper a.edit {background:url('/media/images/bg-icon-edit.png') no-repeat left;}
 	
 		#primary-content-wrapper div.attention {
 			margin:.5em 0 1.2em 0;
@@ -422,7 +383,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin:12px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
+		div.pagination {margin:95px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
 		
 			div.pagination a {color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		
@@ -522,16 +483,16 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					background-image:none;
 					padding:0;
 					}
-                                        #primary-content-wrapper div.profile-links ul li#primary-acct {
-                                            background:url(/media/images/bg-icon-primary-acct.png) no-repeat top right;
-                                            padding-right:13px;
-					    }
-                                        #primary-content-wrapper div.profile-links ul li a, #primary-content-wrapper ul.edit-contact-info li a {
-						color:#888;
-						}
-						#primary-content-wrapper div.profile-links ul li a:hover, #primary-content-wrapper ul.edit-contact-info a:hover {
-							color:#246495;
+                    	#primary-content-wrapper div.profile-links ul li#primary-acct {
+                        	background:url(/media/images/bg-icon-primary-acct.png) no-repeat top right;
+                            padding-right:13px;
+					    	}
+                        #primary-content-wrapper div.profile-links ul li a, #primary-content-wrapper ul.edit-contact-info li a {
+							color:#888;
 							}
+							#primary-content-wrapper div.profile-links ul li a:hover, #primary-content-wrapper ul.edit-contact-info a:hover {
+								color:#246495;
+								}
 			#primary-content-wrapper div.details {
 				border:1px solid #ddd;
 				padding:1em;
