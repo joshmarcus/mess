@@ -45,8 +45,7 @@ class RelatedAccountsForm(forms.Form):
         else:
             initial = None
         self.fields['accounts'] = forms.ModelMultipleChoiceField(
-            queryset=Account.objects.all(), 
-            initial=initial,
+            queryset=Account.objects.all(), initial=initial, required=False,
             help_text='<p class="helptext">Hold down "Control", or "Command" on a Mac, to select more than one.</p>')
 
 class UserForm(forms.ModelForm):
@@ -58,6 +57,7 @@ class UserForm(forms.ModelForm):
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
+        exclude = ('balance',)
 
 SORT_CHOICES = (
         ('alpha', 'Alphabetical'),

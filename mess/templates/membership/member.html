@@ -18,11 +18,11 @@
           </ul>
         </div>
         <h4>
-		{% if user.is_staff %}	
-        <a href="{% url member-edit member.user.username %}">edit</a>
-		{% endif %}
-		{{ member.user.get_full_name }} 
-		</h4>
+          {% if user.is_staff %}	
+          <a href="{% url member-edit member.user.username %}">edit</a>
+          {% endif %}
+          {{ member.user.get_full_name }} 
+        </h4>
         <ul class="quick-info">
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.get_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/>{{ member.get_work_status_display }}</li>

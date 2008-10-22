@@ -90,7 +90,7 @@ def member_add(request):
             return HttpResponseRedirect(reverse('member', args=[username]))
         user_form = forms.UserForm(request.POST, prefix='user')
         member_form = forms.MemberForm(request.POST, prefix='member')
-        related_accounts_form = forms.RelatedAccountsForm(None, request.POST, 
+        related_accounts_form = forms.RelatedAccountsForm(member, request.POST, 
                 prefix='related')
         address_formset = forms.AddressFormSet(request.POST, prefix='address',
                 queryset=member.addresses.all())
@@ -121,7 +121,7 @@ def member_add(request):
     else:
         user_form = forms.UserForm(prefix='user')
         member_form = forms.MemberForm(prefix='member')
-        related_accounts_form = forms.RelatedAccountsForm(None, 
+        related_accounts_form = forms.RelatedAccountsForm(member, 
                 prefix='related')
         address_formset = forms.AddressFormSet(prefix='address',
                 queryset=member.addresses.all())
@@ -210,15 +210,14 @@ def member_edit(request, username):
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
+@user_passes_test(lambda u: u.is_authenticated())
 def accounts(request):
     context = RequestContext(request)
     if request.user.is_staff:
         account_objs = models.Account.objects.all()
-    elif request.user.is_authenticated():
+    else:
         member = models.Member.objects.get(user=request.user)
         account_objs = member.accounts.all()
-    else:
-        return HttpResponseRedirect(reverse('login'))
     pager = p.Paginator(account_objs, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
@@ -241,16 +240,31 @@ def account(request, id):
     return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_staff)
-def account_form(request, id):
+def account_add(request):
+    if request.method == 'POST':
+        form = forms.AccountForm(request.POST)
+        if form.is_valid():
+            account = form.save()
+            return HttpResponseRedirect(reverse('account', args=[account.id]))
+    else:
+        form = forms.AccountForm()
     context = RequestContext(request)
+    context['form'] = form
+    context['add'] = True
+    template = get_template('membership/account_form.html')
+    return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_staff)
+def account_edit(request, id):
     account = get_object_or_404(models.Account, id=id)
     if request.method == 'POST':
         form = forms.AccountForm(request.POST, instance=account)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/membership/accounts/'+id)
-    context['account'] = account
-    form = forms.AccountForm(instance=account)
+            return HttpResponseRedirect(reverse('account', args=[account.id]))
+    else:
+        form = forms.AccountForm(instance=account)
+    context = RequestContext(request)
     context['form'] = form
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))

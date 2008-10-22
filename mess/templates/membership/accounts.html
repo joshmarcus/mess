@@ -7,6 +7,11 @@
       <li class="last-item"><a class="active" href="{% url accounts %}">Accounts</a></li>
     </ul>
     <div id="primary-content-wrapper">
+      <form action="{% url account-add %}">
+        <div class="add-button">
+          <input type="submit" value="Add a new account!" />
+        </div>
+      </form>
       <h2>Account List</h2>
       {% include "snippets/pagination.html" %}
       <table class="data">

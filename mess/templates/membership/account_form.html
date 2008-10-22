@@ -4,21 +4,26 @@
 {% endblock %}
 
 {% block content %}
-  <div id="left-column">
+  <div id="double-column">
+    <ul id="local-nav">
+      <li><a href="{% url members %}">Members</a></li>
+      <li class="last-item"><a class="active" href="{% url accounts %}">Accounts</a></li>
+    </ul>
     <div id="primary-content-wrapper">
-      <h2>Accounts</h2>
-      <h3>Edit Account</h3>
+      <h2>{% if add %}Add{% else %}Edit{% endif %} Account</h2>
       <form class="standard" method="post">
         <table class="form-table">
           {{ form }}
-        <tr><td></td><td><input type="submit" value="Save"/></td></tr>
+        <tr><td></td><td><input type="submit" class="button" value="Save"/> <input type="submit" class="button" name="cancel" value="Cancel" /></td></tr>
         </table>
       </form>
     </div>
   </div>
+  <!--
   <div id="right-column">
     Content here.
   </div>
+  -->
 {% endblock %}
 
 {% block pop_up %}
