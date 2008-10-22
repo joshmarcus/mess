@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core import paginator as p
+from django.db.models import Q
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -23,6 +24,11 @@ def member_list(request):
     if 'sort_by' in request.GET:
         form = forms.MemberListFilterForm(request.GET)
         if form.is_valid():
+            search = form.cleaned_data.get('search')
+            if search:
+                members = members.filter(
+                        Q(user__first_name__icontains=search) |
+                        Q(user__last_name__icontains=search))
             sort = form.cleaned_data['sort_by']
             if sort == 'alpha':
                 members = members.order_by('user__username')
@@ -30,12 +36,16 @@ def member_list(request):
                 members = members.order_by('date_joined')
             if sort == 'newjoin':
                 members = members.order_by('-date_joined')
-            if not form.cleaned_data['show_active']:
+            if not form.cleaned_data['active']:
                 members = members.exclude(status='a')
-            if not form.cleaned_data['show_inactive']:
+            if not form.cleaned_data['inactive']:
                 members = members.exclude(status='i')
-            if not form.cleaned_data['show_quit']:
+            if not form.cleaned_data['quit']:
                 members = members.exclude(status='q')
+            if not form.cleaned_data['missing']:
+                members = members.exclude(status='m')
+            if not form.cleaned_data['leave_of_absence']:
+                members = members.exclude(status='L')
     else:
         form = forms.MemberListFilterForm()
     context['form'] = form
