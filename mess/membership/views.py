@@ -81,22 +81,77 @@ def member(request, username):
 def member_add(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('login'))
-    member = user = None
-    # a fake profile (no profile should have an id of 0) will return
+    is_errors = False
+    # a fake member (no member should have an id of 0) will return
     # no addresses, phones, or emails
-    #profile = profiles_models.UserProfile(id=0)
-    # TODO: need to grab user (and corresponding profile) from 
-    # user_form on added member
+    member = models.Member(id=0)
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member', args=[username]))
+        user_form = forms.UserForm(request.POST, prefix='user')
+        member_form = forms.MemberForm(request.POST, prefix='member')
+        related_accounts_form = forms.RelatedAccountsForm(None, request.POST, 
+                prefix='related')
+        address_formset = forms.AddressFormSet(request.POST, prefix='address',
+                queryset=member.addresses.all())
+        email_formset = forms.EmailFormSet(request.POST, prefix='email',
+                queryset=member.emails.all())
+        phone_formset = forms.PhoneFormSet(request.POST, prefix='phone',
+                queryset=member.phones.all())
+        if (user_form.is_valid() and member_form.is_valid() and 
+                related_accounts_form.is_valid() and address_formset.is_valid()
+                and phone_formset.is_valid() and email_formset.is_valid()):
+            # need to do password business
+            # email member with temp password?
+            user = user_form.save()
+            member = models.Member(**member_form.cleaned_data)
+            member.user = user
+            member.save()
+            related_accounts = related_accounts_form.cleaned_data['accounts']
+            member.accounts = related_accounts
+            # have to handle formset-saving manually because of m2m
+            member.addresses = fancy_save(address_formset)
+            member.phones = fancy_save(phone_formset)
+            member.emails = fancy_save(email_formset)
+            member.save()
+            return HttpResponseRedirect(reverse('member', 
+                    args=[member.user.username]))
+        else:
+            is_errors = True
+    else:
+        user_form = forms.UserForm(prefix='user')
+        member_form = forms.MemberForm(prefix='member')
+        related_accounts_form = forms.RelatedAccountsForm(None, 
+                prefix='related')
+        address_formset = forms.AddressFormSet(prefix='address',
+                queryset=member.addresses.all())
+        email_formset = forms.EmailFormSet(prefix='email',
+                queryset=member.emails.all())
+        phone_formset = forms.PhoneFormSet(prefix='phone',
+                queryset=member.phones.all())
+    context = RequestContext(request)
+    context['user_form'] = user_form
+    context['member_form'] = member_form
+    context['related_accounts_form'] = related_accounts_form
+    context['formsets'] = [
+        (address_formset, 'Addresses'), 
+        (phone_formset, 'Phones'),
+        (email_formset, 'Email Addresses'),
+    ]
+    context['is_errors'] = is_errors
+    context['add'] = True
+    template = get_template('membership/member_form.html')
+    return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_staff)
 def member_edit(request, username):
     user = get_object_or_404(User, username=username)
-    if not request.user.is_staff and not (request.user.is_authenticated() 
-            and request.user.id == user.id):
+    if not request.user.is_staff:
         return HttpResponseRedirect(reverse('login'))
+    # a fake profile (no profile should have an id of 0) will return
+    # no addresses, phones, or emails
+    #profile = profiles_models.UserProfile(id=0)
     member = user.get_profile()
-    context = RequestContext(request)
-    context['member'] = member
     is_errors = False
     if request.method == 'POST':
         if 'cancel' in request.POST:
@@ -104,7 +159,7 @@ def member_edit(request, username):
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)
-        related_accounts_form = forms.RelatedAccountsForm(member, request.POST,
+        related_accounts_form = forms.RelatedAccountsForm(member, request.POST, 
                 prefix='related')
         address_formset = forms.AddressFormSet(request.POST, 
                 prefix='address',
@@ -141,6 +196,8 @@ def member_edit(request, username):
                 queryset=member.phones.all())
         email_formset = forms.EmailFormSet(prefix='email',
                 queryset=member.emails.all())
+    context = RequestContext(request)
+    context['member'] = member
     context['user_form'] = user_form
     context['member_form'] = member_form
     context['related_accounts_form'] = related_accounts_form
@@ -187,12 +244,9 @@ def account(request, id):
 def account_form(request, id):
     context = RequestContext(request)
     account = get_object_or_404(models.Account, id=id)
-    # on POST, save data and return to account page
     if request.method == 'POST':
         form = forms.AccountForm(request.POST, instance=account)
         if form.is_valid():
-            # PERMISSIONS # PERMISSIONS # PERMISSIONS #
-            #   this should check permissions here    #  FIXME ???
             form.save()
             return HttpResponseRedirect('/membership/accounts/'+id)
     context['account'] = account
@@ -206,9 +260,9 @@ def account_form(request, id):
 def add_contact(request, username, medium):
     context = RequestContext(request)
     referer = request.META.get('HTTP_REFERER', '')
-    this_user = get_object_or_404(User, username=username)
+    user = get_object_or_404(User, username=username)
     # use 'this_user' because context['user'] overrides logged-in user 
-    context['this_user'] = this_user
+    context['this_user'] = user
     # medium may be 'address', 'phone', or 'email'
     MediumForm = forms.contact_form_map[medium]
     if request.method == 'POST':
@@ -227,7 +281,7 @@ def add_contact(request, username, medium):
                 medium_obj = match
             else:
                 medium_obj = form.save()
-            member = this_user.get_profile()
+            member = user.get_profile()
             member_medium_objs = {
                 'address': member.addresses,
                 'phone': member.phones,
@@ -249,8 +303,8 @@ def add_contact(request, username, medium):
 @user_passes_test(lambda u: u.is_authenticated())
 def edit_address(request, username, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     address = get_object_or_404(models.Address, id=id)
     # need to strip ID so new address is created instead of m2m
     address_dict = {}
@@ -261,7 +315,7 @@ def edit_address(request, username, id):
         form = forms.AddressForm(request.POST, initial=address_dict)
         if form.is_valid():
             new_address = form.save()
-            member = this_user.get_profile()
+            member = user.get_profile()
             member.addresses.remove(address)
             member.addresses.add(new_address)
         return HttpResponseRedirect(reverse('member', args=[username]))
@@ -275,8 +329,8 @@ def edit_address(request, username, id):
 @user_passes_test(lambda u: u.is_authenticated())
 def edit_email(request, username, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     email = get_object_or_404(models.Email, id=id)
     # need to strip ID so new email is created instead of m2m
     email_dict = {}
@@ -287,7 +341,7 @@ def edit_email(request, username, id):
         form = forms.EmailForm(request.POST, initial=email_dict)
         if form.is_valid():
             new_email = form.save()
-            member = this_user.get_profile()
+            member = user.get_profile()
             member.emails.remove(email)
             member.emails.add(new_email)
         return HttpResponseRedirect(reverse('member', args=[username]))
@@ -301,8 +355,8 @@ def edit_email(request, username, id):
 @user_passes_test(lambda u: u.is_authenticated())
 def edit_phone(request, username, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     phone = get_object_or_404(models.Phone, id=id)
     # need to strip ID so new phone is created instead of m2m
     phone_dict = {}
@@ -313,7 +367,7 @@ def edit_phone(request, username, id):
         form = forms.PhoneForm(request.POST, initial=phone_dict)
         if form.is_valid():
             new_phone = form.save()
-            member = this_user.get_profile()
+            member = user.get_profile()
             member.phones.remove(phone)
             member.phones.add(new_phone)
         return HttpResponseRedirect(reverse('member', args=[username]))
@@ -327,15 +381,15 @@ def edit_phone(request, username, id):
 @user_passes_test(lambda u: u.is_authenticated())
 def remove_address(request, username, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     address = get_object_or_404(models.Address, id=id)
     context['contact'] = address
     context['medium'] = 'address'
     if request.method == 'POST':
         if 'cancel' in request.POST:
             return HttpResponseRedirect(reverse('member', args=[username]))
-        member = this_user.get_profile()
+        member = user.get_profile()
         member.addresses.remove(address)
         # keep old addresses around for later matching
         return HttpResponseRedirect(reverse('member', args=[username]))
@@ -345,15 +399,15 @@ def remove_address(request, username, id):
 @user_passes_test(lambda u: u.is_authenticated())
 def remove_phone(request, username, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     phone = get_object_or_404(models.Phone, id=id)
     context['contact'] = phone
     context['medium'] = 'phone'
     if request.method == 'POST':
         if 'cancel' in request.POST:
             return HttpResponseRedirect(reverse('member', args=[username]))
-        member = this_user.get_profile()
+        member = user.get_profile()
         member.phones.remove(phone)
         # delete phone if it's not attached to anyone
         if not phone.member_set.count():
@@ -365,15 +419,15 @@ def remove_phone(request, username, id):
 @user_passes_test(lambda u: u.is_authenticated())
 def remove_email(request, username, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     email = get_object_or_404(models.Email, id=id)
     context['contact'] = email
     context['medium'] = 'email'
     if request.method == 'POST':
         if 'cancel' in request.POST:
             return HttpResponseRedirect(reverse('member', args=[username]))
-        member = this_user.get_profile()
+        member = user.get_profile()
         member.emails.remove(email)
         # delete email if it's not attached to anyone
         if not email.member_set.count():
@@ -384,8 +438,8 @@ def remove_email(request, username, id):
 
 def remove_contact(request, username, medium, id):
     context = RequestContext(request)
-    this_user = get_object_or_404(User, username=username)
-    context['this_user'] = this_user
+    user = get_object_or_404(User, username=username)
+    context['this_user'] = user
     MediumClass = models.__getattribute__(medium.capitalize())
     context['medium'] = medium
     contact = get_object_or_404(MediumClass, id=id)
@@ -394,7 +448,7 @@ def remove_contact(request, username, medium, id):
     if request.method == 'POST':
         if 'cancel' in request.POST:
             return HttpResponseRedirect(reverse('member', args=[username]))
-        member = this_user.get_profile()
+        member = user.get_profile()
         member_medium_objs = {
             'address': member.addresses,
             'phone': member.phones,

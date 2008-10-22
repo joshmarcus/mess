@@ -7,6 +7,11 @@
     <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
   </ul>
   <div id="primary-content-wrapper">
+    <form action="{% url member-add %}">
+      <div class="add-button">
+        <input type="submit" value="Add a new member!" />
+      </div>
+    </form>
     <h2>Member List</h2>
     <form class="sorter" method="GET">
       <ul class="clearfix">

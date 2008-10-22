@@ -40,16 +40,20 @@ class RelatedAccountsForm(forms.Form):
     def __init__(self, member_instance, *args, **kwargs):
         super(RelatedAccountsForm, self).__init__(*args, **kwargs)
         # TODO: make this a dropdown multiple choice
+        if member_instance:
+            initial = [obj.pk for obj in member_instance.accounts.all()]
+        else:
+            initial = None
         self.fields['accounts'] = forms.ModelMultipleChoiceField(
             queryset=Account.objects.all(), 
-            initial=[obj.pk for obj in member_instance.accounts.all()],
+            initial=initial,
             help_text='<p class="helptext">Hold down "Control", or "Command" on a Mac, to select more than one.</p>')
 
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
         # only change is_staff and is_superuser in the admin
-        fields = ('first_name', 'last_name')
+        fields = ('username', 'first_name', 'last_name')
 
 class AccountForm(forms.ModelForm):
     class Meta:

@@ -38,10 +38,20 @@
 {% endblock %}
 
 {% block content %}
-  <div id="left-column">
+  <div id="double-column">
+    <ul id="local-nav">
+      <li><a class="active" href="{% url members %}">Members</a></li>
+      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
+    </ul>
     <div id="primary-content-wrapper">
-      <h2>Edit Profile: {{ member.user.get_full_name }} 
-	  	({{ member.user.username }})</h2>
+      <h2>
+        {% if add %}
+          Add new member
+        {% else %}
+          Edit member: {{ member.user.get_full_name }} 
+          ({{ member.user.username }})
+        {% endif %}
+      </h2>
       {% if member %}
       {% endif %}
       <form class="standard" method="post">
@@ -69,7 +79,7 @@
           </table>
           {% endfor %}
           <div id="{{ formset.prefix }}-writeroot" class="add">
-            <a class="add" href="{% url membership-add-contact member.user.username,formset.prefix %}" onclick="addNew('{{ formset.prefix }}', '{% url membership-contact-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
+            <a class="add" href="{# breaks when no member (on add) {% url membership-add-contact member.user.username,formset.prefix %} #}" onclick="addNew('{{ formset.prefix }}', '{% url membership-contact-formset formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
           </div>
         </div>
         {% endfor %}
@@ -79,9 +89,11 @@
       </form>
     </div>
   </div>
+  <!--
   <div id="right-column">
     Content here.
   </div>
+  -->
 {% endblock %}
 
 {% block pop_up %}

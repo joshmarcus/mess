@@ -153,6 +153,7 @@ body {
 				
 					form.sorter ul li label {font-size:.8em; }
                     #primary-content-wrapper form.sorter li.button {float:right;}
+    form div.add-button {float: right;}
 				
 /*--- ((( tools ))) ---*/
 .clearAll {clear:both;}
@@ -382,7 +383,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;	
 			}
 			
-		div.pagination {margin:64px 0px 15px 0; font-weight:bold; font-size:1em; float:right;}
+		div.pagination {margin:64px 0px 15px 0; font-weight:bold; font-size:1em; float:right; clear:right;}
 		
 			div.pagination a {color:#D18405; border:1px dashed #ddd; text-decoration:none; padding:6px;}
 		
