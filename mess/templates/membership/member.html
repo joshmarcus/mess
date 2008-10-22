@@ -2,6 +2,10 @@
 
 {% block content %}
   <div id="left-column">
+    <ul id="local-nav">
+      <li><a class="active" href="{% url members %}">Members</a></li>
+      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
+    </ul>
     <div id="primary-content-wrapper">
       <h2>Member Profile</h2>
       <div class="profile">

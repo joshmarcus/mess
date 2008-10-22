@@ -17,9 +17,11 @@ from mess.membership import forms, models
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 20
 
-@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_authenticated())
 def member_list(request):
     context = RequestContext(request)
+    if not request.user.is_staff:
+        return member(request, request.user.username)
     members = models.Member.objects.all()
     if 'sort_by' in request.GET:
         form = forms.MemberListFilterForm(request.GET)
@@ -58,6 +60,7 @@ def member_list(request):
     template = get_template('membership/member_list.html')
     return HttpResponse(template.render(context))
 
+@user_passes_test(lambda u: u.is_authenticated())
 def member(request, username):
     user = get_object_or_404(User, username=username)
     if not request.user.is_staff and not (request.user.is_authenticated() 
@@ -150,7 +153,6 @@ def member_edit(request, username):
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
-#@user_passes_test(lambda u: u.is_staff)
 def account_list(request):
     context = RequestContext(request)
     if request.user.is_staff:
@@ -167,6 +169,7 @@ def account_list(request):
     template = get_template('membership/account_list.html')
     return HttpResponse(template.render(context))
 
+@user_passes_test(lambda u: u.is_authenticated())
 def account(request, id):
     account = get_object_or_404(models.Account, id=id)
     request_member = models.Member.objects.get(user=request.user)
@@ -198,6 +201,7 @@ def account_form(request, id):
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
 
+@user_passes_test(lambda u: u.is_authenticated())
 def add_contact(request, username, medium):
     context = RequestContext(request)
     referer = request.META.get('HTTP_REFERER', '')
@@ -241,6 +245,7 @@ def add_contact(request, username, medium):
     context['referer'] = referer
     return render_to_response('membership/add_contact.html', context)
 
+@user_passes_test(lambda u: u.is_authenticated())
 def remove_contact(request, username, medium, id):
     context = RequestContext(request)
     this_user = get_object_or_404(User, username=username)

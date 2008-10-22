@@ -10,14 +10,18 @@
     <h2>Member List</h2>
     <form class="sorter" method="GET">
       <ul class="clearfix">
-        <li><label for="id_search">Search:</label> {{ form.search }} </li>
-        <li><label for="id_sort_by">Sort by:</label> {{ form.sort_by }}</li>
-        <li>{{ form.active }} <label for="id_active">active</label></li>
-        <li>{{ form.inactive }} <label for="id_inactive">inactive</label></li>
-        <li>{{ form.missing }} <label for="id_missing">missing</label></li>
-        <li>{{ form.leave_of_absence }} <label for="id_leave_of_absence">leave of absence</label></li>
-        <li>{{ form.quit }} <label for="id_quit">quit</label></li>
+        <li>
+          <label for="id_search">Search:</label> {{ form.search }} 
+          <label for="id_sort_by">Sort by:</label> {{ form.sort_by }}
+        </li>
         <li class="button"><input type="submit" value="Filter" class="button" /></li>
+        <li>
+          {{ form.active }} <label for="id_active">active</label> 
+          {{ form.inactive }} <label for="id_inactive">inactive</label>
+          {{ form.missing }} <label for="id_missing">missing</label>
+          {{ form.leave_of_absence }} <label for="id_leave_of_absence">leave of absence</label>
+          {{ form.quit }} <label for="id_quit">quit</label>
+        </li>
       </ul>
     </form>  
     {% include "snippets/pagination.html" %}
