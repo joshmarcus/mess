@@ -57,7 +57,7 @@ class Reconciliation(models.Model):
     # django.contrib.admin.LogEntry, should we choose to use that as a 
     # record keeper (would need to add LogEntry.objects.log_action() to this 
     # class's save() method).
-    reconciled_by = models.ForeignKey(User)
+    reconciled_by = models.ForeignKey(Member)
     transaction = models.ForeignKey(Transaction)
     reconciled = models.BooleanField()
     date = models.DateTimeField(auto_now_add=True)
