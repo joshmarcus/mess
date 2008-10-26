@@ -43,7 +43,7 @@ class RecurringShift(models.Model):
     member = models.ForeignKey(Member, null=True)
     frequency_days = models.IntegerField()
     start = models.DateTimeField(null=True, blank=True)
-    length = models.IntegerField()
+    hours = models.IntegerField()
 
     def __unicode__(self):
         return u"%s hrs of %s every %s weeks" % (self.hours, self.job.name, self.frequency)
