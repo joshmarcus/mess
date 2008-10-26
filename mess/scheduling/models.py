@@ -3,18 +3,31 @@ import datetime
 from django.db import models
 from mess.membership.models import Member
 
+
+class Skill(models.Model):
+    """
+    Skills needed to perform jobs
+    """
+    name = models.CharField(max_length=100, unique=True)
+    
+    def __unicode__(self):
+        return self.name
+
 JOB_CHOICES = (
+    ('s','Staff'),
     ('p','Paid'),
     ('m','Member'),
 )
-
 class Job(models.Model):
     """
     Job description / title
     """
-    name = models.CharField(max_length=40, unique=True)
+    name = models.CharField(max_length=100, unique=True)
     desc = models.TextField(blank=True)
     type = models.CharField(max_length=1, choices=JOB_CHOICES, blank=True)
+    freeze_days = models.IntegerField(default=7)
+    hours_multiplier = models.IntegerField(default=1)
+    skill_required = models.ForeignKey(Skill, null=True)
 
     def __unicode__(self):
         return self.name
@@ -26,15 +39,11 @@ class RecurringShift(models.Model):
     """
     A recurring shift is members typical workshift made up of a series of tasks
     """  
-    FREQUENCY_CHOICES = (
-        ('4','Every 4 Weeks'),
-        ('6','Every 6 Weeks'),
-    ) 
     job = models.ForeignKey(Job)
     member = models.ForeignKey(Member, null=True)
-    frequency = models.CharField(max_length=1, choices=FREQUENCY_CHOICES)
+    frequency_days = models.IntegerField()
     start = models.DateTimeField(null=True, blank=True)
-    hours = models.IntegerField()
+    length = models.IntegerField()
 
     def __unicode__(self):
         return u"%s hrs of %s every %s weeks" % (self.hours, self.job.name, self.frequency)
