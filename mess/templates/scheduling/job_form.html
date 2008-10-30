@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+      <h2>
+        {% if add %}
+          Add new job
+        {% else %}
+          Edit job: {{ job.name }} 
+        {% endif %}
+      </h2>
+      <form class="standard" method="post">
+        {% if is_errors %}
+          <div class="error-message">
+            <h3>You have problems.</h3>
+            <p>Please see specific errors in the form below.</p>
+          </div>
+        {% endif %}
+        <table>
+            {{ job_form }}
+        </table>
+        <input type="submit" class="button" value="Save" /> 
+        <input type="submit" class="button" name="cancel" value="Cancel" />
+      </form>
+    </div>
+  </div>
+{% endblock %}
