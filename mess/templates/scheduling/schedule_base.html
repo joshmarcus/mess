@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/calendar/assets/skins/sam/calendar.css" media="screen" >
 <!-- Custom CSS -->
 <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/div_list.css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css" media="screen" >
+<!--<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css" media="screen" >-->
 <!-- Dependencies -->
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script>
@@ -32,12 +32,37 @@
 <div id="left-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-        <div id="cal1Container"></div>
-        <div id="task-list"></div>
+      <h2>Monday, August 3, 2008</h3>
+      <table>
+        <tr>
+          <th>Time</th>
+          <th>Job</th>
+          <th>Workers</th>
+        </tr>
+        <tr>
+          <td>8:00 a.m. &ndash; 9:00 a.m.</td>
+          <td>
+            <ul>
+              <li>Cashier</li>
+              <li>Storekeeper</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li><a href="mailto:">Chris Burns</a></li>
+              <li><a href="mailto:">John Smith</a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+
+        
     </div>
 </div>
 <div id="right-column">
     <h3 id="right-column-heading">Task Form</h3>
+	<div id="cal1Container"></div>
+    <div id="task-list"></div>
     <div id="task-form">
     </div> 
 </div>
