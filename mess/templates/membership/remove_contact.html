@@ -2,10 +2,13 @@
 
 {% block content %}
   <div id="left-column">
+    <ul id="local-nav">
+      <li><a class="active" href="{% url members %}">Members</a></li>
+      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
+    </ul>
     <div id="primary-content-wrapper">
-      <h2>Profiles</h2>
-      <h3>Remove {{ medium }} for {{ this_user.get_full_name }}
-          ({{ this_user.username }})</h3>
+      <h2>Remove {{ medium }} for {{ this_user.get_full_name }}
+          ({{ this_user.username }})</h2>
       <h3>{{ medium|capfirst }} to be removed: {{ contact }}</h3>
       <form method="POST">
         <input type="hidden" name="target" value="{{ contact.id }}" />
@@ -14,10 +17,6 @@
           <input type="submit" value="Cancel" name="cancel" />
         </div>
       </form>
-      <!--
-      <h3><a href="?medium={{ medium }}&target={{ contact|urlencode }}&confirmed=yes">Remove</a>
-      <a href="/membership/members/{{ user.username }}">Cancel</a></h3>
-    -->
     </div>
   </div>
 {% endblock %}

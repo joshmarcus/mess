@@ -8,27 +8,27 @@ from mess.membership.models import Member, Account, Address, Phone, Email
 class PhoneForm(forms.ModelForm):
     class Meta:
         model = Phone
+        exclude = ('member',)
 
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
+        exclude = ('member',)
 
 class EmailForm(forms.ModelForm):
     class Meta:
         model = Email
+        exclude = ('member',)
 
-AddressFormSet = modelformset_factory(Address, can_delete=True, extra=0)
+AddressFormSet = modelformset_factory(Address, can_delete=True, extra=0,
+        exclude=('member',))
         #min_num=1)
-PhoneFormSet = modelformset_factory(Phone, can_delete=True, extra=0)
+PhoneFormSet = modelformset_factory(Phone, can_delete=True, extra=0,
+        exclude = ('member',))
         #min_num=1)
-EmailFormSet = modelformset_factory(Email, can_delete=True, extra=0)
+EmailFormSet = modelformset_factory(Email, can_delete=True, extra=0,
+        exclude = ('member',))
         #min_num=1)
-
-contact_form_map = {
-    'phone': PhoneForm,
-    'address': AddressForm,
-    'email': EmailForm,
-}
 
 class MemberForm(forms.ModelForm):
     class Meta:

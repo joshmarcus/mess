@@ -3,9 +3,21 @@ from django.contrib import admin
 from mess.membership import models
 
 
-class MemberAdmin(admin.ModelAdmin):
-    pass
+class AddressInline(admin.TabularInline):
+    model = models.Address
 
+class EmailInline(admin.TabularInline):
+    model = models.Email
+
+class PhoneInline(admin.TabularInline):
+    model = models.Phone
+
+class MemberAdmin(admin.ModelAdmin):
+    inlines = (
+        AddressInline,
+        EmailInline,
+        PhoneInline,
+    )
 
 class AccountAdmin(admin.ModelAdmin):
     pass

@@ -1,8 +1,0 @@
-from django.conf.urls.defaults import *
-
-urlpatterns = patterns('mess.profiles.views',
-    url(r'^(\w+)/add_(\w+)/$', 'add_contact', name='add_contact'),
-    url(r'^(\w+)/remove_(\w+)/(\d+)$', 'remove_contact', name='remove_contact'),
-    url(r'^form/(\w+)$', 'profiles_form', name='profiles-form'),
-)
-

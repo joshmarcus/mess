@@ -2,24 +2,27 @@
 
 {# same template can be used for Address, Phone or Email #}
 {% block content %}
-<div id="left-column">
-  <ul id="local-nav">
-    <li><a class="active" href="{% url members %}">Members</a></li>
-    <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
-  </ul>
-  <div id="primary-content-wrapper">
-    <h2>{% if add %}Add{% else %}Edit{% endif %} {{ medium }} for {{ this_user.get_full_name }} 
-      ({{ this_user.username }})</h2>
-	<form class="standard" method="post">
-      <input type="hidden" name="referer" value="{{ referer }}" />
-      <table class="form-table">
-        {{ form }}
-        <tr>
-          <td></td>
-          <td><input class="button" type="submit" value="Save"/></td>
-        </tr>
-      </table>
-	</form>
+  <div id="left-column">
+    <ul id="local-nav">
+      <li><a class="active" href="{% url members %}">Members</a></li>
+      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
+    </ul>
+    <div id="primary-content-wrapper">
+      <h2>{% if add %}Add{% else %}Edit{% endif %} {{ medium }} for {{ this_user.get_full_name }} 
+        ({{ this_user.username }})</h2>
+      <form class="standard" method="post">
+        <input type="hidden" name="referer" value="{{ referer }}" />
+        <table class="form-table">
+          {{ form }}
+          <tr>
+            <td></td>
+            <td>
+              <input class="button" type="submit" value="Save"/>
+              <input class="button" type="submit" name="cancel" value="Cancel"/>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}
