@@ -27,7 +27,10 @@ class Job(models.Model):
     type = models.CharField(max_length=1, choices=JOB_CHOICES, blank=True)
     freeze_days = models.IntegerField(default=7)
     hours_multiplier = models.IntegerField(default=1)
-    skill_required = models.ForeignKey(Skill, null=True)
+    skill_required = models.ForeignKey(Skill, blank=True, null=True, 
+            related_name='required by')
+    skill_trained = models.ForeignKey(Skill, blank=True, null=True, 
+            related_name='trained by')
 
     def __unicode__(self):
         return self.name
