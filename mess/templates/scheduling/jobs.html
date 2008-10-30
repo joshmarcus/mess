@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  {% include "scheduling/snippets/page_menu.html" %}
+  <div id="primary-content-wrapper">
+    <form action="{% url job-add %}">
+      <div class="add-button">
+        <input type="submit" value="Add a new job" />
+      </div>
+    </form>
+    <h2>Job List</h2>
+    {# {% include "snippets/pagination.html" %} #}
+    <table class="data">
+      <tr>
+        <th>Name</th>
+        <th>Desc</th>
+        <th>Type</th>
+        <th>Freeze Days</th>
+        <th>Hours Multiplier</th>
+        <th>Skill Required</th>
+        <th>Skill Trained</th>
+      </tr>    
+      {% for job in jobs %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+          <a href='{% url job job_id=job.id %}'>{{ job }}</a>
+        </td>
+        <td>{{ job.desc }} </td>
+        <td>{{ job.get_typec_display }}</td>        
+        <td>{{ job.freeze_days }}</td>
+        <td>{{ job.hours_multiplier }}</td>
+        <td>{{ job.skill_required }}</td>     
+        <td>{{ job.skill_trained }}</td>     
+      </tr>
+      {% endfor %}
+    </table>
+    {# {% include "snippets/pagination.html" %} #}
+  </div>
+</div>
+{% endblock %}
+

@@ -108,4 +108,15 @@ def timecard(request):
     pass
     
 def jobs(request):
-    pass
+    context = {
+        'jobs': Job.objects.all()
+    }
+    return render_to_response('scheduling/jobs.html', context,
+                                context_instance=RequestContext(request))
+
+def job(request, job_id):
+    context = {
+        'jobs': Job.objects.filter(job_id=id)
+    }
+    return render_to_response('scheduling/jobs.html', context,
+                                context_instance=RequestContext(request))
