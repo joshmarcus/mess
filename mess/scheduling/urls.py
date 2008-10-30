@@ -6,6 +6,11 @@ from mess.scheduling.models import *
 urlpatterns = patterns('mess.scheduling.views',
     url(r'^task_list/(?P<date>\d{4}-\d+-\d+)$', 'task_list', name="task-list"),
     url(r'^task_list/$', 'task_list', name="task-list-today"),
+    
+    url(r'^open_task_list_month/(?P<date>\d{4}-\d+)$', 'open_task_list_month', name="open-task-list-month"),
+    url(r'^open_task_list/(?P<date>\d{4}-\d+-\d+)$', 'open_task_list', name="open-task-list"),
+    url(r'^open_task_list/$', 'open_task_list', name="open-task-list-today"),
+    
     url(r'^task_form/(?P<task_id>\d+)', 'task_form'),
     url(r'^task_form/', 'task_form'),
     url(r'^schedule/(?P<date>\d{4}-\d+-\d+)', 'schedule'),
@@ -16,7 +21,6 @@ urlpatterns = patterns('mess.scheduling.views',
 #    url(r'^daily.html', 'daliy'),
 #    url(r'^weekly.html', 'weekly'),
 #    url(r'^job_list.html', 'job_list'),
-
     url(r'^task/new/', 'add_task', name="add-task"),
     url(r'^task/update/(?P<object_id>\d+)', 'update_task', name="update-task"),
     url(r'^task/delete/(?P<object_id>\d+)', 'delete_task', name="del-task"),
