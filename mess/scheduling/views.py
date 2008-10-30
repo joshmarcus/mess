@@ -90,7 +90,7 @@ def open_task_list_month(request, date=None):
         date = datetime.date(int(year), int(month))
     
     context = {
-        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
+        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, member='null')
     }
     return render_to_response('scheduling/snippets/open_task_list_month.html', context,
                                 context_instance=RequestContext(request))
