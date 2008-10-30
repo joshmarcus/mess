@@ -24,10 +24,10 @@
       {% for job in jobs %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>
-          <a href='{% url job job_id=job.id %}'>{{ job }}</a>
+          <a href='{% url job-edit job_id=job.id %}'>{{ job }}</a>
         </td>
         <td>{{ job.desc }} </td>
-        <td>{{ job.get_typec_display }}</td>        
+        <td>{{ job.get_type_display }}</td>        
         <td>{{ job.freeze_days }}</td>
         <td>{{ job.hours_multiplier }}</td>
         <td>{{ job.skill_required }}</td>     
