@@ -24,7 +24,7 @@ class Job(models.Model):
     """
     name = models.CharField(max_length=100, unique=True)
     desc = models.TextField(blank=True)
-    type = models.CharField(max_length=1, choices=JOB_CHOICES, blank=True)
+    type = models.CharField(max_length=1, choices=JOB_CHOICES, default='m')
     freeze_days = models.IntegerField(default=7)
     hours_multiplier = models.IntegerField(default=1)
     skill_required = models.ForeignKey(Skill, blank=True, null=True, 
