@@ -1,0 +1,27 @@
+{# prints the list of tasks for currently selected day #}
+<div class="actions">
+    <ul>
+        <li><a href="javascript:deleteTask({{task.id}});">remove</a></li>
+    </ul>
+    <div class="clBoth"></div>
+</div>
+<div id="details_list_header">
+    <input type="checkbox" name="" value="ALL"> Select All
+</div>
+{% if tasks %}
+<div class="details clearfix">
+    <ul class="details_list">
+        {% for task in tasks %}
+            <li id="task-{{task.id}}">
+                <input type="checkbox" name="" value="' + {{task.id}} + '">
+                {{task}} 
+                <a class="edit" href="javascript:getForm({{task.id}});">edit</a> 
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<div class="details clearfix">
+    no tasks scheduled for this day
+<div>
+{% endif %}
