@@ -8,6 +8,7 @@ urlpatterns = patterns('mess.scheduling.views',
     url(r'^task_list/$', 'task_list', name="task-list-today"),
     
     url(r'^open_task_list_month/(?P<date>\d{4}-\d+)$', 'open_task_list_month', name="open-task-list-month"),
+    url(r'^open_task_list_month/$', 'open_task_list_month', name="open-task-list-current-month"),
     url(r'^open_task_list/(?P<date>\d{4}-\d+-\d+)$', 'open_task_list', name="open-task-list"),
     url(r'^open_task_list/$', 'open_task_list', name="open-task-list-today"),
     

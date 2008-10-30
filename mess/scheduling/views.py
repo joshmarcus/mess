@@ -66,6 +66,34 @@ def task_list(request, date=None):
     }
     return render_to_response('scheduling/snippets/task_list.html', context,
                                 context_instance=RequestContext(request))
+                                
+def open_task_list(request, date=None):
+    "return an html snippet listing all open tasks for the selected day"
+    if date == None:
+        date = datetime.date.today()
+    else:
+        year, month, day = date.split('-')
+        date = datetime.date(int(year), int(month), int(day))
+    
+    context = {
+        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
+    }
+    return render_to_response('scheduling/snippets/open_task_list.html', context,
+                                context_instance=RequestContext(request))
+
+def open_task_list_month(request, date=None):
+    "return an html snippet listing all days with open tasks for a specified month"
+    if date == None:
+        date = datetime.date.today()
+    else:
+        year, month = date.split('-')
+        date = datetime.date(int(year), int(month))
+    
+    context = {
+        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
+    }
+    return render_to_response('scheduling/snippets/open_task_list_month.html', context,
+                                context_instance=RequestContext(request))
         
 def schedule(request):
     date = datetime.date.today()
