@@ -1,15 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import formsets
-from django.forms.models import modelformset_factory
+from django.forms.models import inlineformset_factory, modelformset_factory
 
 from mess.membership.models import Member, Account, Address, Phone, Email
 
-class PhoneForm(forms.ModelForm):
-    class Meta:
-        model = Phone
-        exclude = ('member',)
+AddressFormSet = inlineformset_factory(Member, Address, extra=0) #, min_num=1)
+EmailFormSet = inlineformset_factory(Member, Email, extra=0) #, min_num=1)
+PhoneFormSet = inlineformset_factory(Member, Phone, extra=0) #, min_num=1)
 
+# AddressForm, EmailForm, and PhoneForm needed for dynamic forms
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
@@ -20,15 +20,11 @@ class EmailForm(forms.ModelForm):
         model = Email
         exclude = ('member',)
 
-AddressFormSet = modelformset_factory(Address, can_delete=True, extra=0,
-        exclude=('member',))
-        #min_num=1)
-PhoneFormSet = modelformset_factory(Phone, can_delete=True, extra=0,
-        exclude = ('member',))
-        #min_num=1)
-EmailFormSet = modelformset_factory(Email, can_delete=True, extra=0,
-        exclude = ('member',))
-        #min_num=1)
+class PhoneForm(forms.ModelForm):
+    class Meta:
+        model = Phone
+        exclude = ('member',)
+
 
 class MemberForm(forms.ModelForm):
     class Meta:

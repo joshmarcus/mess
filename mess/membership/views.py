@@ -70,10 +70,9 @@ def member(request, username):
     context['member'] = user.get_profile()
     # to get around silly {% url %} limits
     context['address_name'] = 'address'
-    context['phone_name'] = 'phone'
     context['email_name'] = 'email'
-    # this list should live somewhere else, but I don't know where:
-    context['contact_media'] = ['address', 'phone', 'email']
+    context['phone_name'] = 'phone'
+    context['contact_media'] = ['address', 'email', 'phone']
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
@@ -133,8 +132,8 @@ def member_add(request):
     context['related_accounts_form'] = related_accounts_form
     context['formsets'] = [
         (address_formset, 'Addresses'), 
-        (phone_formset, 'Phones'),
         (email_formset, 'Email Addresses'),
+        (phone_formset, 'Phones'),
     ]
     context['is_errors'] = is_errors
     context['add'] = True
@@ -156,15 +155,12 @@ def member_edit(request, username):
                 instance=member)
         related_accounts_form = forms.RelatedAccountsForm(member, request.POST, 
                 prefix='related')
-        address_formset = forms.AddressFormSet(request.POST, 
-                prefix='address',
-                queryset=member.addresses.all())
-        phone_formset = forms.PhoneFormSet(request.POST,
-                prefix='phone',
-                queryset=member.phones.all())
-        email_formset = forms.EmailFormSet(request.POST,
-                prefix='email',
-                queryset=member.emails.all())
+        address_formset = forms.AddressFormSet(request.POST, instance=member,
+                prefix='address')
+        email_formset = forms.EmailFormSet(request.POST, instance=member,
+                prefix='email')
+        phone_formset = forms.PhoneFormSet(request.POST, instance=member,
+                prefix='phone')
         if (user_form.is_valid() and member_form.is_valid() and 
                 related_accounts_form.is_valid() and address_formset.is_valid()
                 and phone_formset.is_valid() and email_formset.is_valid()):
@@ -174,8 +170,8 @@ def member_edit(request, username):
             member.accounts = related_accounts
             member.save()
             address_formset.save()
-            phone_formset.save()
             email_formset.save()
+            phone_formset.save()
             return HttpResponseRedirect(reverse('member', args=[username]))
         else:
             is_errors = True
@@ -184,12 +180,10 @@ def member_edit(request, username):
         member_form = forms.MemberForm(instance=member, prefix='member')
         related_accounts_form = forms.RelatedAccountsForm(member, 
                 prefix='related')
-        address_formset = forms.AddressFormSet(prefix='address',
-                queryset=member.addresses.all())
-        phone_formset = forms.PhoneFormSet(prefix='phone',
-                queryset=member.phones.all())
-        email_formset = forms.EmailFormSet(prefix='email',
-                queryset=member.emails.all())
+        address_formset = forms.AddressFormSet(instance=member, 
+                prefix='address')
+        email_formset = forms.EmailFormSet(instance=member, prefix='email')
+        phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')
     context = RequestContext(request)
     context['member'] = member
     context['user_form'] = user_form
@@ -197,8 +191,8 @@ def member_edit(request, username):
     context['related_accounts_form'] = related_accounts_form
     context['formsets'] = [
         (address_formset, 'Addresses'), 
-        (phone_formset, 'Phones'),
         (email_formset, 'Email Addresses'),
+        (phone_formset, 'Phones'),
     ]
     context['is_errors'] = is_errors
     template = get_template('membership/member_form.html')

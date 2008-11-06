@@ -95,15 +95,6 @@ class Address(models.Model):
         verbose_name_plural = 'Addresses'
 
 
-class Phone(models.Model):
-    member = models.ForeignKey(Member, related_name='phones')
-    type = models.CharField(max_length=1, choices=PHONE_TYPES, default='h')
-    number = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return self.number
-
-
 class Email(models.Model):
     member = models.ForeignKey(Member, related_name='emails')
     type = models.CharField(max_length=1, choices=EMAIL_TYPES, default='p')
@@ -111,4 +102,13 @@ class Email(models.Model):
 
     def __unicode__(self):
         return self.email
+
+
+class Phone(models.Model):
+    member = models.ForeignKey(Member, related_name='phones')
+    type = models.CharField(max_length=1, choices=PHONE_TYPES, default='h')
+    number = models.CharField(max_length=20)
+
+    def __unicode__(self):
+        return self.number
 
