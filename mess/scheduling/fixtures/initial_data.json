@@ -148,7 +148,6 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 5, 
-      "recurrence": null, 
       "start": "2008-10-18 02:15:09", 
       "job": 8, 
       "member": 21, 
@@ -160,7 +159,6 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "recurrence": null, 
       "start": "2008-10-18 02:14:44", 
       "job": 7, 
       "member": null, 
@@ -172,7 +170,6 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "recurrence": null, 
       "start": "2008-10-18 02:14:03", 
       "job": 6, 
       "member": 103, 
@@ -184,7 +181,6 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "recurrence": null, 
       "start": "2008-10-17 02:14:24", 
       "job": 6, 
       "member": 17, 
@@ -196,7 +192,6 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "recurrence": null, 
       "start": "2008-10-24 15:08:24", 
       "job": 2, 
       "member": 1, 
@@ -208,7 +203,6 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "recurrence": null, 
       "start": "2008-10-19 15:08:46", 
       "job": 6, 
       "member": 12, 

@@ -7,5 +7,4 @@ class TaskAdmin(admin.ModelAdmin):
 admin.site.register(Job)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Timecard)
-admin.site.register(RecurringShift)
 admin.site.register(Skill)

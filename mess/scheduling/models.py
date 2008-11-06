@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from mess.membership.models import Member
+from mess.membership.models import Member, Account
 
 
 class Skill(models.Model):
@@ -38,40 +38,40 @@ class Job(models.Model):
     class Meta:
         ordering = ['name']
 
-class RecurringShift(models.Model):
-    """
-    A recurring shift is members typical workshift made up of a series of tasks
-    """  
-    job = models.ForeignKey(Job)
-    member = models.ForeignKey(Member, null=True)
-    frequency_days = models.IntegerField()
-    start = models.DateTimeField(null=True, blank=True)
-    hours = models.IntegerField()
+#class RecurringShift(models.Model):
+#    """
+#    A recurring shift is members typical workshift made up of a series of tasks
+#    """  
+#    job = models.ForeignKey(Job)
+#    member = models.ForeignKey(Member, null=True)
+#    frequency_days = models.IntegerField()
+#    start = models.DateTimeField(null=True, blank=True)
+#    hours = models.IntegerField()
+#
+#    def __unicode__(self):
+#        return u"%s hrs of %s every %s weeks" % (self.hours, self.job.name, self.frequency)
 
-    def __unicode__(self):
-        return u"%s hrs of %s every %s weeks" % (self.hours, self.job.name, self.frequency)
-
+RECURRANCE_UNITS = (
+    ('d', 'days'),
+    ('w', 'weeks'),
+    ('m', 'months'),
+)
 
 class Task(models.Model):
     """
     A task is an instance of a job that occurs once
     """
     job = models.ForeignKey(Job)
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(null=True, blank=True)
     start = models.DateTimeField(null=True, blank=True)
-    member = models.ForeignKey(Member, null=True)
-    recurrence = models.ForeignKey(RecurringShift, null=True, blank=True)
-    hours = models.IntegerField()
     member = models.ForeignKey(Member, null=True, blank=True)
+    account = models.ForeignKey(Account, null=True, blank=True)
+    hours = models.IntegerField()
+    recurrance_freq = models.IntegerField(default=0)
+    recurrance_unit = models.CharField(max_length=1, choices=RECURRANCE_UNITS, default='w')
     
     class Meta:
         ordering = ['-deadline', 'start']
-    
-    def is_assigned(self):
-        if self.member:
-            return True
-        else:
-            return False
     
     def __unicode__(self):
         return u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
