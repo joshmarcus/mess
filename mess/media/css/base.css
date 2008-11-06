@@ -373,7 +373,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				}
 				#primary-content-wrapper a.add:hover, #primary-content-wrapper a.remove:hover, #primary-content-wrapper a.edit:hover {color:#246495;}
 				#primary-content-wrapper a.remove {background:url('../images/bg-icon-remove.gif') no-repeat left;}
-				#primary-content-wrapper a.add {background:url('../images/bg-icon-add.gif') no-repeat left;}
+				#primary-content-wrapper a.add {background:url('../images/bg-icon-add.png') no-repeat left;}
                 #primary-content-wrapper a.edit {background:url('/media/images/bg-icon-edit.png') no-repeat left;}
 	
 		#primary-content-wrapper div.attention {
@@ -447,7 +447,22 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					}
 					#primary-content-wrapper table.data td ul li {
 						font-size:1em;
+						background:none;
+						padding:0;
 						}
+						
+				  table#daily-view {}
+				  
+				    table#daily-view tr.unscheduled {background:#ffcccc; color:#cc0000;}
+				    
+				      table#daily-view tr.unscheduled a.add {font-size:1em; color:#cc0000;}
+				    
+				    table#daily-view td.time {}
+				    
+				      table#daily-view tr.unscheduled td.time {background:url('/media/images/bg-unscheduled.png') no-repeat 5px 7px; padding-left:22px;}
+				    
+				    
+				      
 						
 		#primary-content-wrapper div.profile {
 			border:1px solid #ddd;
