@@ -100,9 +100,13 @@ def schedule(request):
     return render_to_response('scheduling/schedule_base.html', context,
                                 context_instance=RequestContext(request))
 
+# filter for date
 def timecard(request):
-    pass
-    
+    context = {
+        'jobs': Job.objects.all()
+    }
+    return render_to_response('scheduling/timecard.html', context,
+                                context_instance=RequestContext(request))    
 def jobs(request):
     context = {
         'jobs': Job.objects.all()
