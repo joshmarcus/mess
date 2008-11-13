@@ -23,7 +23,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "m", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -36,7 +36,7 @@
       "freeze_days": 7, 
       "skill_trained": 1, 
       "type": "m", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -49,7 +49,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -62,7 +62,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -75,7 +75,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -88,7 +88,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -101,7 +101,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -114,7 +114,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -127,7 +127,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
@@ -140,7 +140,7 @@
       "freeze_days": 7, 
       "skill_trained": null, 
       "type": "", 
-      "desc": ""
+      "description": ""
     }
   }, 
   {
