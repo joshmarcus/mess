@@ -10,9 +10,14 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
 <!-- Custom JS -->
 <script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
 {# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
+
+<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier_events.js"></script>
 
 <!-- Calendar styles -->
 <style type="text/css">
@@ -32,7 +37,7 @@
 <div id="left-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <h2>Monday, August 3, 2008</h3>
+    <h2> <a href=""><<</a> Monday, August 3, 2008 <a href="">>></a></h2>
 	  
       <table class="data" id="daily-view">
         <tr>
@@ -148,10 +153,10 @@
     </div>
 </div>
 <div id="right-column">
-    <h3 id="right-column-heading">Task Form</h3>
+    <h3 id="right-column-heading">Calendar</h3>
 	<div id="cal1Container"></div>
-    <div id="task-list"></div>
-    <div id="task-form">
+    {# <div id="task-list"></div> #}
+    {# <div id="task-form"> #}
     </div> 
 </div>
 

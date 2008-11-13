@@ -31,7 +31,6 @@ def delete_task(request, **kwargs):
     del_dict.update(kwargs)
     return delete_object(request, post_delete_redirect=reverse("manage-schedule"), **del_dict)
 
-
 def task_form(request, task_id=None):
     "return an html snippet consisting of a form for a task"
     context = {}

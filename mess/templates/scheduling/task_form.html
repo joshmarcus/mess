@@ -1,7 +1,55 @@
 {% extends "base.html" %}
 
+{% block head %}
+<!--CSS file (default YUI Sam Skin) -->
+{# <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/calendar/assets/skins/sam/calendar.css" media="screen" > #}
+<!-- Custom CSS -->
+{# <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/div_list.css" media="screen"/> #}
+{# <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css" media="screen" > #}
+<!-- Dependencies -->
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+{# <script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script> #}
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
+<!-- Custom JS -->
+{# <script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script> #}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/task.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/task_events.js"></script>
+{# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
+
+<!-- Calendar styles -->
+<style type="text/css">
+    {% for task in tasks %}
+        .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {text-decoration: underline;}
+    {% endfor %}
+</style> 
+
+{% endblock head %}
+
+{% block page_menu %}
+<a class='button' href="schedule.html">Schedule</a>
+<a class='button' href="job_list.html">Job List</a>
+{% endblock %}
+
 {% block content %}
-<div id="double-column">
-    {% include "scheduling/snippets/task_form.html" %}
+<div id="left-column">
+    {% include "scheduling/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+        <form class="standard" method="post" >
+          <table>
+            {{ form }}
+            <tr>
+              <th></th>
+              <td><input class="button" type="submit" value="Submit" /></td>
+            </tr>
+          </table>
+        </form>
+    </div>
 </div>
+<div id="right-column">
+    <h3 id="right-column-heading">Calendar</h3>
+    {# <div id="cal1Container"></div> #}
+</div>
+
 {% endblock content %}

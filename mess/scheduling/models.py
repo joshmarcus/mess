@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from mess.membership.models import Member, Account
+from mess.membership.models import Account, Member
 
 
 class Skill(models.Model):
@@ -64,8 +64,8 @@ class Task(models.Model):
     job = models.ForeignKey(Job)
     deadline = models.DateTimeField(null=True, blank=True)
     start = models.DateTimeField(null=True, blank=True)
-    member = models.ForeignKey(Member, null=True, blank=True)
-    account = models.ForeignKey(Account, null=True, blank=True)
+    account = models.ForeignKey(Account)
+    member = models.ForeignKey(Member)
     hours = models.IntegerField()
     recurrance_freq = models.IntegerField(default=0)
     recurrance_unit = models.CharField(max_length=1, choices=RECURRANCE_UNITS, default='w')
