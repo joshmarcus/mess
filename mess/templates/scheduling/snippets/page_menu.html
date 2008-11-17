@@ -1,9 +1,8 @@
 {% block page_menu %}
-<ul id="local-nav">
-    <li><a href="{% url manage-schedule %}">Manage Schedule</a></li>
-    <li><a href="{% url manage-timecard %}">Manage Timecard</a></li>
-    <li><a href="{% url manage-jobs %}">Manage Jobs</a></li>
-    <li><a href="{% url add-task %}">New Task</a></li>
-    {# <li class="last-item"><a href="javascript:getForm()">New Task</a></li> #}
-</ul>
+  <ul id="local-nav">
+    <li><a href="{% url scheduling-schedule %}">Schedule</a></li>
+    <li><a href="{% url scheduling-assign %}">Assign</a></li>
+    <li><a href="{% url scheduling-timecard %}">Timecard</a></li>
+    <li class="last-item"><a href="{% url scheduling-jobs %}">Jobs</a></li>
+  </ul>
 {% endblock %}
