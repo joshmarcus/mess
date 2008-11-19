@@ -372,9 +372,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
                 margin-right:.5em;
 				}
 				#primary-content-wrapper a.add:hover, #primary-content-wrapper a.remove:hover, #primary-content-wrapper a.edit:hover {color:#246495;}
-				#primary-content-wrapper a.remove {background:url('../images/bg-icon-remove.gif') no-repeat left;}
+				#primary-content-wrapper a.remove {background:url('../images/bg-icon-remove.png') no-repeat left;}
 				#primary-content-wrapper a.add {background:url('../images/bg-icon-add.png') no-repeat left;}
-                #primary-content-wrapper a.edit {background:url('/media/images/bg-icon-edit.png') no-repeat left;}
+                #primary-content-wrapper a.edit {background:url('../images/bg-icon-edit2.png') no-repeat left;}
 	
 		#primary-content-wrapper div.attention {
 			margin:.5em 0 1.2em 0;
