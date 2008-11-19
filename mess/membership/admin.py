@@ -25,6 +25,7 @@ class AccountAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Member, MemberAdmin)
 admin.site.register(models.Account, AccountAdmin)
+admin.site.register(models.AccountMember)
 admin.site.register(models.Address)
 admin.site.register(models.Email)
 admin.site.register(models.Phone)

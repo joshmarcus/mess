@@ -12,8 +12,8 @@
         <div class="profile-links">
           <h5>Accounts</h5>
           <ul>
-            {% for account in member.accounts.all %}
-              <li{% ifequal account member.primary_account %} id="primary-acct"{% endifequal %}><a href="{% url account account.id %}">{{ account }}</a></li>
+            {% for am in member.accountmember_set.all %}
+              <li{% if am.primary_account %} id="primary-acct"{% endif %}><a href="{% url account am.account.id %}">{{ am.account }}</a></li>
             {% endfor %}
           </ul>
         </div>

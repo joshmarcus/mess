@@ -3,6 +3,7 @@ from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 
+# XXX: should these MEMBER_STATUSes go on Account instead?
 MEMBER_STATUS = (
     ('a', 'Active'),
     ('L', 'Leave of Absence'),
@@ -40,14 +41,8 @@ class Member(models.Model):
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
                             default='w')
     has_key = models.BooleanField(default=False)
-    primary_account = models.ForeignKey('Account', blank=True, null=True)
+    #primary_account = models.ForeignKey('Account', blank=True, null=True)
     date_joined = models.DateField(default=date(1990, 01, 01))
-    #addresses = models.ManyToManyField('Address', blank=True, 
-    #    related_name='address_m2m')
-    #phones = models.ManyToManyField('Phone', blank=True, 
-    #    related_name='phone_m2m')
-    #emails = models.ManyToManyField('Email', blank=True,
-    #    related_name='email_m2m')
 
     def __unicode__(self):
         return self.user.get_full_name()
@@ -58,8 +53,9 @@ class Member(models.Model):
 
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    contact = models.ForeignKey(Member, related_name='contact_for')
-    members = models.ManyToManyField(Member, related_name='accounts',)
+    #contact = models.ForeignKey(Member, related_name='contact_for')
+    members = models.ManyToManyField(Member, related_name='accounts', 
+            through='AccountMember')
     can_shop = models.BooleanField(default=True)
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
@@ -70,6 +66,23 @@ class Account(models.Model):
     class Meta:
         ordering = ['name']
 
+
+class AccountMember(models.Model):
+    account = models.ForeignKey(Account)
+    member = models.ForeignKey(Member)
+    # is this member the contact for the account?
+    account_contact = models.BooleanField(default=True)
+    # is this the primary account for the member?
+    primary_account = models.BooleanField(default=True)
+    # is this member just a shopper on the account?
+    shopper = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+        return u'%s: %s' % (self.account, self.member)
+
+    class Meta:
+        ordering = ['account']
+    
 
 # possibly include IM and URL classes at some point
 

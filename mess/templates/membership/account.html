@@ -30,7 +30,11 @@
           </li>
           <li>
             <img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Contact"/> 
-            <a href="{% url member account.contact.user.username %}">{{ account.contact }}</a>
+            {% for am in account.accountmember_set.all %}
+              {% if am.account_contact %}
+            <a href="{% url member am.member.user.username %}">{{ am.member }}</a>
+              {% endif %}
+            {% endfor %}
           </li>
           <li>
             <img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Balance"/> 

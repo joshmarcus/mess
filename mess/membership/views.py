@@ -76,6 +76,7 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
+# TODO: merge member_add and member_edit
 @user_passes_test(lambda u: u.is_staff)
 def member_add(request):
     if not request.user.is_staff:
