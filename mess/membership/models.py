@@ -42,7 +42,7 @@ class Member(models.Model):
                             default='w')
     has_key = models.BooleanField(default=False)
     #primary_account = models.ForeignKey('Account', blank=True, null=True)
-    date_joined = models.DateField(default=date(1990, 01, 01))
+    date_joined = models.DateField(default=date.today())
 
     def __unicode__(self):
         return self.user.get_full_name()
