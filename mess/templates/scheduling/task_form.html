@@ -38,7 +38,19 @@
     <div id="primary-content-wrapper">
         <form class="standard" method="post" >
           <table>
-            {{ form }}
+            <tr>
+                <th>
+                    <label for="id_deadline">Type:</label>
+                </th>
+                <td>
+                    <select name=type size=1>
+                        <option>recurring</option>
+                        <option>one-off</option>
+                        <option>deadline</option>
+                    </select>
+                </td>
+            </tr>
+            {{ task_form }}
             <tr>
               <th></th>
               <td><input class="button" type="submit" value="Submit" /></td>
