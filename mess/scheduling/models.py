@@ -63,8 +63,11 @@ class Task(models.Model):
         ordering = ['-deadline', 'start']
     
     def __unicode__(self):
-        return u"%s hrs of %s before %s" % (self.hours, self.job.name, 
-                self.deadline.date())
+        if self.deadline != None:
+            str = u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
+        else:
+            str = u""
+        return str
 
 
 class Timecard(models.Model):
