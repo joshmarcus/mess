@@ -66,7 +66,9 @@ class Task(models.Model):
         if self.deadline != None:
             str = u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
         else:
-            str = u""
+            str = u"%s: %s hrs of %s" % (self.start, self.hours, self.job.name)
+            if self.recurrence_freq > 0:
+                str = str + u" " + u"every %s %s" % (self.recurrence_freq, self.recurrence_unit)
         return str
 
 
