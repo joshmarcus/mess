@@ -79,7 +79,7 @@ YAHOO.schedule.calendar.initConnection = function() {
     
     // list todays tasks on page load
     var sUrl = taskUrl(new Date());
-    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+    //YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
 
 YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
@@ -99,6 +99,7 @@ var handleSuccess = function(response){
 };
 
 var handleFailure = function(response){ 
+    var form_div = YAHOO.util.Dom.get("task-form");
     form_div.innerHTML = "Nothing for this Date";
 };
 
@@ -138,4 +139,4 @@ function deleteTask(task_id) {
 
 // Load New Task Form on Page Load
 var today = new Date();
-getForm(null, today);
+// getForm(null, today);
