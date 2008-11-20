@@ -61,12 +61,21 @@ class Task(models.Model):
     
     class Meta:
         ordering = ['-deadline', 'start']
+
+    def account_or_default(self):
+        if not self.account:
+            return self.member.primary_account()
+        return self.account
     
     def __unicode__(self):
-        if self.deadline != None:
-            str = u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
+        if self.member:
+            str = u"(%s for %s) " % (self.member.user.username, self.account_or_default())
         else:
-            str = u"%s: %s hrs of %s" % (self.start, self.hours, self.job.name)
+            str = u"(unassigned) "
+        if self.deadline != None:
+            str += u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
+        else:
+            str += u"%s: %s hrs of %s" % (self.start, self.hours, self.job.name)
             if self.recurrence_freq > 0:
                 str = str + u" " + u"every %s %s" % (self.recurrence_freq, self.recurrence_unit)
         return str
