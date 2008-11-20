@@ -47,6 +47,13 @@ class Member(models.Model):
     def __unicode__(self):
         return self.user.get_full_name()
 
+    def primary_account(self):
+        try:
+            primary = self.accounts.get(accountmember__primary_account=True)
+        except Account.DoesNotExist:
+            primary = self.accounts.all()[0]
+        return primary
+
     class Meta:
         ordering = ['user__username']
 
