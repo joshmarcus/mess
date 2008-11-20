@@ -7,11 +7,13 @@ import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 
-from scheduling.models import Job
+from scheduling.models import Job, Task
 
 
 def makeJobs(sheet):
     'minimally validate and create jobs from sheet rows'
+    print "processing %s" % sheet.name
+
     for i in range(1, sheet.nrows):
         row = sheet.row(i)
         if row[0].ctype != xlrd.XL_CELL_NUMBER:
@@ -30,14 +32,42 @@ def makeJobs(sheet):
 
         job.save()
 
-def main(argv = sys.argv):
+def makeTasks(sheet):
+    'minimally validate and load tasks'
+    print "processing %s" % sheet.name
+    
+    for i in range(1, sheet.nrows):
+        row = sheet.row(i)
+        if row[0].ctype != xlrd.XL_CELL_NUMBER:
+            print "rejecting row:\n"
+            print row
+            continue
+
+        job = Job.objects.get(id = row[0].value)
+
+        task = Task(
+                job = job,
+                deadline = row[2].value,
+                hours = row[3].value,
+                recurrence_unit = row[5].value,
+                recurrence_freq = row[6].value,
+                )
+
+
+def main():
     'Open Workbooks, dispatch to handlers'
-    bookname = argv[1]
+    if len(sys.argv) < 2 or sys.argv[1] == "--help":
+        print "useage: %s <xl workbook>" % sys.argv[0]
+        return 0
+    
+    bookname = sys.argv[1]
     print "opening %s\n" % bookname
     book = xlrd.open_workbook(bookname)
-    jobs_sheet = book.sheet_by_name('Jobs')
-    makeJobs(jobs_sheet)
-    
+    for sheet in book.sheets():
+        if sheet.name == u"Jobs":
+            makeJobs(sheet)
+        if sheet.name.find('Shift Sch') >= 0:
+            makeTasks(sheet)
 
 if __name__ == "__main__":
     sys.exit(main())
