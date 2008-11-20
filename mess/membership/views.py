@@ -76,69 +76,68 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
-# TODO: merge member_add and member_edit
-@user_passes_test(lambda u: u.is_staff)
-def member_add(request):
-    if not request.user.is_staff:
-        return HttpResponseRedirect(reverse('login'))
-    is_errors = False
-    # a fake member (no member should have an id of 0) will return
-    # no addresses, phones, or emails
-    member = models.Member()
-    if request.method == 'POST':
-        if 'cancel' in request.POST:
-            return HttpResponseRedirect(reverse('member', args=[username]))
-        user_form = forms.UserForm(request.POST, prefix='user')
-        member_form = forms.MemberForm(request.POST, prefix='member')
-        #related_accounts_form = forms.RelatedAccountsForm(member, 
-        #        request.POST, prefix='related')
-        address_formset = forms.AddressFormSet(request.POST, instance=member, prefix='address',
-                queryset=member.addresses.all())
-        email_formset = forms.EmailFormSet(request.POST, prefix='email',
-                queryset=member.emails.all())
-        phone_formset = forms.PhoneFormSet(request.POST, prefix='phone',
-                queryset=member.phones.all())
-        if (user_form.is_valid() and member_form.is_valid() and 
-                #related_accounts_form.is_valid() and 
-                address_formset.is_valid() and phone_formset.is_valid() 
-                and email_formset.is_valid()):
-            # need to do password business
-            # email member with temp password?
-            user = user_form.save()
-            member = models.Member(**member_form.cleaned_data)
-            member.user = user
-            member.save()
-            #related_accounts = related_accounts_form.cleaned_data['accounts']
-            member.accounts = related_accounts
-            member.save()
-            for formset in (address_formset, email_formset, phone_formset):
-                _new_member_formset_save(member, formset)
-            return HttpResponseRedirect(reverse('member', 
-                    args=[member.user.username]))
-        else:
-            is_errors = True
-    else:
-        user_form = forms.UserForm(prefix='user')
-        member_form = forms.MemberForm(prefix='member')
-        #related_accounts_form = forms.RelatedAccountsForm(member, 
-        #        prefix='related')
-        address_formset = forms.AddressFormSet(instance=member, 
-                prefix='address')
-        email_formset = forms.EmailFormSet(instance=member, prefix='email')
-        phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')
-    context = RequestContext(request)
-    context['user_form'] = user_form
-    context['member_form'] = member_form
-    #context['related_accounts_form'] = related_accounts_form
-    context['formsets'] = [
-        (address_formset, 'Addresses'), 
-        (email_formset, 'Email Addresses'),
-        (phone_formset, 'Phones'),
-    ]
-    context['is_errors'] = is_errors
-    context['add'] = True
-    template = get_template('membership/member_form.html')
-    return HttpResponse(template.render(context))
+#@user_passes_test(lambda u: u.is_staff)
+#def member_add(request):
+#    if not request.user.is_staff:
+#        return HttpResponseRedirect(reverse('login'))
+#    is_errors = False
+#    # a fake member (no member should have an id of 0) will return
+#    # no addresses, phones, or emails
+#    member = models.Member()
+#    if request.method == 'POST':
+#        if 'cancel' in request.POST:
+#            return HttpResponseRedirect(reverse('member', args=[username]))
+#        user_form = forms.UserForm(request.POST, prefix='user')
+#        member_form = forms.MemberForm(request.POST, prefix='member')
+#        #related_accounts_form = forms.RelatedAccountsForm(member, 
+#        #        request.POST, prefix='related')
+#        address_formset = forms.AddressFormSet(request.POST, instance=member, prefix='address',
+#                queryset=member.addresses.all())
+#        email_formset = forms.EmailFormSet(request.POST, prefix='email',
+#                queryset=member.emails.all())
+#        phone_formset = forms.PhoneFormSet(request.POST, prefix='phone',
+#                queryset=member.phones.all())
+#        if (user_form.is_valid() and member_form.is_valid() and 
+#                #related_accounts_form.is_valid() and 
+#                address_formset.is_valid() and phone_formset.is_valid() 
+#                and email_formset.is_valid()):
+#            # need to do password business
+#            # email member with temp password?
+#            user = user_form.save()
+#            member = models.Member(**member_form.cleaned_data)
+#            member.user = user
+#            member.save()
+#            #related_accounts = related_accounts_form.cleaned_data['accounts']
+#            member.accounts = related_accounts
+#            member.save()
+#            for formset in (address_formset, email_formset, phone_formset):
+#                _new_member_formset_save(member, formset)
+#            return HttpResponseRedirect(reverse('member', 
+#                    args=[member.user.username]))
+#        else:
+#            is_errors = True
+#    else:
+#        user_form = forms.UserForm(prefix='user')
+#        member_form = forms.MemberForm(prefix='member')
+#        #related_accounts_form = forms.RelatedAccountsForm(member, 
+#        #        prefix='related')
+#        address_formset = forms.AddressFormSet(instance=member, 
+#                prefix='address')
+#        email_formset = forms.EmailFormSet(instance=member, prefix='email')
+#        phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')
+#    context = RequestContext(request)
+#    context['user_form'] = user_form
+#    context['member_form'] = member_form
+#    #context['related_accounts_form'] = related_accounts_form
+#    context['formsets'] = [
+#        (address_formset, 'Addresses'), 
+#        (email_formset, 'Email Addresses'),
+#        (phone_formset, 'Phones'),
+#    ]
+#    context['is_errors'] = is_errors
+#    context['add'] = True
+#    template = get_template('membership/member_form.html')
+#    return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_staff)
 def member_form(request, username=None):
@@ -148,8 +147,6 @@ def member_form(request, username=None):
     else:
         user = User()
         member = models.Member()
-    if not request.user.is_staff:
-        return HttpResponseRedirect(reverse('login'))
     is_errors = False
     if request.method == 'POST':
         if 'cancel' in request.POST:
@@ -157,8 +154,8 @@ def member_form(request, username=None):
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)
-        #related_accounts_form = forms.RelatedAccountsForm(member, 
-        #        request.POST, prefix='related')
+        related_account_formset = forms.RelatedAccountFormSet(request.POST, 
+                instance=member, prefix='related_account')
         address_formset = forms.AddressFormSet(request.POST, instance=member,
                 prefix='address')
         email_formset = forms.EmailFormSet(request.POST, instance=member,
@@ -166,7 +163,7 @@ def member_form(request, username=None):
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
         if (user_form.is_valid() and member_form.is_valid() and 
-                #related_accounts_form.is_valid() and 
+                related_account_formset.is_valid() and 
                 address_formset.is_valid() and phone_formset.is_valid() 
                 and email_formset.is_valid()):
             user = user_form.save()
@@ -184,8 +181,8 @@ def member_form(request, username=None):
     else:
         user_form = forms.UserForm(instance=user, prefix='user')
         member_form = forms.MemberForm(instance=member, prefix='member')
-        #related_accounts_form = forms.RelatedAccountsForm(member, 
-        #        prefix='related')
+        related_account_formset = forms.RelatedAccountFormSet(instance=member, 
+                prefix='related_account')
         address_formset = forms.AddressFormSet(instance=member, 
                 prefix='address')
         email_formset = forms.EmailFormSet(instance=member, prefix='email')
@@ -194,8 +191,8 @@ def member_form(request, username=None):
     context['member'] = member
     context['user_form'] = user_form
     context['member_form'] = member_form
-    #context['related_accounts_form'] = related_accounts_form
     context['formsets'] = [
+        (related_account_formset, 'Accounts'), 
         (address_formset, 'Addresses'), 
         (email_formset, 'Email Addresses'),
         (phone_formset, 'Phones'),
@@ -315,7 +312,7 @@ def remove_contact(request, username=None, medium=None, id=None):
     template = get_template('membership/remove_contact.html')
     return HttpResponse(template.render(context))
 
-def contact_formset_form(request, medium):
+def formset_form(request, medium):
     context = RequestContext(request)
     MediumForm = forms.__getattribute__(medium.capitalize() + 'Form')
     index = request.GET.get('index')
@@ -324,7 +321,7 @@ def contact_formset_form(request, medium):
     else:
         form = MediumForm()
     context['form'] = form
-    template = get_template('membership/snippets/contact_formset.html')
+    template = get_template('membership/snippets/formset_form.html')
     return HttpResponse(template.render(context))
 
 
