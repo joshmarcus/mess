@@ -17,7 +17,12 @@
 {# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
 
 <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
-
+<script type="text/javascript">
+function init() {
+    makeActive();
+}
+window.onload = init;
+</script>
 <!-- Calendar styles -->
 <style type="text/css">
     {% for task in tasks %}

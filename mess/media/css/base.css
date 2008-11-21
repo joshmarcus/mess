@@ -620,7 +620,7 @@ div#footer {
 			display:inline;
 			color:#fff;
 			}
-			ul#local-footer-nav li a, ul#local-vooter-nav li a:link {
+			ul#local-footer-nav li a, ul#local-footer-nav li a:link {
 				color:#fff;
 				}
 				ul#local-footer-nav li a.current {
