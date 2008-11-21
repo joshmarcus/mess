@@ -45,11 +45,11 @@
     </ul>
     <div id="primary-content-wrapper">
       <h2>
-        {% if add %}
-          Add new member
-        {% else %}
+        {% if edit %}
           Edit member: {{ member.user.get_full_name }} 
           ({{ member.user.username }})
+        {% else %}
+          Add new member
         {% endif %}
       </h2>
       {% if member %}
