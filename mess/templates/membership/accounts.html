@@ -36,13 +36,17 @@
               {% endfor %}
             </td>
             <td>
+              {% for am in account.accountmember_set.all %}
+              {% if am.account_contact %}
               <p>
-                <a href="{% url member account.contact.user.username %}">{{ account.contact }}</a>
+                <a href="{% url member am.member.user.username %}">{{ am.member }}</a>
               </p>
               <ul>
-                <li>{{ account.contact.user.get_profile.phones.all|first }}</li>
-                <li>{{ account.contact.user.get_profile.emails.all|first }}</li>
+                <li>{{ am.member.user.get_profile.phones.all|first }}</li>
+                <li>{{ am.member.user.get_profile.emails.all|first }}</li>
               </ul>
+              {% endif %}
+              {% endfor %}
             </td>
             <td>{{ account.balance|floatformat:2 }}</td>
           </tr>
