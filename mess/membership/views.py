@@ -171,10 +171,12 @@ def account(request, id):
 
 @user_passes_test(lambda u: u.is_staff)
 def account_form(request, id=None):
+    context = RequestContext(request)
     if id:
         account = get_object_or_404(models.Account, id=id)
     else:
         account = models.Account()
+        context['add'] = True
     if request.method == 'POST':
         form = forms.AccountForm(request.POST, instance=account)
         related_member_formset = forms.RelatedMemberFormSet(request.POST, 
@@ -187,7 +189,6 @@ def account_form(request, id=None):
         form = forms.AccountForm(instance=account)
         related_member_formset = forms.RelatedMemberFormSet(instance=account, 
                 prefix='related_member')
-    context = RequestContext(request)
     context['form'] = form
     context['formsets'] = [
         (related_member_formset, 'Members'), 
