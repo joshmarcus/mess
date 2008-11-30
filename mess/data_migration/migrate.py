@@ -24,10 +24,9 @@ import codecs
 import string
 import time
 import re
+import xlrd
 from random import choice
-from mess.membership.models import Member, Account
-from mess.profiles.models import UserProfile, Address, Phone, Email
-#from mess.utils.person_to_user import slug_name, generate_pass, save_user
+from mess.membership.models import Member, Account, Address, Phone, Email
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -78,8 +77,8 @@ def refine_mem_data(dat, column):
     if column['Card Type'] != '':
         dat['card_type'] = column['Card Type']
     # only record deposit under member if it's recorded in section 4.0
-    if column['$ cumulative deposit'] != '' and column['Section'] == '4.0':
-        dat['cumul_deposit'] = column['$ cumulative deposit']
+    if column['Cumulative deposit'] != '' and column['Section'] == '4.0':
+        dat['cumul_deposit'] = column['Cumulative deposit']
     return dat
 
 def second_shopper_data(column):
@@ -110,7 +109,7 @@ def second_shopper_data(column):
 def get_mems(column):
     ''' returns a list of mems, len = column['Active Members'] '''
     ret = [refine_mem_data({}, column) for i in 
-                                        range(int(column['Active Members']))]
+                            range(int(float(column['Active Members'])))]
     if ';' in column['Member']:
         for i, mem in enumerate(column['Member'].split(';',len(ret)-1)):
             ret[i]['first_name'], ret[i]['last_name'] = split_name(mem)
@@ -181,153 +180,150 @@ def split_actstr(actstr):
     return actstr[:s].strip(), actstr[s:].strip()
 
 def aprint(a):
+    #print a
     print unicode(a).encode('ascii','replace')
 
 
 
 # actual importation code
+def main():
 
 # make sure a datafile argment was passed in
-if len(sys.argv) < 2:
-    print 'Usage:  '+sys.argv[0]+' datafile.tsv'
-    sys.exit()
+    if len(sys.argv) < 2:
+        print 'Usage: %s <xl workbook>' % sys.argv[0]
+        return 0
 
-# convert any <85> (newline) characters embedded in the tsv file to spaces
-os.system('tr \205 " " <'+sys.argv[1]+' >tempfile1')
-
-# read in list of accounts and members
-datafile = codecs.open('tempfile1', 'r', 'latin1')
-acts = {}
-
-print 'looping through data file...'
-linenumber = 0
-for line in datafile:
-    linenumber += 1
-    if linenumber == 1:
-        infields = [x.strip() for x in line.split('\t')]
-        infields[0] = 'Account'
-        continue
-    datum = [x.strip() for x in line.split('\t')]
-    column = dict(zip(infields, datum))
-    aprint (u'---reading line ['+str(linenumber)+'] '+
-           column['Account'][:15] + u' Section:'+column['Section'])
-    actname, actnotes = split_actstr(column['Account'])
+    datafile = xlrd.open_workbook(sys.argv[1])
+    datasheet = datafile.sheet_by_index(0)
+    acts = {}
     
-    if column['Section'] == '1.0' and linenumber < MAXLINES:
-        assert actname not in acts
-        acts[actname] = {'mems': get_mems(column), 
-            'actnotes': actnotes,
-            'balance': column['Old Balance'],
-            'cumul_deposit': column['$ cumulative deposit'],
-            'flag_sec4': 0}
-        print acts[actname]
-        aprint('   imported account '+actname)
+    print 'looping through data file...'
+    headerrow = datasheet.row(0)
+    infields = [str(x.value).strip() for x in headerrow]
+    infields[0] = 'Account'
 
-    elif column['Section'] == '4.0':
-        if actname not in acts: 
-            aprint('   SKIPPED section-4 member of nonexistent acct '+actname)
-            continue
-        print acts[actname]
-        try:
-            acts[actname]['mems'][acts[actname]['flag_sec4']] = (
-            refine_mem_data(acts[actname]['mems'][acts[actname]['flag_sec4']],
-            column))
-        # if too many section-4 members, add extra members as 'inactive'
-        except IndexError:
-            acts[actname]['mems'].append(refine_mem_data({}, column))
-            acts[actname]['mems'][acts[actname]['flag_sec4']]['status'] = 'i'
-        if column['Second Authorized Shopper'] != '':
-            acts[actname]['mems'][acts[actname]['flag_sec4']][
-                    'second_shopper'] = second_shopper_data(column)
-        acts[actname]['flag_sec4'] += 1
-        print acts[actname]
-        aprint('   imported section-4 member of account '+actname)
-
-    else:
-        aprint('   SKIPPED line')
+    for linenumber in range(1, datasheet.nrows):
+        line = datasheet.row(linenumber)
+        datum = [unicode(x.value).encode('ascii','replace').strip() for x in line]
+#        datum = [x.value for x in line]
+        column = dict(zip(infields, datum))
+        aprint (u'---reading line ['+str(linenumber)+'] '+
+               column['Account'][:15] + u' Section:'+column['Section'])
+        actname, actnotes = split_actstr(column['Account'])
         
+        if column['Section'] == '1.0' and linenumber < MAXLINES:
+            assert actname not in acts
+            acts[actname] = {'mems': get_mems(column), 
+                'actnotes': actnotes,
+                'balance': column['Old Balance'],
+                'cumul_deposit': column['Cumulative deposit'],
+                'flag_sec4': 0}
+            print acts[actname]
+            aprint('   imported account '+actname)
+    
+        elif column['Section'] == '4.0':
+            if actname not in acts: 
+                aprint('   SKIPPED section-4 member of nonexistent acct '+actname)
+                continue
+            print acts[actname]
+            try:
+                acts[actname]['mems'][acts[actname]['flag_sec4']] = (
+                refine_mem_data(acts[actname]['mems'][acts[actname]['flag_sec4']],
+                column))
+            # if too many section-4 members, add extra members as 'inactive'
+            except IndexError:
+                acts[actname]['mems'].append(refine_mem_data({}, column))
+                acts[actname]['mems'][acts[actname]['flag_sec4']]['status'] = 'i'
+            if column['Second Authorized Shopper'] != '':
+                acts[actname]['mems'][acts[actname]['flag_sec4']][
+                        'second_shopper'] = second_shopper_data(column)
+            acts[actname]['flag_sec4'] += 1
+            print acts[actname]
+            aprint('   imported section-4 member of account '+actname)
+    
+        else:
+            aprint('   SKIPPED line')
+            
+    
+        print
+    
+    print 'Done Reading Input File! '
+    
+    print 'Making authorized shoppers a type of member...'
+    for actname, ac in acts.iteritems():
+        s = []
+        for m in ac['mems']:
+            if 'second_shopper' in m:
+                s.append(m['second_shopper'])
+        for m in s:
+            m['status'] = '2'
+            ac['mems'].append(m)
+    
+    
+    print 'Saving into database...'
+    for actname, ac in acts.iteritems():
+        aprint('saving accountname '+actname)
+        acct = Account()
+        acct.name = actname
+        # !! do something with ac['balance']
+        # !! do something with ac['cumul_deposit']
+        # !! do something with ac['actnotes']
+        for i,m in enumerate(ac['mems']):
+            user = User()
+            user.first_name = m['first_name']
+            user.last_name = m['last_name']
+            user.username = slug_name(m['first_name']+m['last_name'])
+            user.password = generate_pass()
+            save_user(user, user.username, 0)
+            print 'saved username : '+user.username
+    
+            mem = Member()
+            if m['has_keycard'] == 'Yes': 
+                mem.has_key = True
+            mem.contact_preference = m['contact_preference']
+            mem.date_joined = m['date_joined']
+            mem.user = user
+            mem.primary_account = acct
+            mem.save()
+    
+            if m['phone'] != '':
+                phone = Phone()
+                phone.number = m['phone'] 
+                phone.save()
+                mem.phones.add(phone)
+    
+            if m['second_phone'] != '':
+                phone = Phone()
+                phone.number = m['second_phone']
+                phone.save()
+                mem.phones.add(phone)
+    
+            if m['email'] != '':
+                email = Email()
+                email.email = m['email']
+                email.save()
+                mem.emails.add(email)
+    
+            if m['address_street'] != '':
+                address = Address()
+                address.address1 = m['address_street']
+                address.city = m['address_city']
+                address.state = m['address_state']
+                address.postal_code = m['address_zip']
+                address.save()
+                mem.addresses.add(address)
+    
+            # !! do something with m['card_number'], etc...
+            # !! do something with m['cumul_deposit']
+            # !! do something with m['status']
+    
+            # link data structures together
 
-    print
-
-print 'Done Reading Input File! '
-
-print 'Making authorized shoppers a type of member...'
-for actname, ac in acts.iteritems():
-    s = []
-    for m in ac['mems']:
-        if 'second_shopper' in m:
-            s.append(m['second_shopper'])
-    for m in s:
-        m['status'] = '2'
-        ac['mems'].append(m)
-
-
-print 'Saving into database...'
-for actname, ac in acts.iteritems():
-    aprint('saving accountname '+actname)
-    acct = Account()
-    acct.name = actname
-    # !! do something with ac['balance']
-    # !! do something with ac['cumul_deposit']
-    # !! do something with ac['actnotes']
-    for i,m in enumerate(ac['mems']):
-        user = User()
-        user.first_name = m['first_name']
-        user.last_name = m['last_name']
-        user.username = slug_name(m['first_name']+m['last_name'])
-        user.password = generate_pass()
-        save_user(user, user.username, 0)
-        print 'saved username : '+user.username
-
-        profile = UserProfile()
-        profile.user = user
-        profile.save()
-
-        if m['phone'] != '':
-            phone = Phone()
-            phone.number = m['phone'] 
-            phone.save()
-            profile.phones.add(phone)
-
-        if m['second_phone'] != '':
-            phone = Phone()
-            phone.number = m['second_phone']
-            phone.save()
-            profile.phones.add(phone)
-
-        if m['email'] != '':
-            email = Email()
-            email.email = m['email']
-            email.save()
-            profile.emails.add(email)
-
-        if m['address_street'] != '':
-            address = Address()
-            address.address1 = m['address_street']
-            address.city = m['address_city']
-            address.state = m['address_state']
-            address.postal_code = m['address_zip']
-            address.save()
-            profile.addresses.add(address)
-
-        mem = Member()
-        if m['has_keycard'] == 'Yes': 
-            mem.has_key = True
-        mem.contact_preference = m['contact_preference']
-        mem.date_joined = m['date_joined']
-
-        # !! do something with m['cumul_deposit']
-        # !! do something with m['status']
-
-        # link data structures together
-        mem.user = user
-        mem.primary_account = acct
-        mem.save()
-        if i == 0:
-            acct.contact = mem
-            acct.save()
-        acct.members.add(mem)
-    acct.save()
-
-
-
+            if i == 0:
+                acct.contact = mem
+                acct.save()
+            acct.members.add(mem)
+        acct.save()
+    
+    
+main() 
