@@ -1,6 +1,11 @@
 {% extends "membership/base.html" %}
 
 {% block head %}
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo/yahoo-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/event/event-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script> 
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/membership.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -12,10 +17,17 @@
     <div id="primary-content-wrapper">
       <h2>{% if add %}Add{% else %}Edit{% endif %} Account</h2>
       <form class="standard" method="post">
-        <table class="form-table">
-          {{ form }}
-        <tr><td></td><td><input type="submit" class="button" value="Save"/> <input type="submit" class="button" name="cancel" value="Cancel" /></td></tr>
-        </table>
+        <div class="section">
+          <h3>Main</h3>
+          <table class="form-table">
+            {{ form }}
+          </table>
+        </div>
+        {% include 'membership/snippets/formsets.html' %}
+        <div class="save">
+          <input type="submit" class="button" value="Save"/> 
+          <input type="submit" class="button" name="cancel" value="Cancel" />
+        </div>
       </form>
     </div>
   </div>

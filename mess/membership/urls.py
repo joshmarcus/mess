@@ -2,9 +2,9 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mess.membership.views',
     url(r'^accounts$', 'accounts', name='accounts'),
-    url(r'^accounts/add$', 'account_add', name='account-add'),
+    url(r'^accounts/add$', 'account_form', name='account-add'),
     url(r'^accounts/(\d+)$', 'account', name='account'),
-    url(r'^accounts/(\d+)/edit$', 'account_edit', name='account-edit'),
+    url(r'^accounts/(\d+)/edit$', 'account_form', name='account-edit'),
     url(r'^members$', 'members', name='members'),
     url(r'^members/add$', 'member_form', name='member-add'),
     url(r'^members/(\w+)$', 'member', name='member'),

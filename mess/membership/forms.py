@@ -38,23 +38,9 @@ class RelatedMemberForm(forms.ModelForm):
         model = AccountMember
         exclude = ('account',)
 
-
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
-        #fields = ('status', 'work_status', 'has_key')
-
-#class RelatedAccountsForm(forms.Form):
-#    def __init__(self, member_instance, *args, **kwargs):
-#        super(RelatedAccountsForm, self).__init__(*args, **kwargs)
-#        # TODO: make this a dropdown multiple choice
-#        if member_instance:
-#            initial = [obj.pk for obj in member_instance.accounts.all()]
-#        else:
-#            initial = None
-#        self.fields['accounts'] = forms.ModelMultipleChoiceField(
-#            queryset=Account.objects.all(), initial=initial, required=False,
-#            help_text='<p class="helptext">Hold down "Control", or "Command" on a Mac, to select more than one.</p>')
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -65,7 +51,7 @@ class UserForm(forms.ModelForm):
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
-        exclude = ('balance',)
+        exclude = ('balance', 'members')
 
 SORT_CHOICES = (
         ('alpha', 'Alphabetical'),
@@ -81,3 +67,17 @@ class MemberListFilterForm(forms.Form):
     quit = forms.BooleanField(initial=True, required=False)
     missing = forms.BooleanField(initial=True, required=False)
     leave_of_absence = forms.BooleanField(initial=True, required=False)
+
+
+#class RelatedAccountsForm(forms.Form):
+#    def __init__(self, member_instance, *args, **kwargs):
+#        super(RelatedAccountsForm, self).__init__(*args, **kwargs)
+#        # TODO: make this a dropdown multiple choice
+#        if member_instance:
+#            initial = [obj.pk for obj in member_instance.accounts.all()]
+#        else:
+#            initial = None
+#        self.fields['accounts'] = forms.ModelMultipleChoiceField(
+#            queryset=Account.objects.all(), initial=initial, required=False,
+#            help_text='<p class="helptext">Hold down "Control", or "Command" on a Mac, to select more than one.</p>')
+

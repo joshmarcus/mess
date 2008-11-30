@@ -112,7 +112,7 @@ def member_form(request, username=None):
             member.save()
             for formset in (related_account_formset, address_formset, 
                     email_formset, phone_formset):
-                _set_member_formset_save(member, formset)
+                _setattr_formset_save(formset, 'member', member)
             return HttpResponseRedirect(reverse('member', args=[user.username]))
         else:
             is_errors = True
@@ -170,32 +170,28 @@ def account(request, id):
     return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_staff)
-def account_add(request):
-    if request.method == 'POST':
-        form = forms.AccountForm(request.POST)
-        if form.is_valid():
-            account = form.save()
-            return HttpResponseRedirect(reverse('account', args=[account.id]))
+def account_form(request, id=None):
+    if id:
+        account = get_object_or_404(models.Account, id=id)
     else:
-        form = forms.AccountForm()
-    context = RequestContext(request)
-    context['form'] = form
-    context['add'] = True
-    template = get_template('membership/account_form.html')
-    return HttpResponse(template.render(context))
-
-@user_passes_test(lambda u: u.is_staff)
-def account_edit(request, id):
-    account = get_object_or_404(models.Account, id=id)
+        account = models.Account()
     if request.method == 'POST':
         form = forms.AccountForm(request.POST, instance=account)
-        if form.is_valid():
-            form.save()
+        related_member_formset = forms.RelatedMemberFormSet(request.POST, 
+                instance=account, prefix='related_member')
+        if form.is_valid() and related_member_formset.is_valid():
+            account = form.save()
+            _setattr_formset_save(related_member_formset, 'account', account)
             return HttpResponseRedirect(reverse('account', args=[account.id]))
     else:
         form = forms.AccountForm(instance=account)
+        related_member_formset = forms.RelatedMemberFormSet(instance=account, 
+                prefix='related_member')
     context = RequestContext(request)
     context['form'] = form
+    context['formsets'] = [
+        (related_member_formset, 'Members'), 
+    ]
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
 
@@ -267,10 +263,10 @@ def formset_form(request, medium):
 
 # helper functions below
 
-def _set_member_formset_save(member, formset):
+def _setattr_formset_save(formset, name, value):
     instances = formset.save(commit=False)
     for instance in instances:
-        instance.member = member
+        setattr(instance, name, value)
         instance.save()
 
 def _get_current_page(pager, page_number):

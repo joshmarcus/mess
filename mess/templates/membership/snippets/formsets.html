@@ -1,0 +1,15 @@
+        {% for formset, header in formsets %}
+        <div class="section">
+          <h3>{{ header }}</h3>
+          {{ formset.management_form }}
+          {% for form in formset.forms %}
+          <table>
+            {{ form }}
+          </table>
+          {% endfor %}
+          <div id="{{ formset.prefix }}-writeroot" class="add">
+            <a class="add" href="{# breaks when no member (on add) {% url membership-add-contact member.user.username,formset.prefix %} #}" onclick="addNew('{{ formset.prefix }}', '{% url membership-formset-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
+          </div>
+        </div>
+        {% endfor %}
+

@@ -5,36 +5,7 @@
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/event/event-min.js"></script>
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script> 
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script type="text/javascript">
-    function addNew(formsetPrefix, baseURL) {
-      var totalForms = document.getElementById('id_' + formsetPrefix + '-TOTAL_FORMS');
-      var sUrl = baseURL + '?index=' + totalForms.value;
-      totalForms.value = parseInt(totalForms.value) + 1;
-      var callback = {
-        success: function(o) {
-          var newFieldsTable = document.createElement('table');
-          newFieldsTable.innerHTML = o.responseText;
-          var newFields = document.createElement('div');
-          newFields.className = 'added';
-          newFields.appendChild(newFieldsTable);
-          var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
-          writeRoot.parentNode.insertBefore(newFields, writeRoot);
-          newFields = writeRoot.previousSibling;
-          newFields.getElementsByTagName('select')[0].focus();
-          //var nfPos = YAHOO.util.Dom.getXY(newFields);
-          //window.scrollTo(0, nfPos[1]-200);
-        },
-        failure: function(o) {},
-        argument: [formsetPrefix],
-      };
-      YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
-    }
-    /*
-    window.onload = function() {
-      document.forms[0].elements[0].select();
-    }
-    */
-  </script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/membership.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -68,23 +39,11 @@
             {{ member_form }}
           </table>
         </div>
-        {% for formset, header in formsets %}
-        <div class="section">
-          <h3>{{ header }}</h3>
-          {{ formset.management_form }}
-          {% for form in formset.forms %}
-          <table>
-            {{ form }}
-          </table>
-          {% endfor %}
-          <div id="{{ formset.prefix }}-writeroot" class="add">
-            <a class="add" href="{# breaks when no member (on add) {% url membership-add-contact member.user.username,formset.prefix %} #}" onclick="addNew('{{ formset.prefix }}', '{% url membership-formset-form formset.prefix %}'); return false;" id="{{ formset.prefix }}-add">Add</a>
-          </div>
+        {% include 'membership/snippets/formsets.html' %}
+        <div class="save">
+          <input type="submit" class="button" value="Save" /> 
+          <input type="submit" class="button" name="cancel" value="Cancel" />
         </div>
-        {% endfor %}
-        <table>
-          <tr><th></th><td><input type="submit" class="button" value="Save" /> <input type="submit" class="button" name="cancel" value="Cancel" /></td></tr>
-        </table>
       </form>
     </div>
   </div>
