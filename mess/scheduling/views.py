@@ -1,18 +1,17 @@
 import datetime
 
-from django.template import RequestContext
+from django.template import loader, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import *
 from django.contrib.auth.decorators import login_required
 
+from mess.scheduling import forms, models
 
-from mess.scheduling.models import *
-from mess.scheduling.forms import *
 
 #task crud
 task_dict =  {
-    'model': Task,
+    'model': models.Task,
     'login_required': True,
 }
 
@@ -31,12 +30,12 @@ def add_task(request, task_id=None):
 
     if task_id == None:
         context = {
-            'task_form': TaskForm(),
+            'task_form': forms.TaskForm(),
         }
     else:
-        task = Task.objects.get(id__exact=task_id)
+        task = models.Task.objects.get(id__exact=task_id)
         context = {
-            'task_form': TaskForm(instance=task),
+            'task_form': forms.TaskForm(instance=task),
             'task': task,
         }
     
@@ -52,7 +51,7 @@ def task_list(request, date=None):
         date = datetime.date(int(year), int(month), int(day))
     
     context = {
-        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
+        'tasks': models.Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
     }
     return render_to_response('scheduling/snippets/task_list.html', context,
                                 context_instance=RequestContext(request))
@@ -66,7 +65,7 @@ def open_task_list(request, date=None):
         date = datetime.date(int(year), int(month), int(day))
     
     context = {
-        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
+        'tasks': models.Task.objects.filter(deadline__year=date.year, deadline__month=date.month, deadline__day=date.day)
     }
     return render_to_response('scheduling/snippets/open_task_list.html', context,
                                 context_instance=RequestContext(request))
@@ -80,23 +79,31 @@ def open_task_list_month(request, date=None):
         date = datetime.date(int(year), int(month))
     
     context = {
-        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month, member='null')
+        'tasks': models.Task.objects.filter(deadline__year=date.year, deadline__month=date.month, member='null')
     }
     return render_to_response('scheduling/snippets/open_task_list_month.html', context,
                                 context_instance=RequestContext(request))
         
-def schedule(request):
-    date = datetime.date.today()
-    context = {
-        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
-    }
-    return render_to_response('scheduling/schedule.html', context,
-                                context_instance=RequestContext(request))
+def schedule(request, date=None):
+    context = RequestContext(request)
+    if date:
+        try:
+            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            raise Http404
+    else:
+        date = datetime.date.today()
+    tasks = models.Task.objects.filter(
+            deadline__year=date.year, deadline__month=date.month)
+    context['date'] = date
+    context['tasks'] = tasks
+    template = loader.get_template('scheduling/schedule.html')
+    return HttpResponse(template.render(context))
 
 def assign(request):
     date = datetime.date.today()
     context = {
-        'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
+        'tasks': models.Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
     }
     return render_to_response('scheduling/assign.html', context,
                                 context_instance=RequestContext(request))
