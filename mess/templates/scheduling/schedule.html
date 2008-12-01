@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block head %}
+<!--CSS file (default YUI Sam Skin) -->
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}yui/calendar/assets/skins/sam/calendar.css" media="screen" >
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/div_list.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css" media="screen" >
+<!-- Dependencies -->
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script> 
+<script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
+<!-- Custom JS -->
+<script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
+{# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
+
+<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+<script type="text/javascript">
+function init() {
+    makeActive();
+}
+window.onload = init;
+</script>
+<!-- Calendar styles -->
+<style type="text/css">
+    {% for task in tasks %}
+        .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {text-decoration: underline;}
+    {% endfor %}
+</style> 
+
+{% endblock head %}
+
+{% block page_menu %}
+<a class='button' href="schedule.html">Schedule</a>
+<a class='button' href="job_list.html">Job List</a>
+{% endblock %}
+
+{% block content %}
+<div id="left-column">
+    {% include "scheduling/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+    <h2> <a href=""><<</a> Monday, August 3, 2008 <a href="">>></a></h2>
+	  
+      <table class="data" id="daily-view">
+        <tr>
+          <th>Time</th>
+          <th>Job</th>
+          <th>Workers</th>
+        </tr>
+        <tr class="odd">
+          <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
+<td>Cashier</td>
+          <td>
+            <ul>
+              <li><a href="">John Smith</a></li>
+			  <li><a href="">John Smith</a></li>
+            </ul>
+          </td>
+        </tr>
+        <tr class="even">
+          <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
+          <td>Storekeeper</td>
+          <td>
+            <ul>
+              <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="odd">
+          <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
+          <td>Storekeeper</td>
+          <td>
+            <ul>
+              <li><a href="">Dude's Name</a></li>
+			  <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="even">
+          <td class="time">9:00 a.m. &ndash; 10:00 a.m.</td>
+<td>Cashier</td>
+          <td class="time">
+            <ul>
+              <li><a href="">Dude Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="odd">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+<td>Cashier</td>
+          <td>
+            <ul>
+              <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="even unscheduled">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+<td>Cashier</td>
+          <td>
+            <ul>
+              <li><a class="add" href="">Unassigned</a></li>
+   	          <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="odd">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+<td>Cashier</td>
+          <td>
+            <ul>
+              <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="even unscheduled">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+          <td>Storekeeper</td>
+          <td>
+            <ul>
+              <li><a class="add" href="">Unassigned</a></li>
+			  <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="odd">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+          <td>Storekeeper</td>
+          <td>
+            <ul>
+              <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="even">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+<td>Cashier</td>
+          <td>
+            <ul>
+			  <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+		<tr class="odd">
+          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
+<td>Cashier</td>
+          <td>
+            <ul>
+              <li><a href="">Dude's Name</a></li>
+			  <li><a href="">Dude's Name</a></li>
+            </ul>
+          </td>
+		</tr>
+      </table>
+    </div>
+</div>
+<div id="right-column">
+    <h3 id="right-column-heading">Calendar</h3>
+	<div id="cal1Container"></div>
+    {# <div id="task-list"></div> #}
+    {# <div id="task-form"> #}
+    </div> 
+</div>
+
+{% endblock content %}

@@ -90,7 +90,7 @@ def schedule(request):
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
     }
-    return render_to_response('scheduling/schedule_base.html', context,
+    return render_to_response('scheduling/schedule.html', context,
                                 context_instance=RequestContext(request))
 
 def assign(request):
@@ -98,7 +98,7 @@ def assign(request):
     context = {
         'tasks': Task.objects.filter(deadline__year=date.year, deadline__month=date.month)
     }
-    return render_to_response('scheduling/schedule_base.html', context,
+    return render_to_response('scheduling/assign.html', context,
                                 context_instance=RequestContext(request))
 
 # filter for date
