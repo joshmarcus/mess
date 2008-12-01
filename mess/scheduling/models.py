@@ -8,10 +8,10 @@ JOB_TYPES = (
     ('p','Paid'),
     ('m','Member'),
 )
-RECURRENCE_UNITS = (
-    ('d', 'days'),
-    ('w', 'weeks'),
-    ('m', 'months'),
+FREQUENCIES = (
+    ('d', 'Daily'),
+    ('w', 'Weekly'),
+    ('m', 'Monthly'),
 )
 
 class Skill(models.Model):
@@ -55,9 +55,8 @@ class Task(models.Model):
     account = models.ForeignKey(Account, null=True, blank=True)
     member = models.ForeignKey(Member, null=True, blank=True)
     hours = models.DecimalField(max_digits=4, decimal_places=2)
-    recurrence_freq = models.IntegerField(default=0)
-    recurrence_unit = models.CharField(max_length=1, choices=RECURRENCE_UNITS, 
-            default='w')
+    frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
+    interval = models.PositiveIntegerField(default=0)
     
     class Meta:
         ordering = ['-deadline', 'start']
@@ -76,8 +75,8 @@ class Task(models.Model):
             str += u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
         else:
             str += u"%s: %s hrs of %s" % (self.start, self.hours, self.job.name)
-            if self.recurrence_freq > 0:
-                str = str + u" " + u"every %s %s" % (self.recurrence_freq, self.recurrence_unit)
+            if self.interval > 0:
+                str = str + u" " + u"every %s %s" % (self.interval, self.frequency)
         return str
 
 

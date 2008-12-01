@@ -58,8 +58,8 @@ def make_task_fmt2(row, book):
             job = job,
             start = start,
             hours = str(row[4].value),
-            recurrence_unit = row[6].value.lower(),
-            recurrence_freq = row[7].value,
+            frequency = row[6].value.lower(),
+            interval = row[7].value,
             )
     try:
         member = Member.objects.get(user__username = row[8].value)
@@ -96,8 +96,8 @@ def make_task_fmt1(row, book):
             job = job,
             start = start,
             hours = str(row[3].value),
-            recurrence_unit = row[5].value.lower(),
-            recurrence_freq = row[6].value,
+            frequency = row[5].value.lower(),
+            interval = row[6].value,
             )
     try:
         member = Member.objects.get(user__username = row[7].value)
