@@ -1,10 +1,16 @@
 from django.contrib import admin
-from mess.scheduling.models import *
+from mess.scheduling import models
+
+class TaskExcludeTimeInline(admin.TabularInline):
+    model = models.TaskExcludeTime
 
 class TaskAdmin(admin.ModelAdmin):
     list_filter = ['deadline']
+    inlines = (
+        TaskExcludeTimeInline,
+    )
 
-admin.site.register(Job)
-admin.site.register(Task, TaskAdmin)
-admin.site.register(Timecard)
-admin.site.register(Skill)
+admin.site.register(models.Job)
+admin.site.register(models.Task, TaskAdmin)
+admin.site.register(models.Timecard)
+admin.site.register(models.Skill)

@@ -56,7 +56,7 @@ class Task(models.Model):
     member = models.ForeignKey(Member, null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
-    interval = models.PositiveIntegerField(default=0)
+    interval = models.PositiveIntegerField(default=1)
     
     class Meta:
         ordering = ['time']
@@ -84,6 +84,10 @@ class Task(models.Model):
         end = self.time + delta_hours
         return end
     
+
+class TaskExcludeTime(models.Model):
+    task = models.ForeignKey(Task, related_name='excluded_times')
+    time = models.DateTimeField()
 
 class Timecard(models.Model):
     """
