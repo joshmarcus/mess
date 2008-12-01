@@ -1,5 +1,4 @@
 import datetime
-from dateutil import rrule
 
 from django.template import loader, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -100,20 +99,15 @@ def schedule(request, date=None):
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
     context['next_date'] = date + a_day
-    tasks = models.Task.objects.filter(time__year=date.year).filter(time__month=date.month).filter(time__day=date.day)
+    tasks = models.Task.objects.filter(frequency='').filter(
+            time__year=date.year).filter(time__month=date.month).filter(
+            time__day=date.day)
     task_list = [(task.time, task) for task in tasks]
     recurring_tasks = models.Task.objects.exclude(frequency='')
     for task in recurring_tasks:
-        frequency = getattr(rrule, task.get_frequency_display().upper())
-        recur = rrule.rrule(frequency, dtstart=task.time, 
-                interval=task.interval)
-        recur_set = rrule.rruleset()
-        recur_set.rrule(recur)
-        for excluded in task.excluded_times.all():
-            recur_set.exdate(excluded.time)
-        occurrences = recur_set.between(date, date + a_day)
-        if occurrences:
-            task_list.append((occurrences[0], task))
+        occur_times = task.get_occur_times(date, date + a_day)
+        for occur_time in occur_times:
+            task_list.append((occur_time, task))
     # decorate-sort-undecorate
     task_list.sort()
     task_list = [x[1] for x in task_list]

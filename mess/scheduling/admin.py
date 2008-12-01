@@ -5,7 +5,8 @@ class TaskExcludeTimeInline(admin.TabularInline):
     model = models.TaskExcludeTime
 
 class TaskAdmin(admin.ModelAdmin):
-    list_filter = ['deadline']
+    list_display = ('job', 'time', 'hours', 'deadline', 'member', 'account')
+    list_filter = ('deadline', )
     inlines = (
         TaskExcludeTimeInline,
     )

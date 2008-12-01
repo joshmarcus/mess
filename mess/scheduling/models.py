@@ -1,4 +1,5 @@
 import datetime
+from dateutil import rrule
 
 from django.db import models
 from mess.membership.models import Account, Member
@@ -46,8 +47,8 @@ class Job(models.Model):
 
 class Task(models.Model):
     """
-    A task is a scheduled occurrence of a job (or occurences, if recurring), 
-    and has either a deadline or a start time.
+    A task is a scheduled occurrence of a job (or occurrences, if recurring). 
+    The time is a start time unless deadline is checked.
     """
     job = models.ForeignKey(Job)
     time = models.DateTimeField()
@@ -59,20 +60,10 @@ class Task(models.Model):
     interval = models.PositiveIntegerField(default=1)
     
     class Meta:
-        ordering = ['time']
+        ordering = ['job']
 
     def __unicode__(self):
-        if self.member:
-            value = u"(%s for %s) " % (self.member.user.username, self.account_or_default())
-        else:
-            value = u"(unassigned) "
-        if self.deadline:
-            value += u"%s hrs of %s before %s" % (self.hours, self.job.name, self.time.date())
-        else:
-            value += u"%s: %s hrs of %s" % (self.time, self.hours, self.job.name)
-            if self.interval > 0:
-                value = value + u" " + u"every %s %s" % (self.interval, self.frequency)
-        return value
+        return unicode(self.job) + ' - ' + str(self.time)
 
     def account_or_default(self):
         if not self.account:
@@ -83,6 +74,17 @@ class Task(models.Model):
         delta_hours = datetime.timedelta(hours=float(self.hours))
         end = self.time + delta_hours
         return end
+
+    def get_occur_times(self, after, before):
+        frequency = getattr(rrule, self.get_frequency_display().upper())
+        recur = rrule.rrule(frequency, dtstart=self.time, 
+                interval=self.interval)
+        recur_set = rrule.rruleset()
+        recur_set.rrule(recur)
+        for excluded in self.excluded_times.all():
+            recur_set.exdate(excluded.time)
+        occur_times = recur_set.between(after, before)
+        return occur_times
     
 
 class TaskExcludeTime(models.Model):
