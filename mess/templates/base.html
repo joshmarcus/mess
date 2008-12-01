@@ -44,7 +44,7 @@
           {% if user.is_authenticated %}
           <li><a href="{% url login %}"{% active_class request '^$' %}>Dashboard</a></li>
           <li><a href="{% url members %}"{% active_class request '^membership' %}>Membership</a></li>
-          <li><a href="{% url scheduling-schedule %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
+          <li><a href="{% url scheduling-schedule-today %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
           {% endif %}
           {% if user.is_staff %}
           <li><a href="{% url trans_summary_today %}"{% active_class request '^reporting' %}>Reports</a></li>

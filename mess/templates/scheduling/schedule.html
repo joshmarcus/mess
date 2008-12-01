@@ -29,7 +29,7 @@
   <!-- Calendar styles -->
   <style type="text/css">
     {% for task in tasks %}
-      .yui-skin-sam {{ task.deadline|date:".\yY .\mn .\dj" }} {text-decoration: underline;}
+      .yui-skin-sam {{ task.time|date:".\yY .\mn .\dj" }} {text-decoration: underline;}
     {% endfor %}
   </style> 
 {% endblock head %}
@@ -39,9 +39,9 @@
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <h2>
-        <a href="">&larr;</a> 
+        <a href="{% url scheduling-schedule previous_date|date:"Y-m-d" %}">&larr;</a> 
         {{ date|date:"l, F jS, Y" }} 
-        <a href="">&rarr;</a>
+        <a href="{% url scheduling-schedule next_date|date:"Y-m-d" %}">&rarr;</a>
       </h2>
       <table class="data" id="daily-view">
         <tr>
@@ -49,6 +49,20 @@
           <th>Job</th>
           <th>Workers</th>
         </tr>
+        {% for task in tasks %}
+        <tr class="{% cycle "odd" "even" %}{% if not task.member or not task.account %} unassigned{% endif %}">
+          <td class="time">
+          {% if task.deadline %}
+            {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
+          {% else %}
+            {{ task.time|date:"P" }} &ndash; {{ task.get_end|date:"P" }}
+          {% endif %}
+          </td>
+          <td>{{ task.job }}</td>
+          <td>{% if task.member and task.account %}{{ task.member }}, {{ task.account }}{% else %}Unassigned{% endif %}</td>
+        </tr>
+        {% endfor %}
+        {% comment %}
         <tr class="odd">
           <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
 <td>Cashier</td>
@@ -153,6 +167,7 @@
             </ul>
           </td>
 		</tr>
+    {% endcomment %}
       </table>
     </div>
   </div>

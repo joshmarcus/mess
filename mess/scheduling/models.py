@@ -50,35 +50,40 @@ class Task(models.Model):
     and has either a deadline or a start time.
     """
     job = models.ForeignKey(Job)
-    deadline = models.DateTimeField(null=True, blank=True)
-    start = models.DateTimeField(null=True, blank=True)
-    account = models.ForeignKey(Account, null=True, blank=True)
-    member = models.ForeignKey(Member, null=True, blank=True)
+    time = models.DateTimeField()
     hours = models.DecimalField(max_digits=4, decimal_places=2)
+    deadline = models.BooleanField()
+    member = models.ForeignKey(Member, null=True, blank=True)
+    account = models.ForeignKey(Account, null=True, blank=True)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
     interval = models.PositiveIntegerField(default=0)
     
     class Meta:
-        ordering = ['-deadline', 'start']
+        ordering = ['time']
+
+    def __unicode__(self):
+        if self.member:
+            value = u"(%s for %s) " % (self.member.user.username, self.account_or_default())
+        else:
+            value = u"(unassigned) "
+        if self.deadline:
+            value += u"%s hrs of %s before %s" % (self.hours, self.job.name, self.time.date())
+        else:
+            value += u"%s: %s hrs of %s" % (self.time, self.hours, self.job.name)
+            if self.interval > 0:
+                value = value + u" " + u"every %s %s" % (self.interval, self.frequency)
+        return value
 
     def account_or_default(self):
         if not self.account:
             return self.member.primary_account()
         return self.account
-    
-    def __unicode__(self):
-        if self.member:
-            str = u"(%s for %s) " % (self.member.user.username, self.account_or_default())
-        else:
-            str = u"(unassigned) "
-        if self.deadline != None:
-            str += u"%s hrs of %s before %s" % (self.hours, self.job.name, self.deadline.date())
-        else:
-            str += u"%s: %s hrs of %s" % (self.start, self.hours, self.job.name)
-            if self.interval > 0:
-                str = str + u" " + u"every %s %s" % (self.interval, self.frequency)
-        return str
 
+    def get_end(self):
+        delta_hours = datetime.timedelta(hours=float(self.hours))
+        end = self.time + delta_hours
+        return end
+    
 
 class Timecard(models.Model):
     """

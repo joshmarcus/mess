@@ -88,14 +88,16 @@ def schedule(request, date=None):
     context = RequestContext(request)
     if date:
         try:
-            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+            date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
         except ValueError:
             raise Http404
     else:
         date = datetime.date.today()
-    tasks = models.Task.objects.filter(
-            deadline__year=date.year, deadline__month=date.month)
     context['date'] = date
+    a_day = datetime.timedelta(days=1)
+    context['previous_date'] = date - a_day
+    context['next_date'] = date + a_day
+    tasks = models.Task.objects.filter(time__year=date.year).filter(time__month=date.month).filter(time__day=date.day).order_by('time')
     context['tasks'] = tasks
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))

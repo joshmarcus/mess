@@ -148,10 +148,9 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 5, 
-      "start": "2008-10-18 02:15:09", 
+      "time": "2008-10-18 02:15:09", 
       "job": 8, 
-      "member": 21, 
-      "deadline": "2008-10-19 02:15:08"
+      "member": 21 
     }
   }, 
   {
@@ -159,10 +158,9 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "start": "2008-10-18 02:14:44", 
+      "time": "2008-10-18 02:14:44", 
       "job": 7, 
-      "member": null, 
-      "deadline": "2008-10-18 02:14:43"
+      "member": null 
     }
   }, 
   {
@@ -170,10 +168,9 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "start": "2008-10-18 02:14:03", 
+      "time": "2008-10-18 02:14:03", 
       "job": 6, 
-      "member": 103, 
-      "deadline": "2008-10-18 02:14:01"
+      "member": 103 
     }
   }, 
   {
@@ -181,10 +178,9 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "start": "2008-10-17 02:14:24", 
+      "time": "2008-10-17 02:14:24", 
       "job": 6, 
-      "member": 17, 
-      "deadline": "2008-10-17 02:14:18"
+      "member": 17 
     }
   }, 
   {
@@ -192,10 +188,9 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "start": "2008-10-24 15:08:24", 
+      "time": "2008-10-24 15:08:24", 
       "job": 2, 
-      "member": 1, 
-      "deadline": "2008-10-24 15:08:23"
+      "member": 1 
     }
   }, 
   {
@@ -203,10 +198,10 @@
     "model": "scheduling.task", 
     "fields": {
       "hours": 2, 
-      "start": "2008-10-19 15:08:46", 
+      "time": "2008-10-19 15:08:46", 
       "job": 6, 
       "member": 12, 
-      "deadline": "2008-10-19 15:08:34"
+      "deadline": true
     }
   }
 ]
