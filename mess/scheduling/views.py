@@ -111,29 +111,29 @@ def assign(request):
 # filter for date
 def timecard(request):
     context = {
-        'jobs': Job.objects.all()
+        'jobs': models.Job.objects.all()
     }
     return render_to_response('scheduling/timecard.html', context,
                                 context_instance=RequestContext(request))    
 def jobs(request):
     context = {
-        'jobs': Job.objects.all()
+        'jobs': models.Job.objects.all()
     }
     return render_to_response('scheduling/jobs.html', context,
                                 context_instance=RequestContext(request))
 
 def job(request, job_id):
     context = {
-        'jobs': Job.objects.filter(id=job_id)
+        'jobs': models.Job.objects.filter(id=job_id)
     }
     return render_to_response('scheduling/jobs.html', context,
                                 context_instance=RequestContext(request))
 
 def job_edit(request, job_id=None):
     if job_id:
-        job = get_object_or_404(Job, id=job_id)
+        job = get_object_or_404(models.Job, id=job_id)
     else:
-        job = Job()
+        job = models.Job()
     is_errors = False
     ret_resp = HttpResponseRedirect(reverse('scheduling-jobs'))
     
@@ -141,14 +141,14 @@ def job_edit(request, job_id=None):
         if 'cancel' in request.POST:
             return ret_resp
 
-        job_form = JobForm(request.POST, instance=job)
+        job_form = forms.JobForm(request.POST, instance=job)
         if job_form.is_valid():
             job_form.save()
             return ret_resp
         else:
             is_errors = True
     else:
-        job_form = JobForm(instance=job)
+        job_form = forms.JobForm(instance=job)
 
     context = {
         'job': job,

@@ -59,11 +59,10 @@ YAHOO.schedule.calendar.initConnection = function() {
         } 
     };
     
-    var callback = 
-	{ 
+    var callback = { 
 	    success: handleSuccess, 
 	    failure: handleFailure,   
-	};
+    };
 
     function mySelectHandler(type, args, obj) {
     	var selected = args[0];

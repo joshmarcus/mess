@@ -18,10 +18,13 @@
 
   <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
   <script type="text/javascript">
-    function init() {
-      makeActive();
+    function selectDate() {
+      YAHOO.schedule.calendar.cal1.cfg.setProperty("pagedate", "{{ date|date:"m/Y" }}", false); 
+      YAHOO.schedule.calendar.cal1.cfg.setProperty("selected", "{{ date|date:"m/d/Y" }}", false); 
+      YAHOO.schedule.calendar.cal1.render();
     }
-  window.onload = init;
+    YAHOO.util.Event.onDOMReady(selectDate);
+    YAHOO.util.Event.onDOMReady(makeActive);
   </script>
   <!-- Calendar styles -->
   <style type="text/css">
