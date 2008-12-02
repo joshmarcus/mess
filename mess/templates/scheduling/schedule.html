@@ -69,132 +69,13 @@
               {% if task.member and task.account %}
               <li>{{ task.member }}, {{ task.account }}</li>
               {% else %}
-              <li>Unassigned</li>
+              <li class="unassigned">Unassigned</li>
               {% endif %}
             {% endfor %}
             </ul>
           </td>
         </tr>
         {% endfor %}
-        {% comment %}
-        {% for task in tasks %}
-        <tr class="{% cycle "odd" "even" %}{% if not task.member or not task.account %} unassigned{% endif %}">
-          <td class="time">
-          {% if task.deadline %}
-            {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
-          {% else %}
-            {{ task.time|date:"P" }} &ndash; {{ task.get_end|date:"P" }}
-          {% endif %}
-          </td>
-          <td>{{ task.job }}</td>
-          <td>{% if task.member and task.account %}{{ task.member }}, {{ task.account }}{% else %}Unassigned{% endif %}</td>
-        </tr>
-        {% endfor %}
-        <tr class="odd">
-          <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
-<td>Cashier</td>
-          <td>
-            <ul>
-              <li><a href="">John Smith</a></li>
-			  <li><a href="">John Smith</a></li>
-            </ul>
-          </td>
-        </tr>
-        <tr class="even">
-          <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
-          <td>Storekeeper</td>
-          <td>
-            <ul>
-              <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="odd">
-          <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
-          <td>Storekeeper</td>
-          <td>
-            <ul>
-              <li><a href="">Dude's Name</a></li>
-			  <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="even">
-          <td class="time">9:00 a.m. &ndash; 10:00 a.m.</td>
-<td>Cashier</td>
-          <td class="time">
-            <ul>
-              <li><a href="">Dude Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="odd">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-<td>Cashier</td>
-          <td>
-            <ul>
-              <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="even unscheduled">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-<td>Cashier</td>
-          <td>
-            <ul>
-              <li><a class="add" href="">Unassigned</a></li>
-   	          <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="odd">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-<td>Cashier</td>
-          <td>
-            <ul>
-              <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="even unscheduled">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-          <td>Storekeeper</td>
-          <td>
-            <ul>
-              <li><a class="add" href="">Unassigned</a></li>
-			  <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="odd">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-          <td>Storekeeper</td>
-          <td>
-            <ul>
-              <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="even">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-<td>Cashier</td>
-          <td>
-            <ul>
-			  <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-		<tr class="odd">
-          <td class="time">10:00 a.m. &ndash; 11:00 a.m.</td>
-<td>Cashier</td>
-          <td>
-            <ul>
-              <li><a href="">Dude's Name</a></li>
-			  <li><a href="">Dude's Name</a></li>
-            </ul>
-          </td>
-		</tr>
-    {% endcomment %}
       </table>
     </div>
   </div>
