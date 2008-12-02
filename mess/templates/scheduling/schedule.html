@@ -23,7 +23,20 @@
       YAHOO.schedule.calendar.cal1.cfg.setProperty("selected", "{{ date|date:"m/d/Y" }}", false); 
       YAHOO.schedule.calendar.cal1.render();
     }
+    function taskClick(e, taskDisplay) {
+      var taskEdit = YAHOO.util.Dom.getNextSibling(taskDisplay);
+      YAHOO.util.Dom.addClass(taskDisplay, 'hidden');
+      YAHOO.util.Dom.removeClass(taskEdit, 'hidden');
+    }
+    function taskClickAssign() {
+      var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
+      for (i=0; i<taskDisplays.length; i++) {
+        var taskDisplay = taskDisplays[i];
+        YAHOO.util.Event.on(taskDisplay, 'click', taskClick, taskDisplay);
+      }
+    }
     YAHOO.util.Event.onDOMReady(selectDate);
+    YAHOO.util.Event.onDOMReady(taskClickAssign);
     YAHOO.util.Event.onDOMReady(makeActive);
   </script>
   <!-- Calendar styles -->
@@ -50,7 +63,7 @@
           <th>Workers</th>
         </tr>
         {% for group in task_groups %}
-        <tr class="{% cycle "odd" "even" %}">
+        <tr class="task-display {% cycle "odd" "even" %}">
           <td class="time">
           {% if group.proto.deadline %}
             {{ group.proto.time|date:"P" }} deadline for {{ group.proto.hours }} hour task
@@ -74,6 +87,22 @@
             {% endfor %}
             </ul>
           </td>
+        </tr>
+        <tr class="task-edit hidden">
+          <form>
+            <td>{{ group.form.time }}<br />
+              {{ group.form.frequency }} {{ group.form.interval }}
+            </td>
+            <td>{{ group.form.job }}</td>
+            <td>
+              <ul>
+              {% for worker_form in group.worker_forms %}
+                <li>{{ worker_form.member }} {{ worker_form.account }}</li>
+              {% endfor %}
+              </ul>
+              <input type="submit" value="Save" />
+            </td>
+          </form>
         </tr>
         {% endfor %}
       </table>

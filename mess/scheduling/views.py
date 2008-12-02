@@ -133,12 +133,16 @@ def schedule(request, date=None):
         tasks = []
         for task in group[6]:
             if task.member and task.account:
-                tasks.append((task.member.user.get_full_name(), task.account.name, task))
+                tasks.append((task.member.user.get_full_name(), 
+                        task.account.name, task))
             else:
                 tasks.append((None, None, task))
         tasks.sort()
         tasks = [task[2] for task in tasks]
-        group_dict = {'proto': tasks[0], 'tasks': tasks}
+        form = forms.TaskGroupForm(instance=tasks[0])
+        worker_forms = [forms.WorkerForm(instance=task) for task in tasks]
+        group_dict = {'proto': tasks[0], 'tasks': tasks, 'form': form,
+                'worker_forms': worker_forms}
         task_group_dicts.append(group_dict)
 
     context['task_groups'] = task_group_dicts

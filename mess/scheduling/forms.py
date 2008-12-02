@@ -1,20 +1,30 @@
 from django import forms
-from django.forms import ModelForm
 
-from mess.scheduling.models import *
+from mess.scheduling import models
 
-class TaskForm(ModelForm):
+class TaskForm(forms.ModelForm):
     class Meta:
-        model = Task
+        model = models.Task
 
-class JobForm(ModelForm):
+class JobForm(forms.ModelForm):
     class Meta:
-        model = Job
+        model = models.Job
 
-class SkillForm(ModelForm):
+class SkillForm(forms.ModelForm):
     class Meta:
-        model = Skill
+        model = models.Skill
 
-class TimecardForm(ModelForm):
+class TimecardForm(forms.ModelForm):
     class Meta:
-        model = Timecard
+        model = models.Timecard
+
+class TaskGroupForm(forms.ModelForm):
+    class Meta:
+        model = models.Task
+        exclude = ('member', 'account')
+
+class WorkerForm(forms.ModelForm):
+    class Meta:
+        model = models.Task
+        fields = ('member', 'account')
+    
