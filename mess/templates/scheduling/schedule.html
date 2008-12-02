@@ -49,6 +49,34 @@
           <th>Job</th>
           <th>Workers</th>
         </tr>
+        {% for group in task_groups %}
+        <tr class="{% cycle "odd" "even" %}">
+          <td class="time">
+          {% if group.proto.deadline %}
+            {{ group.proto.time|date:"P" }} deadline for {{ group.proto.hours }} hour task
+          {% else %}
+            {{ group.proto.time|date:"P" }} &ndash; {{ group.proto.get_end|date:"P" }}
+          {% endif %}
+            <br />
+          {% if group.proto.frequency and group.proto.interval %}
+            (recurs every {{ group.proto.get_recurrence_display }})
+          {% endif %}
+          </td>
+          <td>{{ group.proto.job }}</td>
+          <td>
+            <ul>
+            {% for task in group.tasks %}
+              {% if task.member and task.account %}
+              <li>{{ task.member }}, {{ task.account }}</li>
+              {% else %}
+              <li>Unassigned</li>
+              {% endif %}
+            {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+        {% comment %}
         {% for task in tasks %}
         <tr class="{% cycle "odd" "even" %}{% if not task.member or not task.account %} unassigned{% endif %}">
           <td class="time">
@@ -62,7 +90,6 @@
           <td>{% if task.member and task.account %}{{ task.member }}, {{ task.account }}{% else %}Unassigned{% endif %}</td>
         </tr>
         {% endfor %}
-        {% comment %}
         <tr class="odd">
           <td class="time">8:00 a.m. &ndash; 9:00 a.m.</td>
 <td>Cashier</td>

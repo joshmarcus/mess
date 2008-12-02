@@ -86,6 +86,22 @@ class Task(models.Model):
         occur_times = recur_set.between(after, before)
         return occur_times
     
+    def get_recurrence_display(self):
+        if self.frequency and self.interval:
+            if self.interval == 1:
+                if self.frequency == 'd':
+                    return 'day'
+                if self.frequency == 'w':
+                    return 'week'
+                if self.frequency == 'm':
+                    return 'month'
+            if self.frequency == 'd':
+                return '%s days' % self.interval
+            if self.frequency == 'w':
+                return '%s weeks' % self.interval
+            if self.frequency == 'm':
+                return '%s months' % self.interval
+    
 
 class TaskExcludeTime(models.Model):
     task = models.ForeignKey(Task, related_name='excluded_times')

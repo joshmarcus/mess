@@ -93,7 +93,7 @@ def schedule(request, date=None):
             raise Http404
     else:
         today = datetime.date.today()
-        # need datetime object for rrule
+        # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
     context['date'] = date
     a_day = datetime.timedelta(days=1)
@@ -102,16 +102,45 @@ def schedule(request, date=None):
     tasks = models.Task.objects.filter(frequency='').filter(
             time__year=date.year).filter(time__month=date.month).filter(
             time__day=date.day)
-    task_list = [(task.time, task) for task in tasks]
+
+    # convert QuerySet to list for appending recurring tasks
+    task_list = list(tasks)
     recurring_tasks = models.Task.objects.exclude(frequency='')
     for task in recurring_tasks:
         occur_times = task.get_occur_times(date, date + a_day)
         for occur_time in occur_times:
-            task_list.append((occur_time, task))
-    # decorate-sort-undecorate
-    task_list.sort()
-    task_list = [x[1] for x in task_list]
-    context['tasks'] = task_list
+            task_list.append(task)
+
+    # group tasks by same job, time, and hours
+    task_groups = []
+    for task in task_list:
+        group_found = False
+        for group in task_groups:
+            if (task.time == group[0] and task.hours == group[1] and 
+                    task.job == group[2] and task.deadline == group[3]):
+                group[4].append(task)
+                group_found = True
+                continue
+        if not group_found:
+            task_groups.append((task.time, task.hours, task.job, task.deadline, 
+                    [task]))
+    task_groups.sort()
+
+    # make it easier to get to things in the template
+    task_group_dicts = []
+    for group in task_groups:
+        tasks = []
+        for task in group[4]:
+            if task.member and task.account:
+                tasks.append((task.member.user.get_full_name(), task.account.name, task))
+            else:
+                tasks.append((None, None, task))
+        tasks.sort()
+        tasks = [task[2] for task in tasks]
+        group_dict = {'proto': tasks[0], 'tasks': tasks}
+        task_group_dicts.append(group_dict)
+
+    context['task_groups'] = task_group_dicts
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))
 
