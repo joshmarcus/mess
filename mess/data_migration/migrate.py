@@ -26,7 +26,7 @@ import time
 import re
 import xlrd
 from random import choice
-from mess.membership.models import Member, Account, Address, Phone, Email
+from mess.membership.models import *
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -207,6 +207,8 @@ def main():
         datum = [unicode(x.value).encode('ascii','replace').strip() for x in line]
 #        datum = [x.value for x in line]
         column = dict(zip(infields, datum))
+        if not column['Active Members']:
+            column['Active Members'] = 1
         aprint (u'---reading line ['+str(linenumber)+'] '+
                column['Account'][:15] + u' Section:'+column['Section'])
         actname, actnotes = split_actstr(column['Account'])
@@ -263,67 +265,59 @@ def main():
     print 'Saving into database...'
     for actname, ac in acts.iteritems():
         aprint('saving accountname '+actname)
-        acct = Account()
-        acct.name = actname
+        try:
+            acct = Account.objects.get(name = actname)
+        except Account.DoesNotExist:
+            acct = Account(name = actname)
+            acct.save()
         # !! do something with ac['balance']
         # !! do something with ac['cumul_deposit']
         # !! do something with ac['actnotes']
         for i,m in enumerate(ac['mems']):
-            user = User()
-            user.first_name = m['first_name']
-            user.last_name = m['last_name']
-            user.username = slug_name(m['first_name']+m['last_name'])
-            user.password = generate_pass()
+            user = User(
+                first_name = m['first_name'],
+                last_name = m['last_name'],
+                username = slug_name(m['first_name']+m['last_name']),
+                password = generate_pass(),
+            )
             save_user(user, user.username, 0)
             print 'saved username : '+user.username
     
-            mem = Member()
+            mem = Member(
+                date_joined = m['date_joined'],
+                user = user
+            )
             if m['has_keycard'] == 'Yes': 
                 mem.has_key = True
-            mem.contact_preference = m['contact_preference']
-            mem.date_joined = m['date_joined']
-            mem.user = user
-            mem.primary_account = acct
             mem.save()
     
             if m['phone'] != '':
-                phone = Phone()
-                phone.number = m['phone'] 
-                phone.save()
-                mem.phones.add(phone)
+                mem.phones.create(number = m['phone'])
     
             if m['second_phone'] != '':
-                phone = Phone()
-                phone.number = m['second_phone']
-                phone.save()
-                mem.phones.add(phone)
+                mem.phones.create(number = m['second_phone'])
     
             if m['email'] != '':
-                email = Email()
-                email.email = m['email']
-                email.save()
-                mem.emails.add(email)
+                mem.emails.create(email = m['email'])
     
             if m['address_street'] != '':
-                address = Address()
-                address.address1 = m['address_street']
-                address.city = m['address_city']
-                address.state = m['address_state']
-                address.postal_code = m['address_zip']
-                address.save()
-                mem.addresses.add(address)
+                mem.addresses.create(
+                    address1 = m['address_street'],
+                    city = m['address_city'],
+                    state = m['address_state'],
+                    postal_code = m['address_zip']
+                )
     
             # !! do something with m['card_number'], etc...
             # !! do something with m['cumul_deposit']
             # !! do something with m['status']
-    
-            # link data structures together
 
-            if i == 0:
-                acct.contact = mem
-                acct.save()
-            acct.members.add(mem)
-        acct.save()
+            AccountMember.objects.create(
+                    account = acct,
+                    member = mem
+            )
+                    
+    
     
     
 main() 
