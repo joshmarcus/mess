@@ -56,7 +56,8 @@ def make_task_fmt2(row, book):
 
     task = Task(
             job = job,
-            start = start,
+            time = start,
+            deadline = row[3].value,
             hours = str(row[4].value),
             frequency = row[6].value.lower(),
             interval = row[7].value,
@@ -69,11 +70,6 @@ def make_task_fmt2(row, book):
     except Member.DoesNotExist, Account.DoesNotExist:
         pass
 
-    try:
-        task.deadline = datetime.datetime.strptime(row[3].value, isoTimeFmt)
-    except:
-        pass
-    
     task.save()
     print task
 
@@ -94,7 +90,8 @@ def make_task_fmt1(row, book):
 
     task = Task(
             job = job,
-            start = start,
+            time = start,
+            deadline = row[2].value,
             hours = str(row[3].value),
             frequency = row[5].value.lower(),
             interval = row[6].value,
@@ -105,11 +102,6 @@ def make_task_fmt1(row, book):
         task.member = member
         task.account = account
     except Member.DoesNotExist, Account.DoesNotExist:
-        pass
-
-    try:
-        task.deadline = datetime.datetime.strptime(row[2].value, isoTimeFmt)
-    except:
         pass
     
     task.save()
