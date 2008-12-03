@@ -51,6 +51,11 @@
   <div id="left-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
+      <form onsubmit="return false">
+        <div class="add-button">
+          <input type="submit" value="Add a task!" />
+        </div>
+      </form>
       <h2>
         <a href="{% url scheduling-schedule previous_date|date:"Y-m-d" %}">&larr;</a> 
         {{ date|date:"l, F jS, Y" }} 
@@ -61,6 +66,22 @@
           <th>Time</th>
           <th>Job</th>
           <th>Workers</th>
+        </tr>
+        <tr id="task-add">
+          <form>
+          <td colspan="3">
+              {{ add_form.time }}<br />
+              {{ add_form.frequency }} {{ add_form.interval }}
+              {{ add_form.job }}
+              <ul>
+              {% for worker_form in add_worker_formset.forms %}
+                <li>{{ worker_form.member }} {{ worker_form.account }}</li>
+              {% endfor %}
+              </ul>
+              <input type="submit" value="Save" />
+            </td>
+          </form>
+          </td>
         </tr>
         {% for group in task_groups %}
         <tr class="task-display {% cycle "odd" "even" %}">
@@ -90,11 +111,10 @@
         </tr>
         <tr class="task-edit hidden">
           <form>
-            <td>{{ group.form.time }}<br />
+            <td colspan="3">
+              {{ group.form.time }}<br />
               {{ group.form.frequency }} {{ group.form.interval }}
-            </td>
-            <td>{{ group.form.job }}</td>
-            <td>
+              {{ group.form.job }}
               <ul>
               {% for worker_form in group.worker_forms %}
                 <li>{{ worker_form.member }} {{ worker_form.account }}</li>
