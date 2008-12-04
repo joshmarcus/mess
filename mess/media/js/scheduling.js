@@ -40,36 +40,17 @@ function dateToLocaleString(dt) {
 	
 function taskUrl(dt) {
     locale = dateToLocaleString(dt);
-	return ("/scheduling/task_list/" + locale);
+	return ("/scheduling/schedule/" + locale);
 }
 
 // define the initConnection
 YAHOO.schedule.calendar.initConnection = function() {
-    var div = YAHOO.util.Dom.get("task-list");
-
-    var handleSuccess = function(response){
-        if(response.responseText !== undefined){ 		    
-            div.innerHTML = response.responseText;
-        }
-    };
-
-    var handleFailure = function(response){ 
-        if(response.responseText !== undefined){ 
-            div.innerHTML = "Nothing for this Date"; 
-        } 
-    };
-    
-    var callback = { 
-	    success: handleSuccess, 
-	    failure: handleFailure,   
-    };
 
     function mySelectHandler(type, args, obj) {
     	var selected = args[0];
     	var selDate = this.toDate(selected[0]);
     	var sUrl = taskUrl(selDate);
-    	getForm(null, selDate);
-    	YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+        window.location = sUrl;
     }
     
     YAHOO.schedule.calendar.cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
@@ -78,64 +59,9 @@ YAHOO.schedule.calendar.initConnection = function() {
     
     // list todays tasks on page load
     var sUrl = taskUrl(new Date());
-    //YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
 
 YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
 
 // create namespace object
 YAHOO.namespace("schedule.tasks");
-
-var handleSuccess = function(response){
-    var heading_div = YAHOO.util.Dom.get("right-column-heading");
-    var form_div = YAHOO.util.Dom.get("task-form");
-    form_div.innerHTML = response.responseText;
-    heading_div.innerHTML = response.argument[0];
-    if (response.argument[1] !== undefined){
-        var deadline = YAHOO.util.Dom.get("id_deadline");
-        deadline.value = response.argument[1];
-    }
-};
-
-var handleFailure = function(response){ 
-    var form_div = YAHOO.util.Dom.get("task-form");
-    form_div.innerHTML = "Nothing for this Date";
-};
-
-function getForm(task_id, dt) {
-    if(task_id == null){
-        date = formatDateForHeading(dt);
-        header = 'Create new task: ' + date;
-        sUrl = '/scheduling/task_form/';
-        date = formatDateForDeadline(dt);
-    } else {
-        header = 'Edit this task:';
-        sUrl = '/scheduling/task_form/' + task_id;
-    }
-    var callback = { 
-        success: handleSuccess, 
-        failure: handleFailure,
-        argument: [header, date]   
-    };
-    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
-}
-
-function deleteTask(task_id) {
-    if (confirm("Are you sure you want to remove this task?")){
-        var handleSuccess = function(response){
-            // var task_id_div = YAHOO.util.Dom.get('task'+task_id);
-            // task_id_div.innerHTML = response.argument[0];
-            // YAHOO.util.Dom.replaceClass(task_id_div, 'hidden');          
-        };
-        var callback = { 
-            success: handleSuccess
-        };
-        sUrl='/scheduling/task/delete/' + task_id;
-        YAHOO.util.Connect.asyncRequest('POST', sUrl, callback, null);
-        // location ='/scheduling/task/delete/' + task_id;
-    }
-}
-
-// Load New Task Form on Page Load
-var today = new Date();
-// getForm(null, today);
