@@ -15,7 +15,7 @@ urlpatterns = patterns('mess.scheduling.views',
     # url(r'^task_form/(?P<task_id>\d+)', 'task_form'),
     # url(r'^task_form/', 'task_form'),
     
-    url(r'^schedule/(?P<date>\d{4}-\d{2}-\d{2})', 'schedule', name="scheduling-schedule"),
+    url(r'^schedule/(?P<date>\d{4}-\d+-\d+)', 'schedule', name="scheduling-schedule"),
     url(r'^schedule/', 'schedule', name="scheduling-schedule-today"),
     #url(r'^assign/', 'assign', name="scheduling-assign"),
     url(r'^timecard/', 'timecard', name="scheduling-timecard"),
