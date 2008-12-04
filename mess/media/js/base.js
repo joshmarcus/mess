@@ -177,15 +177,15 @@ function reset_form() {
 }
 
 //adds class="active" to active local nav item. anyone want to make this work on global nav?
-function makeActive() {
-	var urlPath = window.location.pathname;
-	var navList = document.getElementById("local-nav");
-	var navLinks = navList.getElementsByTagName("a");
-	for (var i = 0; i < navLinks.length; i++) {
-	    var navLink = navLinks[i];
-	    if (navLink.pathname == urlPath) {
-	        navLink.className = "active";
-	    }
-	}
-}
+// function makeActive() {
+//  var urlPath = window.location.pathname;
+//  var navList = document.getElementById("local-nav");
+//  var navLinks = navList.getElementsByTagName("a");
+//  for (var i = 0; i < navLinks.length; i++) {
+//      var navLink = navLinks[i];
+//      if (navLink.pathname == urlPath) {
+//          navLink.className = "active";
+//      }
+//  }
+// }
 

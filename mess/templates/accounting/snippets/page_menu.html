@@ -1,0 +1,7 @@
+{% block page_menu %}
+{% load active %}
+  <ul id="local-nav">
+    <li><a href="{% url cashier %}"{% active_class request 'accounting/cashier' %}>Cashier</a></li>
+    <li class="last-item"><a href="{% url close_out %}"{% active_class request 'accounting/close_out/all' %}>Close Out</a></li>
+  </ul>
+{% endblock %}

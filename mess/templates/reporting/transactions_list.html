@@ -7,12 +7,7 @@
 
 {% block content %}
 <div id="double-column" >
-  <ul id="local-nav">
-  	<li><a href="{% url member_reports %}">Members</a></li>
-	<li><a href="{% url account_reports %}">Accounts</a></li>
-	<li><a href="{% url trans_reports %}">Transactions</a></li>
-	<li class="last-item"><a href="{% url scheduling_reports %}">Scheduling</a></li>
-  </ul>	
+  {% include "reporting/snippets/page_menu.html" %}
   <div id="primary-content-wrapper" >
     <div class="attention">  
 	<p>
@@ -52,9 +47,7 @@
 </div>
 <!--><div id="right-column">
   <h3>Report Sections</h3>
-  <ul>
-    {% include "reporting/snippets/report_sections_menu.html" %}
-  </ul>
+  {% include "reporting/snippets/page_menu.html" %}
 <div>-->
 {% endblock %}
 {% block pop_up %}

@@ -1,12 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div id="left-column" >
-  <ul id="local-nav">
-  	<li><a href="">Members</a></li>
-	<li><a href="">Accounts</a></li>
-	<li><a class="active" href="">Transactions</a></li>
-	<li class="last-item"><a href="">Scheduling</a></li>
-  </ul>
+  {% include "reporting/snippets/page_menu.html" %}
   <div id="primary-content-wrapper" >
     <table class="data" >
 	  <caption>{{ report_title }}</caption>
@@ -83,9 +78,6 @@
     <li><a href="{% url trans_summary_custom %}">Custom</a></li>
     <li class="last-item"><a href="{% url trans_list %}">List Transactions</a></li>
   </ul>  
-  <!--><h3>Report Sections</h3>
-  <ul>
-    {% include "reporting/snippets/report_sections_menu.html" %}
-  </ul>-->
+  {% include "reporting/snippets/page_menu.html" %}
 </div>
 {% endblock %}

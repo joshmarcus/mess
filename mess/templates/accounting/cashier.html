@@ -13,10 +13,7 @@
 
 {% block content %}
   <div id="double-column" >
-    <ul id="local-nav">
-      <li><a class="active" href="{% url cashier %}">Cashier</a></li>
-      <li class="last-item"><a href="{% url close_out %}">Close Out</a></li>
-    </ul>
+   {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <form class="standard" method="post" >
         <table>

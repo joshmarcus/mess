@@ -1,0 +1,11 @@
+{% block page_menu %}
+{% load active %}
+  <ul id="local-nav">
+    <li><a href=""{% active_class request 'members' %}>Members</a></li>
+    <li><a href=""{% active_class request 'accounts' %}>Accounts</a></li>
+    <li><a href=""{% active_class request 'transactions' %}>Transactions</a></li>
+    <li class="last-item"><a href=""{% active_class request 'scheduling' %}>Scheduling</a></li>
+  </ul>
+{% endblock %}
+
+
