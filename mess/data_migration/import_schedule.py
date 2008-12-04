@@ -16,8 +16,6 @@ from membership.models import *
 def make_job(row, book):
     'minimally validate and create jobs from sheet rows'
     if row[0].ctype != xlrd.XL_CELL_NUMBER:
-        print "rejecting row:"
-        print row
         return
     job = Job(id = row[0].value, name = row[1].value)
     if row[3].ctype == xlrd.XL_CELL_TEXT:
@@ -38,7 +36,6 @@ def make_task_fmt2(row, book):
     isoTimeFmt = "%Y-%m-%dT%H:%M"
     
     if row[0].ctype != xlrd.XL_CELL_NUMBER:
-        print "rejecting row: ", row
         return
 
     if row[1].ctype != xlrd.XL_CELL_DATE:
@@ -49,7 +46,6 @@ def make_task_fmt2(row, book):
 
     start_day = datetime.datetime(*xlrd.xldate_as_tuple(row[1].value, book.datemode))
     start_time_tup = xlrd.xldate_as_tuple(row[2].value, book.datemode)
-    print start_time_tup
     start_time = datetime.time(*start_time_tup[3:]) #slice out just the time part
 
     start = datetime.datetime.combine(start_day, start_time)
@@ -62,23 +58,30 @@ def make_task_fmt2(row, book):
             frequency = row[6].value.lower(),
             interval = row[7].value,
             )
-    try:
-        member = Member.objects.get(user__username = row[8].value)
-        account = Account.objects.get(name = row[9].value)
-        task.member = member
-        task.account = account
-    except Member.DoesNotExist, Account.DoesNotExist:
-        pass
 
+    acct_name = row[9].value
+    mem_name = row[8].value
+    if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
+        try:
+            account = Account.objects.get(name = acct_name)
+            members = account.members.filter(user__first_name = mem_name)
+            if members.count() == 0:
+                raise Member.DoesNotExist
+            task.member = members[0]
+            task.account = account
+        except Account.DoesNotExist:
+            print "No such account: %s\n" % acct_name
+        except Member.DoesNotExist:
+            print "No matching member %s on acct: %s\n" % (mem_name, account)
+    
     task.save()
-    print task
+#    print task
 
 def make_task_fmt1(row, book):
     'minimally validate and load format 1 tasks'
     isoTimeFmt = "%Y-%m-%dT%H:%M"
     
     if row[0].ctype != xlrd.XL_CELL_NUMBER:
-        print "rejecting row: ", row
         return
 
     if row[1].ctype != xlrd.XL_CELL_TEXT:
@@ -96,19 +99,26 @@ def make_task_fmt1(row, book):
             frequency = row[5].value.lower(),
             interval = row[6].value,
             )
-    try:
-        member = Member.objects.get(user__username = row[7].value)
-        account = Account.objects.get(name = row[8].value)
-        task.member = member
-        task.account = account
-    except Member.DoesNotExist, Account.DoesNotExist:
-        pass
+    acct_name = row[8].value
+    mem_name = row[7].value
+    if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
+        try:
+            account = Account.objects.get(name = acct_name)
+            members = account.members.filter(user__first_name = mem_name)
+            if members.count() == 0:
+                raise Member.DoesNotExist
+            task.member = members[0]
+            task.account = account
+        except Account.DoesNotExist:
+            print "No such account: %s\n" % acct_name
+        except Member.DoesNotExist:
+            print "No matching member %s on acct: %s\n" % (mem_name, account)
     
     task.save()
-    print task
+#    print task
 
 def dispatch_rows(sheet, book):
-    print "processing %s" % sheet.name
+    print "processing %s\n\n" % sheet.name
         
     if sheet.name == u"Jobs":
         handler = make_job
