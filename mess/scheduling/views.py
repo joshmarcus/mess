@@ -3,6 +3,7 @@ from dateutil.relativedelta import *
 
 
 from django.template import loader, RequestContext
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import *
@@ -91,11 +92,11 @@ def unassigned_for_month(request, month):
     'Pass in a month as YYYY-MM, get back a dict of days with count of unassigned tasks'
     days = {}
     try:
-        date = datetime.datetime.strptime(date, "%Y-%m")
+        date = datetime.datetime.strptime(month, "%Y-%m")
     except ValueError:
         raise Http404
     
-    tasks = models.Task.singles.unassigned.filter(
+    tasks = models.Task.singles.unassigned().filter(
             time__year=date.year).filter(time__month=date.month)
 
     for task in tasks:
@@ -106,7 +107,7 @@ def unassigned_for_month(request, month):
     for task in models.Task.recurring.unassigned():
         occur_times = task.get_occur_times(firstday, lastday)
         for occur_time in occur_times:
-            days[occur_times] = days.get(occur_times, 0) + 1
+            days[occur_time] = days.get(occur_time, 0) + 1
 
     #return HttpResponse(simplejson.dumps(days), mimetype='application/json')
     return HttpResponse(simplejson.dumps(days))
