@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import *
 from django.contrib.auth.decorators import login_required
+from django.utils import simplejson
 
 from mess.scheduling import forms, models
 
@@ -85,6 +86,31 @@ def open_task_list_month(request, date=None):
     }
     return render_to_response('scheduling/snippets/open_task_list_month.html', context,
                                 context_instance=RequestContext(request))
+
+def unassigned_for_month(request, month):
+    'Pass in a month as YYYY-MM, get back a dict of days with count of unassigned tasks'
+    days = {}
+    try:
+        date = datetime.datetime.strptime(date, "%Y-%m")
+    except ValueError:
+        raise Http404
+    
+    tasks = models.Task.singles.unassigned.filter(
+            time__year=date.year).filter(time__month=date.month)
+
+    for task in tasks:
+        days[task.time] = days.get(task.time, 0) + 1
+
+    firstday = date + relativedelta(day=1)
+    lastday = date + relativedelta(day=31)
+    for task in models.Task.recurring.unassigned():
+        occur_times = task.get_occur_times(firstday, lastday)
+        for occur_time in occur_times:
+            days[occur_times] = days.get(occur_times, 0) + 1
+
+    #return HttpResponse(simplejson.dumps(days), mimetype='application/json')
+    return HttpResponse(simplejson.dumps(days))
+    
 
 def schedule(request, date=None):
     context = RequestContext(request)
