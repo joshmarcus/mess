@@ -44,6 +44,20 @@ class Job(models.Model):
     class Meta:
         ordering = ['name']
 
+class TaskManager(models.Manager):
+    'Custom manager to add extra methods'
+    def unassigned(self):
+        return self.all().filter(models.Q(member=None) | models.Q(account=None))
+
+class RecurringTaskManager(TaskManager):
+    'Manager with only recurring tasks'
+    def get_query_set(self):
+        return super(RecurringTaskManager, self).get_query_set().exclude(frequency='')
+
+class SingleTaskManager(TaskManager):
+    'Manager with only singleton tasks'
+    def get_query_set(self):
+        return super(SingleTaskManager, self).get_query_set().filter(frequency='')
 
 class Task(models.Model):
     """
@@ -58,6 +72,10 @@ class Task(models.Model):
     account = models.ForeignKey(Account, null=True, blank=True)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
     interval = models.PositiveIntegerField(default=1)
+
+    objects = TaskManager()
+    recurring = RecurringTaskManager()
+    singles = SingleTaskManager()
     
     class Meta:
         ordering = ['job']

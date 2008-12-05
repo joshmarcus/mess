@@ -1,4 +1,6 @@
 import datetime
+from dateutil.relativedelta import *
+
 
 from django.template import loader, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -83,7 +85,7 @@ def open_task_list_month(request, date=None):
     }
     return render_to_response('scheduling/snippets/open_task_list_month.html', context,
                                 context_instance=RequestContext(request))
-        
+
 def schedule(request, date=None):
     context = RequestContext(request)
     if date:
@@ -99,13 +101,13 @@ def schedule(request, date=None):
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
     context['next_date'] = date + a_day
-    tasks = models.Task.objects.filter(frequency='').filter(
+    tasks = models.Task.singles.filter(
             time__year=date.year).filter(time__month=date.month).filter(
             time__day=date.day)
 
     # convert QuerySet to list for appending recurring tasks
     task_list = list(tasks)
-    recurring_tasks = models.Task.objects.exclude(frequency='')
+    recurring_tasks = models.Task.recurring.all()
     for task in recurring_tasks:
         occur_times = task.get_occur_times(date, date + a_day)
         for occur_time in occur_times:
