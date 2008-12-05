@@ -1,36 +1,6 @@
 // create namespace object
 YAHOO.namespace("schedule.calendar");
 
-// date formatting
-
-var month=new Array(12);
-month[0]="January";
-month[1]="February";
-month[2]="March";
-month[3]="April";
-month[4]="May";
-month[5]="June";
-month[6]="July";
-month[7]="August";
-month[8]="September";
-month[9]="October";
-month[10]="November";
-month[11]="December";
-
-function formatDateForHeading(dt) {
-	var dStr = dt.getDate();
-	var mStr = month[dt.getMonth()];
-	var yStr = dt.getFullYear();
-	return (mStr + " " + dStr + ", " + yStr);
-}
-
-function formatDateForDeadline(dt) {
-	var dStr = dt.getDate();
-	var mStr = dt.getMonth()+1;
-	var yStr = dt.getFullYear();
-	return (yStr + "-" + mStr + "-" + dStr);
-}
-
 function dateToLocaleString(dt) {
 	var dStr = dt.getDate();
 	var mStr = dt.getMonth()+1;
@@ -62,6 +32,3 @@ YAHOO.schedule.calendar.initConnection = function() {
 }
 
 YAHOO.util.Event.onDOMReady(YAHOO.schedule.calendar.initConnection);
-
-// create namespace object
-YAHOO.namespace("schedule.tasks");
