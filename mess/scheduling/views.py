@@ -100,17 +100,18 @@ def unassigned_for_month(request, month):
             time__year=date.year).filter(time__month=date.month)
 
     for task in tasks:
-        days[task.time] = days.get(task.time, 0) + 1
+        datestr = str(task.time.date())
+        days[datestr] = days.get(datestr, 0) + 1
 
     firstday = date + relativedelta(day=1)
     lastday = date + relativedelta(day=31)
     for task in models.Task.recurring.unassigned():
         occur_times = task.get_occur_times(firstday, lastday)
         for occur_time in occur_times:
-            days[occur_time] = days.get(occur_time, 0) + 1
+            datestr = str(occur_time.date())
+            days[datestr] = days.get(datestr, 0) + 1
 
-    #return HttpResponse(simplejson.dumps(days), mimetype='application/json')
-    return HttpResponse(simplejson.dumps(days))
+    return HttpResponse(simplejson.dumps(days), mimetype='application/json')
     
 
 def schedule(request, date=None):
