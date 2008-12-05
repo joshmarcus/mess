@@ -86,32 +86,43 @@ def open_task_list_month(request, date=None):
         'tasks': models.Task.objects.filter(deadline__year=date.year, deadline__month=date.month, member='null')
     }
     return render_to_response('scheduling/snippets/open_task_list_month.html', context,
-                                context_instance=RequestContext(request))
+                                context_instance=RequestContext(request)
+    )
 
-def unassigned_for_month(request, month):
-    'Pass in a month as YYYY-MM, get back a dict of days with count of unassigned tasks'
+def unassigned_days(firstday, lastday):
+    'Pass in a range of days, get back a dict of days with count of unassigned tasks'
     days = {}
-    try:
-        date = datetime.datetime.strptime(month, "%Y-%m")
-    except ValueError:
-        raise Http404
-    
+
     tasks = models.Task.singles.unassigned().filter(
-            time__year=date.year).filter(time__month=date.month)
+            time__gte = firstday,
+            time__lte = lastday
+    )
 
     for task in tasks:
         datestr = str(task.time.date())
         days[datestr] = days.get(datestr, 0) + 1
 
-    firstday = date + relativedelta(day=1)
-    lastday = date + relativedelta(day=31)
     for task in models.Task.recurring.unassigned():
         occur_times = task.get_occur_times(firstday, lastday)
         for occur_time in occur_times:
             datestr = str(occur_time.date())
             days[datestr] = days.get(datestr, 0) + 1
 
-    return HttpResponse(simplejson.dumps(days), mimetype='application/json')
+    return days
+    
+
+def unassigned_for_month(request, month):
+    try:
+        date = datetime.datetime.strptime(month, "%Y-%m")
+    except ValueError:
+        raise Http404
+    
+    firstday = date + relativedelta(day=1)
+    lastday = date + relativedelta(day=31)
+    
+    days = unassigned_days(firstday, lastday)
+
+    return HttpResponse(simplejson.dumps(days))
     
 
 def schedule(request, date=None):
