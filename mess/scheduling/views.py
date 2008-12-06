@@ -92,6 +92,7 @@ def open_task_list_month(request, date=None):
 def unassigned_days(firstday, lastday):
     'Pass in a range of days, get back a dict of days with count of unassigned tasks'
     days = {}
+    format = "%m/%d/%Y"
 
     tasks = models.Task.singles.unassigned().filter(
             time__gte = firstday,
@@ -99,13 +100,13 @@ def unassigned_days(firstday, lastday):
     )
 
     for task in tasks:
-        datestr = str(task.time.date())
+        datestr = task.time.strftime(format)
         days[datestr] = days.get(datestr, 0) + 1
 
     for task in models.Task.recurring.unassigned():
         occur_times = task.get_occur_times(firstday, lastday)
         for occur_time in occur_times:
-            datestr = str(occur_time.date())
+            datestr = occur_time.strftime(format)
             days[datestr] = days.get(datestr, 0) + 1
 
     return days
@@ -187,6 +188,11 @@ def schedule(request, date=None):
         task_group_dicts.append(group_dict)
 
     context['task_groups'] = task_group_dicts
+    
+    firstday = date + relativedelta(day=1)
+    lastday = date + relativedelta(day=31)
+    context['cal_json']  = simplejson.dumps(unassigned_days(firstday, lastday))
+    
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))
 

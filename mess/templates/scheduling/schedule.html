@@ -12,16 +12,26 @@
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/connection/connection-min.js"></script>
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script> 
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/json/json-min.js"></script>
   <!-- Custom JS -->
   <script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
   {# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
 
   <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
   <script type="text/javascript">
+    var jsonString = '{{ cal_json|safe }}';
+    try {
+        var days = YAHOO.lang.JSON.parse(jsonString);
+    }
+    catch (e) {
+        alert("unable to load calendar data");
+    }
+
+
     function selectDate() {
-      YAHOO.schedule.calendar.cal1.cfg.setProperty("pagedate", "{{ date|date:"m/Y" }}", false); 
-      YAHOO.schedule.calendar.cal1.cfg.setProperty("selected", "{{ date|date:"m/d/Y" }}", false); 
-      YAHOO.schedule.calendar.cal1.render();
+      YAHOO.schedule.cal1.cfg.setProperty("pagedate", "{{ date|date:"m/Y" }}", false); 
+      YAHOO.schedule.cal1.cfg.setProperty("selected", "{{ date|date:"m/d/Y" }}", false); 
+      YAHOO.schedule.cal1.render();
     }
     function taskClick(e, taskDisplay) {
       var taskEdit = YAHOO.util.Dom.getNextSibling(taskDisplay);
