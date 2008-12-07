@@ -1,0 +1,35 @@
+#add_form_chunk {
+  margin-bottom: 20px;
+}
+#id_time_0 {
+  display: none;
+}
+#id_time_1 {
+  width: 60px;
+}
+#id_hours {
+  width: 15px;
+  margin-right: 20px;
+}
+#id_frequency {
+  width: 80px;
+}
+#id_interval {
+  width: 15px;
+}
+#id_job {
+  width: 140px;
+  margin-right: 20px;
+}
+#worker_list {
+  margin-top: 10px;
+}
+#primary-content-wrapper #worker_list li {
+  padding: 0;
+}
+#worker_list select[id$="member"] {
+  width: 170px;
+}
+#worker_list select[id$="account"] {
+  width: 300px;
+}

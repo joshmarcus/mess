@@ -6,6 +6,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/div_list.css" media="screen"/>
   <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/yui_custom.css" media="screen" >
+  <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/schedule.css" media="screen" >
   <!-- Dependencies -->
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/yahoo-dom-event/yahoo-dom-event.js"></script>
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/calendar/calendar-min.js"></script>
@@ -17,7 +18,6 @@
   <script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
   {# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
 
-  <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
   <script type="text/javascript">
     var jsonString = '{{ cal_json|safe }}';
     try {
@@ -47,6 +47,10 @@
     }
     YAHOO.util.Event.onDOMReady(selectDate);
     YAHOO.util.Event.onDOMReady(taskClickAssign);
+    function taskAdd() {
+      YAHOO.util.Dom.removeClass('task-add', 'hidden');
+      document.forms.add.time_1.select();
+    }
   </script>
   <!-- Calendar styles -->
   <style type="text/css">
@@ -60,9 +64,9 @@
   <div id="left-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <form onsubmit="return false">
+      <form onsubmit="taskAdd(); return false">
         <div class="add-button">
-          <input type="submit" value="Add a task!" />
+          <input type="submit" value="Add a task" />
         </div>
       </form>
       <h2>
@@ -70,27 +74,35 @@
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-schedule next_date|date:"Y-m-d" %}">&rarr;</a>
       </h2>
+      <div id="task-add" class="hidden">
+        <form class="standard" method="post" name="add">
+          {{ add_form.time.errors}}
+          {{ add_form.hours.errors}}
+          {{ add_form.interval.errors}}
+          <div id="add_form_chunk">
+            <label for="id_time_1">Time:</label> {{ add_form.time }}
+            <label for="id_hours">Hours:</label> {{ add_form.hours }}
+            <label for="id_frequency">Frequency:</label> {{ add_form.frequency }}
+            <label for="id_interval">Interval:</label> {{ add_form.interval }}<br />
+          </div>
+          <div id="add_form_chunk">
+            <label for="id_job">Job:</label> {{ add_form.job }}
+          </div>
+          <label>Workers (members and accounts):</label>
+          {{ add_form_workers.management_form }}
+          <ul id="worker_list">
+          {% for worker_form in add_form_workers.forms %}
+            <li>{{ worker_form.member }} {{ worker_form.account }}</li>
+          {% endfor %}
+          </ul>
+          <input type="submit" value="Save" />
+        </form>
+      </div>
       <table class="data" id="daily-view">
         <tr>
           <th>Time</th>
           <th>Job</th>
           <th>Workers</th>
-        </tr>
-        <tr id="task-add">
-          <form>
-          <td colspan="3">
-              {{ add_form.time }}<br />
-              {{ add_form.frequency }} {{ add_form.interval }}
-              {{ add_form.job }}
-              <ul>
-              {% for worker_form in add_worker_formset.forms %}
-                <li>{{ worker_form.member }} {{ worker_form.account }}</li>
-              {% endfor %}
-              </ul>
-              <input type="submit" value="Save" />
-            </td>
-          </form>
-          </td>
         </tr>
         {% for group in task_groups %}
         <tr class="task-display {% cycle "odd" "even" %}">

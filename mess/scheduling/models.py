@@ -67,6 +67,7 @@ class Task(models.Model):
     job = models.ForeignKey(Job)
     time = models.DateTimeField()
     hours = models.DecimalField(max_digits=4, decimal_places=2)
+    # TODO: move deadline to Job
     deadline = models.BooleanField()
     member = models.ForeignKey(Member, null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)

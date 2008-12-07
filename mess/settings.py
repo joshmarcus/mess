@@ -109,6 +109,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 LOGIN_URL = PROJECT_URL
 LOGIN_REDIRECT_URL = PROJECT_URL
 
+CACHE_BACKEND = 'locmem:///'
+
 ## mess project constants below ##
 
 try:

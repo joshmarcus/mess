@@ -1,10 +1,12 @@
 import datetime
-from dateutil.relativedelta import *
+from dateutil.relativedelta import relativedelta
 
 
 from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
+#from django.conf import settings
+#from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import *
 from django.contrib.auth.decorators import login_required
@@ -90,7 +92,10 @@ def open_task_list_month(request, date=None):
     )
 
 def unassigned_days(firstday, lastday):
-    'Pass in a range of days, get back a dict of days with count of unassigned tasks'
+    """
+    Pass in a range of days, get back a dict of days with count of 
+    unassigned tasks
+    """
     days = {}
     format = "%m/%d/%Y"
 
@@ -137,6 +142,16 @@ def schedule(request, date=None):
         today = datetime.date.today()
         # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
+    if request.method == 'POST':
+        add_form = forms.TaskForm(request.POST)
+        add_form_workers = forms.WorkerFormSet(request.POST)
+        if add_form.is_valid() and add_form_workers.is_valid():
+            # processing!
+            return HttpResponseRedirect(reverse('scheduling-schedule', 
+                    args=[date.date()]))
+    else:
+        add_form = forms.TaskForm(instance=models.Task(time=date))
+        add_form_workers = forms.WorkerFormSet()
     context['date'] = date
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
@@ -181,14 +196,16 @@ def schedule(request, date=None):
                 tasks.append((None, None, task))
         tasks.sort()
         tasks = [task[2] for task in tasks]
-        form = forms.TaskGroupForm(instance=tasks[0])
+        form = forms.TaskForm(instance=tasks[0])
         worker_forms = [forms.WorkerForm(instance=task) for task in tasks]
         group_dict = {'proto': tasks[0], 'tasks': tasks, 'form': form,
                 'worker_forms': worker_forms}
         task_group_dicts.append(group_dict)
 
     context['task_groups'] = task_group_dicts
-    
+    context['add_form'] = add_form
+    context['add_form_workers'] = add_form_workers
+
     firstday = date + relativedelta(day=1)
     lastday = date + relativedelta(day=31)
     context['cal_json']  = simplejson.dumps(unassigned_days(firstday, lastday))

@@ -1,10 +1,12 @@
 from django import forms
+from django.forms.models import formset_factory
 
 from mess.scheduling import models
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = models.Task
+    time = forms.DateTimeField(widget=forms.SplitDateTimeWidget())
 
 class JobForm(forms.ModelForm):
     class Meta:
@@ -18,13 +20,10 @@ class TimecardForm(forms.ModelForm):
     class Meta:
         model = models.Timecard
 
-class TaskGroupForm(forms.ModelForm):
-    class Meta:
-        model = models.Task
-        exclude = ('member', 'account')
-
 class WorkerForm(forms.ModelForm):
     class Meta:
         model = models.Task
         fields = ('member', 'account')
     
+WorkerFormSet = formset_factory(WorkerForm, extra=3) #, min_num=1)
+

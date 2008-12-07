@@ -3,44 +3,48 @@ from django.contrib.auth.models import User
 from django.forms import formsets
 from django.forms.models import inlineformset_factory, modelformset_factory
 
-from mess.membership.models import Member, Account, Address, Phone, Email, \
-        AccountMember
+from mess.membership import models
 
-AddressFormSet = inlineformset_factory(Member, Address, extra=0) #, min_num=1)
-EmailFormSet = inlineformset_factory(Member, Email, extra=0) #, min_num=1)
-PhoneFormSet = inlineformset_factory(Member, Phone, extra=0) #, min_num=1)
-RelatedAccountFormSet = inlineformset_factory(Member, AccountMember, extra=0)
-RelatedMemberFormSet = inlineformset_factory(Account, AccountMember, extra=0)
+AddressFormSet = inlineformset_factory(models.Member, models.Address, 
+        extra=0) #, min_num=1)
+EmailFormSet = inlineformset_factory(models.Member, models.Email, 
+        extra=0) #, min_num=1)
+PhoneFormSet = inlineformset_factory(models.Member, models.Phone, 
+        extra=0) #, min_num=1)
+RelatedAccountFormSet = inlineformset_factory(models.Member, 
+        models.AccountMember, extra=0)
+RelatedMemberFormSet = inlineformset_factory(models.Account, 
+        models.AccountMember, extra=0)
 
 # forms below needed for dynamic formsets
 class AddressForm(forms.ModelForm):
     class Meta:
-        model = Address
+        model = models.Address
         exclude = ('member',)
 
 class EmailForm(forms.ModelForm):
     class Meta:
-        model = Email
+        model = models.Email
         exclude = ('member',)
 
 class PhoneForm(forms.ModelForm):
     class Meta:
-        model = Phone
+        model = models.Phone
         exclude = ('member',)
 
 class RelatedAccountForm(forms.ModelForm):
     class Meta:
-        model = AccountMember
+        model = models.AccountMember
         exclude = ('member',)
 
 class RelatedMemberForm(forms.ModelForm):
     class Meta:
-        model = AccountMember
+        model = models.AccountMember
         exclude = ('account',)
 
 class MemberForm(forms.ModelForm):
     class Meta:
-        model = Member
+        model = models.Member
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -50,7 +54,7 @@ class UserForm(forms.ModelForm):
 
 class AccountForm(forms.ModelForm):
     class Meta:
-        model = Account
+        model = models.Account
         exclude = ('balance', 'members')
 
 SORT_CHOICES = (
