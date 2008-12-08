@@ -9,27 +9,32 @@
 }
 #id_hours {
   width: 15px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 #id_frequency {
   width: 80px;
 }
 #id_interval {
   width: 15px;
+  margin-right: 10px;
 }
 #id_job {
   width: 140px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 #worker_list {
   margin-top: 10px;
 }
 #primary-content-wrapper #worker_list li {
   padding: 0;
+  background: none;
 }
 #worker_list select[id$="member"] {
   width: 170px;
 }
 #worker_list select[id$="account"] {
   width: 300px;
+}
+.errors {
+  color: red;
 }

@@ -144,14 +144,22 @@ def schedule(request, date=None):
         date = datetime.datetime(today.year, today.month, today.day)
     if request.method == 'POST':
         add_form = forms.TaskForm(request.POST)
-        add_form_workers = forms.WorkerFormSet(request.POST)
+        add_form_workers = forms.WorkerFormSet(request.POST, prefix='worker')
         if add_form.is_valid() and add_form_workers.is_valid():
-            # processing!
+            task_template = add_form.save(commit=False)
+            for form in add_form_workers.forms:
+                task = models.Task(**form.cleaned_data)
+                task.time = task_template.time
+                task.hours = task_template.hours
+                task.frequency = task_template.frequency
+                task.interval = task_template.interval
+                task.job = task_template.job
+                task.save()
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
     else:
         add_form = forms.TaskForm(instance=models.Task(time=date))
-        add_form_workers = forms.WorkerFormSet()
+        add_form_workers = forms.WorkerFormSet(prefix='worker')
     context['date'] = date
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
@@ -211,6 +219,17 @@ def schedule(request, date=None):
     context['cal_json']  = simplejson.dumps(unassigned_days(firstday, lastday))
     
     template = loader.get_template('scheduling/schedule.html')
+    return HttpResponse(template.render(context))
+
+def worker_form(request):
+    context = RequestContext(request)
+    index = request.GET.get('index')
+    if index:
+        form = forms.WorkerForm(prefix='%s-%s' % ('worker', index))
+    else:
+        form = forms.WorkerForm()
+    context['form'] = form
+    template = loader.get_template('scheduling/snippets/worker_form.html')
     return HttpResponse(template.render(context))
 
 def assign(request):

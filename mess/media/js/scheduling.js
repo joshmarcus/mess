@@ -37,3 +37,27 @@ YAHOO.schedule.setupCal = function() {
 }
 
 YAHOO.util.Event.onDOMReady(YAHOO.schedule.setupCal);
+
+// for adding a form to a formset
+function addForm(formsetPrefix, baseURL) {
+  var totalForms = document.getElementById('id_' + formsetPrefix + 
+      '-TOTAL_FORMS');
+  var sUrl = baseURL + '?index=' + totalForms.value;
+  totalForms.value = parseInt(totalForms.value) + 1;
+  var callback = {
+    success: function(o) {
+      var newFields = document.createElement('li');
+      newFields.innerHTML = o.responseText;
+      var writeRoot = document.getElementById(o.argument[0] + '-writeroot');
+      writeRoot.parentNode.insertBefore(newFields, writeRoot);
+      // focus on first element in added form
+      newFields = writeRoot.previousSibling;
+      newFields.getElementsByTagName('select')[0].focus();
+    },
+    failure: function(o) {},
+    argument: [formsetPrefix],
+  };
+  YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+

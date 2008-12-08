@@ -30,6 +30,7 @@ urlpatterns = patterns('mess.scheduling.views',
     url(r'^task/new/', 'add_task', name="add-task"),
     url(r'^task/update/(?P<object_id>\d+)', 'update_task', name="update-task"),
     url(r'^task/delete/(?P<object_id>\d+)', 'delete_task', name="del-task"),
+    url(r'^worker-form$', 'worker_form', name='scheduling-worker-form'),
    
     #url(r'^task/(?P<task_id>\d+)/assign-to/(?P<member_id>\d+)', 'assign_task', name="assign-task")
 )

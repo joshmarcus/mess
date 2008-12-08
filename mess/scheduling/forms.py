@@ -25,5 +25,5 @@ class WorkerForm(forms.ModelForm):
         model = models.Task
         fields = ('member', 'account')
     
-WorkerFormSet = formset_factory(WorkerForm, extra=3) #, min_num=1)
+WorkerFormSet = formset_factory(WorkerForm, extra=1) #, min_num=1)
 

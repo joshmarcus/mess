@@ -74,19 +74,21 @@
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-schedule next_date|date:"Y-m-d" %}">&rarr;</a>
       </h2>
-      <div id="task-add" class="hidden">
+      <div id="task-add"{% if not add_form.errors %} class="hidden"{% endif %}>
         <form class="standard" method="post" name="add">
-          {{ add_form.time.errors}}
-          {{ add_form.hours.errors}}
-          {{ add_form.interval.errors}}
           <div id="add_form_chunk">
             <label for="id_time_1">Time:</label> {{ add_form.time }}
             <label for="id_hours">Hours:</label> {{ add_form.hours }}
+            <span class="errors">{{ add_form.time.errors|join:" " }} {{ add_form.hours.errors|join:" " }}</span>
+          </div>
+          <div id="add_form_chunk">
             <label for="id_frequency">Frequency:</label> {{ add_form.frequency }}
-            <label for="id_interval">Interval:</label> {{ add_form.interval }}<br />
+            <label for="id_interval">Interval:</label> {{ add_form.interval }}
+            <span class="errors">{{ add_form.frequency.errors|join:" " }} {{ add_form.interval.errors|join:" " }}</span>
           </div>
           <div id="add_form_chunk">
             <label for="id_job">Job:</label> {{ add_form.job }}
+            <span class="errors">{{ add_form.job.errors|join:" " }}</span>
           </div>
           <label>Workers (members and accounts):</label>
           {{ add_form_workers.management_form }}
@@ -94,8 +96,11 @@
           {% for worker_form in add_form_workers.forms %}
             <li>{{ worker_form.member }} {{ worker_form.account }}</li>
           {% endfor %}
+            <li id="worker-writeroot" class="add" style="text-align:left">
+              <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
+            </li>
           </ul>
-          <input type="submit" value="Save" />
+          <p style="margin:30px 0 0 0"><input type="submit" value="Save" /></p>
         </form>
       </div>
       <table class="data" id="daily-view">
