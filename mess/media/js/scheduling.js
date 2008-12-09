@@ -53,11 +53,33 @@ function addForm(formsetPrefix, baseURL) {
       // focus on first element in added form
       newFields = writeRoot.previousSibling;
       newFields.getElementsByTagName('select')[0].focus();
+      var removeFormA = document.getElementById(o.argument[0] + '-remove');
+      YAHOO.util.Dom.removeClass(removeFormA, 'hidden');
     },
     failure: function(o) {},
     argument: [formsetPrefix],
   };
   YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 }
-
+// and removing
+function removeForm(formsetPrefix) {
+  var totalForms = document.getElementById('id_' + formsetPrefix + 
+      '-TOTAL_FORMS');
+  totalForms.value = parseInt(totalForms.value) - 1;
+  var writeRoot = document.getElementById(formsetPrefix + '-writeroot');
+  lastForm = YAHOO.util.Dom.getPreviousSibling(writeRoot);
+  lastForm.parentNode.removeChild(lastForm);
+  if (totalForms.value == 1) {
+    var removeFormA = document.getElementById(formsetPrefix + '-remove');
+    YAHOO.util.Dom.addClass(removeFormA, 'hidden');
+  }
+  document.getElementById('save').focus();
+}
+function checkWorker() {
+  var totalForms = document.getElementById('id_worker-TOTAL_FORMS');
+  if (totalForms.value > 1) {
+    var removeFormA = document.getElementById('worker-remove');
+    YAHOO.util.Dom.removeClass(removeFormA, 'hidden');
+  }
+}
 

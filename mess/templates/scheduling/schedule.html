@@ -47,6 +47,7 @@
     }
     YAHOO.util.Event.onDOMReady(selectDate);
     YAHOO.util.Event.onDOMReady(taskClickAssign);
+    YAHOO.util.Event.onDOMReady(checkWorker);
     function taskAdd() {
       YAHOO.util.Dom.removeClass('task-add', 'hidden');
       document.forms.add.time_1.select();
@@ -98,9 +99,10 @@
           {% endfor %}
             <li id="worker-writeroot" class="add" style="text-align:left">
               <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
+              <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
             </li>
           </ul>
-          <p style="margin:30px 0 0 0"><input type="submit" value="Save" /></p>
+          <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" /></p>
         </form>
       </div>
       <table class="data" id="daily-view">
