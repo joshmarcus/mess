@@ -86,6 +86,11 @@ body {
 		a:hover { 
 			color: #246495;
 			}
+
+  a.arrow {
+    text-decoration: none;
+    }
+
 	ul {}
 		ul li {
 			list-style-type:none;

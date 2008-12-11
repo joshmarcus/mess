@@ -18,10 +18,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Cashier", 
-      "skill_required": 1, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "m", 
       "description": ""
     }
@@ -31,10 +29,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Cashier Training", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": 1, 
       "type": "m", 
       "description": ""
     }
@@ -44,10 +40,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Cheese Cutter", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -57,10 +51,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Cleaning", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -70,10 +62,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Closing", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -83,10 +73,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "None", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -96,10 +84,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Opening", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -109,12 +95,11 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Recyling", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
-      "description": ""
+      "description": "",
+      "deadline": true
     }
   }, 
   {
@@ -122,10 +107,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Stocking", 
-      "skill_required": null, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -135,10 +118,8 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Storekeeper", 
-      "skill_required": 2, 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
-      "skill_trained": null, 
       "type": "", 
       "description": ""
     }
@@ -200,8 +181,7 @@
       "hours": 2, 
       "time": "2008-10-19 15:08:46", 
       "job": 6, 
-      "member": 12, 
-      "deadline": true
+      "member": 12 
     }
   }
 ]

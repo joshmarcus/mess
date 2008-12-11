@@ -15,7 +15,7 @@ from mess.membership import forms, models
 #from mess.profiles import models as profiles_models
 
 # number of members or accounts to show per page in respective lists
-PER_PAGE = 20
+PER_PAGE = 50
 
 @user_passes_test(lambda u: u.is_authenticated())
 def members(request):

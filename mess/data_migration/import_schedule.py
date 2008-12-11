@@ -9,15 +9,15 @@ import xlrd
 from xlrd import empty_cell
 import datetime
 
-from scheduling.models import *
-from membership.models import *
+from scheduling import models as sm
+from membership import models as mm
 
 
 def make_job(row, book):
     'minimally validate and create jobs from sheet rows'
     if row[0].ctype != xlrd.XL_CELL_NUMBER:
         return
-    job = Job(id = row[0].value, name = row[1].value)
+    job = sm.Job(id = row[0].value, name = row[1].value)
     if row[3].ctype == xlrd.XL_CELL_TEXT:
         job.description = row[3].value
     if row[4].ctype == xlrd.XL_CELL_NUMBER:
@@ -42,7 +42,7 @@ def make_task_fmt2(row, book):
         print "format 2 handler got format 1 row" 
         return
 
-    job = Job.objects.get(id = row[0].value)
+    job = sm.Job.objects.get(id = row[0].value)
 
     start_day = datetime.datetime(*xlrd.xldate_as_tuple(row[1].value, book.datemode))
     start_time_tup = xlrd.xldate_as_tuple(row[2].value, book.datemode)
@@ -50,10 +50,9 @@ def make_task_fmt2(row, book):
 
     start = datetime.datetime.combine(start_day, start_time)
 
-    task = Task(
+    task = sm.Task(
             job = job,
             time = start,
-            deadline = row[3].value,
             hours = str(row[4].value),
             frequency = row[6].value.lower(),
             interval = row[7].value,
@@ -63,15 +62,15 @@ def make_task_fmt2(row, book):
     mem_name = row[8].value
     if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
         try:
-            account = Account.objects.get(name = acct_name)
+            account = mm.Account.objects.get(name = acct_name)
             members = account.members.filter(user__first_name = mem_name)
             if members.count() == 0:
-                raise Member.DoesNotExist
+                raise mm.Member.DoesNotExist
             task.member = members[0]
             task.account = account
-        except Account.DoesNotExist:
+        except mm.Account.DoesNotExist:
             print "No such account: %s\n" % acct_name
-        except Member.DoesNotExist:
+        except mm.Member.DoesNotExist:
             print "No matching member %s on acct: %s\n" % (mem_name, account)
     
     task.save()
@@ -88,13 +87,12 @@ def make_task_fmt1(row, book):
         print "format 1 handler got format 2 row" 
         return
 
-    job = Job.objects.get(id = row[0].value)
+    job = sm.Job.objects.get(id = row[0].value)
     start = datetime.datetime.strptime(row[1].value, isoTimeFmt)
 
-    task = Task(
+    task = sm.Task(
             job = job,
             time = start,
-            deadline = row[2].value,
             hours = str(row[3].value),
             frequency = row[5].value.lower(),
             interval = row[6].value,
@@ -103,15 +101,15 @@ def make_task_fmt1(row, book):
     mem_name = row[7].value
     if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
         try:
-            account = Account.objects.get(name = acct_name)
+            account = mm.Account.objects.get(name = acct_name)
             members = account.members.filter(user__first_name = mem_name)
             if members.count() == 0:
-                raise Member.DoesNotExist
+                raise mm.Member.DoesNotExist
             task.member = members[0]
             task.account = account
-        except Account.DoesNotExist:
+        except mm.Account.DoesNotExist:
             print "No such account: %s\n" % acct_name
-        except Member.DoesNotExist:
+        except mm.Member.DoesNotExist:
             print "No matching member %s on acct: %s\n" % (mem_name, account)
     
     task.save()
@@ -120,7 +118,7 @@ def make_task_fmt1(row, book):
 def dispatch_rows(sheet, book):
     print "processing %s\n\n" % sheet.name
         
-    if sheet.name == u"Jobs":
+    if sheet.name == u'Jobs':
         handler = make_job
     if sheet.name.find('Shift Sch') >= 0:
         if sheet.name.find('Fmt1') >= 0:
@@ -135,7 +133,7 @@ def dispatch_rows(sheet, book):
 def main():
     'Open Workbooks, dispatch to handlers'
     if len(sys.argv) < 2 or sys.argv[1] == "--help":
-        print "useage: %s <xl workbook>" % sys.argv[0]
+        print "usage: %s <xl workbook>" % sys.argv[0]
         return 0
     
     bookname = sys.argv[1]

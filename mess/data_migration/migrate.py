@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 # This script is intended to populate the MESS Database for the first time.
-# It accepts a .tsv file exported from Excel.
 # 
 # Currently this script only imports members in Section 1.0 (active) and 
 # Section 4.0 (multi-member information).  All other sections are SKIPPED.
@@ -13,23 +12,25 @@
 
 # mess should be symlinked from /usr/lib/python2.4/site-packages
 # sys.path.insert(0, '/home/paul/mess/trunk')
-from mess import settings
+import sys
+from os.path import dirname, abspath
+sys.path.append(dirname(dirname(abspath(__file__))))
+import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 
 # these imports seem to raise errors if placed before setup_environ(settings)
-import sys
-import os
-import codecs
 import string
 import time
 import re
 import xlrd
 from random import choice
-from mess.membership.models import *
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+
+from membership import models
+#from mess.membership.models import *
 
 MAXLINES = 20000    # only import first N members for debugging
 
@@ -266,9 +267,9 @@ def main():
     for actname, ac in acts.iteritems():
         aprint('saving accountname '+actname)
         try:
-            acct = Account.objects.get(name = actname)
-        except Account.DoesNotExist:
-            acct = Account(name = actname)
+            acct = models.Account.objects.get(name = actname)
+        except models.Account.DoesNotExist:
+            acct = models.Account(name = actname)
             acct.save()
         # !! do something with ac['balance']
         # !! do something with ac['cumul_deposit']
@@ -283,7 +284,7 @@ def main():
             save_user(user, user.username, 0)
             print 'saved username : '+user.username
     
-            mem = Member(
+            mem = models.Member(
                 date_joined = m['date_joined'],
                 user = user
             )
@@ -312,7 +313,7 @@ def main():
             # !! do something with m['cumul_deposit']
             # !! do something with m['status']
 
-            AccountMember.objects.create(
+            models.AccountMember.objects.create(
                     account = acct,
                     member = mem
             )

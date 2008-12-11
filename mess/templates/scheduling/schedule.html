@@ -46,12 +46,8 @@
       }
     }
     YAHOO.util.Event.onDOMReady(selectDate);
-    YAHOO.util.Event.onDOMReady(taskClickAssign);
+    //YAHOO.util.Event.onDOMReady(taskClickAssign);
     YAHOO.util.Event.onDOMReady(checkWorker);
-    function taskAdd() {
-      YAHOO.util.Dom.removeClass('task-add', 'hidden');
-      document.forms.add.time_1.select();
-    }
   </script>
   <!-- Calendar styles -->
   <style type="text/css">
@@ -91,7 +87,8 @@
             <label for="id_job">Job:</label> {{ add_form.job }}
             <span class="errors">{{ add_form.job.errors|join:" " }}</span>
           </div>
-          <label>Workers (members and accounts):</label>
+          <label>Workers (members and the accounts they're working for):</label><br />
+          <span class="helptext">Leave fields blank to create unassigned tasks.</span>
           {{ add_form_workers.management_form }}
           <ul id="worker_list">
           {% for worker_form in add_form_workers.forms %}
@@ -102,7 +99,7 @@
               <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
             </li>
           </ul>
-          <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" /></p>
+          <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" /> <input onclick="taskAddCancel()" type="button" value="Cancel" /></p>
         </form>
       </div>
       <table class="data" id="daily-view">
@@ -110,11 +107,12 @@
           <th>Time</th>
           <th>Job</th>
           <th>Workers</th>
+          <th><!-- column for action icons --></th>
         </tr>
         {% for group in task_groups %}
         <tr class="task-display {% cycle "odd" "even" %}">
           <td class="time">
-          {% if group.proto.deadline %}
+          {% if group.proto.job.deadline %}
             {{ group.proto.time|date:"P" }} deadline for {{ group.proto.hours }} hour task
           {% else %}
             {{ group.proto.time|date:"P" }} &ndash; {{ group.proto.get_end|date:"P" }}
@@ -129,14 +127,20 @@
             <ul>
             {% for task in group.tasks %}
               {% if task.member and task.account %}
-              <li>{{ task.member }}, {{ task.account }}</li>
+              <li>{{ task.member }}, {{ task.account }} 
+                <a class="arrow" href="" onclick="workerOptions(this)" title="View worker options">&larr;</a>
+              </li>
               {% else %}
-              <li class="unassigned">Unassigned</li>
+              <li class="unassigned">Unassigned
+                <a class="arrow" href="" onclick="workerOptions(this)" title="View worker options">&larr;</a>
+              </li>
               {% endif %}
             {% endfor %}
             </ul>
           </td>
+          <td><a class="arrow" href="" onclick="taskOptions(this); return false" title="View task options">&darr;</a></td>
         </tr>
+        {% comment %}
         <tr class="task-edit hidden">
           <form>
             <td colspan="3">
@@ -152,6 +156,7 @@
             </td>
           </form>
         </tr>
+        {% endcomment %}
         {% endfor %}
       </table>
     </div>

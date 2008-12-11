@@ -18,6 +18,7 @@ class MemberAdmin(admin.ModelAdmin):
         EmailInline,
         PhoneInline,
     )
+    search_fields = ('user__username', 'user__first_name', 'user__last_name')
 
 class AccountAdmin(admin.ModelAdmin):
     pass

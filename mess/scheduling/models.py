@@ -31,11 +31,12 @@ class Job(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     type = models.CharField(max_length=1, choices=JOB_TYPES, default='m')
+    deadline = models.BooleanField()
     freeze_days = models.IntegerField(default=7)
     hours_multiplier = models.IntegerField(default=1)
-    skill_required = models.ForeignKey(Skill, blank=True, null=True, 
+    skills_required = models.ManyToManyField(Skill, blank=True, 
             related_name='required by')
-    skill_trained = models.ForeignKey(Skill, blank=True, null=True, 
+    skills_trained = models.ManyToManyField(Skill, blank=True, 
             related_name='trained by')
 
     def __unicode__(self):
@@ -62,17 +63,15 @@ class SingleTaskManager(TaskManager):
 class Task(models.Model):
     """
     A task is a scheduled occurrence of a job (or occurrences, if recurring). 
-    The time is a start time unless deadline is checked.
+    The time is a start time unless deadline is checked for related job.
     """
     job = models.ForeignKey(Job)
     time = models.DateTimeField()
     hours = models.DecimalField(max_digits=4, decimal_places=2)
-    # TODO: move deadline to Job
-    deadline = models.BooleanField()
-    member = models.ForeignKey(Member, null=True, blank=True)
-    account = models.ForeignKey(Account, null=True, blank=True)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
     interval = models.PositiveIntegerField(default=1)
+    member = models.ForeignKey(Member, null=True, blank=True)
+    account = models.ForeignKey(Account, null=True, blank=True)
 
     objects = TaskManager()
     recurring = RecurringTaskManager()
@@ -83,11 +82,6 @@ class Task(models.Model):
 
     def __unicode__(self):
         return unicode(self.job) + ' - ' + str(self.time)
-
-    def account_or_default(self):
-        if not self.account:
-            return self.member.primary_account()
-        return self.account
 
     def get_end(self):
         delta_hours = datetime.timedelta(hours=float(self.hours))
@@ -125,6 +119,17 @@ class Task(models.Model):
 class TaskExcludeTime(models.Model):
     task = models.ForeignKey(Task, related_name='excluded_times')
     time = models.DateTimeField()
+
+
+class Substitute(models.Model):
+    """
+    A substitute worker for a task on a specific day.
+    """
+    sub_for = models.ForeignKey(Task, related_name='subs')
+    time = models.DateTimeField()
+    member = models.ForeignKey(Member, null=True, blank=True)
+    account = models.ForeignKey(Account, null=True, blank=True)
+    
 
 class Timecard(models.Model):
     """
