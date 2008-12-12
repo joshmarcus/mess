@@ -26,27 +26,13 @@
     catch (e) {
         alert("unable to load calendar data");
     }
-
-
     function selectDate() {
       YAHOO.schedule.cal1.cfg.setProperty("pagedate", "{{ date|date:"m/Y" }}", false); 
       YAHOO.schedule.cal1.cfg.setProperty("selected", "{{ date|date:"m/d/Y" }}", false); 
       YAHOO.schedule.cal1.render();
     }
-    function taskClick(e, taskDisplay) {
-      var taskEdit = YAHOO.util.Dom.getNextSibling(taskDisplay);
-      YAHOO.util.Dom.addClass(taskDisplay, 'hidden');
-      YAHOO.util.Dom.removeClass(taskEdit, 'hidden');
-    }
-    function taskClickAssign() {
-      var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
-      for (i=0; i<taskDisplays.length; i++) {
-        var taskDisplay = taskDisplays[i];
-        YAHOO.util.Event.on(taskDisplay, 'click', taskClick, taskDisplay);
-      }
-    }
     YAHOO.util.Event.onDOMReady(selectDate);
-    //YAHOO.util.Event.onDOMReady(taskClickAssign);
+    YAHOO.util.Event.onDOMReady(taskClickAssign);
     YAHOO.util.Event.onDOMReady(checkWorker);
   </script>
   <!-- Calendar styles -->
@@ -71,24 +57,24 @@
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-schedule next_date|date:"Y-m-d" %}">&rarr;</a>
       </h2>
-      <div id="task-add"{% if not add_form.errors %} class="hidden"{% endif %}>
-        <form class="standard" method="post" name="add">
-          <div id="add_form_chunk">
+      <div id="task-add" class="task-form task-add-form{% if not add_form.errors %} hidden{% endif %}">
+        <form class="add-form" method="post" name="add">
+          <div class="form-chunk">
             <label for="id_time_1">Time:</label> {{ add_form.time }}
             <label for="id_hours">Hours:</label> {{ add_form.hours }}
             <span class="errors">{{ add_form.time.errors|join:" " }} {{ add_form.hours.errors|join:" " }}</span>
           </div>
-          <div id="add_form_chunk">
+          <div class="form-chunk">
             <label for="id_frequency">Frequency:</label> {{ add_form.frequency }}
             <label for="id_interval">Interval:</label> {{ add_form.interval }}
             <span class="errors">{{ add_form.frequency.errors|join:" " }} {{ add_form.interval.errors|join:" " }}</span>
           </div>
-          <div id="add_form_chunk">
+          <div class="form-chunk">
             <label for="id_job">Job:</label> {{ add_form.job }}
             <span class="errors">{{ add_form.job.errors|join:" " }}</span>
           </div>
           <label>Workers (members and the accounts they're working for):</label><br />
-          <span class="helptext">Leave fields blank to create unassigned tasks.</span>
+          <span class="helptext">Leave fields blank for unassigned tasks.</span>
           {{ add_form_workers.management_form }}
           <ul id="worker_list">
           {% for worker_form in add_form_workers.forms %}
@@ -99,7 +85,8 @@
               <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
             </li>
           </ul>
-          <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" /> <input onclick="taskAddCancel()" type="button" value="Cancel" /></p>
+          <div class="hidden">{{ add_form.affect }}</div>
+          <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" name="save-add" /> <input onclick="taskAddCancel()" type="button" value="Cancel" /></p>
         </form>
       </div>
       <table class="data" id="daily-view">
@@ -107,56 +94,77 @@
           <th>Time</th>
           <th>Job</th>
           <th>Workers</th>
-          <th><!-- column for action icons --></th>
         </tr>
         {% for group in task_groups %}
-        <tr class="task-display {% cycle "odd" "even" %}">
+        <tr class="task-display {% cycle "odd" "even" %}{% if group.form.errors %} hidden{% endif %}">
           <td class="time">
-          {% if group.proto.job.deadline %}
-            {{ group.proto.time|date:"P" }} deadline for {{ group.proto.hours }} hour task
+          {% if group.first_task.job.deadline %}
+            {{ group.first_task.time|date:"P" }} deadline for {{ group.first_task.hours }} hour task
           {% else %}
-            {{ group.proto.time|date:"P" }} &ndash; {{ group.proto.get_end|date:"P" }}
+            {{ group.first_task.time|date:"P" }} &ndash; {{ group.first_task.get_end|date:"P" }}
           {% endif %}
             <br />
-          {% if group.proto.frequency and group.proto.interval %}
-            (recurs every {{ group.proto.get_recurrence_display }})
+          {% if group.first_task.frequency and group.first_task.interval %}
+            (recurs every {{ group.first_task.get_recurrence_display }})
           {% endif %}
           </td>
-          <td>{{ group.proto.job }}</td>
+          <td>{{ group.first_task.job }}</td>
           <td>
             <ul>
             {% for task in group.tasks %}
               {% if task.member and task.account %}
-              <li>{{ task.member }}, {{ task.account }} 
-                <a class="arrow" href="" onclick="workerOptions(this)" title="View worker options">&larr;</a>
-              </li>
+              <li><span title="{% for phone in task.member.phones.all %} {{ phone }}{% endfor %}">{{ task.member }}</span>, {{ task.account }}</li>
               {% else %}
-              <li class="unassigned">Unassigned
-                <a class="arrow" href="" onclick="workerOptions(this)" title="View worker options">&larr;</a>
-              </li>
+              <li class="unassigned">Unassigned</li>
               {% endif %}
             {% endfor %}
             </ul>
           </td>
-          <td><a class="arrow" href="" onclick="taskOptions(this); return false" title="View task options">&darr;</a></td>
         </tr>
-        {% comment %}
-        <tr class="task-edit hidden">
-          <form>
-            <td colspan="3">
-              {{ group.form.time }}<br />
-              {{ group.form.frequency }} {{ group.form.interval }}
-              {{ group.form.job }}
-              <ul>
-              {% for worker_form in group.worker_forms %}
-                <li>{{ worker_form.member }} {{ worker_form.account }}</li>
-              {% endfor %}
-              </ul>
-              <input type="submit" value="Save" />
-            </td>
-          </form>
+        <tr class="task-edit{% if not group.form.errors %} hidden{% endif %}">
+          <td colspan="3" style="padding:0">
+            <div class="task-form task-edit-form">
+              <form method="post" name="edit{{ group.form.prefix }}">
+                <input type="hidden" name="group-index" value="{{ group.form.prefix }}" />
+                <div class="form-chunk">
+                  <label for="id_{{ group.form.prefix }}-time_1">Time:</label> {{ group.form.time }}
+                  <label for="id_{{ group.form.prefix }}-hours">Hours:</label> {{ group.form.hours }}
+                  <span class="errors">{{ group.form.time.errors|join:" " }} {{ group.form.hours.errors|join:" " }}</span>
+                </div>
+                <div class="form-chunk">
+                  <label for="id_{{ group.form.prefix }}-frequency">Frequency:</label> {{ group.form.frequency }}
+                  <label for="id_{{ group.form.prefix }}-interval">Interval:</label> {{ group.form.interval }}
+                  <span class="errors">{{ group.form.frequency.errors|join:" " }} {{ group.form.interval.errors|join:" " }}</span>
+                </div>
+                <div class="form-chunk">
+                  <label for="id_{{ group.form.prefix }}-job">Job:</label> {{ group.form.job }}
+                  <span class="errors">{{ group.form.job.errors|join:" " }}</span>
+                </div>
+                <div class="form-chunk">
+                  <label>Workers (members and the accounts they're working for):</label><br />
+                  <span class="helptext">Leave fields blank for unassigned tasks.</span>
+                  {{ group.form_workers.management_form }}
+                  <ul id="worker_list">
+                  {% for worker_form in group.form_workers.forms %}
+                    <li>{{ worker_form.member }} {{ worker_form.account }} 
+                      <a class="remove" href="" onclick="removeForm('worker'); return false;">Remove</a>
+                    </li>
+                  {% endfor %}
+                    <li id="worker-writeroot" class="add" style="text-align:left">
+                      <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
+                      <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="form-chunk{% if not group.first_task.frequency and group.first_task.interval %} hidden{% endif %}">
+                  <label for="id_{{ group.form.prefix }}-affect">Affect:</label>
+                  {{ group.form.affect }}
+                </div>
+                <p style="margin:30px 0 0 0"><input type="submit" value="Save" class="save" /> <input type="submit" value="Remove" name="remove" /> <input onclick="taskEditCancel(this)" type="button" value="Cancel" /></p>
+              </form>
+            </div>
+          </td>
         </tr>
-        {% endcomment %}
         {% endfor %}
       </table>
     </div>

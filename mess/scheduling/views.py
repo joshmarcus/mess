@@ -58,24 +58,8 @@ def schedule(request, date=None):
         today = datetime.date.today()
         # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
-    if request.method == 'POST':
-        add_form = forms.TaskForm(request.POST)
-        add_form_workers = forms.WorkerFormSet(request.POST, prefix='worker')
-        if add_form.is_valid() and add_form_workers.is_valid():
-            task_template = add_form.save(commit=False)
-            for form in add_form_workers.forms:
-                task = models.Task(**form.cleaned_data)
-                task.time = task_template.time
-                task.hours = task_template.hours
-                task.frequency = task_template.frequency
-                task.interval = task_template.interval
-                task.job = task_template.job
-                task.save()
-            return HttpResponseRedirect(reverse('scheduling-schedule', 
-                    args=[date.date()]))
-    else:
-        add_form = forms.TaskForm(instance=models.Task(time=date))
-        add_form_workers = forms.WorkerFormSet(prefix='worker')
+    add_form = forms.TaskForm(instance=models.Task(time=date))
+    add_form_workers = forms.WorkerAddFormSet(prefix='worker')
     context['date'] = date
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
@@ -110,7 +94,7 @@ def schedule(request, date=None):
 
     # make it easier to get to things in the template
     task_group_dicts = []
-    for group in task_groups:
+    for index, group in enumerate(task_groups):
         tasks = []
         for task in group[5]:
             if task.member and task.account:
@@ -120,21 +104,61 @@ def schedule(request, date=None):
                 tasks.append((None, None, task))
         tasks.sort()
         tasks = [task[2] for task in tasks]
-        form = forms.TaskForm(instance=tasks[0])
-        worker_forms = [forms.WorkerForm(instance=task) for task in tasks]
-        group_dict = {'proto': tasks[0], 'tasks': tasks, 'form': form,
-                'worker_forms': worker_forms}
+        first_task = tasks[0]
+        form = forms.TaskForm(instance=first_task, prefix='%s' % index)
+        task_dicts = []
+        for task in tasks:
+            if task.member and task.account:
+                task_dicts.append({'id': task.id, 'member': task.member.id, 
+                        'account': task.account.id})
+            else:
+                task_dicts.append({'id': task.id, 'member': '', 'account': ''})
+        form_workers = forms.WorkerFormSet(initial=task_dicts, 
+                prefix='%s-worker' % index)
+        group_dict = {'first_task': first_task, 'tasks': tasks, 'form': form,
+                'form_workers': form_workers}
         task_group_dicts.append(group_dict)
 
     firstday = date + relativedelta(day=1)
     lastday = date + relativedelta(day=31)
     context['cal_json']  = simplejson.dumps(unassigned_days(firstday, lastday))
     
+    if request.method == 'POST':
+        if 'save-add' in request.POST:
+            add_form = forms.TaskForm(request.POST)
+            add_form_workers = forms.WorkerAddFormSet(request.POST, prefix='worker')
+            if add_form.is_valid() and add_form_workers.is_valid():
+                _task_template_save(add_form, add_form_workers.forms)
+                return HttpResponseRedirect(reverse('scheduling-schedule', 
+                        args=[date.date()]))
+        else:
+            group_index = request.POST.get('group-index')
+            group_index_int = int(group_index)
+            edit_form = forms.TaskForm(request.POST, instance=task_group_dicts[group_index_int]['first_task'], prefix=group_index)
+            edit_form_workers = forms.WorkerFormSet(request.POST, prefix=group_index + '-worker')
+            if edit_form.is_valid() and edit_form_workers.is_valid():
+                pass
+            else:
+                this_dict = task_group_dicts[int(group_index)]
+                this_dict['form'] = edit_form
+                this_dict['form_workers'] = edit_form_workers
+
     context['task_groups'] = task_group_dicts
     context['add_form'] = add_form
     context['add_form_workers'] = add_form_workers
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))
+
+def _task_template_save(proto_form, worker_forms):
+    task_template = proto_form.save(commit=False)
+    for form in worker_forms:
+        task = models.Task(**form.cleaned_data)
+        task.time = task_template.time
+        task.hours = task_template.hours
+        task.frequency = task_template.frequency
+        task.interval = task_template.interval
+        task.job = task_template.job
+        task.save()
 
 def worker_form(request):
     context = RequestContext(request)

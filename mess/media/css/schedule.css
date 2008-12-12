@@ -1,26 +1,44 @@
-#add_form_chunk {
-  margin-bottom: 20px;
+.task-form {
+  padding: 1em;
 }
-#id_time_0 {
+.task-edit-form {
+  background-color: #fff280;
+}
+.task-add-form {
+  border: 1px solid #ddd;
+  font-size: 1.1em;
+}
+/*
+.task-add-form #id_affect {
   display: none;
 }
-#id_time_1 {
+*/
+.form-chunk {
+  margin-bottom: 20px;
+}
+input[id$="time_0"] {
+  display: none;
+}
+input[id$="time_1"] {
   width: 60px;
 }
-#id_hours {
+input[id$="hours"] {
   width: 15px;
   margin-right: 10px;
 }
-#id_frequency {
+select[id$="frequency"] {
   width: 80px;
 }
-#id_interval {
+input[id$="interval"] {
   width: 15px;
   margin-right: 10px;
 }
-#id_job {
+input[id$="job"] {
   width: 140px;
   margin-right: 10px;
+}
+select[id$="affect"] {
+  width: 90px;
 }
 #worker_list {
   margin-top: 10px;
@@ -37,4 +55,19 @@
 }
 .errors {
   color: red;
+}
+.task-options {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 3px;
+  position: absolute;
+  margin: 0 0 0 -50px;
+}
+.task-options-arrow {
+  background: #fff;
+  border-color: #ccc #ccc #fff;
+  border-style: solid;
+  border-width: 1px;
+  position: relative;
+  z-index: 1;
 }

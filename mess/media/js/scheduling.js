@@ -71,7 +71,6 @@ function removeForm(formsetPrefix) {
   }
   document.getElementById('save').focus();
 }
-
 function checkWorker() {
   var totalForms = document.getElementById('id_worker-TOTAL_FORMS');
   if (totalForms.value > 1) {
@@ -83,4 +82,51 @@ function taskAdd() {
   YAHOO.util.Dom.removeClass('task-add', 'hidden');
   document.forms.add.time_1.select();
 }
+function taskAddCancel() {
+  YAHOO.util.Dom.addClass('task-add', 'hidden');
+}
+function taskEditCancel(cancelButton) {
+  var taskEdit = cancelButton.parentNode.parentNode.parentNode.parentNode.parentNode;
+  var taskDisplay = YAHOO.util.Dom.getPreviousSibling(taskEdit);
+  YAHOO.util.Dom.addClass(taskEdit, 'hidden');
+  YAHOO.util.Dom.removeClass(taskDisplay, 'hidden');
+}
+function taskClick(e, taskDisplay) {
+  var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
+  var taskEdits = YAHOO.util.Dom.getElementsByClassName('task-edit', 'tr');
+  var taskEdit = YAHOO.util.Dom.getNextSibling(taskDisplay);
+  for (i=0; i<taskDisplays.length; i++) {
+    YAHOO.util.Dom.removeClass(taskDisplays[i], 'hidden');
+  }
+  for (i=0; i<taskEdits.length; i++) {
+    YAHOO.util.Dom.addClass(taskEdits[i], 'hidden');
+  }
+  YAHOO.util.Dom.addClass(taskDisplay, 'hidden');
+  YAHOO.util.Dom.removeClass(taskEdit, 'hidden');
+  taskEdit.getElementsByTagName('form')[0].elements[2].select();
+}
+function taskClickAssign() {
+  var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
+  for (i=0; i<taskDisplays.length; i++) {
+    var taskDisplay = taskDisplays[i];
+    YAHOO.util.Event.on(taskDisplay, 'click', taskClick, taskDisplay);
+  }
+}
 
+/*
+function taskOptions(clickA) {
+  var clickDiv = clickA.parentNode;
+  var optionDiv = YAHOO.util.Dom.getNextSibling(clickDiv);
+  if (YAHOO.util.Dom.hasClass(clickA, 'task-options-arrow')) {
+    clickA.innerHTML = clickA.text.replace('↓', '←');
+    YAHOO.util.Dom.removeClass(clickA, 'task-options-arrow');
+    YAHOO.util.Dom.addClass(optionDiv, 'hidden');
+  } else {
+    clickA.innerHTML = clickA.text.replace('←', '↓');
+    YAHOO.util.Dom.addClass(clickA, 'task-options-arrow');
+    YAHOO.util.Dom.removeClass(optionDiv, 'hidden');
+    YAHOO.util.Dom.addClass(optionDiv, 'task-options');
+  }
+  return false;
+}
+*/
