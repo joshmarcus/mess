@@ -148,7 +148,7 @@ def dispatch_rows(sheet, book):
         else:
             handler = make_task_fmt2
     else:
-        print "Aborting: Unknown sheet type" % sheet.name
+        print "Aborting %s: Unknown sheet type" % sheet.name
         return
 
     for i in range(1, sheet.nrows):
