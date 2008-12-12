@@ -71,8 +71,8 @@ def make_task_fmt2(row, book):
             interval = row[7].value,
             )
 
-    acct_name = row[9].value
-    mem_name = row[8].value
+    acct_name = row[9].value.strip()
+    mem_name = row[8].value.strip()
     if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
         try:
             account = mm.Account.objects.get(name = acct_name)
@@ -117,8 +117,8 @@ def make_task_fmt1(row, book):
             frequency = row[5].value.lower(),
             interval = row[6].value,
             )
-    acct_name = row[8].value
-    mem_name = row[7].value
+    acct_name = row[8].value.strip()
+    mem_name = row[7].value.strip()
     if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
         try:
             account = mm.Account.objects.get(name = acct_name)
@@ -139,7 +139,7 @@ def make_task_fmt1(row, book):
 
 def dispatch_rows(sheet, book):
     print "processing %s\n\n" % sheet.name
-        
+    errors = 0
     if sheet.name == u'Jobs':
         handler = make_job
     elif sheet.name.find('Shift Sch') >= 0:
@@ -149,7 +149,7 @@ def dispatch_rows(sheet, book):
             handler = make_task_fmt2
     else:
         print "Aborting %s: Unknown sheet type" % sheet.name
-        return
+        return errors
 
     for i in range(1, sheet.nrows):
         row_idx = i + 1
@@ -157,16 +157,21 @@ def dispatch_rows(sheet, book):
             row = sheet.row(i)
             handler(row, book)
         except sm.Job.DoesNotExist, e:
+            errors += 1
             print "FATAL  %s: Sheet %s, row %d\n" % (e, sheet.name, row_idx)
         except DateParseError, e:
+            errors += 1
             print "FATAL  can't parse time %s: Sheet %s, row %d\n" % (e.time, sheet.name, row_idx)
         except sm.Account.DoesNotExist, e:
+            errors += 1
             print "Partial  Unknown account '%s': Sheet %s, row %d\n" % (e.account, sheet.name, row_idx)
         except sm.Member.DoesNotExist, e:
+            errors += 1
             print "Partial  No member '%s' in account '%s': Sheet %s, row %d\n" % (e.member, e.account, sheet.name, row_idx)
         except:
             print "TOTAL FAIL!!! Sheet %s, row %d\n" % (sheet.name, row_idx)
             raise
+    return errors
 
 def main():
     'Open Workbooks, dispatch to handlers'
@@ -177,8 +182,10 @@ def main():
     bookname = sys.argv[1]
     print "opening %s\n" % bookname
     book = xlrd.open_workbook(bookname)
+    errors = 0
     for sheet in book.sheets():
-        dispatch_rows(sheet, book)
+        errors += dispatch_rows(sheet, book)
+    print "Total import errors: %d" % errors
 
 if __name__ == "__main__":
     sys.exit(main())
