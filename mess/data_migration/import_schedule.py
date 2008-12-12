@@ -73,7 +73,7 @@ def make_task_fmt2(row, book):
 
     acct_name = row[9].value.strip()
     mem_name = row[8].value.strip()
-    if acct_name != "tba" and acct_name != "tbd" and acct_name != "TBD" and acct_name != "":
+    if acct_name != "tba" and acct_name.lower() != "tbd" and acct_name.lower() != "t-b-d" and acct_name != "":
         try:
             account = mm.Account.objects.get(name = acct_name)
         except mm.Account.DoesNotExist, e:
