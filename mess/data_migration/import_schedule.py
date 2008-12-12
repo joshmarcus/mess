@@ -142,7 +142,7 @@ def dispatch_rows(sheet, book):
         
     if sheet.name == u'Jobs':
         handler = make_job
-    if sheet.name.find('Shift Sch') >= 0:
+    elif sheet.name.find('Shift Sch') >= 0:
         if sheet.name.find('Fmt1') >= 0:
             handler = make_task_fmt1
         else:
