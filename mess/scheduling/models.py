@@ -70,6 +70,7 @@ class Task(models.Model):
     hours = models.DecimalField(max_digits=4, decimal_places=2)
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
     interval = models.PositiveIntegerField(default=1)
+    last_occurrence = models.DateField(null=True, blank=True)
     member = models.ForeignKey(Member, null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
 

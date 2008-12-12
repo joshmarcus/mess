@@ -14,7 +14,7 @@
 }
 */
 .form-chunk {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 input[id$="time_0"] {
   display: none;
@@ -28,9 +28,13 @@ input[id$="hours"] {
 }
 select[id$="frequency"] {
   width: 80px;
+  margin-right: 10px;
 }
 input[id$="interval"] {
   width: 15px;
+}
+input[id$="last_occurrence"] {
+  width: 80px;
   margin-right: 10px;
 }
 input[id$="job"] {

@@ -59,32 +59,10 @@
       </h2>
       <div id="task-add" class="task-form task-add-form{% if not add_form.errors %} hidden{% endif %}">
         <form class="add-form" method="post" name="add">
-          <div class="form-chunk">
-            <label for="id_time_1">Time:</label> {{ add_form.time }}
-            <label for="id_hours">Hours:</label> {{ add_form.hours }}
-            <span class="errors">{{ add_form.time.errors|join:" " }} {{ add_form.hours.errors|join:" " }}</span>
-          </div>
-          <div class="form-chunk">
-            <label for="id_frequency">Frequency:</label> {{ add_form.frequency }}
-            <label for="id_interval">Interval:</label> {{ add_form.interval }}
-            <span class="errors">{{ add_form.frequency.errors|join:" " }} {{ add_form.interval.errors|join:" " }}</span>
-          </div>
-          <div class="form-chunk">
-            <label for="id_job">Job:</label> {{ add_form.job }}
-            <span class="errors">{{ add_form.job.errors|join:" " }}</span>
-          </div>
-          <label>Workers (members and the accounts they're working for):</label><br />
-          <span class="helptext">Leave fields blank for unassigned tasks.</span>
-          {{ add_form_workers.management_form }}
-          <ul id="worker_list">
-          {% for worker_form in add_form_workers.forms %}
-            <li>{{ worker_form.member }} {{ worker_form.account }}</li>
-          {% endfor %}
-            <li id="worker-writeroot" class="add" style="text-align:left">
-              <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
-              <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
-            </li>
-          </ul>
+          {% with add_form as form %}
+          {% with add_worker_formset as worker_formset %}
+          {% include "scheduling/snippets/schedule_task_form.html" %}
+          {% endwith %}{% endwith %}
           <div class="hidden">{{ add_form.affect }}</div>
           <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" name="save-add" /> <input onclick="taskAddCancel()" type="button" value="Cancel" /></p>
         </form>
@@ -126,36 +104,10 @@
             <div class="task-form task-edit-form">
               <form method="post" name="edit{{ group.form.prefix }}">
                 <input type="hidden" name="group-index" value="{{ group.form.prefix }}" />
-                <div class="form-chunk">
-                  <label for="id_{{ group.form.prefix }}-time_1">Time:</label> {{ group.form.time }}
-                  <label for="id_{{ group.form.prefix }}-hours">Hours:</label> {{ group.form.hours }}
-                  <span class="errors">{{ group.form.time.errors|join:" " }} {{ group.form.hours.errors|join:" " }}</span>
-                </div>
-                <div class="form-chunk">
-                  <label for="id_{{ group.form.prefix }}-frequency">Frequency:</label> {{ group.form.frequency }}
-                  <label for="id_{{ group.form.prefix }}-interval">Interval:</label> {{ group.form.interval }}
-                  <span class="errors">{{ group.form.frequency.errors|join:" " }} {{ group.form.interval.errors|join:" " }}</span>
-                </div>
-                <div class="form-chunk">
-                  <label for="id_{{ group.form.prefix }}-job">Job:</label> {{ group.form.job }}
-                  <span class="errors">{{ group.form.job.errors|join:" " }}</span>
-                </div>
-                <div class="form-chunk">
-                  <label>Workers (members and the accounts they're working for):</label><br />
-                  <span class="helptext">Leave fields blank for unassigned tasks.</span>
-                  {{ group.form_workers.management_form }}
-                  <ul id="worker_list">
-                  {% for worker_form in group.form_workers.forms %}
-                    <li>{{ worker_form.member }} {{ worker_form.account }} 
-                      <a class="remove" href="" onclick="removeForm('worker'); return false;">Remove</a>
-                    </li>
-                  {% endfor %}
-                    <li id="worker-writeroot" class="add" style="text-align:left">
-                      <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
-                      <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
-                    </li>
-                  </ul>
-                </div>
+                {% with group.form as form %}
+                {% with group.worker_formset as worker_formset %}
+                {% include "scheduling/snippets/schedule_task_form.html" %}
+                {% endwith %}{% endwith %}
                 <div class="form-chunk{% if not group.first_task.frequency and group.first_task.interval %} hidden{% endif %}">
                   <label for="id_{{ group.form.prefix }}-affect">Affect:</label>
                   {{ group.form.affect }}

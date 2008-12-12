@@ -1,3 +1,6 @@
+from dateutil import parser
+from datetime import datetime
+
 from django import forms
 from django.forms.models import formset_factory
 
@@ -8,10 +11,33 @@ AFFECT_CHOICES = (
     (1, 'all times'),
 )
 
+class ParseDateTimeField(forms.Field):
+    """ 
+    DateTime field that accepts natural-language input.
+    """
+    def clean(self, value):
+        super(ParseDateTimeField, self).clean(value)
+        if value in (None, ''):
+            return None
+        if value[1] in (None, ''):
+            raise forms.ValidationError(u'Enter a valid time.')
+        if isinstance(value, datetime):
+            return value
+        if isinstance(value, list):
+            # Input comes from a SplitDateTimeWidget, for example. So, it's two
+            # components: date and time.
+            if len(value) != 2:
+                raise forms.ValidationError(self.error_messages['invalid'])
+            value = '%s %s' % tuple(value)
+        try:
+            return parser.parse(value)
+        except ValueError:
+            raise forms.ValidationError(u'Enter a valid time.')
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = models.Task
-    time = forms.DateTimeField(widget=forms.SplitDateTimeWidget())
+    time = ParseDateTimeField(widget=forms.SplitDateTimeWidget())
     affect = forms.ChoiceField(choices=AFFECT_CHOICES)
 
 class JobForm(forms.ModelForm):

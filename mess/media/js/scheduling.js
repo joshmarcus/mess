@@ -78,7 +78,15 @@ function checkWorker() {
     YAHOO.util.Dom.removeClass(removeFormA, 'hidden');
   }
 }
+function resetTaskDisplay() {
+  var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
+  var taskEdits = YAHOO.util.Dom.getElementsByClassName('task-edit', 'tr');
+  YAHOO.util.Dom.addClass('task-add', 'hidden');
+  YAHOO.util.Dom.removeClass(taskDisplays, 'hidden');
+  YAHOO.util.Dom.addClass(taskEdits, 'hidden');
+}
 function taskAdd() {
+  resetTaskDisplay();
   YAHOO.util.Dom.removeClass('task-add', 'hidden');
   document.forms.add.time_1.select();
 }
@@ -92,15 +100,8 @@ function taskEditCancel(cancelButton) {
   YAHOO.util.Dom.removeClass(taskDisplay, 'hidden');
 }
 function taskClick(e, taskDisplay) {
-  var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
-  var taskEdits = YAHOO.util.Dom.getElementsByClassName('task-edit', 'tr');
+  resetTaskDisplay();
   var taskEdit = YAHOO.util.Dom.getNextSibling(taskDisplay);
-  for (i=0; i<taskDisplays.length; i++) {
-    YAHOO.util.Dom.removeClass(taskDisplays[i], 'hidden');
-  }
-  for (i=0; i<taskEdits.length; i++) {
-    YAHOO.util.Dom.addClass(taskEdits[i], 'hidden');
-  }
   YAHOO.util.Dom.addClass(taskDisplay, 'hidden');
   YAHOO.util.Dom.removeClass(taskEdit, 'hidden');
   taskEdit.getElementsByTagName('form')[0].elements[2].select();
@@ -111,6 +112,14 @@ function taskClickAssign() {
     var taskDisplay = taskDisplays[i];
     YAHOO.util.Event.on(taskDisplay, 'click', taskClick, taskDisplay);
   }
+}
+function affectDisable(e) {
+  var inputElement = YAHOO.util.Event.getTarget(e);
+  var this_form = inputElement.form;
+}
+function timeBlurAssign() {
+  var timeInputs = YAHOO.util.Selector.query('form input[id$="time_0"]');
+  //YAHOO.util.Event.on(timeInputs, 'blur', timeBlur);
 }
 
 /*
