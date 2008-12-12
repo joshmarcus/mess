@@ -13,6 +13,9 @@ from dateutil.parser import parse
 from scheduling import models as sm
 from membership import models as mm
 
+class DateParseError(Exception):
+    pass
+
 
 def make_job(row, book):
     'minimally validate and create jobs from sheet rows'
@@ -47,12 +50,17 @@ def make_task_fmt2(row, book):
 
     start_day = datetime.datetime(*xlrd.xldate_as_tuple(row[1].value, book.datemode))
 
-    if row[2].ctype == xlrd.XL_CELL_DATE:
-        start_time_tup = xlrd.xldate_as_tuple(row[2].value, book.datemode)
-        start_time = datetime.time(*start_time_tup[3:]) #slice out just the time part
-    else:
-        start_time = parse(row[2].value).time()
-    
+    try:
+        if row[2].ctype == xlrd.XL_CELL_DATE:
+            start_time_tup = xlrd.xldate_as_tuple(row[2].value, book.datemode)
+            start_time = datetime.time(*start_time_tup[3:]) #slice out just the time part
+        else:
+            start_time = parse(row[2].value).time()
+    except:
+        e = DateParseError()
+        e.time = row[2].value
+        raise e
+
     start = datetime.datetime.combine(start_day, start_time)
 
     task = sm.Task(
@@ -95,7 +103,12 @@ def make_task_fmt1(row, book):
         return
 
     job = sm.Job.objects.get(id = row[0].value)
-    start = datetime.datetime.strptime(row[1].value, isoTimeFmt)
+    try:
+        start = datetime.datetime.strptime(row[1].value, isoTimeFmt)
+    except:
+        e = DateParseError()
+        e.time = row[1].value
+        raise e
 
     task = sm.Task(
             job = job,
@@ -142,10 +155,12 @@ def dispatch_rows(sheet, book):
             handler(row, book)
         except sm.Job.DoesNotExist, e:
             print "FATAL  %s: Sheet %s, row %d\n" % (e, sheet.name, row_idx)
+        except DateParseError, e:
+            print "FATAL  can't parse time %s: Sheet %s, row %d\n" % (e.time, sheet.name, row_idx)
         except sm.Account.DoesNotExist, e:
-            print "Partial  Unknown account %s: Sheet %s, row %d\n" % (e.account, sheet.name, row_idx)
+            print "Partial  Unknown account '%s': Sheet %s, row %d\n" % (e.account, sheet.name, row_idx)
         except sm.Member.DoesNotExist, e:
-            print "Partial  No member %s in account %s: Sheet %s, row %d\n" % (e.member, e.account, sheet.name, row_idx)
+            print "Partial  No member '%s' in account '%s': Sheet %s, row %d\n" % (e.member, e.account, sheet.name, row_idx)
         except:
             print "TOTAL FAIL!!! Sheet %s, row %d\n" % (sheet.name, row_idx)
             raise
