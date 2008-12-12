@@ -1,4 +1,5 @@
 import sys
+import codecs
 from os.path import dirname, abspath
 sys.path.append(dirname(dirname(abspath(__file__))))
 import settings
@@ -9,6 +10,8 @@ import xlrd
 from xlrd import empty_cell
 import datetime
 from dateutil.parser import parse
+
+sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
 from scheduling import models as sm
 from membership import models as mm
