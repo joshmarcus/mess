@@ -1,21 +1,25 @@
 from django.contrib import admin
 from mess.scheduling import models
 
-class TaskExcludeTimeInline(admin.TabularInline):
-    model = models.TaskExcludeTime
+class ExclusionInline(admin.TabularInline):
+    model = models.Exclusion
 
-class SubstituteInline(admin.TabularInline):
-    model = models.Substitute
+class TaskInline(admin.TabularInline):
+    model = models.Task
 
-class TaskAdmin(admin.ModelAdmin):
-    list_display = ('job', 'time', 'hours', 'frequency', 'interval')
-    list_filter = ('job', )
+class RecurRuleAdmin(admin.ModelAdmin):
+    model = models.RecurRule
     inlines = (
-        TaskExcludeTimeInline,
-        SubstituteInline,
+        ExclusionInline,
+        TaskInline,
     )
 
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('job', 'time', 'hours')
+    list_filter = ('job', )
+
 admin.site.register(models.Job)
+admin.site.register(models.RecurRule, RecurRuleAdmin)
 admin.site.register(models.Task, TaskAdmin)
 admin.site.register(models.Timecard)
 admin.site.register(models.Skill)

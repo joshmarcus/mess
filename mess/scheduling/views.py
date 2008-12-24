@@ -22,18 +22,18 @@ def unassigned_days(firstday, lastday):
     """
     days = {}
     format = "%m/%d/%Y"
-    tasks = models.Task.singles.unassigned().filter(
+    tasks = models.Task.objects.unassigned().filter(
             time__gte = firstday,
             time__lte = lastday
     )
     for task in tasks:
         datestr = task.time.strftime(format)
         days[datestr] = days.get(datestr, 0) + 1
-    for task in models.Task.recurring.unassigned():
-        occur_times = task.get_occur_times(firstday, lastday)
-        for occur_time in occur_times:
-            datestr = occur_time.strftime(format)
-            days[datestr] = days.get(datestr, 0) + 1
+    #for task in models.Task.recurring.unassigned():
+    #    occur_times = task.get_occur_times(firstday, lastday)
+    #    for occur_time in occur_times:
+    #        datestr = occur_time.strftime(format)
+    #        days[datestr] = days.get(datestr, 0) + 1
     return days
     
 def unassigned_for_month(request, month):
@@ -64,21 +64,21 @@ def schedule(request, date=None):
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
     context['next_date'] = date + a_day
-    tasks = models.Task.singles.filter(
+    tasks = models.Task.objects.filter(
             time__year=date.year).filter(time__month=date.month).filter(
             time__day=date.day)
 
     # convert QuerySet to list for appending recurring tasks
-    task_list = list(tasks)
-    recurring_tasks = models.Task.recurring.all()
-    for task in recurring_tasks:
-        occur_times = task.get_occur_times(date, date + a_day)
-        for occur_time in occur_times:
-            task_list.append(task)
+    #task_list = list(tasks)
+    #recurring_tasks = models.Task.recurring.all()
+    #for task in recurring_tasks:
+    #    occur_times = task.get_occur_times(date, date + a_day)
+    #    for occur_time in occur_times:
+    #        task_list.append(task)
 
     # group tasks by same job, time, and hours
     task_groups = []
-    for task in task_list:
+    for task in tasks:
         group_found = False
         for group in task_groups:
             if (task.time.hour == group[0] and task.time.minute == group[1]
