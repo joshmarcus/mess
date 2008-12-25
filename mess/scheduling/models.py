@@ -68,8 +68,10 @@ class RecurRule(models.Model):
     until = models.DateTimeField(null=True, blank=True)
 
     def save(self, force_insert=False, force_update=False):
-        # TODO: for newly created RecurRule, create tasks for two years
-        # for modified, remove old tasks and create new ones
+        # TODO for newly created RecurRule, create tasks for two years.
+        # For modified, remove old tasks and create new ones.
+        # XXX need to get task info for creating new tasks from first 
+        #     related task, so need to do nothing on first save (create)
         super(RecurRule, self).save(force_insert, force_update)
 
     def update_buffer(self):
@@ -106,6 +108,11 @@ class Task(models.Model):
         delta_hours = datetime.timedelta(hours=float(self.hours))
         end = self.time + delta_hours
         return end
+
+    def save(self, force_insert=False, force_update=False):
+        # TODO if recur_rule, need to save related RecurRule then call 
+        #    recur_rule.update_buffer()
+        super(Task, self).save(force_insert, force_update)
 
     #def get_occur_times(self, after, before):
     #    frequency = getattr(rrule, self.get_frequency_display().upper())

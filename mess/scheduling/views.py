@@ -155,8 +155,9 @@ def _task_template_save(proto_form, worker_forms):
         task = models.Task(**form.cleaned_data)
         task.time = task_template.time
         task.hours = task_template.hours
-        task.frequency = task_template.frequency
-        task.interval = task_template.interval
+        # TODO: set frequency and interval of recur_rule
+        #task.frequency = task_template.frequency
+        #task.interval = task_template.interval
         task.job = task_template.job
         task.save()
 
