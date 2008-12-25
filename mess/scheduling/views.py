@@ -81,22 +81,21 @@ def schedule(request, date=None):
     for task in tasks:
         group_found = False
         for group in task_groups:
-            if (task.time.hour == group[0] and task.time.minute == group[1]
-                    and task.hours == group[2] and task.job == group[3] and 
-                    task.frequency == group[4]):
-                group[5].append(task)
+            if (task.time == group[0] and task.hours == group[1] and 
+                    task.job == group[2] and task.recur_rule == group[3]):
+                group[4].append(task)
                 group_found = True
                 continue
         if not group_found:
-            task_groups.append((task.time.hour, task.time.minute, task.hours, 
-                    task.job, task.frequency, [task]))
+            task_groups.append((task.time, task.hours, task.job, 
+                    task.recur_rule, [task]))
     task_groups.sort()
 
     # make it easier to get to things in the template
     task_group_dicts = []
     for index, group in enumerate(task_groups):
         tasks = []
-        for task in group[5]:
+        for task in group[4]:
             if task.member and task.account:
                 tasks.append((task.member.user.get_full_name(), 
                         task.account.name, task))
