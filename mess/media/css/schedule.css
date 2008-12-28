@@ -23,7 +23,7 @@ input[id$="time_1"] {
   width: 60px;
 }
 input[id$="hours"] {
-  width: 15px;
+  width: 25px;
   margin-right: 10px;
 }
 select[id$="frequency"] {
@@ -33,7 +33,7 @@ select[id$="frequency"] {
 input[id$="interval"] {
   width: 15px;
 }
-input[id$="last_occurrence"] {
+input[id$="until"] {
   width: 80px;
   margin-right: 10px;
 }
@@ -51,11 +51,11 @@ select[id$="affect"] {
   padding: 0;
   background: none;
 }
+#worker_list input[id$="id"] {
+  display: none;
+}
 #worker_list select[id$="member"] {
   width: 170px;
-}
-#worker_list select[id$="account"] {
-  width: 300px;
 }
 .errors {
   color: red;

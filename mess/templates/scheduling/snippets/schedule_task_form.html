@@ -1,16 +1,20 @@
 <div class="form-chunk">
   <label for="id_{{ form.prefix }}-time_1">Time:</label> {{ form.time }}
+  {% comment %}
+  <input type="hidden" name="{{ form.prefix }}-time_0" value="{{ form.initial.time|date:"Y-m-d" }}" id="id_{{ form.prefix }}-time_0" />
+  <input type="text" name="{{ form.prefix }}-time_1" value="{{ form.initial.time|date:"fA" }}" id="id_{{ form.prefix }}-time_1" />
+  {% endcomment %}
   <label for="id_{{ form.prefix }}-hours">Hours:</label> {{ form.hours }}
   <span class="errors">{{ form.time.errors|join:" " }} {{ form.hours.errors|join:" " }}</span>
 </div>
 <div class="form-chunk">
-  <label for="id_{{ form.prefix }}-frequency">Frequency:</label> {{ form.frequency }}
-  <span class="errors">{{ form.frequency.errors|join:" " }}</span>
+  <label for="id_{{ recur_form.prefix }}-frequency">Frequency:</label> {{ recur_form.frequency }}
+  <span class="errors">{{ recur_form.frequency.errors|join:" " }}</span>
 </div>
 <div class="form-chunk">
-  <label for="id_{{ form.prefix }}-interval">Interval:</label> {{ form.interval }}
-  <label for="id_{{ form.prefix }}-last_occurrence">Last occurrence:</label> {{ form.last_occurrence }}
-  <span class="errors">{{ form.interval.errors|join:" " }} {{ form.last_occurrence.errors|join:" " }}</span>
+  <label for="id_{{ recur_form.prefix }}-interval">Interval:</label> {{ recur_form.interval }}
+  <label for="id_{{ recur_form.prefix }}-last_occurrence">Last occurrence:</label> {{ recur_form.until }}
+  <span class="errors">{{ recur_form.interval.errors|join:" " }} {{ recur_form.until.errors|join:" " }}</span>
 </div>
 <div class="form-chunk">
   <label for="id_{{ form.prefix }}-job">Job:</label> {{ form.job }}
@@ -22,17 +26,18 @@
   {{ worker_formset.management_form }}
   <ul id="worker_list">
   {% for worker_form in worker_formset.forms %}
-    <li>{{ worker_form.member }} {{ worker_form.account }} 
-      {% if not form.add %}
+    <li>{{ worker_form.taskid }} {{ worker_form.member }} {{ worker_form.account }} 
+      {{ worker_form.taskid.errors }}
+      {% ifnotequal form.prefix "add" %}
       <a class="remove" href="" onclick="removeForm('worker'); return false;">Remove</a>
-      {% endif %}
+      {% endifnotequal %}
     </li>
   {% endfor %}
     <li id="worker-writeroot" class="add" style="text-align:left">
       <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
-      {% if form.add %}
+      {% ifequal form.prefix "add" %}
       <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
-      {% endif %}
+      {% endifequal %}
     </li>
   </ul>
 </div>

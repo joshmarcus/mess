@@ -2,7 +2,7 @@ from dateutil import parser
 from datetime import datetime
 
 from django import forms
-from django.forms.models import formset_factory
+from django.forms.models import inlineformset_factory
 
 from mess.scheduling import models
 
@@ -52,11 +52,17 @@ class TimecardForm(forms.ModelForm):
     class Meta:
         model = models.Timecard
 
+class RecurForm(forms.ModelForm):
+    class Meta:
+        model = models.RecurRule
+        exclude = ('start', )
+
 class WorkerForm(forms.ModelForm):
     class Meta:
-        model = models.Task
-        fields = ('id', 'member', 'account')
+        model = models.Worker
+        fields = ('member', 'account')
+    #taskid = forms.IntegerField(required=False, widget=forms.HiddenInput())
     
-WorkerAddFormSet = formset_factory(WorkerForm, extra=1) #, min_num=1)
-WorkerFormSet = formset_factory(WorkerForm, extra=0) #, min_num=1)
+WorkerAddFormSet = inlineformset_factory(models.Task, models.Worker, extra=1)
+WorkerFormSet = inlineformset_factory(models.Task, models.Worker, extra=0) #, min_num=1)
 

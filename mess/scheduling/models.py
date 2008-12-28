@@ -45,10 +45,28 @@ class Job(models.Model):
     class Meta:
         ordering = ['name']
 
+
+class RecurRule(models.Model):
+    start = models.DateTimeField()
+    frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
+    interval = models.PositiveIntegerField(blank=True)
+    until = models.DateTimeField(null=True, blank=True)
+
+    def save(self, force_insert=False, force_update=False):
+        # XXX need to get task info for creating new tasks from first 
+        #     related task, so need to do nothing on first save (create)
+        super(RecurRule, self).save(force_insert, force_update)
+
+
+class Exclusion(models.Model):
+    recur_rule = models.ForeignKey(RecurRule)
+    date = models.DateTimeField()
+
+
 class TaskManager(models.Manager):
     'Custom manager to add extra methods'
     def unassigned(self):
-        return self.all().filter(models.Q(member=None) | models.Q(account=None))
+        return self.all().filter(models.Q(workers__member=None) | models.Q(workers__account=None))
 
 #class RecurringTaskManager(TaskManager):
 #    'Manager with only recurring tasks'
@@ -60,24 +78,6 @@ class TaskManager(models.Manager):
 #    def get_query_set(self):
 #        return super(SingleTaskManager, self).get_query_set().filter(frequency='')
 
-
-class RecurRule(models.Model):
-    start = models.DateTimeField()
-    frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
-    interval = models.PositiveIntegerField(default=1)
-    until = models.DateTimeField(null=True, blank=True)
-
-    def save(self, force_insert=False, force_update=False):
-        # TODO for newly created RecurRule, create tasks for two years.
-        # For modified, remove old tasks and create new ones.
-        # XXX need to get task info for creating new tasks from first 
-        #     related task, so need to do nothing on first save (create)
-        super(RecurRule, self).save(force_insert, force_update)
-
-    def update_buffer(self):
-        # update the 2-year date buffer
-        pass
-
 class Task(models.Model):
     """
     A task is a scheduled occurrence of a job.  The time is a start time 
@@ -86,12 +86,7 @@ class Task(models.Model):
     job = models.ForeignKey(Job)
     time = models.DateTimeField()
     hours = models.DecimalField(max_digits=4, decimal_places=2)
-    member = models.ForeignKey(Member, null=True, blank=True)
-    account = models.ForeignKey(Account, null=True, blank=True)
-    hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
-            null=True, blank=True)
-    excused = models.BooleanField()
-    makeup = models.BooleanField()
+
     recur_rule = models.ForeignKey(RecurRule, null=True, blank=True)
 
     objects = TaskManager()
@@ -110,9 +105,19 @@ class Task(models.Model):
         return end
 
     def save(self, force_insert=False, force_update=False):
-        # TODO if recur_rule, need to save related RecurRule then call 
-        #    recur_rule.update_buffer()
+        # TODO for newly created Task, if there's a recur_rule create tasks 
+        # for two years.
+        # For modified, remove old tasks and create new ones.
         super(Task, self).save(force_insert, force_update)
+
+    def update_buffer(self):
+        """Update the 2-year date buffer."""
+        if not self.recur_rule:
+            return
+        frequency = getattr(rrule, 
+                self.recur_rule.get_frequency_display().upper())
+        today = datetime.today()
+        recur = rrule.rrule
 
     #def get_occur_times(self, after, before):
     #    frequency = getattr(rrule, self.get_frequency_display().upper())
@@ -142,19 +147,29 @@ class Task(models.Model):
     #            return '%s months' % self.interval
 
 
-class Exclusion(models.Model):
-    recur_rule = models.ForeignKey(RecurRule)
-    date = models.DateTimeField()
-
-
-class Substitute(models.Model):
+class Worker(models.Model):
     """
-    A substitute worker for a task on a specific day.
+    A worker for a task.  Unassigned if member or account is left blank.
     """
-    sub_for = models.ForeignKey(Task, related_name='subs')
-    time = models.DateTimeField()
+    task = models.ForeignKey(Task, related_name='workers')
     member = models.ForeignKey(Member, null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
+
+    hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
+            null=True, blank=True)
+    excused = models.BooleanField()
+    makeup = models.BooleanField()
+
+    note = models.TextField(blank=True)
+
+
+#class Substitute(models.Model):
+#    """
+#    A substitute worker for a task.
+#    """
+#    sub_for = models.ForeignKey(Task, related_name='subs')
+#    member = models.ForeignKey(Member, null=True, blank=True)
+#    account = models.ForeignKey(Account, null=True, blank=True)
     
 
 class Timecard(models.Model):

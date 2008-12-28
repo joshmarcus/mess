@@ -88,7 +88,7 @@ function resetTaskDisplay() {
 function taskAdd() {
   resetTaskDisplay();
   YAHOO.util.Dom.removeClass('task-add', 'hidden');
-  document.forms.add.time_1.select();
+  document.forms.add.elements[1].select();
 }
 function taskAddCancel() {
   YAHOO.util.Dom.addClass('task-add', 'hidden');
