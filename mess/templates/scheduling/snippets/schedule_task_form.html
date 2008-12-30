@@ -24,20 +24,13 @@
   <label>Workers (members and the accounts they're working for):</label><br />
   <span class="helptext">Leave fields blank for unassigned tasks.</span>
   {{ worker_formset.management_form }}
-  <ul id="worker_list">
+  <ul id="worker-list">
   {% for worker_form in worker_formset.forms %}
-    <li>{{ worker_form.taskid }} {{ worker_form.member }} {{ worker_form.account }} 
-      {{ worker_form.taskid.errors }}
-      {% ifnotequal form.prefix "add" %}
-      <a class="remove" href="" onclick="removeForm('worker'); return false;">Remove</a>
-      {% endifnotequal %}
-    </li>
+    <li>{{ worker_form.member }} {{ worker_form.account }}</li>
   {% endfor %}
-    <li id="worker-writeroot" class="add" style="text-align:left">
-      <a class="add" href="" onclick="addForm('worker', '{% url scheduling-worker-form %}'); return false;" id="worker-add">Add</a>
-      {% ifequal form.prefix "add" %}
-      <a class="remove hidden" href="" onclick="removeForm('worker'); return false;" id="worker-remove">Remove last</a>
-      {% endifequal %}
+    <li id="{{ worker_formset.prefix }}-writeroot" class="add" style="text-align:left">
+      <a class="add" href="" onclick="addForm('{{ worker_formset.prefix }}', '{% url scheduling-worker-form %}'); return false;" id="add-{{ worker_formset.prefix }}">Add</a>
+      <a class="remove hidden" href="" onclick="removeForm('{{ worker_formset.prefix }}'); return false;" id="remove-{{ worker_formset.prefix }}">Remove last</a>
     </li>
   </ul>
 </div>

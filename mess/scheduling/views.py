@@ -58,131 +58,78 @@ def schedule(request, date=None):
         today = datetime.date.today()
         # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
-    add_form = forms.TaskForm(instance=models.Task(time=date), prefix='add')
-    recur_form = forms.RecurForm(prefix='recur')
-    add_worker_formset = forms.WorkerAddFormSet(instance=models.Task(), 
-            prefix='worker')
+    add_task_form = forms.TaskForm(instance=models.Task(time=date), 
+            prefix='add')
+    add_recur_form = forms.RecurForm(prefix='recur-add')
+    add_worker_formset = forms.AddWorkerFormSet(instance=models.Task(), 
+            prefix='worker-add')
+    tasks = models.Task.objects.filter(time__year=date.year).filter(
+            time__month=date.month).filter(time__day=date.day).order_by(
+            'time', 'hours', 'job', 'recur_rule')
+    prepared_tasks = []
+    for index, task in enumerate(tasks):
+        task.form = forms.TaskForm(instance=task, prefix=str(index))
+        task.recur_form = forms.RecurForm(instance=task.recur_rule, 
+                prefix='recur-%s' % index)
+        task.worker_formset = forms.WorkerFormSet(instance=task, 
+                prefix='worker-%s' % index)
+        prepared_tasks.append(task)
+
+    if request.method == 'POST':
+        if 'save-add' in request.POST:
+            task_form = add_task_form = forms.TaskForm(request.POST, 
+                    prefix='add')
+            recur_form = add_recur_form = forms.RecurForm(request.POST, 
+                    prefix='recur-add')
+            worker_formset = add_worker_formset = forms.AddWorkerFormSet(
+                    request.POST, instance=models.Task(), prefix='worker-add')
+        else:
+            task_index = request.POST.get('task-index')
+            task = prepared_tasks[int(task_index)]
+            task_form = task.form = forms.TaskForm(request.POST, 
+                    instance=task, prefix=task_index)
+            recur_form = task.recur_form = forms.RecurForm(request.POST, 
+                    instance=task, prefix='recur-%s' % task_index)
+            worker_formset = task.worker_formset = forms.WorkerFormSet(
+                    request.POST, instance=task, prefix='worker-%s' % task_index)
+        if (task_form.is_valid() and recur_form.is_valid() and 
+                worker_formset.is_valid()):
+            task = task_form.save()
+            # must iterate through worker forms to include unassigned (blank)
+            workers = []
+            for worker_form in worker_formset.forms:
+                worker = worker_form.save()
+                workers.append(worker)
+            for worker in task.workers.all():
+                if worker not in workers:
+                    worker.delete()
+            if recur_form.changed_data:
+                if task.recur_rule:
+                    task.del_recur_rule()
+            return HttpResponseRedirect(reverse('scheduling-schedule', 
+                    args=[date.date()]))
+
     context['date'] = date
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
     context['next_date'] = date + a_day
-    tasks = models.Task.objects.filter(
-            time__year=date.year).filter(time__month=date.month).filter(
-            time__day=date.day).order_by('time', 'hours', 'job', 'recur_rule')
-
-    # convert QuerySet to list for appending recurring tasks
-    #task_list = list(tasks)
-    #recurring_tasks = models.Task.recurring.all()
-    #for task in recurring_tasks:
-    #    occur_times = task.get_occur_times(date, date + a_day)
-    #    for occur_time in occur_times:
-    #        task_list.append(task)
-
-    # group tasks by same job, time, and hours
-    task_groups = []
-    #for task in tasks:
-    #    group_found = False
-    #    for group in task_groups:
-    #        if (task.time == group[0] and task.hours == group[1] and 
-    #                task.job == group[2] and task.recur_rule == group[3]):
-    #            group[4].append(task)
-    #            group_found = True
-    #            continue
-    #    if not group_found:
-    #        task_groups.append((task.time, task.hours, task.job, 
-    #                task.recur_rule, [task]))
-    #task_groups.sort()
-
-    # make it easier to get to things in the template
-    task_group_dicts = []
-    for index, group in enumerate(task_groups):
-        tasks = []
-        for task in group[4]:
-            if task.member and task.account:
-                tasks.append((task.member.user.get_full_name(), 
-                        task.account.name, task))
-            else:
-                tasks.append((None, None, task))
-        tasks.sort()
-        tasks = [task[2] for task in tasks]
-        first_task = tasks[0]
-        form = forms.TaskForm(instance=first_task, prefix='%s' % index)
-        task_dicts = []
-        for task in tasks:
-            if task.member and task.account:
-                task_dicts.append({'taskid': task.id, 'member': task.member.id, 
-                        'account': task.account.id})
-            else:
-                task_dicts.append({'taskid': task.id, 'member': '', 'account': ''})
-        worker_formset = forms.WorkerFormSet(initial=task_dicts, 
-                prefix='%s-worker' % index)
-        group_dict = {'first_task': first_task, 'tasks': tasks, 'form': form,
-                'worker_formset': worker_formset}
-        task_group_dicts.append(group_dict)
-
     firstday = date + relativedelta(day=1)
     lastday = date + relativedelta(day=31)
     context['cal_json']  = simplejson.dumps(unassigned_days(firstday, lastday))
-    
-    if request.method == 'POST':
-        if 'save-add' in request.POST:
-            add_form = forms.TaskForm(request.POST, prefix='add')
-            recur_form = forms.RecurForm(request.POST, prefix='recur')
-            add_worker_formset = forms.WorkerAddFormSet(request.POST, 
-                    instance=models.Task(), prefix='worker')
-            if (add_form.is_valid() and recur_form.is_valid() and 
-                    add_worker_formset.is_valid()):
-                task = add_form.save()
-                workers = add_worker_formset.save(commit=False)
-                for worker in workers:
-                    worker.task = task
-                    worker.save()
-                #_task_template_save(add_form, add_worker_formset)
-                return HttpResponseRedirect(reverse('scheduling-schedule', 
-                        args=[date.date()]))
-        else:
-            group_index = request.POST.get('group-index')
-            group_index_int = int(group_index)
-            edit_form = forms.TaskForm(request.POST, instance=task_group_dicts[group_index_int]['first_task'], prefix=group_index)
-            edit_worker_formset = forms.WorkerFormSet(request.POST, prefix=group_index + '-worker')
-            if edit_form.is_valid() and edit_worker_formset.is_valid():
-                _task_template_save(edit_form, edit_worker_formset)
-                return HttpResponseRedirect(reverse('scheduling-schedule', 
-                        args=[date.date()]))
-            else:
-                this_dict = task_group_dicts[int(group_index)]
-                this_dict['form'] = edit_form
-                this_dict['worker_formset'] = edit_worker_formset
 
-    context['task_groups'] = task_group_dicts
-    context['add_form'] = add_form
-    context['recur_form'] = recur_form
+    context['tasks'] = prepared_tasks
+    context['add_task_form'] = add_task_form
+    context['add_recur_form'] = add_recur_form
     context['add_worker_formset'] = add_worker_formset
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))
 
-def _task_template_save(proto_form, worker_formset):
-    task_template = proto_form.save(commit=False)
-    for form in worker_formset.forms:
-        bob = form.cleaned_data
-        raise Exception
-        #task_data = form.cleaned_data.copy()
-        #if not task_data['id']:
-        #    del task_data['id']
-        task = models.Task(**form.cleaned_data)
-        task.time = task_template.time
-        task.hours = task_template.hours
-        # TODO: set frequency and interval of recur_rule
-        #task.frequency = task_template.frequency
-        #task.interval = task_template.interval
-        task.job = task_template.job
-        task.save()
-
 def worker_form(request):
     context = RequestContext(request)
+    prefix = request.GET.get('prefix')
     index = request.GET.get('index')
     if index:
-        form = forms.WorkerForm(prefix='%s-%s' % ('worker', index))
+        form = forms.WorkerForm(prefix='%s-%s' % (prefix, index))
     else:
         form = forms.WorkerForm()
     context['form'] = form
@@ -247,6 +194,71 @@ def job_edit(request, job_id=None):
 
 
 # unused below
+
+#def _task_template_save(proto_form, worker_formset):
+#    task_template = proto_form.save(commit=False)
+#    for form in worker_formset.forms:
+#        #task_data = form.cleaned_data.copy()
+#        #if not task_data['id']:
+#        #    del task_data['id']
+#        task = models.Task(**form.cleaned_data)
+#        task.time = task_template.time
+#        task.hours = task_template.hours
+#        # TODO: set frequency and interval of recur_rule
+#        #task.frequency = task_template.frequency
+#        #task.interval = task_template.interval
+#        task.job = task_template.job
+#        task.save()
+#
+    # convert QuerySet to list for appending recurring tasks
+    #task_list = list(tasks)
+    #recurring_tasks = models.Task.recurring.all()
+    #for task in recurring_tasks:
+    #    occur_times = task.get_occur_times(date, date + a_day)
+    #    for occur_time in occur_times:
+    #        task_list.append(task)
+
+    # group tasks by same job, time, and hours
+    #task_groups = []
+    #for task in tasks:
+    #    group_found = False
+    #    for group in task_groups:
+    #        if (task.time == group[0] and task.hours == group[1] and 
+    #                task.job == group[2] and task.recur_rule == group[3]):
+    #            group[4].append(task)
+    #            group_found = True
+    #            continue
+    #    if not group_found:
+    #        task_groups.append((task.time, task.hours, task.job, 
+    #                task.recur_rule, [task]))
+    #task_groups.sort()
+
+    # make it easier to get to things in the template
+    #task_group_dicts = []
+    #for index, group in enumerate(task_groups):
+    #    tasks = []
+    #    for task in group[4]:
+    #        if task.member and task.account:
+    #            tasks.append((task.member.user.get_full_name(), 
+    #                    task.account.name, task))
+    #        else:
+    #            tasks.append((None, None, task))
+    #    tasks.sort()
+    #    tasks = [task[2] for task in tasks]
+    #    first_task = tasks[0]
+    #    form = forms.TaskForm(instance=first_task, prefix='%s' % index)
+    #    task_dicts = []
+    #    for task in tasks:
+    #        if task.member and task.account:
+    #            task_dicts.append({'taskid': task.id, 'member': task.member.id, 
+    #                    'account': task.account.id})
+    #        else:
+    #            task_dicts.append({'taskid': task.id, 'member': '', 'account': ''})
+    #    worker_formset = forms.WorkerFormSet(initial=task_dicts, 
+    #            prefix='%s-worker' % index)
+    #    group_dict = {'first_task': first_task, 'tasks': tasks, 'form': form,
+    #            'worker_formset': worker_formset}
+    #    task_group_dicts.append(group_dict)
 
 #def assign(request):
 #    date = datetime.date.today()

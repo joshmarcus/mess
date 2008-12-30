@@ -47,36 +47,27 @@ class Job(models.Model):
 
 
 class RecurRule(models.Model):
-    start = models.DateTimeField()
+    # use task.time for start
+    #start = models.DateTimeField()
     frequency = models.CharField(max_length=1, choices=FREQUENCIES, blank=True)
     interval = models.PositiveIntegerField(blank=True)
     until = models.DateTimeField(null=True, blank=True)
 
-    def save(self, force_insert=False, force_update=False):
-        # XXX need to get task info for creating new tasks from first 
-        #     related task, so need to do nothing on first save (create)
-        super(RecurRule, self).save(force_insert, force_update)
+    #def save(self, force_insert=False, force_update=False):
+    #    # XXX need to get task info for creating new tasks from first 
+    #    #     related task, so need to do nothing on first save (create)
+    #    super(RecurRule, self).save(force_insert, force_update)
 
 
 class Exclusion(models.Model):
-    recur_rule = models.ForeignKey(RecurRule)
     date = models.DateTimeField()
+    recur_rule = models.ForeignKey(RecurRule)
 
 
 class TaskManager(models.Manager):
     'Custom manager to add extra methods'
     def unassigned(self):
         return self.all().filter(models.Q(workers__member=None) | models.Q(workers__account=None))
-
-#class RecurringTaskManager(TaskManager):
-#    'Manager with only recurring tasks'
-#    def get_query_set(self):
-#        return super(RecurringTaskManager, self).get_query_set().exclude(frequency='')
-#
-#class SingleTaskManager(TaskManager):
-#    'Manager with only singleton tasks'
-#    def get_query_set(self):
-#        return super(SingleTaskManager, self).get_query_set().filter(frequency='')
 
 class Task(models.Model):
     """
@@ -90,8 +81,6 @@ class Task(models.Model):
     recur_rule = models.ForeignKey(RecurRule, null=True, blank=True)
 
     objects = TaskManager()
-    #recurring = RecurringTaskManager()
-    #singles = SingleTaskManager()
     
     class Meta:
         ordering = ['job']
@@ -104,11 +93,23 @@ class Task(models.Model):
         end = self.time + delta_hours
         return end
 
-    def save(self, force_insert=False, force_update=False):
-        # TODO for newly created Task, if there's a recur_rule create tasks 
-        # for two years.
-        # For modified, remove old tasks and create new ones.
-        super(Task, self).save(force_insert, force_update)
+    #def save(self, force_insert=False, force_update=False):
+    #    # TODO for newly created Task, if there's a recur_rule create tasks 
+    #    # for two years.
+    #    # For modified, remove old tasks and create new ones.
+    #    super(Task, self).save(force_insert, force_update)
+
+    def set_recur_rule(self, frequency, interval, until):
+        recur_rule = RecurRule(frequency=frequency, interval=interval, 
+                until=until)
+        recur_rule.save()
+        self.recur_rule = recur_rule
+        self.save()
+        self.update_buffer()
+
+    def modify_recur_rule(self):
+        # only affect tasks from this task forward
+        recur_tasks = self.recur_rule.task_set.filter(time__gte==self.time)
 
     def update_buffer(self):
         """Update the 2-year date buffer."""
@@ -117,34 +118,40 @@ class Task(models.Model):
         frequency = getattr(rrule, 
                 self.recur_rule.get_frequency_display().upper())
         today = datetime.today()
-        recur = rrule.rrule
-
-    #def get_occur_times(self, after, before):
-    #    frequency = getattr(rrule, self.get_frequency_display().upper())
-    #    recur = rrule.rrule(frequency, dtstart=self.time, 
-    #            interval=self.interval)
-    #    recur_set = rrule.rruleset()
-    #    recur_set.rrule(recur)
-    #    for excluded in self.excluded_times.all():
-    #        recur_set.exdate(excluded.time)
-    #    occur_times = recur_set.between(after, before)
-    #    return occur_times
-    #
-    #def get_recurrence_display(self):
-    #    if self.frequency and self.interval:
-    #        if self.interval == 1:
-    #            if self.frequency == 'd':
-    #                return 'day'
-    #            if self.frequency == 'w':
-    #                return 'week'
-    #            if self.frequency == 'm':
-    #                return 'month'
-    #        if self.frequency == 'd':
-    #            return '%s days' % self.interval
-    #        if self.frequency == 'w':
-    #            return '%s weeks' % self.interval
-    #        if self.frequency == 'm':
-    #            return '%s months' % self.interval
+        two_years_hence = today + datetime.timedelta(years=2)
+        until = self.recur_rule.until or two_years_hence
+        recur = rrule.rrule(frequency, dtstart=self.time, 
+                interval=self.recur_rule.interval, until=until)
+        recur_set = rrule.rruleset()
+        recur_set.rrule(recur)
+        for exclusion in self.recur_rule.exclusion_set.all():
+            recur_set.exdate(exclusion.date)
+        existing_tasks = Task.objects.filter(recur_rule=self.recur_rule, 
+                time__gte=today)
+        existing_dates = [task.time for task in existing_tasks]
+        for task_date in recur_set:
+            # don't re-create existing tasks
+            if task_date in existing_dates:
+                continue
+            task = Task(job=self.job, time=task_date, hours=self.hours,
+                    recur_rule=self.recur_rule, workers=self.workers)
+            task.save()
+        
+    def get_recurrence_display(self):
+        if self.recur_rule:
+            if self.recur_rule.interval == 1:
+                if self.recur_rule.frequency == 'd':
+                    return 'day'
+                if self.recur_rule.frequency == 'w':
+                    return 'week'
+                if self.recur_rule.frequency == 'm':
+                    return 'month'
+            if self.recur_rule.frequency == 'd':
+                return '%s days' % self.recur_rule.interval
+            if self.recur_rule.frequency == 'w':
+                return '%s weeks' % self.recur_rule.interval
+            if self.recur_rule.frequency == 'm':
+                return '%s months' % self.recur_rule.interval
 
 
 class Worker(models.Model):
@@ -162,15 +169,16 @@ class Worker(models.Model):
 
     note = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ['member__user__username']
 
-#class Substitute(models.Model):
-#    """
-#    A substitute worker for a task.
-#    """
-#    sub_for = models.ForeignKey(Task, related_name='subs')
-#    member = models.ForeignKey(Member, null=True, blank=True)
-#    account = models.ForeignKey(Account, null=True, blank=True)
-    
+    @property
+    def assigned(self):
+        return bool(self.member or self.account)
+
+    def __unicode__(self):
+        return u'%s, %s' % (self.member, self.account)
+
 
 class Timecard(models.Model):
     """
@@ -185,6 +193,8 @@ class Timecard(models.Model):
         return u"%s hrs of %s" % (work.seconds / 3600, self.task.job)
 
 
+# unused below
+
 #class RecurringShift(models.Model):
 #    """
 #    A recurring shift is members typical workshift made up of a series of tasks
@@ -197,4 +207,37 @@ class Timecard(models.Model):
 #
 #    def __unicode__(self):
 #        return u"%s hrs of %s every %s weeks" % (self.hours, self.job.name, self.frequency)
+
+#class RecurringTaskManager(TaskManager):
+#    'Manager with only recurring tasks'
+#    def get_query_set(self):
+#        return super(RecurringTaskManager, self).get_query_set().exclude(frequency='')
+#
+#class SingleTaskManager(TaskManager):
+#    'Manager with only singleton tasks'
+#    def get_query_set(self):
+#        return super(SingleTaskManager, self).get_query_set().filter(frequency='')
+
+    #recurring = RecurringTaskManager()
+    #singles = SingleTaskManager()
+
+#class Substitute(models.Model):
+#    """
+#    A substitute worker for a task.
+#    """
+#    sub_for = models.ForeignKey(Task, related_name='subs')
+#    member = models.ForeignKey(Member, null=True, blank=True)
+#    account = models.ForeignKey(Account, null=True, blank=True)
+    
+
+    #def get_occur_times(self, after, before):
+    #    frequency = getattr(rrule, self.get_frequency_display().upper())
+    #    recur = rrule.rrule(frequency, dtstart=self.time, 
+    #            interval=self.interval)
+    #    recur_set = rrule.rruleset()
+    #    recur_set.rrule(recur)
+    #    for excluded in self.excluded_times.all():
+    #        recur_set.exdate(excluded.time)
+    #    occur_times = recur_set.between(after, before)
+    #    return occur_times
 

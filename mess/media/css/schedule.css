@@ -44,17 +44,17 @@ input[id$="job"] {
 select[id$="affect"] {
   width: 90px;
 }
-#worker_list {
+#worker-list {
   margin-top: 10px;
 }
-#primary-content-wrapper #worker_list li {
+#primary-content-wrapper #worker-list li {
   padding: 0;
   background: none;
 }
-#worker_list input[id$="id"] {
+#worker-list input[id$="id"] {
   display: none;
 }
-#worker_list select[id$="member"] {
+#worker-list select[id$="member"] {
   width: 170px;
 }
 .errors {

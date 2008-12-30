@@ -63,6 +63,6 @@ class WorkerForm(forms.ModelForm):
         fields = ('member', 'account')
     #taskid = forms.IntegerField(required=False, widget=forms.HiddenInput())
     
-WorkerAddFormSet = inlineformset_factory(models.Task, models.Worker, extra=1)
+AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, extra=1)
 WorkerFormSet = inlineformset_factory(models.Task, models.Worker, extra=0) #, min_num=1)
 

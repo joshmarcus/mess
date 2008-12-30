@@ -14,6 +14,7 @@
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/datasource/datasource-min.js"></script> 
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/autocomplete/autocomplete-min.js"></script>
   <script type="text/javascript" src="{{ MEDIA_URL }}yui/json/json-min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}yui/selector/selector-beta-min.js"></script>
   <!-- Custom JS -->
   <script type="text/javascript" src="{{ MEDIA_URL }}js/scheduling.js"></script>
   {# <script type="text/javascript" src="{{ MEDIA_URL }}js/cal_selector.js"></script> #}
@@ -33,7 +34,7 @@
     }
     YAHOO.util.Event.onDOMReady(selectDate);
     YAHOO.util.Event.onDOMReady(taskClickAssign);
-    YAHOO.util.Event.onDOMReady(checkWorker);
+    YAHOO.util.Event.onDOMReady(checkWorkers);
   </script>
   <!-- Calendar styles -->
   <style type="text/css">
@@ -57,13 +58,14 @@
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-schedule next_date|date:"Y-m-d" %}">&rarr;</a>
       </h2>
-      <div id="task-add" class="task-form task-add-form{% if not add_form.errors %} hidden{% endif %}">
+      <div id="task-add" class="task-form task-add-form{% if not add_task_form.errors %} hidden{% endif %}">
         <form class="add-form" method="post" name="add">
-          {% with add_form as form %}
+          {% with add_task_form as form %}
+          {% with add_recur_form as recur_form %}
           {% with add_worker_formset as worker_formset %}
           {% include "scheduling/snippets/schedule_task_form.html" %}
-          {% endwith %}{% endwith %}
-          <div class="hidden">{{ add_form.affect }}</div>
+          {% endwith %}{% endwith %}{% endwith %}
+          <div class="hidden">{{ add_task_form.affect }}</div>
           <p style="margin:30px 0 0 0"><input type="submit" value="Save" id="save" name="save-add" /> <input onclick="taskAddCancel()" type="button" value="Cancel" /></p>
         </form>
       </div>
@@ -73,6 +75,53 @@
           <th>Job</th>
           <th>Workers</th>
         </tr>
+        {% for task in tasks %}
+        <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}">
+          <td class="time">
+          {% if task.job.deadline %}
+            {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
+          {% else %}
+            {{ task.time|date:"P" }} &ndash; {{ task.get_end|date:"P" }}
+          {% endif %}
+            <br />
+          {% if task.recur_rule %}
+            (recurs every {{ task.get_recurrence_display }})
+          {% endif %}
+          </td>
+          <td>{{ task.job }}</td>
+          <td>
+            <ul>
+            {% for worker in task.workers.all %}
+              {% if worker.assigned %}
+              <li><span title="{% for phone in worker.member.phones.all %} {{ phone }}{% endfor %}">{{ worker.member }}</span>, {{ worker.account }}</li>
+              {% else %}
+              <li class="unassigned">Unassigned</li>
+              {% endif %}
+            {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        <tr class="task-edit{% if not task.form.errors %} hidden{% endif %}">
+          <td colspan="3" style="padding:0">
+            <div class="task-form task-edit-form">
+              <form method="post" name="edit{{ task.form.prefix }}">
+                <input type="hidden" name="task-index" value="{{ task.form.prefix }}" />
+                {% with task.form as form %}
+                {% with task.recur_form as recur_form %}
+                {% with task.worker_formset as worker_formset %}
+                {% include "scheduling/snippets/schedule_task_form.html" %}
+                {% endwith %}{% endwith %}{% endwith %}
+                <div class="form-chunk{% if not task.recur_rule %} hidden{% endif %}">
+                  <label for="id_{{ task.form.prefix }}-affect">Affect:</label>
+                  {{ task.form.affect }}
+                </div>
+                <p style="margin:30px 0 0 0"><input type="submit" value="Save" class="save" /> <input type="submit" value="Remove" name="remove" /> <input onclick="taskEditCancel(this)" type="button" value="Cancel" /></p>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      {% comment %}
         {% for group in task_groups %}
         <tr class="task-display {% cycle "odd" "even" %}{% if group.form.errors %} hidden{% endif %}">
           <td class="time">
@@ -104,10 +153,11 @@
             <div class="task-form task-edit-form">
               <form method="post" name="edit{{ group.form.prefix }}">
                 <input type="hidden" name="group-index" value="{{ group.form.prefix }}" />
-                {% with group.form as form %}
-                {% with group.worker_formset as worker_formset %}
+                {% with task.form as form %}
+                {% with task.recur_form as recur_form %}
+                {% with task.worker_formset as worker_formset %}
                 {% include "scheduling/snippets/schedule_task_form.html" %}
-                {% endwith %}{% endwith %}
+                {% endwith %}{% endwith %}{% endwith %}
                 <div class="form-chunk{% if not group.first_task.frequency and group.first_task.interval %} hidden{% endif %}">
                   <label for="id_{{ group.form.prefix }}-affect">Affect:</label>
                   {{ group.form.affect }}
@@ -118,13 +168,12 @@
           </td>
         </tr>
         {% endfor %}
+      {% endcomment %}
       </table>
     </div>
   </div>
   <div id="right-column">
     <h3 id="right-column-heading">Calendar</h3>
     <div id="cal1Container"></div>
-      {# <div id="task-list"></div> #}
-      {# <div id="task-form"> </div> #}
   </div>
 {% endblock content %}

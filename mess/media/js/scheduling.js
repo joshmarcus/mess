@@ -38,7 +38,8 @@ YAHOO.util.Event.onDOMReady(YAHOO.schedule.setupCal);
 function addForm(formsetPrefix, baseURL) {
   var totalForms = document.getElementById('id_' + formsetPrefix + 
       '-TOTAL_FORMS');
-  var sUrl = baseURL + '?index=' + totalForms.value;
+  var sUrl = baseURL + '?index=' + totalForms.value + '&prefix=' + 
+      formsetPrefix;
   totalForms.value = parseInt(totalForms.value) + 1;
   var callback = {
     success: function(o) {
@@ -49,7 +50,7 @@ function addForm(formsetPrefix, baseURL) {
       // focus on first element in added form
       newFields = writeRoot.previousSibling;
       newFields.getElementsByTagName('select')[0].focus();
-      var removeFormA = document.getElementById(o.argument[0] + '-remove');
+      var removeFormA = document.getElementById('remove-' + o.argument[0]);
       YAHOO.util.Dom.removeClass(removeFormA, 'hidden');
     },
     failure: function(o) {},
@@ -66,16 +67,20 @@ function removeForm(formsetPrefix) {
   lastForm = YAHOO.util.Dom.getPreviousSibling(writeRoot);
   lastForm.parentNode.removeChild(lastForm);
   if (totalForms.value == 1) {
-    var removeFormA = document.getElementById(formsetPrefix + '-remove');
+    var removeFormA = document.getElementById('remove-' + formsetPrefix);
     YAHOO.util.Dom.addClass(removeFormA, 'hidden');
   }
   document.getElementById('save').focus();
 }
-function checkWorker() {
-  var totalForms = document.getElementById('id_worker-TOTAL_FORMS');
-  if (totalForms.value > 1) {
-    var removeFormA = document.getElementById('worker-remove');
-    YAHOO.util.Dom.removeClass(removeFormA, 'hidden');
+function checkWorkers() {
+  var totalForms = YAHOO.util.Selector.query('form input[id$="TOTAL_FORMS"]');
+  for (i=0; i<totalForms.length; i++) {
+    var totalForm = totalForms[i];
+    if (totalForm.value > 1) {
+      formPrefix = totalForm.name.replace('-TOTAL_FORMS', '');
+      var removeFormA = document.getElementById('remove-' + formPrefix);
+      YAHOO.util.Dom.removeClass(removeFormA, 'hidden');
+    }
   }
 }
 function resetTaskDisplay() {
