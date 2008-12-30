@@ -83,7 +83,7 @@ class Task(models.Model):
     objects = TaskManager()
     
     class Meta:
-        ordering = ['job']
+        ordering = ['time']
 
     def __unicode__(self):
         return unicode(self.job) + ' - ' + str(self.time)
@@ -100,16 +100,31 @@ class Task(models.Model):
     #    super(Task, self).save(force_insert, force_update)
 
     def set_recur_rule(self, frequency, interval, until):
+        if self.recur_rule:
+            recur_tasks = self.recur_rule.task_set.all()
+            # delete all future tasks
+            future_tasks = recur_tasks.filter(time__gt==self.time)
+            for task in future_tasks:
+                task.delete()
+            # set current recur_rule to end on previous task if there is one
+            previous_task = recur_tasks.filter(time__lt==self.time).order_by(
+                    '-time')[1]
+            if previous_task:
+                self.recur_rule.until = previous_task.time
+                self.recur_rule.save()
+            else:
+                self.recur_rule.delete()
         recur_rule = RecurRule(frequency=frequency, interval=interval, 
                 until=until)
         recur_rule.save()
         self.recur_rule = recur_rule
         self.save()
-        self.update_buffer()
 
-    def modify_recur_rule(self):
-        # only affect tasks from this task forward
-        recur_tasks = self.recur_rule.task_set.filter(time__gte==self.time)
+    def exclude_from_recur_rule(self):
+        exclude_date = Exclusion(date=self.time, recur_rule=self.recur_rule)
+        exclude_date.save()
+        self.recur_rule = None
+        self.save()
 
     def update_buffer(self):
         """Update the 2-year date buffer."""

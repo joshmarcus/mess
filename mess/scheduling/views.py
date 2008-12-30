@@ -104,8 +104,10 @@ def schedule(request, date=None):
                 if worker not in workers:
                     worker.delete()
             if recur_form.changed_data:
-                if task.recur_rule:
-                    task.del_recur_rule()
+                frequency = recur_form.cleaned_data['frequency']
+                interval = recur_form.cleaned_data['interval']
+                until = recur_form.cleaned_data['until']
+                task.set_recur_rule(frequency, interval, until)
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
 
