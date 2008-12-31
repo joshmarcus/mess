@@ -26,6 +26,9 @@ input[id$="hours"] {
   width: 25px;
   margin-right: 10px;
 }
+select[id$="recur_rule"] {
+  display: none;
+}
 select[id$="frequency"] {
   width: 80px;
   margin-right: 10px;

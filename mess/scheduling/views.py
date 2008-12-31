@@ -98,7 +98,9 @@ def schedule(request, date=None):
             # must iterate through worker forms to include unassigned (blank)
             workers = []
             for worker_form in worker_formset.forms:
-                worker = worker_form.save()
+                worker = worker_form.save(commit=False)
+                worker.task = task
+                worker.save()
                 workers.append(worker)
             for worker in task.workers.all():
                 if worker not in workers:
@@ -108,6 +110,7 @@ def schedule(request, date=None):
                 interval = recur_form.cleaned_data['interval']
                 until = recur_form.cleaned_data['until']
                 task.set_recur_rule(frequency, interval, until)
+                task.update_buffer()
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
 

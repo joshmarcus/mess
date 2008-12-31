@@ -8,6 +8,7 @@
   <span class="errors">{{ form.time.errors|join:" " }} {{ form.hours.errors|join:" " }}</span>
 </div>
 <div class="form-chunk">
+  {{ form.recur_rule }}
   <label for="id_{{ recur_form.prefix }}-frequency">Frequency:</label> {{ recur_form.frequency }}
   <span class="errors">{{ recur_form.frequency.errors|join:" " }}</span>
 </div>

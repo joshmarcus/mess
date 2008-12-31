@@ -38,6 +38,8 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = models.Task
     time = ParseDateTimeField(widget=forms.SplitDateTimeWidget())
+    #recur_rule = forms.IntegerField(initial=self.instance.recur_rule.id, 
+    #        widget=forms.HiddenInput)
     affect = forms.ChoiceField(choices=AFFECT_CHOICES)
 
 class JobForm(forms.ModelForm):

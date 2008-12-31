@@ -103,13 +103,16 @@ class Task(models.Model):
         if self.recur_rule:
             recur_tasks = self.recur_rule.task_set.all()
             # delete all future tasks
-            future_tasks = recur_tasks.filter(time__gt==self.time)
+            future_tasks = recur_tasks.filter(time__gt=self.time)
             for task in future_tasks:
+                for worker in task.workers.all():
+                    worker.delete()
                 task.delete()
             # set current recur_rule to end on previous task if there is one
-            previous_task = recur_tasks.filter(time__lt==self.time).order_by(
-                    '-time')[1]
-            if previous_task:
+            past_tasks = recur_tasks.filter(time__lt=self.time).order_by(
+                    '-time')
+            if past_tasks:
+                previous_task = past_tasks[0]
                 self.recur_rule.until = previous_task.time
                 self.recur_rule.save()
             else:
@@ -132,8 +135,8 @@ class Task(models.Model):
             return
         frequency = getattr(rrule, 
                 self.recur_rule.get_frequency_display().upper())
-        today = datetime.today()
-        two_years_hence = today + datetime.timedelta(years=2)
+        today = datetime.datetime.today()
+        two_years_hence = today + datetime.timedelta(731)
         until = self.recur_rule.until or two_years_hence
         recur = rrule.rrule(frequency, dtstart=self.time, 
                 interval=self.recur_rule.interval, until=until)
@@ -149,8 +152,12 @@ class Task(models.Model):
             if task_date in existing_dates:
                 continue
             task = Task(job=self.job, time=task_date, hours=self.hours,
-                    recur_rule=self.recur_rule, workers=self.workers)
+                    recur_rule=self.recur_rule)
             task.save()
+            for worker in self.workers.all():
+                new_worker = Worker(task=task, member=worker.member, 
+                        account=worker.account)
+                new_worker.save()
         
     def get_recurrence_display(self):
         if self.recur_rule:
