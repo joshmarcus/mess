@@ -88,6 +88,11 @@ class Task(models.Model):
     def __unicode__(self):
         return unicode(self.job) + ' - ' + str(self.time)
 
+    def delete(self):
+        for worker in self.workers.all():
+            worker.delete()
+        super(Task, self).delete()
+
     def get_end(self):
         delta_hours = datetime.timedelta(hours=float(self.hours))
         end = self.time + delta_hours
@@ -100,13 +105,12 @@ class Task(models.Model):
     #    super(Task, self).save(force_insert, force_update)
 
     def set_recur_rule(self, frequency, interval, until):
+        exclusions = []
         if self.recur_rule:
             recur_tasks = self.recur_rule.task_set.all()
             # delete all future tasks
             future_tasks = recur_tasks.filter(time__gt=self.time)
             for task in future_tasks:
-                for worker in task.workers.all():
-                    worker.delete()
                 task.delete()
             # set current recur_rule to end on previous task if there is one
             past_tasks = recur_tasks.filter(time__lt=self.time).order_by(
@@ -115,11 +119,12 @@ class Task(models.Model):
                 previous_task = past_tasks[0]
                 self.recur_rule.until = previous_task.time
                 self.recur_rule.save()
-            else:
-                self.recur_rule.delete()
+            exclusions = self.recur_rule.exclusion_set.all()
         recur_rule = RecurRule(frequency=frequency, interval=interval, 
                 until=until)
         recur_rule.save()
+        for exclusion in exclusions:
+            exclusion.recur_rule = recur_rule
         self.recur_rule = recur_rule
         self.save()
 
@@ -144,8 +149,7 @@ class Task(models.Model):
         recur_set.rrule(recur)
         for exclusion in self.recur_rule.exclusion_set.all():
             recur_set.exdate(exclusion.date)
-        existing_tasks = Task.objects.filter(recur_rule=self.recur_rule, 
-                time__gte=today)
+        existing_tasks = Task.objects.filter(recur_rule=self.recur_rule)
         existing_dates = [task.time for task in existing_tasks]
         for task_date in recur_set:
             # don't re-create existing tasks

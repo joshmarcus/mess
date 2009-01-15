@@ -7,8 +7,8 @@ from django.forms.models import inlineformset_factory
 from mess.scheduling import models
 
 AFFECT_CHOICES = (
-    (0, 'this time'),
-    (1, 'all times'),
+    (0, 'all future times'),
+    (1, 'this time only'),
 )
 
 class ParseDateTimeField(forms.Field):

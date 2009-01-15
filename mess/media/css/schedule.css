@@ -45,7 +45,7 @@ input[id$="job"] {
   margin-right: 10px;
 }
 select[id$="affect"] {
-  width: 90px;
+  width: 125px;
 }
 #worker-list {
   margin-top: 10px;

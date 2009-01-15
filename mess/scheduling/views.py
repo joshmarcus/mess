@@ -86,16 +86,25 @@ def schedule(request, date=None):
         else:
             task_index = request.POST.get('task-index')
             task = prepared_tasks[int(task_index)]
+            if 'remove' in request.POST:
+                this_time_only = [y for x, y in request.POST.items() if 
+                        x.endswith('affect')][0]
+                if this_time_only:
+                    task.exclude_from_recur_rule()
+                    task.delete()
+                else:
+                    task.set_recur_rule()
             task_form = task.form = forms.TaskForm(request.POST, 
                     instance=task, prefix=task_index)
             recur_form = task.recur_form = forms.RecurForm(request.POST, 
                     instance=task, prefix='recur-%s' % task_index)
             worker_formset = task.worker_formset = forms.WorkerFormSet(
-                    request.POST, instance=task, prefix='worker-%s' % task_index)
+                    request.POST, instance=task, 
+                    prefix='worker-%s' % task_index)
         if (task_form.is_valid() and recur_form.is_valid() and 
                 worker_formset.is_valid()):
             task = task_form.save()
-            # must iterate through worker forms to include unassigned (blank)
+            # must iterate through worker forms to include unassigned
             workers = []
             for worker_form in worker_formset.forms:
                 worker = worker_form.save(commit=False)
@@ -105,7 +114,11 @@ def schedule(request, date=None):
             for worker in task.workers.all():
                 if worker not in workers:
                     worker.delete()
-            if recur_form.changed_data:
+            this_time_only = int(task_form.cleaned_data['affect'])
+            if this_time_only:
+                if task.recur_rule:
+                    task.exclude_from_recur_rule()
+            else:
                 frequency = recur_form.cleaned_data['frequency']
                 interval = recur_form.cleaned_data['interval']
                 until = recur_form.cleaned_data['until']

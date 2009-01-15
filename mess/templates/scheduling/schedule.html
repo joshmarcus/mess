@@ -85,7 +85,7 @@
           {% endif %}
             <br />
           {% if task.recur_rule %}
-            (recurs every {{ task.get_recurrence_display }})
+          (recurs every {{ task.get_recurrence_display }}{% if task.recur_rule.until %} until {{ task.recur_rule.until|date:"F jS" }}{% endif %})
           {% endif %}
           </td>
           <td>{{ task.job }}</td>
