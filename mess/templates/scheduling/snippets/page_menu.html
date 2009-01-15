@@ -3,7 +3,7 @@
   <ul id="local-nav">
     <li><a  href="{% url scheduling-schedule-today %}"{% active_class request 'scheduling/schedule' %}>Schedule</a></li>
     {# <li><a href="{% url scheduling-assign %}">Assign</a></li> #}
-    <li><a href="{% url scheduling-timecard %}"{% active_class request 'scheduling/timecard' %}>Timecard</a></li>
+    <li><a href="{% url scheduling-timecard-today %}"{% active_class request 'scheduling/timecard' %}>Timecard</a></li>
     <li class="last-item"><a href="{% url scheduling-jobs %}"{% active_class request 'scheduling/jobs' %}>Jobs</a></li>
   </ul>
 {% endblock %}

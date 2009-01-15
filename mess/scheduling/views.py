@@ -176,12 +176,27 @@ def worker_form(request):
 
 # filter for date
 @user_passes_test(lambda u: u.is_staff)
-def timecard(request):
-    context = {
-        'jobs': models.Job.objects.all()
-    }
-    return render_to_response('scheduling/timecard.html', context,
-                                context_instance=RequestContext(request))    
+def timecard(request, date=None):
+    context = RequestContext(request)
+    if date:
+        try:
+            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            raise Http404
+    else:
+        today = datetime.date.today()
+        # need datetime object for rrule, but datetime.today is, like, now
+        date = datetime.datetime(today.year, today.month, today.day)
+    tasks = models.Task.objects.filter(time__year=date.year).filter(
+            time__month=date.month).filter(time__day=date.day).order_by(
+            'time', 'hours', 'job', 'recur_rule')
+    context['tasks'] = tasks
+    context['date'] = date
+    a_day = datetime.timedelta(days=1)
+    context['previous_date'] = date - a_day
+    context['next_date'] = date + a_day
+    template = loader.get_template('scheduling/timecard.html')
+    return HttpResponse(template.render(context))
 
 @user_passes_test(lambda u: u.is_staff)
 def jobs(request):
