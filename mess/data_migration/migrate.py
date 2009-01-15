@@ -28,6 +28,7 @@ from random import choice
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from django.db import transaction
 
 from membership import models
 #from mess.membership.models import *
@@ -187,6 +188,7 @@ def aprint(a):
 
 
 # actual importation code
+@transaction.commit_on_success
 def main():
 
 # make sure a datafile argment was passed in
