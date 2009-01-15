@@ -57,7 +57,6 @@ class TimecardForm(forms.ModelForm):
 class RecurForm(forms.ModelForm):
     class Meta:
         model = models.RecurRule
-        exclude = ('start', )
 
 class WorkerForm(forms.ModelForm):
     class Meta:

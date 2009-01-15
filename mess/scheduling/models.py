@@ -53,11 +53,6 @@ class RecurRule(models.Model):
     interval = models.PositiveIntegerField(blank=True)
     until = models.DateTimeField(null=True, blank=True)
 
-    #def save(self, force_insert=False, force_update=False):
-    #    # XXX need to get task info for creating new tasks from first 
-    #    #     related task, so need to do nothing on first save (create)
-    #    super(RecurRule, self).save(force_insert, force_update)
-
 
 class Exclusion(models.Model):
     date = models.DateTimeField()
@@ -97,12 +92,6 @@ class Task(models.Model):
         delta_hours = datetime.timedelta(hours=float(self.hours))
         end = self.time + delta_hours
         return end
-
-    #def save(self, force_insert=False, force_update=False):
-    #    # TODO for newly created Task, if there's a recur_rule create tasks 
-    #    # for two years.
-    #    # For modified, remove old tasks and create new ones.
-    #    super(Task, self).save(force_insert, force_update)
 
     def set_recur_rule(self, frequency, interval, until):
         exclusions = []
@@ -188,6 +177,7 @@ class Worker(models.Model):
     member = models.ForeignKey(Member, null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
 
+    # XXX: move to timecard
     hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
             null=True, blank=True)
     excused = models.BooleanField()

@@ -87,13 +87,21 @@ def schedule(request, date=None):
             task_index = request.POST.get('task-index')
             task = prepared_tasks[int(task_index)]
             if 'remove' in request.POST:
-                this_time_only = [y for x, y in request.POST.items() if 
-                        x.endswith('affect')][0]
+                affects = [y for x, y in request.POST.items() if 
+                        x.endswith('affect')]
+                this_time_only = int(affects[0]) if affects else None
                 if this_time_only:
                     task.exclude_from_recur_rule()
                     task.delete()
                 else:
-                    task.set_recur_rule()
+                    if task.recur_rule:
+                        future_tasks = task.recur_rule.task_set.filter(
+                                time__gt=task.time)
+                        for future_task in future_tasks:
+                            future_task.delete()
+                    task.delete()
+                return HttpResponseRedirect(reverse('scheduling-schedule', 
+                        args=[date.date()]))
             task_form = task.form = forms.TaskForm(request.POST, 
                     instance=task, prefix=task_index)
             recur_form = task.recur_form = forms.RecurForm(request.POST, 
@@ -103,6 +111,17 @@ def schedule(request, date=None):
                     prefix='worker-%s' % task_index)
         if (task_form.is_valid() and recur_form.is_valid() and 
                 worker_formset.is_valid()):
+            # improved future task handling
+            #for key, value in task_form.cleaned_data.items():
+            #    if key == 'affect':
+            #        if value:  
+            #            # affect only this time
+            #            task = task_form.save()
+            #            break
+            #        else:
+            #            continue
+            #    if value != task.getattr(key):
+            #        task.update_buffer(key, value)
             task = task_form.save()
             # must iterate through worker forms to include unassigned
             workers = []
@@ -119,11 +138,12 @@ def schedule(request, date=None):
                 if task.recur_rule:
                     task.exclude_from_recur_rule()
             else:
-                frequency = recur_form.cleaned_data['frequency']
-                interval = recur_form.cleaned_data['interval']
-                until = recur_form.cleaned_data['until']
-                task.set_recur_rule(frequency, interval, until)
-                task.update_buffer()
+                if recur_form.changed_data:
+                    frequency = recur_form.cleaned_data['frequency']
+                    interval = recur_form.cleaned_data['interval']
+                    until = recur_form.cleaned_data['until']
+                    task.set_recur_rule(frequency, interval, until)
+                    task.update_buffer()
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
 
