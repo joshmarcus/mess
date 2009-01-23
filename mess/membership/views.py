@@ -50,6 +50,7 @@ def members(request):
                 members = members.exclude(status='L')
     else:
         form = forms.MemberListFilterForm()
+        members = members.filter(status='a')
     context['form'] = form
     pager = p.Paginator(members, PER_PAGE)
     context['pager'] = pager

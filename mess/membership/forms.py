@@ -67,10 +67,10 @@ class MemberListFilterForm(forms.Form):
     search = forms.CharField(required=False)
     sort_by = forms.ChoiceField(choices=SORT_CHOICES)
     active = forms.BooleanField(initial=True, required=False)
-    inactive = forms.BooleanField(initial=True, required=False)
-    quit = forms.BooleanField(initial=True, required=False)
-    missing = forms.BooleanField(initial=True, required=False)
-    leave_of_absence = forms.BooleanField(initial=True, required=False)
+    inactive = forms.BooleanField(initial=False, required=False)
+    quit = forms.BooleanField(initial=False, required=False)
+    missing = forms.BooleanField(initial=False, required=False)
+    leave_of_absence = forms.BooleanField(initial=False, required=False)
 
 
 #class RelatedAccountsForm(forms.Form):
