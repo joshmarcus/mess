@@ -7,10 +7,16 @@
     <meta name="author" content="Digger Vermont, Mike Ball, Gabriel Farrell"/>
     <link href="{{ MEDIA_URL }}css/base.css" type="text/css" rel="Stylesheet" media="screen" />
     <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+    {{ form.media }}   {# used by Django autocomplete widget #}} 
+    {% if form.media %}
+      <link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
+    {% endif %}
     <title>{% block title %}The MESS: {{ page_name }}{% endblock %}</title>
     {% block head %}{% endblock %}
   </head>
-  <body class="yui-skin-sam">
+  <!-- class yui-skin-sam on the body tends to misalign the autocomplete :( -->
+  <!-- <body class="yui-skin-sam"> -->
+  <body>
     <div id="wrapper">	
       <div id="header">
           {% if not user.is_authenticated %}
