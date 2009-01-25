@@ -52,7 +52,7 @@ select[id$="affect"] {
 }
 #primary-content-wrapper #worker-list li {
   padding: 0;
-  background: none;
+/*  background: none;    breaks background of autocomplete fields */
 }
 #worker-list input[id$="id"] {
   display: none;

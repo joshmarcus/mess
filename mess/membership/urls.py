@@ -1,4 +1,9 @@
 from django.conf.urls.defaults import *
+from mess.membership import models
+from autocomplete.views import autocomplete
+
+autocomplete.register('account', models.Account.objects.all(), ('name',), limit=10, label='name')
+autocomplete.register('member_with_paccount', models.Member.objects.all(), ('user__first_name__startswith','user__last_name__startswith','accounts__name__startswith'), limit=10, label=lambda m: m.name_and_paccount() )
 
 urlpatterns = patterns('mess.membership.views',
     url(r'^accounts$', 'accounts', name='accounts'),
@@ -23,5 +28,6 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^(?P<username>\w+)/remove_email/(?P<id>\d+)$', 'remove_contact', kwargs={'medium': 'email'}, name='membership-remove-email'),
     url(r'^(?P<username>\w+)/remove_phone/(?P<id>\d+)$', 'remove_contact', kwargs={'medium': 'phone'}, name='membership-remove-phone'),
 
+    url('^autocomplete/(\w+)/$', autocomplete, name='membership-autocomplete'),
     #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
 )

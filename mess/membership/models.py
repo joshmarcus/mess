@@ -54,6 +54,10 @@ class Member(models.Model):
             primary = self.accounts.all()[0]
         return primary
 
+    def name_and_paccount(self):
+        return '%s %s (%s)' % (self.user.first_name, self.user.last_name, 
+                               self.primary_account().name)
+
     class Meta:
         ordering = ['user__username']
 

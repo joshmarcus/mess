@@ -56,7 +56,7 @@ class AutoComplete(object):
         if isinstance(label,basestring):
             return getattr(qs.filter(id=value)[0],label)
         else:
-            return str(qs.filter(id=value)[0])
+            return label(qs.filter(id=value)[0])
         
 
 autocomplete = AutoComplete()

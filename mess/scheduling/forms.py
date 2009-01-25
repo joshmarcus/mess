@@ -3,8 +3,10 @@ from datetime import datetime
 
 from django import forms
 from django.forms.models import inlineformset_factory
+from mess.autocomplete import AutoCompleteWidget
 
 from mess.scheduling import models
+from mess.membership import models as m_models
 
 AFFECT_CHOICES = (
     (0, 'all future times'),
@@ -63,7 +65,15 @@ class WorkerForm(forms.ModelForm):
         model = models.Worker
         fields = ('member', 'account')
     #taskid = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+            widget=AutoCompleteWidget('account', 
+                    view_name='membership-autocomplete', canroundtrip=True), 
+            help_text='........')
+    member = forms.ModelChoiceField(m_models.Member.objects.all(),
+            widget=AutoCompleteWidget('member_with_paccount',
+                    view_name='membership-autocomplete', canroundtrip=True),
+            help_text='........')
     
-AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, extra=1)
-WorkerFormSet = inlineformset_factory(models.Task, models.Worker, extra=0) #, min_num=1)
+AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=1)
+WorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=0) #, min_num=1)
 

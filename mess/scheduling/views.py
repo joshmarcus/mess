@@ -1,4 +1,4 @@
-import datetime
+import datetime, time
 from dateutil.relativedelta import relativedelta
 
 #from django.conf import settings
@@ -38,7 +38,8 @@ def unassigned_days(firstday, lastday):
     
 def unassigned_for_month(request, month):
     try:
-        date = datetime.datetime.strptime(month, "%Y-%m")
+#        date = datetime.datetime.strptime(month, "%Y-%m") Python 2.4 workaround
+        date = datetime.datetime(*time.strptime(month, "%Y-%m")[0:5])
     except ValueError:
         raise Http404
     firstday = date + relativedelta(day=1)
@@ -51,7 +52,8 @@ def schedule(request, date=None):
     context = RequestContext(request)
     if date:
         try:
-            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+#            date = datetime.datetime.strptime(date, "%Y-%m-%d") Python 2.4 workaround
+            date = datetime.datetime(*time.strptime(date, "%Y-%m-%d")[0:5])
         except ValueError:
             raise Http404
     else:
@@ -89,7 +91,12 @@ def schedule(request, date=None):
             if 'remove' in request.POST:
                 affects = [y for x, y in request.POST.items() if 
                         x.endswith('affect')]
-                this_time_only = int(affects[0]) if affects else None
+                # Sorry, this line breaks my Python 2.4.  -Paul
+                #this_time_only = int(affects[0]) if affects else None
+                if affects:
+                    this_time_only = int(affects[0])
+                else:
+                    this_time_only = None
                 if this_time_only:
                     task.exclude_from_recur_rule()
                     task.delete()
@@ -159,6 +166,8 @@ def schedule(request, date=None):
     context['add_task_form'] = add_task_form
     context['add_recur_form'] = add_recur_form
     context['add_worker_formset'] = add_worker_formset
+    # to include autocomplete js media files:
+    context['form'] = {'media':add_worker_formset.media}
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))
 
@@ -180,7 +189,8 @@ def timecard(request, date=None):
     context = RequestContext(request)
     if date:
         try:
-            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+#            date = datetime.datetime.strptime(date, "%Y-%m-%d")  Python 2.4 workaround
+            date = datetime.datetime(*time.strptime(date, "%Y-%m-%d")[0:5])
         except ValueError:
             raise Http404
     else:

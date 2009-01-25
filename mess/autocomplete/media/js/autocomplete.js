@@ -18,9 +18,12 @@ function yui_autocomplete(name, ac_url, force_selection) {
 
         var input = document.getElementById("id_"+name);
         var container = document.createElement("div");
+        YAHOO.util.Dom.addClass(container, "yui-skin-sam");
         YAHOO.util.Dom.insertAfter(container, input);
-        if (!YAHOO.util.Dom.hasClass(document.body, "yui-skin-sam"))
-            YAHOO.util.Dom.addClass(document.body, "yui-skin-sam");
+// Please don't put yui-skin-sam on the whole body.  It causes the autocomplete
+// to eat the next HTML chunk.  (I don't know why.)   --Paul Dexter
+//      if (!YAHOO.util.Dom.hasClass(document.body, "yui-skin-sam"))
+//          YAHOO.util.Dom.addClass(document.body, "yui-skin-sam");
 
         var autocomplete = new YAHOO.widget.AutoComplete(input, container, datasource);
         autocomplete.resultTypeList = false;
