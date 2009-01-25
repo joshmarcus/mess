@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+    'mess.autocomplete',
     'mess.accounting',
     'mess.membership',
     #'mess.profiles',
