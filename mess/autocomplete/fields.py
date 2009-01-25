@@ -1,7 +1,7 @@
 from django.forms.util import ValidationError
 from django.forms import fields
 from django.utils.translation import ugettext_lazy as _
-from autocomplete import AutoCompleteWidget, autocomplete
+from mess.autocomplete import AutoCompleteWidget, autocomplete
 
 class AutoCompleteField(fields.Field):
 

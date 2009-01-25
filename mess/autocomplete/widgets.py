@@ -3,7 +3,7 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.utils.encoding import force_unicode
 from django.forms.util import flatatt
-from autocomplete.views import autocomplete
+from mess.autocomplete.views import autocomplete
 
 
 # FIXME not ready for admin edit page, need ac_id_%(name)s prefill (2 line of js).

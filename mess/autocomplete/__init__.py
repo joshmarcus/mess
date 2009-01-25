@@ -1,3 +1,3 @@
-from autocomplete.views import AutoComplete, autocomplete
-from autocomplete.widgets import AutoCompleteWidget
-from autocomplete.fields import AutoCompleteField
+from mess.autocomplete.views import AutoComplete, autocomplete
+from mess.autocomplete.widgets import AutoCompleteWidget
+from mess.autocomplete.fields import AutoCompleteField
