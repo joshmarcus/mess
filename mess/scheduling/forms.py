@@ -68,11 +68,11 @@ class WorkerForm(forms.ModelForm):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
             widget=AutoCompleteWidget('account', 
                     view_name='membership-autocomplete', canroundtrip=True), 
-            help_text='........')
+            required=False)
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
             widget=AutoCompleteWidget('member_with_paccount',
                     view_name='membership-autocomplete', canroundtrip=True),
-            help_text='........')
+            required=False)
     
 AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=1)
 WorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=0) #, min_num=1)

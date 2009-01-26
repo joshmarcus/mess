@@ -36,11 +36,22 @@ function yui_autocomplete(name, ac_url, force_selection) {
             selected_item = args[2];
             hidden.value = selected_item.id;
         });
+        var allforms = document.getElementsByTagName("form");
+        for (var i = 0; i < allforms.length; i++) {
+            var form = allforms[i];
+            YAHOO.util.Event.addListener(form, "submit", function (event, form) {
+                if (input.value == '')
+                    hidden.value = '';
+                if (selected_item.label != input.value && !force_selection)
+                    hidden.value = input.value;
+            });
+        }
+        /*  OLD CODE WAS....
         form = document.getElementsByTagName("form")[0];
         YAHOO.util.Event.addListener(form, "submit", function (event, form) {
             if (selected_item.label != input.value && !force_selection)
                 hidden.value = input.value;
-        });
+        });  */
     });
 }
 
