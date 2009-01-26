@@ -7,9 +7,6 @@ class ExclusionInline(admin.TabularInline):
 class TaskInline(admin.TabularInline):
     model = models.Task
 
-class WorkerInline(admin.TabularInline):
-    model = models.Worker
-
 class RecurRuleAdmin(admin.ModelAdmin):
     model = models.RecurRule
     inlines = (
@@ -20,13 +17,9 @@ class RecurRuleAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('job', 'time', 'hours')
     list_filter = ('job', )
-    inlines = (
-        WorkerInline,
-    )
 
 admin.site.register(models.Job)
 admin.site.register(models.RecurRule, RecurRuleAdmin)
 admin.site.register(models.Task, TaskAdmin)
 admin.site.register(models.Timecard)
 admin.site.register(models.Skill)
-admin.site.register(models.Worker)

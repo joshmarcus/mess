@@ -62,7 +62,7 @@ class Exclusion(models.Model):
 class TaskManager(models.Manager):
     'Custom manager to add extra methods'
     def unassigned(self):
-        return self.all().filter(models.Q(workers__member=None) | models.Q(workers__account=None))
+        return self.all().filter(models.Q(member=None) | models.Q(account=None))
 
 class Task(models.Model):
     """
@@ -72,16 +72,30 @@ class Task(models.Model):
     job = models.ForeignKey(Job)
     time = models.DateTimeField()
     hours = models.DecimalField(max_digits=4, decimal_places=2)
+    note = models.TextField(blank=True)
+
+    member = models.ForeignKey(Member, null=True, blank=True)
+    account = models.ForeignKey(Account, null=True, blank=True)
+
+    hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
+            null=True, blank=True)
+    excused = models.BooleanField()
+    makeup = models.BooleanField()
+    banked = models.BooleanField()
 
     recur_rule = models.ForeignKey(RecurRule, null=True, blank=True)
 
     objects = TaskManager()
     
     class Meta:
-        ordering = ['time']
+        ordering = ['time', 'hours', 'job']
 
     def __unicode__(self):
-        return unicode(self.job) + ' - ' + str(self.time)
+        return self.job + ' - ' + str(self.time)
+
+    @property
+    def assigned(self):
+        return bool(self.member or self.account)
 
     def delete(self):
         for worker in self.workers.all():
@@ -167,33 +181,6 @@ class Task(models.Model):
                 return '%s weeks' % self.recur_rule.interval
             if self.recur_rule.frequency == 'm':
                 return '%s months' % self.recur_rule.interval
-
-
-class Worker(models.Model):
-    """
-    A worker for a task.  Unassigned if member or account is left blank.
-    """
-    task = models.ForeignKey(Task, related_name='workers')
-    member = models.ForeignKey(Member, null=True, blank=True)
-    account = models.ForeignKey(Account, null=True, blank=True)
-
-    # XXX: move to timecard
-    hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
-            null=True, blank=True)
-    excused = models.BooleanField()
-    makeup = models.BooleanField()
-
-    note = models.TextField(blank=True)
-
-    class Meta:
-        ordering = ['member__user__username']
-
-    @property
-    def assigned(self):
-        return bool(self.member or self.account)
-
-    def __unicode__(self):
-        return u'%s, %s' % (self.member, self.account)
 
 
 class Timecard(models.Model):

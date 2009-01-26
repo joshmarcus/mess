@@ -22,17 +22,8 @@
   <span class="errors">{{ form.job.errors|join:" " }}</span>
 </div>
 <div class="form-chunk">
-  <label>Workers (members and the accounts they're working for):</label><br />
-  <span class="helptext">Leave fields blank for unassigned tasks.</span>
-  {{ worker_formset.management_form }}
-  <ul id="worker-list">
-  {% for worker_form in worker_formset.forms %}
-    <li>{{ worker_form.member }} {{ worker_form.account }}</li>
-  {% endfor %}
-    <li id="{{ worker_formset.prefix }}-writeroot" class="add" style="text-align:left">
-      <a class="add" href="" onclick="addForm('{{ worker_formset.prefix }}', '{% url scheduling-worker-form %}'); return false;" id="add-{{ worker_formset.prefix }}">Add</a>
-      <a class="remove hidden" href="" onclick="removeForm('{{ worker_formset.prefix }}'); return false;" id="remove-{{ worker_formset.prefix }}">Remove last</a>
-    </li>
-  </ul>
+  <label>Worker (member and the account the member is working for):</label><br />
+  <span class="helptext">Leave fields blank for unassigned tasks.</span><br />
+  {{ form.member }} {{ form.account }}</li>
 </div>
 

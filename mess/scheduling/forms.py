@@ -42,7 +42,7 @@ class TaskForm(forms.ModelForm):
     time = ParseDateTimeField(widget=forms.SplitDateTimeWidget())
     #recur_rule = forms.IntegerField(initial=self.instance.recur_rule.id, 
     #        widget=forms.HiddenInput)
-    affect = forms.ChoiceField(choices=AFFECT_CHOICES)
+    #affect = forms.ChoiceField(choices=AFFECT_CHOICES)
 
 class JobForm(forms.ModelForm):
     class Meta:
@@ -60,20 +60,20 @@ class RecurForm(forms.ModelForm):
     class Meta:
         model = models.RecurRule
 
-class WorkerForm(forms.ModelForm):
-    class Meta:
-        model = models.Worker
-        fields = ('member', 'account')
-    #taskid = forms.IntegerField(required=False, widget=forms.HiddenInput())
-    account = forms.ModelChoiceField(m_models.Account.objects.all(),
-            widget=AutoCompleteWidget('account', 
-                    view_name='membership-autocomplete', canroundtrip=True), 
-            required=False)
-    member = forms.ModelChoiceField(m_models.Member.objects.all(),
-            widget=AutoCompleteWidget('member_with_paccount',
-                    view_name='membership-autocomplete', canroundtrip=True),
-            required=False)
+#class WorkerForm(forms.ModelForm):
+#    class Meta:
+#        model = models.Worker
+#        fields = ('member', 'account')
+#    #taskid = forms.IntegerField(required=False, widget=forms.HiddenInput())
+#    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+#            widget=AutoCompleteWidget('account', 
+#                    view_name='membership-autocomplete', canroundtrip=True), 
+#            required=False)
+#    member = forms.ModelChoiceField(m_models.Member.objects.all(),
+#            widget=AutoCompleteWidget('member_with_paccount',
+#                    view_name='membership-autocomplete', canroundtrip=True),
+#            required=False)
     
-AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=1)
-WorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=0) #, min_num=1)
+#AddWorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=1)
+#WorkerFormSet = inlineformset_factory(models.Task, models.Worker, form=WorkerForm, extra=0) #, min_num=1)
 

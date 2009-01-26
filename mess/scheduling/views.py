@@ -46,7 +46,7 @@ def unassigned_for_month(request, month):
     lastday = date + relativedelta(day=31)
     days = unassigned_days(firstday, lastday)
     return HttpResponse(simplejson.dumps(days))
-    
+
 @user_passes_test(lambda u: u.is_staff)
 def schedule(request, date=None):
     context = RequestContext(request)
@@ -63,8 +63,6 @@ def schedule(request, date=None):
     add_task_form = forms.TaskForm(instance=models.Task(time=date), 
             prefix='add')
     add_recur_form = forms.RecurForm(prefix='recur-add')
-    add_worker_formset = forms.AddWorkerFormSet(instance=models.Task(), 
-            prefix='worker-add')
     tasks = models.Task.objects.filter(time__year=date.year).filter(
             time__month=date.month).filter(time__day=date.day).order_by(
             'time', 'hours', 'job', 'recur_rule')
@@ -73,8 +71,6 @@ def schedule(request, date=None):
         task.form = forms.TaskForm(instance=task, prefix=str(index))
         task.recur_form = forms.RecurForm(instance=task.recur_rule, 
                 prefix='recur-%s' % index)
-        task.worker_formset = forms.WorkerFormSet(instance=task, 
-                prefix='worker-%s' % index)
         prepared_tasks.append(task)
 
     if request.method == 'POST':
@@ -83,8 +79,6 @@ def schedule(request, date=None):
                     prefix='add')
             recur_form = add_recur_form = forms.RecurForm(request.POST, 
                     prefix='recur-add')
-            worker_formset = add_worker_formset = forms.AddWorkerFormSet(
-                    request.POST, instance=models.Task(), prefix='worker-add')
         else:
             task_index = request.POST.get('task-index')
             task = prepared_tasks[int(task_index)]
@@ -113,33 +107,8 @@ def schedule(request, date=None):
                     instance=task, prefix=task_index)
             recur_form = task.recur_form = forms.RecurForm(request.POST, 
                     instance=task, prefix='recur-%s' % task_index)
-            worker_formset = task.worker_formset = forms.WorkerFormSet(
-                    request.POST, instance=task, 
-                    prefix='worker-%s' % task_index)
-        if (task_form.is_valid() and recur_form.is_valid() and 
-                worker_formset.is_valid()):
-            # improved future task handling
-            #for key, value in task_form.cleaned_data.items():
-            #    if key == 'affect':
-            #        if value:  
-            #            # affect only this time
-            #            task = task_form.save()
-            #            break
-            #        else:
-            #            continue
-            #    if value != task.getattr(key):
-            #        task.update_buffer(key, value)
+        if task_form.is_valid() and recur_form.is_valid():
             task = task_form.save()
-            # must iterate through worker forms to include unassigned
-            workers = []
-            for worker_form in worker_formset.forms:
-                worker = worker_form.save(commit=False)
-                worker.task = task
-                worker.save()
-                workers.append(worker)
-            for worker in task.workers.all():
-                if worker not in workers:
-                    worker.delete()
             this_time_only = int(task_form.cleaned_data['affect'])
             if this_time_only:
                 if task.recur_rule:
@@ -165,22 +134,9 @@ def schedule(request, date=None):
     context['tasks'] = prepared_tasks
     context['add_task_form'] = add_task_form
     context['add_recur_form'] = add_recur_form
-    context['add_worker_formset'] = add_worker_formset
     # to include autocomplete js media files:
-    context['form'] = {'media':add_worker_formset.media}
+    #context['form'] = {'media':add_worker_formset.media}
     template = loader.get_template('scheduling/schedule.html')
-    return HttpResponse(template.render(context))
-
-def worker_form(request):
-    context = RequestContext(request)
-    prefix = request.GET.get('prefix')
-    index = request.GET.get('index')
-    if index:
-        form = forms.WorkerForm(prefix='%s-%s' % (prefix, index))
-    else:
-        form = forms.WorkerForm()
-    context['form'] = form
-    template = loader.get_template('scheduling/snippets/worker_form.html')
     return HttpResponse(template.render(context))
 
 # filter for date
