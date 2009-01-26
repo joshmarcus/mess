@@ -83,24 +83,12 @@ def schedule(request, date=None):
             task_index = request.POST.get('task-index')
             task = prepared_tasks[int(task_index)]
             if 'remove' in request.POST:
-                affects = [y for x, y in request.POST.items() if 
-                        x.endswith('affect')]
-                # Sorry, this line breaks my Python 2.4.  -Paul
-                #this_time_only = int(affects[0]) if affects else None
-                if affects:
-                    this_time_only = int(affects[0])
-                else:
-                    this_time_only = None
-                if this_time_only:
-                    task.exclude_from_recur_rule()
-                    task.delete()
-                else:
-                    if task.recur_rule:
-                        future_tasks = task.recur_rule.task_set.filter(
-                                time__gt=task.time)
-                        for future_task in future_tasks:
-                            future_task.delete()
-                    task.delete()
+                if task.recur_rule:
+                    future_tasks = task.recur_rule.task_set.filter(
+                            time__gt=task.time)
+                    for future_task in future_tasks:
+                        future_task.delete()
+                task.delete()
                 return HttpResponseRedirect(reverse('scheduling-schedule', 
                         args=[date.date()]))
             task_form = task.form = forms.TaskForm(request.POST, 
@@ -109,17 +97,12 @@ def schedule(request, date=None):
                     instance=task, prefix='recur-%s' % task_index)
         if task_form.is_valid() and recur_form.is_valid():
             task = task_form.save()
-            this_time_only = int(task_form.cleaned_data['affect'])
-            if this_time_only:
-                if task.recur_rule:
-                    task.exclude_from_recur_rule()
-            else:
-                if recur_form.changed_data:
-                    frequency = recur_form.cleaned_data['frequency']
-                    interval = recur_form.cleaned_data['interval']
-                    until = recur_form.cleaned_data['until']
-                    task.set_recur_rule(frequency, interval, until)
-                    task.update_buffer()
+            if recur_form.changed_data:
+                frequency = recur_form.cleaned_data['frequency']
+                interval = recur_form.cleaned_data['interval']
+                until = recur_form.cleaned_data['until']
+                task.set_recur_rule(frequency, interval, until)
+                task.update_buffer()
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
 

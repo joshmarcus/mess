@@ -97,11 +97,6 @@ class Task(models.Model):
     def assigned(self):
         return bool(self.member or self.account)
 
-    def delete(self):
-        for worker in self.workers.all():
-            worker.delete()
-        super(Task, self).delete()
-
     def get_end(self):
         delta_hours = datetime.timedelta(hours=float(self.hours))
         end = self.time + delta_hours
@@ -159,12 +154,9 @@ class Task(models.Model):
             if task_date in existing_dates:
                 continue
             task = Task(job=self.job, time=task_date, hours=self.hours,
+                    member=self.member, account=self.account, 
                     recur_rule=self.recur_rule)
             task.save()
-            for worker in self.workers.all():
-                new_worker = Worker(task=task, member=worker.member, 
-                        account=worker.account)
-                new_worker.save()
         
     def get_recurrence_display(self):
         if self.recur_rule:

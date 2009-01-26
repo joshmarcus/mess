@@ -90,15 +90,11 @@
           </td>
           <td>{{ task.job }}</td>
           <td>
-            <ul>
-            {% for worker in task.workers.all %}
-              {% if worker.assigned %}
-              <li><span title="{% for phone in worker.member.phones.all %} {{ phone }}{% endfor %}">{{ worker.member }}</span>, {{ worker.account }}</li>
-              {% else %}
-              <li class="unassigned">Unassigned</li>
-              {% endif %}
-            {% endfor %}
-            </ul>
+            {% if task.assigned %}
+            <span title="{% for phone in task.member.phones.all %} {{ phone }}{% endfor %}">{{ task.member }}</span>, {{ task.account }}</li>
+            {% else %}
+            <span class="unassigned">Unassigned</span>
+            {% endif %}
           </td>
         </tr>
         <tr class="task-edit{% if not task.form.errors %} hidden{% endif %}">

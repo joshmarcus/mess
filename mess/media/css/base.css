@@ -462,7 +462,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 						
 				  #primary-content-wrapper table#daily-view {}
 				  
-				    #primary-content-wrapper table#daily-view li.unassigned {/*background:#ffcccc;*/ color:#cc0000;}
+				    #primary-content-wrapper table#daily-view span.unassigned {/*background:#ffcccc;*/ color:#cc0000;}
 				    
 				      #primary-content-wrapper table#daily-view tr.unassigned a.add {font-size:1em; color:#cc0000;}
 				    
