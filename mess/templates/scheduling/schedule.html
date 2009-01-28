@@ -45,7 +45,7 @@
 {% endblock head %}
 
 {% block content %}
-  <div id="left-column">
+  <div id="double-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <form onsubmit="taskAdd(); return false">
@@ -107,69 +107,19 @@
                 {% with task.worker_formset as worker_formset %}
                 {% include "scheduling/snippets/schedule_task_form.html" %}
                 {% endwith %}{% endwith %}{% endwith %}
-                <div class="form-chunk{% if not task.recur_rule %} hidden{% endif %}">
-                  <label for="id_{{ task.form.prefix }}-affect">Affect:</label>
-                  {{ task.form.affect }}
-                </div>
                 <p style="margin:30px 0 0 0"><input type="submit" value="Save" class="save" /> <input type="submit" value="Remove" name="remove" /> <input onclick="taskEditCancel(this)" type="button" value="Cancel" /></p>
               </form>
             </div>
           </td>
         </tr>
         {% endfor %}
-      {% comment %}
-        {% for group in task_groups %}
-        <tr class="task-display {% cycle "odd" "even" %}{% if group.form.errors %} hidden{% endif %}">
-          <td class="time">
-          {% if group.first_task.job.deadline %}
-            {{ group.first_task.time|date:"P" }} deadline for {{ group.first_task.hours }} hour task
-          {% else %}
-            {{ group.first_task.time|date:"P" }} &ndash; {{ group.first_task.get_end|date:"P" }}
-          {% endif %}
-            <br />
-          {% if group.first_task.frequency and group.first_task.interval %}
-            (recurs every {{ group.first_task.get_recurrence_display }})
-          {% endif %}
-          </td>
-          <td>{{ group.first_task.job }}</td>
-          <td>
-            <ul>
-            {% for task in group.tasks %}
-              {% if task.member and task.account %}
-              <li><span title="{% for phone in task.member.phones.all %} {{ phone }}{% endfor %}">{{ task.member }}</span>, {{ task.account }}</li>
-              {% else %}
-              <li class="unassigned">Unassigned</li>
-              {% endif %}
-            {% endfor %}
-            </ul>
-          </td>
-        </tr>
-        <tr class="task-edit{% if not group.form.errors %} hidden{% endif %}">
-          <td colspan="3" style="padding:0">
-            <div class="task-form task-edit-form">
-              <form method="post" name="edit{{ group.form.prefix }}">
-                <input type="hidden" name="group-index" value="{{ group.form.prefix }}" />
-                {% with task.form as form %}
-                {% with task.recur_form as recur_form %}
-                {% with task.worker_formset as worker_formset %}
-                {% include "scheduling/snippets/schedule_task_form.html" %}
-                {% endwith %}{% endwith %}{% endwith %}
-                <div class="form-chunk{% if not group.first_task.frequency and group.first_task.interval %} hidden{% endif %}">
-                  <label for="id_{{ group.form.prefix }}-affect">Affect:</label>
-                  {{ group.form.affect }}
-                </div>
-                <p style="margin:30px 0 0 0"><input type="submit" value="Save" class="save" /> <input type="submit" value="Remove" name="remove" /> <input onclick="taskEditCancel(this)" type="button" value="Cancel" /></p>
-              </form>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      {% endcomment %}
       </table>
     </div>
   </div>
+  {% comment %}
   <div id="right-column">
     <h3 id="right-column-heading">Calendar</h3>
     <div id="cal1Container"></div>
   </div>
+  {% endcomment %}
 {% endblock content %}
