@@ -5,13 +5,11 @@
 # Currently this script only imports members in Section 1.0 (active) and 
 # Section 4.0 (multi-member information).  All other sections are SKIPPED.
 #
-#
 # Beware: Some accounts get imported incorrectly, and must be fixed
 # by hand after importing.
+#
+# You probably want to remove all fixtures before you run this...
 
-
-# mess should be symlinked from /usr/lib/python2.4/site-packages
-# sys.path.insert(0, '/home/paul/mess/trunk')
 import sys
 from os.path import dirname, abspath
 sys.path.append(dirname(dirname(abspath(__file__))))
@@ -19,7 +17,7 @@ import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 
-# these imports seem to raise errors if placed before setup_environ(settings)
+# these imports raise errors if placed before setup_environ(settings)
 import string
 import time
 import re
@@ -31,145 +29,146 @@ from django.db import IntegrityError
 from django.db import transaction
 
 from membership import models
-#from mess.membership.models import *
 
 MAXLINES = 20000    # only import first N members for debugging
 
-
-def refine_mem_data(dat, column):
-    ''' fills available information into mem dict '''
-    if dat == {}:
-        dat = {'first_name': 'Firstname', 
-               'last_name': 'Lastname', 
-               'has_keycard': 'No', 
-               'date_joined': '1900-01-01',
-               'email': '',
-               'address_street': '',
-               'address_city': '',
-               'address_state': '',
-               'address_zip': '',
-               'phone': '',
-               'second_phone': '',
-               'contact_preference': 'e',
-               'card_number': '',
-               'card_facility_code': '',
-               'card_type': '',
-               'cumul_deposit': '',
-              }
-    if column['Member'] != '':
-        dat['first_name'], dat['last_name'] = split_name(column['Member'])
-    if column['Has key?'] != '':
-        dat['has_keycard'] = column['Has key?'] 
-    if column['Join Date'] != '':
-        dat['date_joined'] = dateformat(column['Join Date'])
-    if column['email'] != '':
-        dat['email'] = column['email']
-    if column['Street Address & Apt / City State / ZIP'] != '':
-        dat['address_street'], dat['address_city'], dat['address_state'], dat['address_zip'] = split_address(column['Street Address & Apt / City State / ZIP'])
-    if column['phone #'] != '':
-        dat['phone'] = column['phone #']
-    if column['second phone #'] != '':
-        dat['second_phone'] = column['second phone #']
-    if column['which contact preferred'] != '':
-        dat['contact_preference'] = column['which contact preferred']
-    if column['Card Number'] != '':
-        dat['card_number'] = column['Card Number']
-    if column['Card Facility Code'] != '':
-        dat['card_facility_code'] = column['Card Facility Code']
-    if column['Card Type'] != '':
-        dat['card_type'] = column['Card Type']
-    # only record deposit under member if it's recorded in section 4.0
-    if column['Cumulative deposit'] != '' and column['Section'] == '4.0':
-        dat['cumul_deposit'] = column['Cumulative deposit']
-    return dat
-
-def second_shopper_data(column):
-    ''' fills a minimalist mem dict with second_shopper data '''
-    dat = {'first_name': 'Firstname', 
-               'last_name': 'Lastname', 
-               'has_keycard': 'No', 
-               'date_joined': '1900-01-01',
-               'email': '',
-               'address_street': '',
-               'address_city': '',
-               'address_state': '',
-               'address_zip': '',
-               'phone': '',
-               'second_phone': '',
-               'contact_preference': 'e',
-               'card_number': '',
-               'card_facility_code': '',
-               'card_type': '',
-               'cumul_deposit': '',
-              }
-    dat['first_name'], dat['last_name'] = split_name(
-                   column['Second Authorized Shopper'])
-    dat['phone'] = column['Second Authorized Shopper #']
-    return dat
+def prepare_columns(headers):
+    '''
+    define where to get each data chunk and how to handle it
+    '''
+    return {
+        'account_name': Column(headers, source=0, parser=strip_notes),
+        'section': Column(headers, 'Section'),
+        'active_members': Column(headers, 'Active Members', parser=int_or_one),
+        'has_proxy': Column(headers, 'Proxy Shopper', parser=is_nonspace),
+        'account': [
+            Column(headers, source=0, parser=strip_notes)],
+        'member': [
+            Column(headers, 'Primary Member', make_username),
+            Column(headers, 'Primary Member', get_first_name, 'user.first_name'),
+            Column(headers, 'Primary Member', get_last_name, 'user.last_name'),
+            Column(headers, source=generate_pass, dest='user.password'),
+            Column(headers, 'Join Date', date_format, 'date_joined'),
+            Column(headers, 'Has key?', is_yes, 'has_key'),
+            Column(headers, 'phone #', porter=create_phone),
+            Column(headers, 'second phone #', porter=create_phone),
+            Column(headers, 'email', porter=create_email),
+            Column(headers, 'Street Address & Apt / City State / ZIP',
+                porter=split_and_create_address) ],
+        'proxy': [
+            Column(headers, 'Proxy Shopper', make_username),
+            Column(headers, 'Proxy Shopper', get_first_name, 'user.first_name'),
+            Column(headers, 'Proxy Shopper', get_last_name, 'user.last_name'),
+            Column(headers, source=generate_pass, dest='user.password'),
+            Column(headers, 'Proxy Shopper #', porter=create_phone)] }
 
 
-def get_mems(column):
-    ''' returns a list of mems, len = column['Active Members'] '''
-    ret = [refine_mem_data({}, column) for i in 
-                            range(int(float(column['Active Members'])))]
-    if ';' in column['Member']:
-        for i, mem in enumerate(column['Member'].split(';',len(ret)-1)):
-            ret[i]['first_name'], ret[i]['last_name'] = split_name(mem)
-    if column['Second Authorized Shopper'] != '':
-        ret[0]['second_shopper'] = second_shopper_data(column)
-    return ret
+class Cell:
+    ''' 
+    roughly, each excel cell gets one of these
+    specifically, each row has one of these for each Column, as per below
+    so the 100,000 cell objects will each point to one of 100 column objects
+    '''
+    def __init__(self, excel_row, column, backup_row=None):
+        self.column = column
+        self.data = column.fetch_data(excel_row, backup_row=backup_row)
+
+    def migrate(self, new_object):
+        self.column.migrate(self.data, new_object)
+
+class Column:
+    ''' 
+    roughly, each excel column gets one of these,
+    in which case 'source' is normally the header like 'Join Date'
+
+    however, a Column object can grab data from various excel columns by
+    specifying a 'source' function.  For example, 'notes' could be a Column
+    that finds 'notes' data scattered across each row.
+    '''
+    def __init__(self, headers, source, parser=None, dest=None, porter=None):
+        self.parser = parser
+        self.dest = dest
+        if isinstance(source, basestring):
+            try:
+                self.source_col = headers.index(source)
+            except ValueError:
+                print 'ERROR: Cannot find excel column "%s".' % source
+                raise
+        elif callable(source):
+            self.fetch_data = source
+        else:
+            self.source_col = int(source)
+        if porter:
+            self.migrate = porter
+
+    def fetch_data(self, excel_row, backup_row=None):
+        val = unicode(excel_row[self.source_col].value).strip()
+        if (val == '' or val.isspace()) and backup_row:
+            val = unicode(backup_row[self.source_col].value).strip()
+        if self.parser:
+            return self.parser(val)
+        else:
+            return val
+
+    def migrate(self, data, new_object):
+        if self.dest == None:
+            # should perhaps annotate that we're throwing data away...
+            pass
+        elif self.dest[:5] == 'user.':
+            setattr(new_object.user, self.dest[5:], data)
+        else:
+            setattr(new_object, self.dest, data)
 
 
-# utility functions from person_to_user.py
-alpha_not = re.compile(r'\W')
-def slug_name(name):
-    alpha = alpha_not.sub('', name)
-    lowered = alpha.lower()
-    if len(lowered) > 8:
-        sliced = lowered[:8]
-    else:
-        sliced = lowered
-    return sliced
+class PortAccount:
+    def __init__(self, excel_row, columns):
+        self.sec1_row = excel_row
+        self.has_removed_sec1_members = False
+        self.cells = [Cell(excel_row, column) for column in columns['account']]
+        self.members = [
+                    [Cell(excel_row, column) for column in columns['member']] ]
+        if columns['has_proxy'].fetch_data(excel_row):
+            self.members.append(
+                    [Cell(excel_row, column) for column in columns['proxy']] )
 
-def generate_pass():
-    return ''.join([choice(string.letters+string.digits) for i in range(8)])
+    def add_sec4_row(self, excel_row, columns):
+        if not self.has_removed_sec1_members:
+            self.members = []
+            self.has_removed_sec1_members = True
+        self.members.append( 
+                    [Cell(excel_row, column, backup_row=self.sec1_row)
+                            for column in columns['member']] )
+        if columns['has_proxy'].fetch_data(excel_row):
+            self.members.append(
+                    [Cell(excel_row, column, backup_row=self.sec1_row)
+                            for column in columns['proxy']] )
+        
+    def migrate(self):
+        # accountname shall be the first element of member.cells
+        new_account = models.Account.objects.create(name = self.cells[0].data)
+        for cell in self.cells:
+            cell.migrate(new_account)
+        new_account.save()
 
-def save_user(user, slug, count):
-    try:
-        user.save()
-    except IntegrityError:
-        new_name = slug + str(count)
-        user.username = new_name
-        count += 1
-        save_user(user, slug, count)
+        for member_cells in self.members:
+            # username shall be the first element of member.cells
+            # member must be saved first, so phones etc. can be migrated
+            # then it will be re-saved later after all its data is migrated
+            new_user = create_unique_user(slug = member_cells[0].data)
+            new_member = models.Member.objects.create(user = new_user)
+
+            for cell in member_cells[1:]:
+                cell.migrate(new_member)
+            new_member.save()
+            new_user.save()
+
+            models.AccountMember.objects.create(account=new_account, 
+                                                member=new_member)
 
 
-# utility functions
-def split_address(addstr):
-    ''' Street Address & Apt / City State / ZIP '''
-    addr = addstr.rsplit('/',2)
-    if len(addr) == 3:
-        citystate = addr[1].strip().rsplit(None, 1)
-        if len(citystate) < 2:
-            return addstr, '', '', ''
-        return addr[0].strip(), citystate[0].strip(), citystate[1].strip(), addr[2].strip()
-    # if problem, return entire original string as street
-    return addstr, '', '', ''
+# here is a slew of parser functions, used to parse excel data
 
-def dateformat(d):
-    ''' for now, only fixes dates formatted as "June 15, 2008" '''
-    try:
-        return time.strftime('%Y-%m-%d',time.strptime(d,'"%B %d, %Y"'))
-    except:
-        return '1902-01-01'
-
-def split_name(namestring):
-    names = namestring.strip().rsplit(None,1)
-    if len(names) == 1:
-        return names[0], 'Lastname'
-    return names[0], names[1]
-
-def split_actstr(actstr):
+def split_notes(actstr):
     ''' try to split things like  "Best Fest NEEDS SHIFT" '''
     # find last lowercase character
     if actstr == '': return '', ''
@@ -181,146 +180,120 @@ def split_actstr(actstr):
     if s == len(actstr) - 1: return actstr.strip(), ''
     return actstr[:s].strip(), actstr[s:].strip()
 
-def aprint(a):
-    #print a
-    print unicode(a).encode('ascii','replace')
+def strip_notes(a):
+    return split_notes(a)[0]
+
+def int_or_one(a):
+    try:
+        return int(a)
+    except:
+        return 1
+
+def is_nonspace(a):
+    return len(a) > 0 and not a.isspace()
+
+def is_yes(a):
+    return a.lower() == 'yes'
+
+def split_name(namestring):
+    names = namestring.strip().rsplit(None,1)
+    if len(names) == 0:
+        return 'Firstname', 'Lastname'
+    if len(names) == 1:
+        return names[0], 'Lastname'
+    return names[0], names[1]
+
+def get_first_name(a):
+    return split_name(a)[0]
+
+def get_last_name(a):
+    return split_name(a)[1]
+
+def make_username(a):
+    alpha_not = re.compile(r'\W')
+    ret = alpha_not.sub('', a).lower()[:8]
+    if ret == '':
+        return 'blanknam'
+    return ret
+
+def generate_pass(arguments_are_ignored, backup_row=None):
+    return ''.join([choice(string.letters+string.digits) for i in range(8)])
+
+def date_format(d):
+    ''' for now, only fixes dates formatted as "June 15, 2008" '''
+    try:
+        return time.strftime('%Y-%m-%d',time.strptime(d,'"%B %d, %Y"'))
+    except:
+        return '1902-01-01'
 
 
+# and here is a slew of porter functions, used to migrate data into the db
 
-# actual importation code
+def create_unique_user(slug, count=0, countstr=''):
+    try:
+        return User.objects.create(username = slug + countstr)
+    except IntegrityError:
+        count += 1
+        return create_unique_user(slug, count=count, countstr=str(count))
+
+def create_phone(data, new_member):
+    if data != '':
+        new_member.phones.create(number = data)
+
+def create_email(data, new_member):
+    if data != '':
+        new_member.emails.create(email = data)
+
+def split_and_create_address(data, new_member):
+    if data == '':
+        return
+    addr = data.rsplit('/',2)
+    if len(addr) == 3:
+        citystate = addr[1].strip().rsplit(None, 1)
+        if len(citystate) == 2:
+            new_member.addresses.create(
+                address1 = addr[0].strip(),
+                city = citystate[0].strip(),
+                state = citystate[1].strip(),
+                postal_code = addr[2].strip()
+            )
+            return
+    # if problem, return entire original string as street
+    new_member.addresses.create( address1 = data )
+
+
 @transaction.commit_on_success
 def main():
-
-# make sure a datafile argment was passed in
     if len(sys.argv) < 2:
         print 'Usage: %s <xl workbook>' % sys.argv[0]
         return 0
 
     datafile = xlrd.open_workbook(sys.argv[1])
     datasheet = datafile.sheet_by_index(0)
-    acts = {}
+    headers = [unicode(x.value).strip() for x in datasheet.row(0)]
+    columns = prepare_columns(headers)
+    accounts = {}
     
-    print 'looping through data file...'
-    headerrow = datasheet.row(0)
-    infields = [str(x.value).strip() for x in headerrow]
-    infields[0] = 'Account'
-
-    for linenumber in range(1, datasheet.nrows):
-        line = datasheet.row(linenumber)
-        datum = [unicode(x.value).encode('ascii','replace').strip() for x in line]
-#        datum = [x.value for x in line]
-        column = dict(zip(infields, datum))
-        if not column['Active Members']:
-            column['Active Members'] = 1
-        aprint (u'---reading line ['+str(linenumber)+'] '+
-               column['Account'][:15] + u' Section:'+column['Section'])
-        actname, actnotes = split_actstr(column['Account'])
+    for n in range(1, min(datasheet.nrows, MAXLINES)):
+        excel_row = datasheet.row(n) 
+        section = columns['section'].fetch_data(excel_row)
+        account_name = columns['account_name'].fetch_data(excel_row)
+        result = 'loaded row'
         
-        if column['Section'] == '1.0' and linenumber < MAXLINES:
-            assert actname not in acts
-            acts[actname] = {'mems': get_mems(column), 
-                'actnotes': actnotes,
-                'balance': column['Old Balance'],
-                'cumul_deposit': column['Cumulative deposit'],
-                'flag_sec4': 0}
-            print acts[actname]
-            aprint('   imported account '+actname)
-    
-        elif column['Section'] == '4.0':
-            if actname not in acts: 
-                aprint('   SKIPPED section-4 member of nonexistent acct '+actname)
-                continue
-            print acts[actname]
-            try:
-                acts[actname]['mems'][acts[actname]['flag_sec4']] = (
-                refine_mem_data(acts[actname]['mems'][acts[actname]['flag_sec4']],
-                column))
-            # if too many section-4 members, add extra members as 'inactive'
-            except IndexError:
-                acts[actname]['mems'].append(refine_mem_data({}, column))
-                acts[actname]['mems'][acts[actname]['flag_sec4']]['status'] = 'i'
-            if column['Second Authorized Shopper'] != '':
-                acts[actname]['mems'][acts[actname]['flag_sec4']][
-                        'second_shopper'] = second_shopper_data(column)
-            acts[actname]['flag_sec4'] += 1
-            print acts[actname]
-            aprint('   imported section-4 member of account '+actname)
-    
+        if section == '1.0':
+            assert account_name not in accounts
+            accounts[account_name] = PortAccount(excel_row, columns)
+        elif section == '4.0' and account_name in accounts:
+            accounts[account_name].add_sec4_row(excel_row, columns)
         else:
-            aprint('   SKIPPED line')
-            
-    
-        print
-    
-    print 'Done Reading Input File! '
-    
-    print 'Making authorized shoppers a type of member...'
-    for actname, ac in acts.iteritems():
-        s = []
-        for m in ac['mems']:
-            if 'second_shopper' in m:
-                s.append(m['second_shopper'])
-        for m in s:
-            m['status'] = '2'
-            ac['mems'].append(m)
-    
-    
-    print 'Saving into database...'
-    for actname, ac in acts.iteritems():
-        aprint('saving accountname '+actname)
-        try:
-            acct = models.Account.objects.get(name = actname)
-        except models.Account.DoesNotExist:
-            acct = models.Account(name = actname)
-            acct.save()
-        # !! do something with ac['balance']
-        # !! do something with ac['cumul_deposit']
-        # !! do something with ac['actnotes']
-        for i,m in enumerate(ac['mems']):
-            user = User(
-                first_name = m['first_name'],
-                last_name = m['last_name'],
-                username = slug_name(m['first_name']+m['last_name']),
-                password = generate_pass(),
-            )
-            save_user(user, user.username, 0)
-            print 'saved username : '+user.username
-    
-            mem = models.Member(
-                date_joined = m['date_joined'],
-                user = user
-            )
-            if m['has_keycard'] == 'Yes': 
-                mem.has_key = True
-            mem.save()
-    
-            if m['phone'] != '':
-                mem.phones.create(number = m['phone'])
-    
-            if m['second_phone'] != '':
-                mem.phones.create(number = m['second_phone'])
-    
-            if m['email'] != '':
-                mem.emails.create(email = m['email'])
-    
-            if m['address_street'] != '':
-                mem.addresses.create(
-                    address1 = m['address_street'],
-                    city = m['address_city'],
-                    state = m['address_state'],
-                    postal_code = m['address_zip']
-                )
-    
-            # !! do something with m['card_number'], etc...
-            # !! do something with m['cumul_deposit']
-            # !! do something with m['status']
+            result = 'SKIPPED row'
+        print '%s %d, section %s, account %s' % \
+                (result, n, section, account_name)
 
-            models.AccountMember.objects.create(
-                    account = acct,
-                    member = mem
-            )
-                    
-    
-    
-    
-main() 
+    print 'Done Reading Input File!'
+
+    for account_name, account in accounts.iteritems():
+        account.migrate()
+        print 'Saved account %s' % account_name
+
+main()
