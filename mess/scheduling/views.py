@@ -118,7 +118,7 @@ def schedule(request, date=None):
     context['add_task_form'] = add_task_form
     context['add_recur_form'] = add_recur_form
     # to include autocomplete js media files:
-    #context['form'] = {'media':add_worker_formset.media}
+    context['form'] = {'media':add_task_form.media}
     template = loader.get_template('scheduling/schedule.html')
     return HttpResponse(template.render(context))
 

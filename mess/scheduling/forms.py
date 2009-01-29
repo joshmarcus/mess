@@ -40,6 +40,14 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = models.Task
     time = ParseDateTimeField(widget=forms.SplitDateTimeWidget())
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account', 
+            view_name='membership-autocomplete', canroundtrip=True), 
+        required=False) 
+    member = forms.ModelChoiceField(m_models.Member.objects.all(),
+        widget=AutoCompleteWidget('member_with_paccount', 
+            view_name='membership-autocomplete', canroundtrip=True), 
+        required=False) 
     #recur_rule = forms.IntegerField(initial=self.instance.recur_rule.id, 
     #        widget=forms.HiddenInput)
     #affect = forms.ChoiceField(choices=AFFECT_CHOICES)

@@ -9,7 +9,7 @@ from mess.autocomplete.views import autocomplete
 # FIXME not ready for admin edit page, need ac_id_%(name)s prefill (2 line of js).
 
 AC_TEMPLATE = u'''
-<div>
+<div class="django-autocomplete" id="id_div_%(name)s">
   <input type="hidden" name="%(name)s" id="id_hidden_%(name)s" value="%(hiddenvalue)s" />
   <input type="text" id="id_%(name)s" %(attrs)s />
   <script type="text/javascript">autocomplete("%(name)s", "%(url)s", %(force_selection)s);</script>

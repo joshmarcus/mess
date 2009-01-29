@@ -181,6 +181,9 @@
 .not-acct-mem {
 	color: #888;
 	}
-	
 
+div.django-autocomplete {
+    float:left;
+    margin: 0.5ex 1em 0.5ex 0em;
+}
 
