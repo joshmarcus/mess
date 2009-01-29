@@ -9,6 +9,7 @@
 # by hand after importing.
 #
 # You probably want to remove all fixtures before you run this...
+import pdb
 
 import sys
 from os.path import dirname, abspath
@@ -20,6 +21,7 @@ setup_environ(settings)
 # these imports raise errors if placed before setup_environ(settings)
 import string
 import time
+import datetime
 import re
 import xlrd
 from random import choice
@@ -28,7 +30,8 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.db import transaction
 
-from membership import models
+from mess.membership import models
+from mess.scheduling import models as s_models
 
 MAXLINES = 20000    # only import first N members for debugging
 
@@ -54,7 +57,13 @@ def prepare_columns(headers):
             Column(headers, 'second phone #', porter=create_phone),
             Column(headers, 'email', porter=create_email),
             Column(headers, 'Street Address & Apt / City State / ZIP',
-                porter=split_and_create_address) ],
+                porter=split_and_create_address), 
+            Column(headers, source=parse_shift, porter=set_shift),
+#           Column(headers, source=calc_shift_time, dest='task.time'),
+#           Column(headers, source=calc_shift_hours, dest='task.hours'),
+#           Column(headers, 'Shift Job', porter=set_shift_job),
+#           Column(headers, source=get_shift_notes, dest='task.notes'),
+            ],
         'proxy': [
             Column(headers, 'Proxy Shopper', make_username),
             Column(headers, 'Proxy Shopper', get_first_name, 'user.first_name'),
@@ -88,6 +97,7 @@ class Column:
     def __init__(self, headers, source, parser=None, dest=None, porter=None):
         self.parser = parser
         self.dest = dest
+        self.source_fn = None
         if isinstance(source, basestring):
             try:
                 self.source_col = headers.index(source)
@@ -95,13 +105,16 @@ class Column:
                 print 'ERROR: Cannot find excel column "%s".' % source
                 raise
         elif callable(source):
-            self.fetch_data = source
+            self.source_fn = source
+            self.headers = headers
         else:
             self.source_col = int(source)
         if porter:
             self.migrate = porter
 
     def fetch_data(self, excel_row, backup_row=None):
+        if self.source_fn:
+            return self.source_fn(self.headers, excel_row, backup_row)
         val = unicode(excel_row[self.source_col].value).strip()
         if (val == '' or val.isspace()) and backup_row:
             val = unicode(backup_row[self.source_col].value).strip()
@@ -156,14 +169,13 @@ class PortAccount:
             # then it will be re-saved later after all its data is migrated
             new_user = create_unique_user(slug = member_cells[0].data)
             new_member = models.Member.objects.create(user = new_user)
+            models.AccountMember.objects.create(account=new_account, 
+                                                member=new_member)
 
             for cell in member_cells[1:]:
                 cell.migrate(new_member)
             new_member.save()
             new_user.save()
-
-            models.AccountMember.objects.create(account=new_account, 
-                                                member=new_member)
 
 
 # here is a slew of parser functions, used to parse excel data
@@ -216,7 +228,7 @@ def make_username(a):
         return 'blanknam'
     return ret
 
-def generate_pass(arguments_are_ignored, backup_row=None):
+def generate_pass(headers, arguments_are_ignored, backup_row=None):
     return ''.join([choice(string.letters+string.digits) for i in range(8)])
 
 def date_format(d):
@@ -226,6 +238,37 @@ def date_format(d):
     except:
         return '1902-01-01'
 
+def parse_shift(headers, excel_row, backup_row=None):
+    if excel_row[headers.index('Shift Start Time')].value == '':
+        return None
+    start_time = excel_row[headers.index('Shift Start Time')].value
+    end_time = excel_row[headers.index('Shift End Time')].value
+    job = excel_row[headers.index('Shift Job')].value
+    day = excel_row[headers.index('Shift Day of Week')].value
+    rotation = excel_row[headers.index('Rotation')].value
+    notes = excel_row[headers.index('Shift Notes')].value
+
+    try:
+        start_time = xlrd.xldate_as_tuple(start_time,0)[3:]
+        end_time = xlrd.xldate_as_tuple(end_time,0)[3:]
+        hours = end_time[0]-start_time[0]+end_time[1]/60.0-start_time[1]/60.0
+
+        day_number = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].index(day)
+        rotation_start = {'A':(2009,1,26), 'B':(2009,2,2), 'C':(2009,2,9),
+            'D':(2009,2,16), 'E':(2009,1,26), 'F':(2009,2,2), 'G':(2009,2,9),
+            'H':(2009,2,16), 'I':(2009,2,23), 'J':(2009,3,2)}[rotation]
+        if rotation in 'ABCD':
+            rotation_freq = 4
+        elif rotation in 'EFGHIJ':
+            rotation_freq = 6
+        start_point = datetime.datetime(rotation_start[0],rotation_start[1],rotation_start[2], *start_time)
+        start_point += datetime.timedelta(days=day_number)
+        print 'Successful shift import %s %s %s' % (rotation,day,start_point)
+        return [start_point, hours, job, notes, rotation_freq]
+    except:
+        print 'Failed shift import %s %s %s' % (rotation,day,start_time)
+        return '%s%s%s%s%s%s' % (start_time,end_time,job,day,rotation,notes)
+        
 
 # and here is a slew of porter functions, used to migrate data into the db
 
@@ -261,6 +304,31 @@ def split_and_create_address(data, new_member):
     # if problem, return entire original string as street
     new_member.addresses.create( address1 = data )
 
+def set_shift(data, new_member):
+    if data == None:
+        return
+    if isinstance(data, basestring):
+        # cannot do anything with this, presently :(
+        print 'Not inserting shift %s' % data
+        return
+
+    try:
+        job = s_models.Job.objects.get(name=data[2])
+    except:
+        # this is my argument for jobs just being loose strings
+        job = s_models.Job.objects.get(name='Cheese Cutter')
+
+    acct = new_member.primary_account()
+    new_task = s_models.Task.objects.create(
+            time = data[0], 
+            hours = str(data[1]),  #float->str->decimal is dumb, but required
+            job = job,
+            member = new_member,
+            account = acct,
+            note = data[3])
+    new_task.set_recur_rule(data[4],1,None)
+    print 'Inserted shift %s' % data
+    
 
 @transaction.commit_on_success
 def main():
