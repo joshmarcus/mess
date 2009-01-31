@@ -59,18 +59,16 @@ def prepare_columns(headers):
             Column(headers, 'Street Address & Apt / City State / ZIP',
                 porter=split_and_create_address), 
             Column(headers, source=parse_shift, porter=set_shift),
-#           Column(headers, source=calc_shift_time, dest='task.time'),
-#           Column(headers, source=calc_shift_hours, dest='task.hours'),
-#           Column(headers, 'Shift Job', porter=set_shift_job),
-#           Column(headers, source=get_shift_notes, dest='task.notes'),
             ],
         'proxy': [
             Column(headers, 'Proxy Shopper', make_username),
             Column(headers, 'Proxy Shopper', get_first_name, 'user.first_name'),
             Column(headers, 'Proxy Shopper', get_last_name, 'user.last_name'),
             Column(headers, source=generate_pass, dest='user.password'),
-            Column(headers, 'Proxy Shopper #', porter=create_phone)] }
-
+            Column(headers, 'Proxy Shopper #', porter=create_phone),
+#           Column(headers, 'Street Address & Apt / City State / ZIP',
+#               porter=split_and_create_address), 
+            ] }
 
 class Cell:
     ''' 
@@ -241,33 +239,35 @@ def date_format(d):
 def parse_shift(headers, excel_row, backup_row=None):
     if excel_row[headers.index('Shift Start Time')].value == '':
         return None
-    start_time = excel_row[headers.index('Shift Start Time')].value
-    end_time = excel_row[headers.index('Shift End Time')].value
-    job = excel_row[headers.index('Shift Job')].value
-    day = excel_row[headers.index('Shift Day of Week')].value
-    rotation = excel_row[headers.index('Rotation')].value
-    notes = excel_row[headers.index('Shift Notes')].value
+    data = {'start':'Shift Start Time',
+        'end':'Shift End Time',
+        'job':'Shift Job',
+        'day':'Shift Day of Week',
+        'rotation':'Rotation',
+        'notes':'Shift Notes'}
+    for key, columnheader in data.iteritems():
+        data[key] = excel_row[headers.index(columnheader)].value
 
     try:
-        start_time = xlrd.xldate_as_tuple(start_time,0)[3:]
-        end_time = xlrd.xldate_as_tuple(end_time,0)[3:]
-        hours = end_time[0]-start_time[0]+end_time[1]/60.0-start_time[1]/60.0
-
-        day_number = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].index(day)
-        rotation_start = {'A':(2009,1,26), 'B':(2009,2,2), 'C':(2009,2,9),
-            'D':(2009,2,16), 'E':(2009,1,26), 'F':(2009,2,2), 'G':(2009,2,9),
-            'H':(2009,2,16), 'I':(2009,2,23), 'J':(2009,3,2)}[rotation]
-        if rotation in 'ABCD':
-            rotation_freq = 4
-        elif rotation in 'EFGHIJ':
-            rotation_freq = 6
-        start_point = datetime.datetime(rotation_start[0],rotation_start[1],rotation_start[2], *start_time)
-        start_point += datetime.timedelta(days=day_number)
-        print 'Successful shift import %s %s %s' % (rotation,day,start_point)
-        return [start_point, hours, job, notes, rotation_freq]
+        data['start'] = xlrd.xldate_as_tuple(data['start'],0)[3:]
+        data['end'] = xlrd.xldate_as_tuple(data['end'],0)[3:]
+        data['hours'] = (data['end'][0] - data['start'][0] + 
+                         (data['end'][1] - data['start'][1])/60.0)
+        day_number = ['Monday','Tuesday','Wednesday','Thursday',
+                      'Friday','Saturday','Sunday'].index(data['day'])
+        (data['interval'], offset_weeks) = {
+             'A':(4,0), 'B':(4,1), 'C':(4,2), 'D':(4,3),
+             'E':(6,0), 'F':(6,1), 'G':(6,2), 'H':(6,3), 'I':(6,4), 'J':(6,5),
+             }[data['rotation']]
+        ROTATION_START = (2009,1,26)
+        data['start'] = (datetime.datetime(*(ROTATION_START + 
+                                                   data['start']))  
+                   + datetime.timedelta(weeks=offset_weeks, days=day_number))
+        print 'Successful shift import %(day)s %(rotation)s %(job)s' % data
+        return data
     except:
-        print 'Failed shift import %s %s %s' % (rotation,day,start_time)
-        return '%s%s%s%s%s%s' % (start_time,end_time,job,day,rotation,notes)
+        print 'Failed shift import %(day)s %(rotation)s %(job)s' % data
+        return ' '.join([str(x) for x in data.values()])
         
 
 # and here is a slew of porter functions, used to migrate data into the db
@@ -308,26 +308,26 @@ def set_shift(data, new_member):
     if data == None:
         return
     if isinstance(data, basestring):
-        # cannot do anything with this, presently :(
-        print 'Not inserting shift %s' % data
+        print repr('Not inserting shift %s' % data)
         return
 
     try:
-        job = s_models.Job.objects.get(name=data[2])
+        job = s_models.Job.objects.get(name=data['job'].strip().title())
     except:
-        # this is my argument for jobs just being loose strings
-        job = s_models.Job.objects.get(name='Cheese Cutter')
+        # maybe jobs should just be loose strings to avoid this?
+        job = s_models.Job.objects.get(name='Other Job')
 
     acct = new_member.primary_account()
     new_task = s_models.Task.objects.create(
-            time = data[0], 
-            hours = str(data[1]),  #float->str->decimal is dumb, but required
+            time = data['start'], 
+            hours = str(data['hours']),  #float->str->dec is silly but required
             job = job,
             member = new_member,
             account = acct,
-            note = data[3])
-    new_task.set_recur_rule(data[4],1,None)
-    print 'Inserted shift %s' % data
+            note = data['notes'])
+    new_task.set_recur_rule('w',data['interval'],None)
+    new_task.update_buffer()
+    print repr('Inserted shift %s' % data)
     
 
 @transaction.commit_on_success
@@ -355,13 +355,13 @@ def main():
             accounts[account_name].add_sec4_row(excel_row, columns)
         else:
             result = 'SKIPPED row'
-        print '%s %d, section %s, account %s' % \
-                (result, n, section, account_name)
+        print repr('%s %d, section %s, account %s' %
+                (result, n, section, account_name))
 
     print 'Done Reading Input File!'
 
     for account_name, account in accounts.iteritems():
         account.migrate()
-        print 'Saved account %s' % account_name
+        print repr('Saved account %s' % account_name)
 
 main()

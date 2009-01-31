@@ -106,7 +106,7 @@
     "pk": 9, 
     "model": "scheduling.job", 
     "fields": {
-      "name": "Stocking", 
+      "name": "Other Job", 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
       "type": "", 
@@ -117,7 +117,40 @@
     "pk": 3, 
     "model": "scheduling.job", 
     "fields": {
-      "name": "Storekeeper", 
+      "name": "Store Keeper", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 11, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Closing Store Keeper", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 12, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Set Up", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 13, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Store Manager", 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
       "type": "", 

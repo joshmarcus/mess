@@ -91,7 +91,7 @@ class Task(models.Model):
         ordering = ['time', 'hours', 'job']
 
     def __unicode__(self):
-        return self.job + ' - ' + str(self.time)
+        return str(self.job) + ' - ' + str(self.time)
 
     @property
     def assigned(self):
