@@ -45,7 +45,9 @@ def prepare_columns(headers):
         'active_members': Column(headers, 'Active Members', parser=int_or_one),
         'has_proxy': Column(headers, 'Proxy Shopper', parser=is_nonspace),
         'account': [
-            Column(headers, source=0, parser=strip_notes)],
+            Column(headers, source=0, parser=strip_notes),
+            Column(headers, 'Old Balance', dest='balance'),
+            ],
         'member': [
             Column(headers, 'Primary Member', make_username),
             Column(headers, 'Primary Member', get_first_name, 'user.first_name'),
@@ -66,6 +68,7 @@ def prepare_columns(headers):
             Column(headers, 'Proxy Shopper', get_last_name, 'user.last_name'),
             Column(headers, source=generate_pass, dest='user.password'),
             Column(headers, 'Proxy Shopper #', porter=create_phone),
+            Column(headers, 0, porter=set_shopper_flag),
 #           Column(headers, 'Street Address & Apt / City State / ZIP',
 #               porter=split_and_create_address), 
             ] }
@@ -227,6 +230,7 @@ def make_username(a):
     return ret
 
 def generate_pass(headers, arguments_are_ignored, backup_row=None):
+    # this just disables login.  Real password must use 'algo$salt$hash'
     return ''.join([choice(string.letters+string.digits) for i in range(8)])
 
 def date_format(d):
@@ -268,6 +272,7 @@ def parse_shift(headers, excel_row, backup_row=None):
     except:
         print 'Failed shift import %(day)s %(rotation)s %(job)s' % data
         return ' '.join([str(x) for x in data.values()])
+
         
 
 # and here is a slew of porter functions, used to migrate data into the db
@@ -328,13 +333,20 @@ def set_shift(data, new_member):
     new_task.set_recur_rule('w',data['interval'],None)
     new_task.update_buffer()
     print repr('Inserted shift %s' % data)
-    
+
+def set_shopper_flag(data, new_member):
+    accountmember = new_member.accountmember_set.all()[0]
+    accountmember.shopper = True
+    accountmember.account_contact = False
+    accountmember.save()
 
 @transaction.commit_on_success
 def main():
     if len(sys.argv) < 2:
         print 'Usage: %s <xl workbook>' % sys.argv[0]
         return 0
+    if len(sys.argv) > 2:
+        MAXLINES = int(sys.argv[2])
 
     datafile = xlrd.open_workbook(sys.argv[1])
     datasheet = datafile.sheet_by_index(0)

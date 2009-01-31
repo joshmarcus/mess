@@ -1,0 +1,135 @@
+Imported?  y=yes, p=partly, n=not yet, blank=maybe never
+| c=comment/notes field, m=requires change to models
+||
+y   39834.0
+nm  Active Members
+nm  Hours Balance
+    Hours Change
+y   Old Balance
+    Misc. 
+    Dues & Deposits
+    Bulk Orders
+    After-Hours Shopping
+    Regular Sales
+    Credit Cards & Debit Cards
+    Checks & Money Orders
+    New Balance
+nc  HRS ADJ-SH
+nm  Hours Balance
+    Hours Change
+    Old Balance
+    $ Allowable Balance
+    Over Balance?
+    Min Payment
+    Should be gray?
+p   Section          [currently importing 1.0 and 4.0 only]
+y   Has key?
+p   Primary Member   [; like 'jean; al' is imported wrong unless 4.0 overrides]
+y   email
+nm  which contact preferred
+nm  emailed welcome?
+y   Proxy Shopper
+y   Proxy Shopper #
+y   Street Address & Apt / City State / ZIP 
+p   Shift Start Time       [doesn't import deadline or dancer shifts yet]
+p   Shift End Time         [doesn't import shift exemptions yet]
+p   Shift Job              [only if models.Job.objects.get(name=job) exists]
+nc  Work shift member Name
+    39834.0
+y   phone #
+y   second phone #
+y   Shift Day of Week
+y   Rotation
+yc  Shift Notes
+    SKILLS
+nc  Acct Closing Notes
+nc  Contact History
+nc  EXEMPTION NOTES/EXPIRY
+    2007Attendance
+n   Attendance1/01/08-1/06/08
+n   2008Attendance1/07/08-1/13/08
+n   2008Attendance1/14/08-1/20/08
+n   2008Attendance1/21/08-1/27/08
+n   2008Attendance1/28/08-2/3/08
+n   2008Attendance2/4/08-2/10/08
+n   2008Attendance2/11/08-2/17/08
+n   2008Attendance2/18/08-2/24/08
+n   2008Attendance2.25.08-3.2.08
+n   2008Attendance3.3.08_3.9.08
+n   2008Attendance3.10.08_3.16.08
+n   2008Attendance3.17.08_3.23.08
+n   2008Attendance3.24.08_3.30.08
+n   2008Attendance3.31.08_4.6.08
+n   2008Attendance4.7.08_4.13.08
+n   2008Attendance4.14.08_4.20.08
+n   2008Attendance4.21.08_4.27.08
+n   2008Attendance4.28.08_5.4.08
+n   2008Attendance5.5.08_5.11.08
+n   2008Attendance5.12.08_5.18.08
+n   2008Attendance5.19.08_5.25.08
+n   2008Attendance5.26.08_6.1.08
+n   2008Attendance6.2.08-6.8.08
+n   2008Attendance6.9.08-6.15.08
+n   2008Attendance06.16.08-06.22.08
+n   2008Attendance06.23.08-06.29.08
+n   2008Attendance06.30.08-07.06.08
+n   2008Attendance07.07.08-07.13.08
+n   2008Attendance07.14.08-07.20.08
+n   2008Attendance07.21.08-07.27.08
+n   2008Attendance07.28.08-08.03.08
+n   2008Attendance08.04.08-08.10.08
+n   2008Attendance08.11.08-08.17.08
+n   2008Attendance08.18.08-08.24.08
+n   2008Attendance08.25.08-08.31.08
+n   2008Attendance09.01.08-09.07.08
+n   2008Attendance09.08.08-09.14.08
+n   2008Attendance09.15.08-09.21.08
+n   2008Attendance09.22.08-09.28.08
+n   2008Attendance09.29.08-10.05.08
+n   2008Attendance10.06.08-10.12.08
+n   2008Attendance10.13.08-10.19.08
+n   2008Attendance10.20.08-10.26.08
+n   2008Attendance10.27.08-11.02.08
+n   2008Attendance11.03.08-11.09.08
+n   2008Attendance11.10.08-11.16.08
+n   2008Attendance11.17.08-11.23.08
+n   2008Attendance11.24.08-11.30.08
+n   2008Attendance12.01.08-12.07.08
+n   2008Attendance12.08.08-12.14.08
+n   2008Attendance12.15.08-12.21.08
+n   2008Attendance12.22.08-12.28.08
+n   2008Attendance12.29.08-1.4.09
+n   2009Attendance1.5.09-1.11.09
+n   2009Attendance1.12.09-1.18.09
+n   2009Attendance1.19.09-1.25.09
+n   2009Attendance1.26.09-2.1.09
+n   2009Attendance2.2.09-2.8.09
+nm  Old Hours Balance
+    Hours Billed
+    Hours Worked
+    New Hours Balance
+nm  Cumulative deposit
+ncm Notes
+nm  Card Number
+nm  Card Facility Code
+nm  Card Type
+y   Join Date
+    dateOrientation
+    dateOrientation Proxy
+    First Date to Vet
+    Departure Date
+    Full Member
+    Date Last Workshift Completed
+    Formal Cashier Training Y=used cred hrs
+    Trained: Closing Cashier
+    Trained: Storekeeper
+    Trained: Set-Up
+    Trained: Closing Storekeeper
+    Trained: Supervisor
+    Trained: Helper
+nm  Works for Credit?
+    $ Rate for credit
+    $credit YTD 
+    paidHoursCumul
+    Additional Name(s)
+nc  workshift Notes

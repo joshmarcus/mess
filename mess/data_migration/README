@@ -1,0 +1,28 @@
+Data migration fills the MESS with data from the co-op's huge excel file.
+
+
+HOW TO MIGRATE
+Before you can migrate the data file, you'll have to 'Save As' file format
+Excel 1997-2003 .xls.  (Sorry, that's all the xlrd module can read.)
+Then find a secure way to transfer the data file to the server where you're
+migrating it.  (psftp, perhaps?)
+
+On the server, you'll want to do something like:
+/var/www/mess# mv mess.db mess.db.backup
+             # svn up
+             # python manage.py syncdb
+
+Now, before you take the next step, if you're on a publicly-accessible
+server, you need to change the 'staff' password to be unguessable.
+Log in to  http://yourmessserver/admin  as 'staff', and click the
+'change password' link at the top-right.  Okay?  Now you can continue:
+
+             # python data_migration/remove_allmembers.py
+             # python data_migration/migrate.py ~/memberaccounts.xls
+
+
+PRIVACY / SECURITY CONCERNS
+Please be careful with the data.  In particular, don't email the data,
+don't svn commit the data, and don't migrate the data on a publicly-
+accessible host until you've made the 'staff' password(s) unguessable.
+
