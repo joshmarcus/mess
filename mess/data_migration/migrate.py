@@ -33,7 +33,7 @@ from django.db import transaction
 from mess.membership import models
 from mess.scheduling import models as s_models
 
-MAXLINES = 20000    # only import first N members for debugging
+#MAXLINES = 20000    # only import first N members for debugging
 
 def prepare_columns(headers):
     '''
@@ -345,8 +345,9 @@ def main():
     if len(sys.argv) < 2:
         print 'Usage: %s <xl workbook>' % sys.argv[0]
         return 0
+    maxlines = 20000
     if len(sys.argv) > 2:
-        MAXLINES = int(sys.argv[2])
+        maxlines = int(sys.argv[2])
 
     datafile = xlrd.open_workbook(sys.argv[1])
     datasheet = datafile.sheet_by_index(0)
@@ -354,7 +355,7 @@ def main():
     columns = prepare_columns(headers)
     accounts = {}
     
-    for n in range(1, min(datasheet.nrows, MAXLINES)):
+    for n in range(1, min(datasheet.nrows, maxlines)):
         excel_row = datasheet.row(n) 
         section = columns['section'].fetch_data(excel_row)
         account_name = columns['account_name'].fetch_data(excel_row)
