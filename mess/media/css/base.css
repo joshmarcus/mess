@@ -419,6 +419,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;
 			width:100%;
 			font-size:1.1em;
+			clear:both;   /* needed for alignment on Firefox 1 */
 			}
 			#primary-content-wrapper table.data caption {
 				text-align:left;
@@ -470,6 +471,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				    
 				      #primary-content-wrapper table#daily-view tr.unassigned td.time {background:url('/media/images/bg-unassigned.png') no-repeat 5px 7px; padding-left:22px;}
 				    
+/* must specify > 1 id + 1 class here to override the above cascade */
+#primary-content-wrapper table.data td.timecardholder {padding:0px;}
+.timecardholder td {text-align:center;}
+
 				    
 				      
 						

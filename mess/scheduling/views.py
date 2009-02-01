@@ -139,7 +139,23 @@ def timecard(request, date=None):
     tasks = models.Task.objects.filter(time__year=date.year).filter(
             time__month=date.month).filter(time__day=date.day).order_by(
             'time', 'hours', 'job', 'recur_rule')
-    context['tasks'] = tasks
+
+    if request.method == 'POST':
+        for task in tasks:
+            timecard_form = forms.TimecardForm(request.POST, 
+                                 instance=task, prefix=str(task.id))
+            # I hope timecard_form.is_valid(), because checking here is weird
+            timecard_form.save()
+        return HttpResponseRedirect(reverse('scheduling-timecard',
+               args=[date.date()]))
+
+    prepared_tasks = []
+    for task in tasks:
+        task.timecardform = forms.TimecardForm(instance=task, 
+                                               prefix=str(task.id))
+        prepared_tasks.append(task)
+
+    context['tasks'] = prepared_tasks
     context['date'] = date
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day

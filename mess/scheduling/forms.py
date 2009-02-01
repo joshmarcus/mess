@@ -62,7 +62,10 @@ class SkillForm(forms.ModelForm):
 
 class TimecardForm(forms.ModelForm):
     class Meta:
-        model = models.Timecard
+        model = models.Task
+        fields = ('hours_worked','excused','makeup','banked')
+    hours_worked = forms.DecimalField(required=False, 
+                    widget=forms.TextInput(attrs={'size':'2'}))
 
 class RecurForm(forms.ModelForm):
     class Meta:
