@@ -42,9 +42,9 @@ y   Shift Day of Week
 y   Rotation
 yc  Shift Notes
     SKILLS
-nc  Acct Closing Notes
-nc  Contact History
-nc  EXEMPTION NOTES/EXPIRY
+yc  Acct Closing Notes
+yc  Contact History
+yc  EXEMPTION NOTES/EXPIRY
     2007Attendance
 n   Attendance1/01/08-1/06/08
 n   2008Attendance1/07/08-1/13/08
@@ -109,7 +109,7 @@ nm  Old Hours Balance
     Hours Worked
     New Hours Balance
 nm  Cumulative deposit
-ncm Notes
+ycm Notes
 nm  Card Number
 nm  Card Facility Code
 nm  Card Type
@@ -132,4 +132,4 @@ nm  Works for Credit?
     $credit YTD 
     paidHoursCumul
     Additional Name(s)
-nc  workshift Notes
+yc  workshift Notes

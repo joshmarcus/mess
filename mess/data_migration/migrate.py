@@ -44,9 +44,11 @@ def prepare_columns(headers):
         'section': Column(headers, 'Section'),
         'active_members': Column(headers, 'Active Members', parser=int_or_one),
         'has_proxy': Column(headers, 'Proxy Shopper', parser=is_nonspace),
+        'add_sec4_notes': Column(headers, source=get_all_notes, porter=add_note),
         'account': [
             Column(headers, source=0, parser=strip_notes),
             Column(headers, 'Old Balance', dest='balance'),
+            Column(headers, source=get_all_notes, dest='note'),
             ],
         'member': [
             Column(headers, 'Primary Member', make_username),
@@ -156,6 +158,7 @@ class PortAccount:
             self.members.append(
                     [Cell(excel_row, column, backup_row=self.sec1_row)
                             for column in columns['proxy']] )
+        self.cells.append(Cell(excel_row, columns['add_sec4_notes']))
         
     def migrate(self):
         # accountname shall be the first element of member.cells
@@ -240,6 +243,18 @@ def date_format(d):
     except:
         return '1902-01-01'
 
+def get_all_notes(headers, excel_row, backup_row=None):
+    # start with notes in the Accountname field (column 0)
+    note = [split_notes(unicode(excel_row[0].value))[1]] 
+    for excel_field in ['Shift Notes', 'Acct Closing Notes', 
+            'Contact History', 'EXEMPTION NOTES/EXPIRY', 'Notes', 
+            'workshift Notes']:
+        new_note = unicode(excel_row[headers.index(excel_field)].value).strip()
+        if new_note != '':
+            note.append(excel_field + ': ' + new_note)
+    return '\n'.join(note)
+    
+
 def parse_shift(headers, excel_row, backup_row=None):
     if excel_row[headers.index('Shift Start Time')].value == '':
         return None
@@ -308,6 +323,12 @@ def split_and_create_address(data, new_member):
             return
     # if problem, return entire original string as street
     new_member.addresses.create( address1 = data )
+
+def add_note(data, new_object):
+    if new_object.note == '':
+        new_object.note = data
+    else:
+        new_object.note += '\n\n' + data
 
 def set_shift(data, new_member):
     if data == None:
