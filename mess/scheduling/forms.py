@@ -2,7 +2,7 @@ from dateutil import parser
 from datetime import datetime
 
 from django import forms
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, modelformset_factory
 from mess.autocomplete import AutoCompleteWidget
 
 from mess.scheduling import models
@@ -70,6 +70,13 @@ class TimecardForm(forms.ModelForm):
 class RecurForm(forms.ModelForm):
     class Meta:
         model = models.RecurRule
+
+TimecardFormSet = modelformset_factory(models.Task, fields=(
+    'hours_worked',
+    'excused',
+    'makeup',
+    'banked',
+))
 
 #class WorkerForm(forms.ModelForm):
 #    class Meta:

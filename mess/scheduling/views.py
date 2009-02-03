@@ -139,7 +139,9 @@ def timecard(request, date=None):
     tasks = models.Task.objects.filter(time__year=date.year).filter(
             time__month=date.month).filter(time__day=date.day).order_by(
             'time', 'hours', 'job', 'recur_rule')
-
+    # display tasks using all fields from formset?
+    # i.e. no separate tasks?  i'll try that
+    formset = forms.TimecardFormSet(queryset=tasks)
     if request.method == 'POST':
         for task in tasks:
             timecard_form = forms.TimecardForm(request.POST, 
