@@ -44,7 +44,6 @@ def prepare_columns(headers):
         'section': Column(headers, 'Section'),
         'active_members': Column(headers, 'Active Members', parser=int_or_one),
         'has_proxy': Column(headers, 'Proxy Shopper', parser=is_nonspace),
-        'add_sec4_notes': Column(headers, source=get_all_notes, porter=add_note),
         'account': [
             Column(headers, source=0, parser=strip_notes),
             Column(headers, 'Old Balance', dest='balance'),
@@ -63,6 +62,7 @@ def prepare_columns(headers):
             Column(headers, 'Street Address & Apt / City State / ZIP',
                 porter=split_and_create_address), 
             Column(headers, source=parse_shift, porter=set_shift),
+            Column(headers, source=get_all_notes, porter=add_account_note),
             ],
         'proxy': [
             Column(headers, 'Proxy Shopper', make_username),
@@ -71,8 +71,6 @@ def prepare_columns(headers):
             Column(headers, source=generate_pass, dest='user.password'),
             Column(headers, 'Proxy Shopper #', porter=create_phone),
             Column(headers, 0, porter=set_shopper_flag),
-#           Column(headers, 'Street Address & Apt / City State / ZIP',
-#               porter=split_and_create_address), 
             ] }
 
 class Cell:
@@ -158,7 +156,6 @@ class PortAccount:
             self.members.append(
                     [Cell(excel_row, column, backup_row=self.sec1_row)
                             for column in columns['proxy']] )
-        self.cells.append(Cell(excel_row, columns['add_sec4_notes']))
         
     def migrate(self):
         # accountname shall be the first element of member.cells
@@ -324,11 +321,14 @@ def split_and_create_address(data, new_member):
     # if problem, return entire original string as street
     new_member.addresses.create( address1 = data )
 
-def add_note(data, new_object):
-    if new_object.note == '':
-        new_object.note = data
-    else:
-        new_object.note += '\n\n' + data
+def add_account_note(data, new_member):
+    ''' called for every member, but this function only acts for sec4 '''
+    acct = new_member.primary_account()
+    if acct.note == data:    # for sec1 notes which are already in
+        return
+    if acct.note != '':
+        acct.note += '\n\n'
+    acct.note += new_member.user.get_full_name() + ': ' + data
 
 def set_shift(data, new_member):
     if data == None:
@@ -348,9 +348,9 @@ def set_shift(data, new_member):
             time = data['start'], 
             hours = str(data['hours']),  #float->str->dec is silly but required
             job = job,
+#           note = data['notes'],
             member = new_member,
-            account = acct,
-            note = data['notes'])
+            account = acct)
     new_task.set_recur_rule('w',data['interval'],None)
     new_task.update_buffer()
     print repr('Inserted shift %s' % data)
