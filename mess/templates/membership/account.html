@@ -83,5 +83,38 @@
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/> Contact</li>
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/> Balance</li>
     </ul>
+
+    <h3 id="task_future_title">Next Workshift(s) +/-</h3>
+      <table class="acctwork">
+        {% for task in tasks %}
+          <tr><td class="{% if task.excused %}task-excused {% endif %}{% if task.makeup %}task-makeup {% endif %}{% if task.banked %}task-banked {% endif %}">
+            {{ task.member }} &mdash; {{ task.job }} <br>
+            <a href="{% url scheduling-schedule task.time|date:"Y-m-d" %}">{{ task.time|date:"D n/j/y" }}</a>, {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
+            {% if task.excused %}<b>Excused</b>{% endif %}
+            {% if task.makeup %}<b>Makeup</b>{% endif %}
+            {% if task.banked %}<b>Banked</b>{% endif %}
+          </td></tr>
+          {% if forloop.first %}
+            </table>
+            <table class="acctwork" id="task_future_table">
+          {% endif %}
+        {% endfor %}
+      </table>
+      <script>task_future_hide();</script>
+
+    <h3>Work History</h3>
+      <table class="acctwork">
+        {% for task in pasttasks %}
+          <tr><td class="{% if task.unexcused %}task-unexcused {% endif %}{% if task.excused %}task-excused {% endif %}{% if task.makeup %}task-makeup {% endif %}{% if task.banked %}task-banked {% endif %}">
+            {{ task.member }} &mdash; {{ task.job }} <br>
+            <a href="{% url scheduling-schedule task.time|date:"Y-m-d" %}">{{ task.time|date:"D n/j/y" }}</a>, {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
+            {% if task.hours_worked %}<b>Worked {{ task.hours_worked }} hours</b>{% endif %}
+            {% if task.unexcused %}<b>Unexcused</b>{% endif %}
+            {% if task.excused %}<b>Excused</b>{% endif %}
+            {% if task.makeup %}<b>Makeup</b>{% endif %}
+            {% if task.banked %}<b>Banked</b>{% endif %}
+          </td></tr>
+        {% endfor %}
+      </table>
   </div>
 {% endblock %}

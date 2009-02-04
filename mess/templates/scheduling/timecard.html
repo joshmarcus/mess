@@ -37,7 +37,8 @@
             <td>{{ task.job }}</td>
             <td>
               {% if task.assigned %}
-                {{ task.member }} ({{ task.account }})<br />
+                <a href="{% url member task.member.user.username %}">{{ task.member }}</a> 
+                (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
                 {% for phone in task.member.phones.all %} {{ phone }} {% endfor %}
               {% else %}
                 <span class="unassigned">Unassigned</span>

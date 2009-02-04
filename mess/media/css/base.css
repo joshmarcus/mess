@@ -668,6 +668,11 @@ div #task-form form p input, div #task-form form p label{
     display: block;
 }
 
+.task-makeup {background: #beb;}
+.task-banked {background: #fcb;}
+.task-excused {background: #bbe;}
+.task-unexcused {background: #f00;}
+
 /*-------------------------------old stuff begins here
 
 div#logo {

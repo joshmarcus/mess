@@ -77,6 +77,7 @@ class Task(models.Model):
     member = models.ForeignKey(Member, null=True, blank=True)
     account = models.ForeignKey(Account, null=True, blank=True)
 
+    # hours_worked:  None = not entered   0 = did not work
     hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
             null=True, blank=True)
     excused = models.BooleanField()
@@ -96,6 +97,10 @@ class Task(models.Model):
     @property
     def assigned(self):
         return bool(self.member or self.account)
+
+    @property
+    def unexcused(self):
+        return (self.hours_worked == 0 and not self.excused)
 
     def get_end(self):
         delta_hours = datetime.timedelta(hours=float(self.hours))

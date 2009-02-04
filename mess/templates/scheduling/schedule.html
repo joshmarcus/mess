@@ -91,7 +91,8 @@
           <td>{{ task.job }}</td>
           <td>
             {% if task.assigned %}
-            <span title="{% for phone in task.member.phones.all %} {{ phone }}{% endfor %}">{{ task.member }}</span>, {{ task.account }}</li>
+              {{ task.member }} ({{ task.account }})<br />
+              {% for phone in task.member.phones.all %} {{ phone }} {% endfor %}
             {% else %}
             <span class="unassigned">Unassigned</span>
             {% endif %}

@@ -11,8 +11,7 @@ from django.template.loader import get_template
 
 #from mess.accounting import models as a_models
 from mess.membership import forms, models
-#from mess.profiles import forms as profiles_forms
-#from mess.profiles import models as profiles_models
+import datetime
 
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 50
@@ -167,6 +166,10 @@ def account(request, id):
     context['account'] = account
     transactions = account.transaction_set.all()
     context['transactions'] = transactions
+    context['tasks'] = account.task_set.filter(time__gt=
+            datetime.date.today()).order_by('time')
+    context['pasttasks'] = account.task_set.filter(time__lt=
+            datetime.date.today()).order_by('-time')
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 
