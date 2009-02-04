@@ -61,8 +61,9 @@ def prepare_columns(headers):
             Column(headers, 'email', porter=create_email),
             Column(headers, 'Street Address & Apt / City State / ZIP',
                 porter=split_and_create_address), 
-            Column(headers, source=parse_shift, porter=set_shift),
             Column(headers, source=get_all_notes, porter=add_account_note),
+            Column(headers, source=parse_shift, porter=set_shift),
+            Column(headers, source=get_work_hist, porter=set_work_hist),
             ],
         'proxy': [
             Column(headers, 'Proxy Shopper', make_username),
@@ -253,22 +254,27 @@ def get_all_notes(headers, excel_row, backup_row=None):
     
 
 def parse_shift(headers, excel_row, backup_row=None):
-    if excel_row[headers.index('Shift Start Time')].value == '':
-        return None
+#   if excel_row[headers.index('Shift Start Time')].value == '':
+#       return None
     data = {'start':'Shift Start Time',
         'end':'Shift End Time',
         'job':'Shift Job',
         'day':'Shift Day of Week',
-        'rotation':'Rotation',
-        'notes':'Shift Notes'}
+        'rotation':'Rotation',}
+#       'notes':'Shift Notes'}
     for key, columnheader in data.iteritems():
         data[key] = excel_row[headers.index(columnheader)].value
 
+    DEADLINE_JOBS = ['Recycling','Cheese Cutter','Cleaner/Bath','Cleaner']
     try:
-        data['start'] = xlrd.xldate_as_tuple(data['start'],0)[3:]
-        data['end'] = xlrd.xldate_as_tuple(data['end'],0)[3:]
-        data['hours'] = (data['end'][0] - data['start'][0] + 
-                         (data['end'][1] - data['start'][1])/60.0)
+        if data['job'] in DEADLINE_JOBS:
+            data['start'] = (23,59,0)
+            data['hours'] = 2
+        else:
+            data['start'] = xlrd.xldate_as_tuple(data['start'],0)[3:]
+            data['end'] = xlrd.xldate_as_tuple(data['end'],0)[3:]
+            data['hours'] = (data['end'][0] - data['start'][0] + 
+                             (data['end'][1] - data['start'][1])/60.0)
         day_number = ['Monday','Tuesday','Wednesday','Thursday',
                       'Friday','Saturday','Sunday'].index(data['day'])
         (data['interval'], offset_weeks) = {
@@ -329,14 +335,15 @@ def add_account_note(data, new_member):
     if acct.note != '':
         acct.note += '\n\n'
     acct.note += new_member.user.get_full_name() + ': ' + data
+    acct.save()
 
 def set_shift(data, new_member):
     if data == None:
         return
     if isinstance(data, basestring):
-        print repr('Not inserting shift %s' % data)
+        add_account_note('Workshift text: '+data, new_member)
+        print repr('Inserting shift as note: %s' % data)
         return
-
     try:
         job = s_models.Job.objects.get(name=data['job'].strip().title())
     except:
@@ -360,6 +367,13 @@ def set_shopper_flag(data, new_member):
     accountmember.shopper = True
     accountmember.account_contact = False
     accountmember.save()
+
+
+def get_work_hist(headers, excel_row, backup_row=None):
+    return ''
+
+def set_work_hist(data, new_member):
+    pass
 
 @transaction.commit_on_success
 def main():

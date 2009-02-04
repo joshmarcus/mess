@@ -36,17 +36,6 @@
     }
   }, 
   {
-    "pk": 6, 
-    "model": "scheduling.job", 
-    "fields": {
-      "name": "Cheese Cutter", 
-      "hours_multiplier": 1, 
-      "freeze_days": 7, 
-      "type": "", 
-      "description": ""
-    }
-  }, 
-  {
     "pk": 7, 
     "model": "scheduling.job", 
     "fields": {
@@ -94,7 +83,43 @@
     "pk": 8, 
     "model": "scheduling.job", 
     "fields": {
-      "name": "Recyling", 
+      "name": "Recycling", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": "",
+      "deadline": true
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Cheese Cutter", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": "",
+      "deadline": true
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Cleaner", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": "",
+      "deadline": true
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Cleaner/Bath", 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
       "type": "", 
@@ -140,6 +165,61 @@
     "model": "scheduling.job", 
     "fields": {
       "name": "Set Up", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 14, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Late Store Keeper", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 15, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "After Hours Billing", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 16, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Office", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 17, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Produce Helper", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 21, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Reminder/BO Calls", 
       "hours_multiplier": 1, 
       "freeze_days": 7, 
       "type": "", 
