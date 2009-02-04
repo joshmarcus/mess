@@ -71,12 +71,8 @@ class RecurForm(forms.ModelForm):
     class Meta:
         model = models.RecurRule
 
-TimecardFormSet = modelformset_factory(models.Task, fields=(
-    'hours_worked',
-    'excused',
-    'makeup',
-    'banked',
-))
+TimecardFormSet = modelformset_factory(models.Task, extra=0, 
+    fields=('hours_worked', 'excused', 'makeup', 'banked'))
 
 #class WorkerForm(forms.ModelForm):
 #    class Meta:

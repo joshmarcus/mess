@@ -139,25 +139,16 @@ def timecard(request, date=None):
     tasks = models.Task.objects.filter(time__year=date.year).filter(
             time__month=date.month).filter(time__day=date.day).order_by(
             'time', 'hours', 'job', 'recur_rule')
-    # display tasks using all fields from formset?
-    # i.e. no separate tasks?  i'll try that
-    formset = forms.TimecardFormSet(queryset=tasks)
     if request.method == 'POST':
-        for task in tasks:
-            timecard_form = forms.TimecardForm(request.POST, 
-                                 instance=task, prefix=str(task.id))
-            # I hope timecard_form.is_valid(), because checking here is weird
-            timecard_form.save()
+        formset = forms.TimecardFormSet(request.POST, queryset=tasks)
+        if formset.is_valid():
+            formset.save()
         return HttpResponseRedirect(reverse('scheduling-timecard',
                args=[date.date()]))
+    else:
+        formset = forms.TimecardFormSet(queryset=tasks)
 
-    prepared_tasks = []
-    for task in tasks:
-        task.timecardform = forms.TimecardForm(instance=task, 
-                                               prefix=str(task.id))
-        prepared_tasks.append(task)
-
-    context['tasks'] = prepared_tasks
+    context['formset'] = formset
     context['date'] = date
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
