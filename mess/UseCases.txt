@@ -83,3 +83,40 @@ the shift is frozen.  Not sure if this will work with the current setup.
 15. Still to be addressed:  Dancing shifts.  Farm and committee shifts.
 Banking hours (building up hours ahead).  
 
+
+=========================================
+Revisions to make, meeting February 4, 2009:
+
+FOR TEMPORARY PRINTING-ONLY-OF-WEEKLY-SCHEDULING-SHEETS:
+      add blank spaces below timecard, for additional people 
+   Time pre-calculated is good --- add 'yes' and 'unexcused' (complicated?)
+Change heading from 'hours worked' to just 'hours'
+
+Add aesthetic columns: Member Initials, Reminder call, Acct Suspended Call,
+
+ Add date of next shift
+ Add rotation week letters at the top (??)
+ DANCERS on SUNDAY SHIFTS
+Timecard should annotate whether it's already been entered or not and by whom!
+
+Account-view page: Title of box for "notes"
+
+Try to chop off header/footer and make text more readable (black not blue?)
+
+
+FOR GENERAL USE OF MESS SCHEDULING:
+
+import section 3 :: same as section 1 but inactive
+be prepared for Typical Changes:
+  Did anybody join or leave?
+  Did somebody change some info about their workshift?
+  LOA --- ????
+
+
+PROBLEMS: 
+record-locking??: especially for the notes field.
+
+names and phone numbers are not always right, because they're not always associated with the right person (ie, worker vs primary member)...  See excel spreadsheet to find out what they're talking about?
+
+Long-term todo?
+Calling plan (who has upcoming workshifts, acct suspended, etc.)
