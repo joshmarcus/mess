@@ -41,7 +41,8 @@
           {% else %}
         <ul id="utility-nav">
           <li>Logged in as <a href="{% url member user.username %}" >{{ user.username }}</a></li>
-          <li class="last-item"><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
+          <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
+          <li class="last-item"><a href="http://trac.breaksalot.org/mess/wiki/UserGuide">Help</a></li>
           {% endif %}
         </ul>
         <h1>

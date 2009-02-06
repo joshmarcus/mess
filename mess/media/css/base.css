@@ -482,6 +482,9 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			border:1px solid #ddd;
 			padding:1em;
 			}
+        #primary-content-wrapper div.profile-inactive {
+            background: #88a;
+            }
 			#primary-content-wrapper div.profile h4 {
 				font-size: 1.2em;
 				line-height:1.4em;
@@ -502,6 +505,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				font-size:95%;
 				border:1px dashed #ddd;
 				padding:.5em;
+                background:#eee;
 				}
 				#primary-content-wrapper div.profile-links h5 {
 					margin:0 0 .75em 0;

@@ -8,7 +8,7 @@
     </ul>
     <div id="primary-content-wrapper">
       <h2>Member Profile</h2>
-      <div class="profile">
+      <div class="profile {% ifnotequal member.status "a" %}profile-inactive{% endifnotequal %}">
         <div class="profile-links">
           <h5>Accounts</h5>
           <ul>

@@ -12,9 +12,9 @@ MEMBER_STATUS = (
     ('i', 'Inactive'),
 )
 WORK_STATUS = (
-    ('e','Excused'),
-    ('w', 'Working'),  # Member is active and has a job.
-    ('n', 'Non-Working'),  # Such as a single parent.
+    ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
+    ('w', 'Workshift'),  # Member is active and should have a workshift
+    ('c', 'Committee'),  # Committee or similar commitment in lieu of shift
 )
 ADDRESS_TYPES = (
     ('h','Home'),
@@ -71,6 +71,10 @@ class Account(models.Model):
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     note = models.TextField(blank=True)
+
+    @property
+    def active_member_count(self):
+        return len(self.accountmember_set.filter(shopper=False).filter(member__status='a'))
 
     def __unicode__(self):
         return self.name
