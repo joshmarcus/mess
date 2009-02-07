@@ -677,6 +677,8 @@ div #task-form form p input, div #task-form form p label{
 .task-banked {background: #fcb;}
 .task-excused {background: #bbe;}
 .task-unexcused {background: #f00;}
+.task-exempt {background: #ffc; }
+.task-committee {background: #fdb; }
 
 /*-------------------------------old stuff begins here
 

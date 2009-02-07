@@ -358,6 +358,8 @@ def set_shift(data, new_member):
                 or 'NEWSLETTER' in data.upper() or 'BUSINESS' in data.upper()
                 or 'ORIENTATION' in data.upper() or 'TOOL' in data.upper()):
             new_member.work_status = 'c'
+        else:
+            print 'Problem importing shift...'
         add_account_note('Shift Job: '+data, new_member)
         print repr('Inserting shift as note: %s' % data)
         return
@@ -394,11 +396,52 @@ def set_section_flag(data, new_member):
         new_member.status = 'd' #departed
 
 def get_work_hist(headers, excel_row, backup_row=None):
-    return ''
+    hist = []
+    event_re = re.compile('([0-9]{1,2})/([0-9]{1,2})/?([YEMUB]{1,2})([0-9.]*)')
+    for header in headers:
+        if header[:14] != '2008Attendance' and header[:14] != '2009Attendance':
+            continue
+        if excel_row[headers.index(header)].value == '':
+            continue
+        for event in str(excel_row[headers.index(header)].value).split():
+            try:
+                (month,date,flags,hours) = event_re.match(event).group(1,2,3,4)
+                month = int(month)
+                date = int(date)
+                if flags == 'M':
+                    flags = 'YM'
+                year = int(header[:4])
+                if hours == '':
+                    hours = '2'
+                if month == 1 and header[:16] == '2008Attendance12':
+                    year = 2009
+                task = {'date': datetime.datetime(year,month,date,0,1,0),
+                        'hours': float(hours),
+                        'excused': 'E' in flags,
+                        'makeup': 'M' in flags,
+                        'banked': 'B' in flags,
+                        'hours_worked': float(hours)*('Y' in flags) }
+                assert 'Y' in flags or 'E' in flags or 'U' in flags
+                hist.append(task)
+            except:
+                print 'Cannot parse work history event: '+event
+    return hist
 
 def set_work_hist(data, new_member):
-    pass
-
+    job = s_models.Job.objects.get(name='Other Job')
+    acct = new_member.primary_account()
+    for hist in data:
+        new_task = s_models.Task.objects.create(
+            time = hist['date'],
+            hours = str(hist['hours']),  #float->str->dec is silly but required
+            hours_worked = str(hist['hours_worked']),
+            excused = hist['excused'],
+            makeup = hist['makeup'],
+            banked = hist['banked'],
+            job = job,
+            member = new_member,
+            account = acct)
+        
 @transaction.commit_on_success
 def main():
     if len(sys.argv) < 2:

@@ -94,6 +94,14 @@
 
     <h3 id="task_future_title">Next Workshift(s) +/-</h3>
       <table class="acctwork">
+        {% for member in account.members.all %}
+          {% ifequal member.work_status "e" %}
+            <tr><td class="task-exempt">{{ member }}: Exempt</td></tr>
+          {% endifequal %}
+          {% ifequal member.work_status "c" %}
+            <tr><td class="task-committee">{{ member }}: Committee or other Non-Shift work</td></tr>
+          {% endifequal %}
+        {% endfor %}
         {% for task in tasks %}
           <tr><td class="{% if task.excused %}task-excused {% endif %}{% if task.makeup %}task-makeup {% endif %}{% if task.banked %}task-banked {% endif %}">
             {{ task.member }} &mdash; {{ task.job }} <br>
