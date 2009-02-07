@@ -10,29 +10,37 @@
   <div id="double-column">
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
+      <h3 class="float-right">(Rotations: {{ old_rotations }})</h3>
       <h2>
         <a href="{% url scheduling-timecard previous_date|date:"Y-m-d" %}" id="previous-day">&larr;</a> 
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-timecard next_date|date:"Y-m-d" %}" id="next-day">&rarr;</a>
       </h2>
+      <p class="printonly">Instructions: If they worked, mark a check by the hours.<br/>  Excused: Change hours worked to "0" and check "excused."<br/>  Unexcused: Change hours worked to "0".</p>
+      <p class="noprint">Instructions: If they worked, just keep the hours worked.<br/>   Excused: Change hours worked to "0" and check "excused."<br/>  Unexcused: Change hours worked to "0".</p>
       <form method="post">
         {{ formset.management_form }}
         <table class="data" id="daily-view">
-          <thead>
+          <thead id="timecard-thead">
             <tr>
-              <th>Time</th>
-              <th>Job</th>
+              <th class="printonly">Acct.<br />Susp.<br />Call</th>
+              <th class="printonly">Remind<br />Call</th>
+              <th>Time /<br />Job</th>
               <th>Worker</th>
-              <th>Hours<br />Worked</th>
-              <th>Excused</th>
-              <th>Makeup</th>
-              <th>Banked</th>
+              <th>Hours<br />Worked<span class="printonly">=&#10003;</span></th>
+              <th class="squish">Excused</th>
+              <th class="squish">Makeup</th>
+              <th class="squish">Banked</th>
+              <th class="printonly">Member<br />Initials</th>
+              <th>Next<br />Shift</th>
             </tr>
           </thead>
           <tbody>
             {% for form in formset.forms %}
             {% with form.instance as task %}
-            <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}">
+            <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}{% if task.timecard_submitted %} timecard-submitted{% endif %}">
+              <td class="printonly"></td> <!-- account suspended call -->
+              <td class="printonly"></td> <!-- reminder call -->
               <td class="time">
               {% if task.job.deadline %}
                 {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
@@ -44,28 +52,32 @@
               {% if task.recur_rule %}
               (recurs every {{ task.get_recurrence_display }}{% if task.recur_rule.until %}<br />until {{ task.recur_rule.until|date:"F jS" }}{% endif %})
               {% endif %}
-              {% endcomment %}
               </td>
               <td>{{ task.job }}</td>
+              {% endcomment %}
+              <br />{{ task.job }}</td>
               <td>
                 {% if task.assigned %}
-                  <a href="{% url member task.member.user.username %}">{{ task.member }}</a> 
+                  <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a> 
                   (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
                   {% for phone in task.member.phones.all %} {{ phone }} {% endfor %}
                 {% else %}
                   <span class="unassigned">Unassigned</span>
                 {% endif %}
               </td>
-              <td>{{ form.id }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.hours_worked %}{{ task.hours_worked }}{% else %}{{ task.hours }}{% endif %}" /></td>
+              <td>{{ form.id }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}{% if task.excused %}0{% else %}{{ task.hours }}{% endif %}{% endif %}" /></td>
+              {# this was, if task.hours_worked ... else ... but the problem was that bool(0) == False.  timecard_submitted checks if it's None.  this should really be done at the form level... #}
               <td>{{ form.excused }}</td>
               <td>{{ form.makeup }}</td>
               <td>{{ form.banked }}</td>
+              <td class="printonly"></td>  <!-- member initials -->
+              <td class="last">{{ task.get_next_shift|date:"n/j/y" }}</td>
             </tr>
             {% endwith %}
             {% endfor %}
           </tbody>
         </table>
-        <div><input type="submit" value="Submit" /></div>
+        <div class="noprint"><input type="submit" value="Submit" /></div>
       </form>
     </div>
   </div>

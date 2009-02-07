@@ -2,3 +2,6 @@ input[id$="hours_worked"] {
   width: 2em;
 }
 
+@media screen {
+    tr.timecard-submitted { background:#bbd ! important; }
+}

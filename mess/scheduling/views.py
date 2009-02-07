@@ -153,8 +153,16 @@ def timecard(request, date=None):
     a_day = datetime.timedelta(days=1)
     context['previous_date'] = date - a_day
     context['next_date'] = date + a_day
+    context['old_rotations'] = old_rotations(date)
     template = loader.get_template('scheduling/timecard.html')
     return HttpResponse(template.render(context))
+
+def old_rotations(date):
+    cycle_begin = datetime.datetime(2009,1,26)
+    delta = (date - cycle_begin).days
+    fourweek = 'ABCD'[int(delta/7) % 4]
+    sixweek = 'EFGHIJ'[int(delta/7) % 6]
+    return fourweek + ', ' + sixweek
 
 @user_passes_test(lambda u: u.is_staff)
 def jobs(request):

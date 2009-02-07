@@ -164,6 +164,7 @@ body {
                     #primary-content-wrapper form.sorter li.button {float:right;}
     form div.add-button {float: right;}
 				
+@media screen { .printonly { display:none; } }
 /*--- ((( tools ))) ---*/
 .clearAll {clear:both;}
 .float-left {float:left;}

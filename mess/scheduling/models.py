@@ -102,10 +102,22 @@ class Task(models.Model):
     def unexcused(self):
         return (self.hours_worked == 0 and not self.excused)
 
+    @property
+    def timecard_submitted(self):
+        return (self.hours_worked is not None)
+
     def get_end(self):
         delta_hours = datetime.timedelta(hours=float(self.hours))
         end = self.time + delta_hours
         return end
+
+    def get_next_shift(self):
+        if self.recur_rule:
+            future_tasks = self.recur_rule.task_set.filter(time__gt=self.time)
+            next_task = future_tasks.order_by('time')[0]
+            return next_task.time
+        else:
+            return None
 
     def set_recur_rule(self, frequency, interval, until):
         exclusions = []
