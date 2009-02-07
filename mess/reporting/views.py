@@ -7,10 +7,47 @@ from django.http import HttpResponse
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
+from mess.membership import models as m_models
 #from mess.accounting.models import get_credit_choices, get_debit_choices
 #from mess.accounting.models import get_trans_total
 
 from mess.utils.search import list_usernames_from_fullname
+
+def find_dups(mems):
+    uniqs = {}
+    dups = []
+    found_dups = {}
+    for member in mems:
+        fullname = member.user.get_full_name()
+        if fullname in uniqs:
+            dups.append(member)
+            if fullname not in found_dups:
+                dups.append(uniqs[fullname])
+                found_dups[fullname] = 1
+        else:
+            uniqs[fullname] = member
+    return dups
+
+def anomalies(request):
+    blips = 0
+    report = ''
+    mems = m_models.Member.objects.all()
+    issues = [('Missing Firstname', mems.filter(user__first_name='Firstname')),
+        ('Semicolon in Name', mems.filter(user__first_name__contains=';')),
+        ('Comma in Name', mems.filter(user__first_name__contains=',')),
+        ('Missing Lastname', mems.filter(user__last_name='Lastname')),
+        ('Duplicate Name', find_dups(mems)),
+        ]
+    for issue, afflicteds in issues:
+        report += '<h3>%s (%d members)</h3>\n' % (issue, len(afflicteds))
+        blips += len(afflicteds)
+        for m in afflicteds:
+            report += '<a href="/membership/members/%s">%s</a> \
+                (<a href="/membership/accounts/%s">%s</a>)<br>\n' % \
+                (m.user.username, m, m.primary_account().id, m.primary_account())
+
+    report = '<h1>Anomalies Report (%d blips)</h1>\n' % blips + report
+    return HttpResponse(report)
 
 def transaction_list_report(request):
     # c is the context to be passed to the template
