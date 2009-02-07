@@ -42,6 +42,7 @@
           </li>
         </ul>
         <div class="details">
+          <h5>Account Notes</h5>
           {{ account.note|linebreaks }}
         </div>
         <div id="transactions">
@@ -85,9 +86,9 @@
       {# FIXME should hide statuses not in use on this page #}
 <!--      <li>(a) Active</li> -->
       <li>(L) Leave of Absence</li>
-      <li>(q) Quit</li>
       <li>(m) Missing</li>
-      <li>(i) Inactive</li>
+      <li>(x) Missing Delinquent</li>
+      <li>(d) Departed</li>
       <li>(S) Proxy Shopper</li>
     </ul>
 

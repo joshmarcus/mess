@@ -39,14 +39,14 @@ def members(request):
                 members = members.order_by('-date_joined')
             if not form.cleaned_data['active']:
                 members = members.exclude(status='a')
-            if not form.cleaned_data['inactive']:
-                members = members.exclude(status='i')
-            if not form.cleaned_data['quit']:
-                members = members.exclude(status='q')
-            if not form.cleaned_data['missing']:
-                members = members.exclude(status='m')
             if not form.cleaned_data['leave_of_absence']:
                 members = members.exclude(status='L')
+            if not form.cleaned_data['missing']:
+                members = members.exclude(status='m')
+            if not form.cleaned_data['missing_delinquent']:
+                members = members.exclude(status='x')
+            if not form.cleaned_data['departed']:
+                members = members.exclude(status='d')
     else:
         form = forms.MemberListFilterForm()
         members = members.filter(status='a')

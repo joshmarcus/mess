@@ -33,8 +33,6 @@ from django.db import transaction
 from mess.membership import models
 from mess.scheduling import models as s_models
 
-#MAXLINES = 20000    # only import first N members for debugging
-
 def prepare_columns(headers):
     '''
     define where to get each data chunk and how to handle it
@@ -46,7 +44,7 @@ def prepare_columns(headers):
         'has_proxy': Column(headers, 'Proxy Shopper', parser=is_nonspace),
         'account': [
             Column(headers, source=0, parser=strip_notes),
-            Column(headers, 'Old Balance', dest='balance'),
+            Column(headers, 'Old Balance', parser=or_zero, dest='balance'),
             Column(headers, source=get_all_notes, dest='note'),
             ],
         'member': [
@@ -61,6 +59,7 @@ def prepare_columns(headers):
             Column(headers, 'email', porter=create_email),
             Column(headers, 'Street Address & Apt / City State / ZIP',
                 porter=split_and_create_address), 
+            Column(headers, 'Section', porter=set_section_flag),
             Column(headers, source=get_all_notes, porter=add_account_note),
             Column(headers, source=parse_shift, porter=set_shift),
             Column(headers, source=get_work_hist, porter=set_work_hist),
@@ -71,6 +70,7 @@ def prepare_columns(headers):
             Column(headers, 'Proxy Shopper', get_last_name, 'user.last_name'),
             Column(headers, source=generate_pass, dest='user.password'),
             Column(headers, 'Proxy Shopper #', porter=create_phone),
+            Column(headers, 'Section', porter=set_section_flag),
             Column(headers, 0, porter=set_shopper_flag),
             ] }
 
@@ -203,6 +203,13 @@ def int_or_one(a):
     except:
         return 1
 
+def or_zero(a):
+    try:
+        test_float = float(a)
+        return a
+    except:
+        return 0
+
 def is_nonspace(a):
     return len(a) > 0 and not a.isspace()
 
@@ -328,12 +335,12 @@ def split_and_create_address(data, new_member):
     new_member.addresses.create( address1 = data )
 
 def add_account_note(data, new_member):
-    ''' called for every member, but this function only acts for sec4 '''
+    ''' called for every member, but this function mostly acts for sec4 '''
     acct = new_member.primary_account()
-    if acct.note == data:    # for sec1 notes which are already in
+    if data in acct.note:    # for sec1 notes which are already in
         return
     if acct.note != '':
-        acct.note += '\n\n'
+        acct.note += '\n'
     acct.note += new_member.user.get_full_name() + ': ' + data
     acct.save()
 
@@ -341,7 +348,17 @@ def set_shift(data, new_member):
     if data == None:
         return
     if isinstance(data, basestring):
-        add_account_note('Workshift text: '+data, new_member)
+        if data == '' or data.isspace():
+            print 'Not inserting blank shift.'
+            return
+        elif 'EXEMPT' in data.upper():
+            new_member.work_status = 'e'
+        elif ('COMMITTEE' in data.upper() or 'FARM' in data.upper() 
+                or 'FACILITATOR' in data.upper() or 'SCRIBE' in data.upper()
+                or 'NEWSLETTER' in data.upper() or 'BUSINESS' in data.upper()
+                or 'ORIENTATION' in data.upper() or 'TOOL' in data.upper()):
+            new_member.work_status = 'c'
+        add_account_note('Shift Job: '+data, new_member)
         print repr('Inserting shift as note: %s' % data)
         return
     try:
@@ -368,6 +385,13 @@ def set_shopper_flag(data, new_member):
     accountmember.account_contact = False
     accountmember.save()
 
+def set_section_flag(data, new_member):
+    if data == '3.0':
+        new_member.status = 'm' # missing
+    elif data == '3.5':
+        new_member.status = 'x' # missing delinquent?
+    elif data == '6.0':
+        new_member.status = 'd' #departed
 
 def get_work_hist(headers, excel_row, backup_row=None):
     return ''
@@ -380,31 +404,34 @@ def main():
     if len(sys.argv) < 2:
         print 'Usage: %s <xl workbook>' % sys.argv[0]
         return 0
-    maxlines = 20000
-    if len(sys.argv) > 2:
-        maxlines = int(sys.argv[2])
 
     datafile = xlrd.open_workbook(sys.argv[1])
     datasheet = datafile.sheet_by_index(0)
     headers = [unicode(x.value).strip() for x in datasheet.row(0)]
     columns = prepare_columns(headers)
     accounts = {}
+    if len(sys.argv) > 2:   # limit members for debugging
+        rows_to_import = min(datasheet.nrows, int(sys.argv[2]))
+    else:
+        rows_to_import = datasheet.nrows
     
-    for n in range(1, min(datasheet.nrows, maxlines)):
+    for n in range(1, rows_to_import):
         excel_row = datasheet.row(n) 
         section = columns['section'].fetch_data(excel_row)
         account_name = columns['account_name'].fetch_data(excel_row)
         result = 'loaded row'
         
-        if section == '1.0':
-            assert account_name not in accounts
+        if (section in ['1.0','3.0','3.5','6.0'] and 
+                account_name != '' and
+                account_name not in accounts):
+#           assert account_name not in accounts
             accounts[account_name] = PortAccount(excel_row, columns)
         elif section == '4.0' and account_name in accounts:
             accounts[account_name].add_sec4_row(excel_row, columns)
         else:
-            result = 'SKIPPED row'
-        print repr('%s %d, section %s, account %s' %
-                (result, n, section, account_name))
+            result = 'SKIPPED'
+        print repr('%s section %s, row %d, account %s' %
+                (result, section, n, account_name))
 
     print 'Done Reading Input File!'
 

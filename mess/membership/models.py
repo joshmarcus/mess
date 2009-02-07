@@ -7,14 +7,15 @@ from django.contrib.auth.models import User
 MEMBER_STATUS = (
     ('a', 'Active'),
     ('L', 'Leave of Absence'),
-    ('q', 'Quit'),
     ('m', 'Missing'),  # Member has disappeared without notice.
-    ('i', 'Inactive'),
+    ('x', 'Missing Delinquent'),  # Member has disappeared, owing money/time
+    ('d', 'Departed'),
+#   ('i', 'Inactive'),
 )
 WORK_STATUS = (
-    ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
     ('w', 'Workshift'),  # Member is active and should have a workshift
-    ('c', 'Committee'),  # Committee or similar commitment in lieu of shift
+    ('c', 'Committee'), # Anything not tracked shift by shift
+    ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
 )
 ADDRESS_TYPES = (
     ('h','Home'),
@@ -39,7 +40,10 @@ class Member(models.Model):
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
                             default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
-                            default='w')
+        default='w', help_text='This only matters for Active Members. \
+        Workshift means they should have a workshift. \
+        Committee means anything not tracked as a \
+        regular shift, for example, COMMITTEE, BUSINESS/ORG, etc')
     has_key = models.BooleanField(default=False)
     #primary_account = models.ForeignKey('Account', blank=True, null=True)
     date_joined = models.DateField(default=date.today())
