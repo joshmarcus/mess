@@ -227,6 +227,28 @@
     }
   },
   {
+    "pk": 22, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Produce Lead", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 23, 
+    "model": "scheduling.job", 
+    "fields": {
+      "name": "Dancer", 
+      "hours_multiplier": 1, 
+      "freeze_days": 7, 
+      "type": "", 
+      "description": ""
+    }
+  },
+  {
     "pk": 13, 
     "model": "scheduling.job", 
     "fields": {

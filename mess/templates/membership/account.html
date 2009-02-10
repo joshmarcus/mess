@@ -26,7 +26,7 @@
         <ul class="quick-info">
           <li>
             <img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Can Shop"/> 
-            {{ account.can_shop }}
+            {{ account.can_shop }}{% if account.ebt_only %} (EBT Only){% endif %}
           </li>
           <li>
             <img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Contact"/> 
@@ -39,6 +39,12 @@
           <li>
             <img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Balance"/> 
             {{ account.balance|floatformat:2 }}
+          </li>
+          <li>
+            Hours-Balance: {{ account.hours_balance|floatformat:2 }}
+          </li>
+          <li>
+            Deposit: {{ account.deposit }}
           </li>
         </ul>
         <div class="details">

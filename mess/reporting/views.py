@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 import time
 
+from django.contrib.auth.decorators import user_passes_test
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
@@ -8,6 +9,7 @@ from django.http import HttpResponse
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
 from mess.membership import models as m_models
+from mess.scheduling import models as s_models
 #from mess.accounting.models import get_credit_choices, get_debit_choices
 #from mess.accounting.models import get_trans_total
 
@@ -28,11 +30,13 @@ def find_dups(mems):
             uniqs[fullname] = member
     return dups
 
+@user_passes_test(lambda u: u.is_staff)
 def anomalies(request):
     blips = 0
     report = ''
     mems = m_models.Member.objects.all()
-    issues = [('Missing Firstname', mems.filter(user__first_name='Firstname')),
+    issues = [
+        ('Missing Firstname', mems.filter(user__first_name='Firstname')),
         ('Semicolon in Name', mems.filter(user__first_name__contains=';')),
         ('Comma in Name', mems.filter(user__first_name__contains=',')),
         ('Missing Lastname', mems.filter(user__last_name='Lastname')),

@@ -41,11 +41,13 @@ def prepare_columns(headers):
         'account_name': Column(headers, source=0, parser=strip_notes),
         'section': Column(headers, 'Section'),
         'active_members': Column(headers, 'Active Members', parser=int_or_one),
-        'has_proxy': Column(headers, 'Proxy Shopper', parser=is_nonspace),
+        'has_proxy': Column(headers, 'Proxy Shopper', parser=is_not_none),
         'account': [
             Column(headers, source=0, parser=strip_notes),
             Column(headers, 'Old Balance', parser=or_zero, dest='balance'),
             Column(headers, source=get_all_notes, dest='note'),
+            Column(headers, 'Hours Balance', parser=or_zero, dest='hours_balance'),
+            Column(headers, 'Cumulative deposit', parser=or_zero, dest='deposit'),
             ],
         'member': [
             Column(headers, 'Primary Member', make_username),
@@ -59,7 +61,7 @@ def prepare_columns(headers):
             Column(headers, 'email', porter=create_email),
             Column(headers, 'Street Address & Apt / City State / ZIP',
                 porter=split_and_create_address), 
-            Column(headers, 'Section', porter=set_section_flag),
+            Column(headers, source=get_section, porter=set_section_flag),
             Column(headers, source=get_all_notes, porter=add_account_note),
             Column(headers, source=parse_shift, porter=set_shift),
             Column(headers, source=get_work_hist, porter=set_work_hist),
@@ -70,7 +72,9 @@ def prepare_columns(headers):
             Column(headers, 'Proxy Shopper', get_last_name, 'user.last_name'),
             Column(headers, source=generate_pass, dest='user.password'),
             Column(headers, 'Proxy Shopper #', porter=create_phone),
-            Column(headers, 'Section', porter=set_section_flag),
+            Column(headers, 'phone #', porter=create_phone),
+            Column(headers, source=get_section, porter=set_section_flag),
+            Column(headers, source=parse_shift_for_proxy, porter=set_shift),
             Column(headers, 0, porter=set_shopper_flag),
             ] }
 
@@ -185,7 +189,8 @@ class PortAccount:
 def split_notes(actstr):
     ''' try to split things like  "Best Fest NEEDS SHIFT" '''
     # find last lowercase character
-    if actstr == '': return '', ''
+    if actstr == '': 
+        return '', ''
     s = len(actstr) - 1
     while s >= 0 and actstr[s] not in unicode(string.lowercase):
         s -= 1
@@ -210,8 +215,8 @@ def or_zero(a):
     except:
         return 0
 
-def is_nonspace(a):
-    return len(a) > 0 and not a.isspace()
+def is_not_none(a):
+    return len(a) > 0 and not a.isspace() and a.lower() != 'none'
 
 def is_yes(a):
     return a.lower() == 'yes'
@@ -251,7 +256,8 @@ def date_format(d):
 def get_all_notes(headers, excel_row, backup_row=None):
     # start with notes in the Accountname field (column 0)
     note = [split_notes(unicode(excel_row[0].value))[1]] 
-    for excel_field in ['Shift Notes', 'Acct Closing Notes', 
+    for excel_field in ['Shift Notes', 'Shift Start Time Notes', 'SKILLS', 
+            'Acct Closing Notes', 
             'Contact History', 'EXEMPTION NOTES/EXPIRY', 'Notes', 
             'workshift Notes']:
         new_note = unicode(excel_row[headers.index(excel_field)].value).strip()
@@ -259,8 +265,21 @@ def get_all_notes(headers, excel_row, backup_row=None):
             note.append(excel_field + ': ' + new_note)
     return '\n'.join(note)
     
+def parse_shift_for_proxy(headers, excel_row, backup_row=None):
+    return parse_shift(headers, excel_row, backup_row=None, shift_for_proxy=True)
 
-def parse_shift(headers, excel_row, backup_row=None):
+def proxy_steals_shift(headers, excel_row):
+    workshift_member_name = str(excel_row[headers.index('Work shift member Name')].value).strip().lower()
+    proxy_name = str(excel_row[headers.index('Proxy Shopper')].value).strip().lower()
+    if len(workshift_member_name) > 0 and len(proxy_name) > 0 and workshift_member_name[:4] == proxy_name[:4]:
+        print 'Proxy Steals Shift!! ' + proxy_name + workshift_member_name
+        return True
+    else:
+        return False
+
+def parse_shift(headers, excel_row, backup_row=None, shift_for_proxy=False):
+    if proxy_steals_shift(headers, excel_row) != shift_for_proxy:
+        return None
 #   if excel_row[headers.index('Shift Start Time')].value == '':
 #       return None
     data = {'start':'Shift Start Time',
@@ -277,6 +296,10 @@ def parse_shift(headers, excel_row, backup_row=None):
         if data['job'] in DEADLINE_JOBS:
             data['start'] = (23,59,0)
             data['hours'] = 2
+        elif data['job'].upper() == 'DANCER':
+            data['start'] = (23,55,0)
+            data['hours'] = 2
+            data['day'] = 'Sunday'
         else:
             data['start'] = xlrd.xldate_as_tuple(data['start'],0)[3:]
             data['end'] = xlrd.xldate_as_tuple(data['end'],0)[3:]
@@ -285,8 +308,8 @@ def parse_shift(headers, excel_row, backup_row=None):
         day_number = ['Monday','Tuesday','Wednesday','Thursday',
                       'Friday','Saturday','Sunday'].index(data['day'])
         (data['interval'], offset_weeks) = {
-             'A':(4,0), 'B':(4,1), 'C':(4,2), 'D':(4,3),
-             'E':(6,0), 'F':(6,1), 'G':(6,2), 'H':(6,3), 'I':(6,4), 'J':(6,5),
+             'A':(4,0+4), 'B':(4,1), 'C':(4,2), 'D':(4,3),
+             'E':(6,0+6), 'F':(6,1), 'G':(6,2), 'H':(6,3), 'I':(6,4), 'J':(6,5),
              }[data['rotation']]
         ROTATION_START = (2009,1,26)
         data['start'] = (datetime.datetime(*(ROTATION_START + 
@@ -360,12 +383,13 @@ def set_shift(data, new_member):
             new_member.work_status = 'c'
         else:
             print 'Problem importing shift...'
-        add_account_note('Shift Job: '+data, new_member)
+        add_account_note('Shift info: '+data, new_member)
         print repr('Inserting shift as note: %s' % data)
         return
     try:
         job = s_models.Job.objects.get(name=data['job'].strip().title())
     except:
+        add_account_note('Shift job not in list: '+data['job'], new_member)
         # maybe jobs should just be loose strings to avoid this?
         job = s_models.Job.objects.get(name='Other Job')
 
@@ -387,13 +411,26 @@ def set_shopper_flag(data, new_member):
     accountmember.account_contact = False
     accountmember.save()
 
+def get_section(headers, excel_row, backup_row=None):
+    if str(excel_row[headers.index('Section')].value) == '3.0' and \
+            'LOA' in str(excel_row[0].value):
+        return 'LOA'
+    else:
+        return str(excel_row[headers.index('Section')].value)
+
 def set_section_flag(data, new_member):
-    if data == '3.0':
+    if data == 'LOA':
+        new_member.status = 'L'
+    elif data == '3.0':
         new_member.status = 'm' # missing
     elif data == '3.5':
         new_member.status = 'x' # missing delinquent?
+    elif data == '5.0':
+        new_member.primary_account().ebt_only = True
+        new_member.primary_account().save()
     elif data == '6.0':
         new_member.status = 'd' #departed
+    print 'new_member.status is %s because data was %s' % (new_member.status, data)
 
 def get_work_hist(headers, excel_row, backup_row=None):
     hist = []
@@ -464,7 +501,7 @@ def main():
         account_name = columns['account_name'].fetch_data(excel_row)
         result = 'loaded row'
         
-        if (section in ['1.0','3.0','3.5','6.0'] and 
+        if (section in ['1.0','3.0','3.5','5.0','6.0'] and 
                 account_name != '' and
                 account_name not in accounts):
 #           assert account_name not in accounts
