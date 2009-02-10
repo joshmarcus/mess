@@ -72,6 +72,8 @@ class Account(models.Model):
     members = models.ManyToManyField(Member, related_name='accounts', 
             through='AccountMember')
     can_shop = models.BooleanField(default=True)
+    ebt_only = models.BooleanField()
+    hours_balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     note = models.TextField(blank=True)
