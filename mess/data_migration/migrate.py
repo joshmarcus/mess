@@ -426,8 +426,9 @@ def set_section_flag(data, new_member):
     elif data == '3.5':
         new_member.status = 'x' # missing delinquent?
     elif data == '5.0':
-        new_member.primary_account().ebt_only = True
-        new_member.primary_account().save()
+        acct = new_member.primary_account()
+        acct.ebt_only = True
+        acct.save()
     elif data == '6.0':
         new_member.status = 'd' #departed
     print 'new_member.status is %s because data was %s' % (new_member.status, data)
