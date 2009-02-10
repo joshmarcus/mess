@@ -96,7 +96,7 @@ class Task(models.Model):
 
     @property
     def assigned(self):
-        return bool(self.member or self.account)
+        return bool(self.member and self.account)
 
     @property
     def unexcused(self):
