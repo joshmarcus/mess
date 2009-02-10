@@ -164,7 +164,8 @@ class PortAccount:
         
     def migrate(self):
         # accountname shall be the first element of member.cells
-        new_account = models.Account.objects.create(name = self.cells[0].data)
+        account_name = self.cells[0].data[:50]
+        new_account = models.Account.objects.create(name=account_name)
         for cell in self.cells:
             cell.migrate(new_account)
         new_account.save()
@@ -173,8 +174,9 @@ class PortAccount:
             # username shall be the first element of member.cells
             # member must be saved first, so phones etc. can be migrated
             # then it will be re-saved later after all its data is migrated
-            new_user = create_unique_user(slug = member_cells[0].data)
-            new_member = models.Member.objects.create(user = new_user)
+            slug = member_cells[0].data
+            new_user = create_unique_user(slug=slug)
+            new_member = models.Member.objects.create(user=new_user)
             models.AccountMember.objects.create(account=new_account, 
                                                 member=new_member)
 
@@ -230,10 +232,10 @@ def split_name(namestring):
     return names[0], names[1]
 
 def get_first_name(a):
-    return split_name(a)[0]
+    return split_name(a)[0][:30]
 
 def get_last_name(a):
-    return split_name(a)[1]
+    return split_name(a)[1][:30]
 
 def make_username(a):
     alpha_not = re.compile(r'\W')
@@ -326,15 +328,15 @@ def parse_shift(headers, excel_row, backup_row=None, shift_for_proxy=False):
 # and here is a slew of porter functions, used to migrate data into the db
 
 def create_unique_user(slug, count=0, countstr=''):
-    try:
-        return User.objects.create(username = slug + countstr)
-    except IntegrityError:
+    username = slug + countstr
+    if User.objects.filter(username=username):
         count += 1
         return create_unique_user(slug, count=count, countstr=str(count))
+    return User.objects.create(username=username)
 
 def create_phone(data, new_member):
     if data != '':
-        new_member.phones.create(number = data)
+        new_member.phones.create(number=data[:20])
 
 def create_email(data, new_member):
     if data != '':
@@ -351,7 +353,7 @@ def split_and_create_address(data, new_member):
                 address1 = addr[0].strip(),
                 city = citystate[0].strip(),
                 state = citystate[1].strip(),
-                postal_code = addr[2].strip()
+                postal_code = addr[2].strip()[:20],
             )
             return
     # if problem, return entire original string as street
