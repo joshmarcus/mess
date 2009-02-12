@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import formsets
 from django.forms.models import inlineformset_factory, modelformset_factory
+from django.utils.translation import ugettext_lazy as _
 
 from mess.membership import models
 
@@ -50,7 +51,10 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name')
-        # TODO: better error checking on username -- no spaces!
+    # username pulled straight from django/contrib/auth/forms.py
+    username = forms.RegexField(label=_("Username"), max_length=30, 
+            regex=r'^\w+$', help_text = _("Required. 30 characters or fewer. Alphanumeric characters only (letters, digits and underscores)."),
+            error_message = _("This value must contain only letters, numbers and underscores."))
 
 class AccountForm(forms.ModelForm):
     class Meta:
