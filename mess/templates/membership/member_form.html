@@ -41,6 +41,7 @@
         <div class="save">
           <input type="submit" class="button" value="Save" /> 
           <input type="submit" class="button" name="cancel" value="Cancel" />
+          <input type="submit" class="button" name="delete" value="Delete" onclick="return confirm('Do you really wish to delete member &quot;{{ member.user.username }}&quot; forever and ever?');" id="delete" />
         </div>
       </form>
     </div>

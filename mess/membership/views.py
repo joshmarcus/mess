@@ -91,6 +91,10 @@ def member_form(request, username=None):
                 return HttpResponseRedirect(reverse('member', args=[username]))
             else:
                 return HttpResponseRedirect(reverse('members'))
+        if 'delete' in request.POST:
+            member.delete()
+            user.delete()
+            return HttpResponseRedirect(reverse('members'))
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)
@@ -178,10 +182,18 @@ def account_form(request, id=None):
     context = RequestContext(request)
     if id:
         account = get_object_or_404(models.Account, id=id)
+        context['edit'] = True
     else:
         account = models.Account()
-        context['add'] = True
     if request.method == 'POST':
+        if 'cancel' in request.POST:
+            if id:
+                return HttpResponseRedirect(reverse('account', args=[id]))
+            else:
+                return HttpResponseRedirect(reverse('accounts'))
+        if 'delete' in request.POST:
+            account.delete()
+            return HttpResponseRedirect(reverse('accounts'))
         form = forms.AccountForm(request.POST, instance=account)
         related_member_formset = forms.RelatedMemberFormSet(request.POST, 
                 instance=account, prefix='related_member')
@@ -193,6 +205,7 @@ def account_form(request, id=None):
         form = forms.AccountForm(instance=account)
         related_member_formset = forms.RelatedMemberFormSet(instance=account, 
                 prefix='related_member')
+    context['account'] = account
     context['form'] = form
     context['formsets'] = [
         (related_member_formset, 'Members'), 

@@ -15,7 +15,13 @@
       <li class="last-item"><a class="active" href="{% url accounts %}">Accounts</a></li>
     </ul>
     <div id="primary-content-wrapper">
-      <h2>{% if add %}Add{% else %}Edit{% endif %} Account</h2>
+      <h2>
+        {% if edit %}
+          Edit account: {{ account }} 
+        {% else %}
+          Add account
+        {% endif %}
+      </h2>
       <form class="standard" method="post">
         <div class="section">
           <h3>Main</h3>
@@ -27,6 +33,7 @@
         <div class="save">
           <input type="submit" class="button" value="Save"/> 
           <input type="submit" class="button" name="cancel" value="Cancel" />
+          <input type="submit" class="button" name="delete" value="Delete" onclick="return confirm('Do you really wish to delete account &quot;{{ account }}&quot; forever and ever?');" id="delete" />
         </div>
       </form>
     </div>
