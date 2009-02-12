@@ -162,7 +162,8 @@ def old_rotations(date):
     delta = (date - cycle_begin).days
     fourweek = 'ABCD'[int(delta/7) % 4]
     sixweek = 'EFGHIJ'[int(delta/7) % 6]
-    return fourweek + ', ' + sixweek
+    eightweek = 'MNOPQRKL'[int(delta/7) % 8]
+    return ', '.join([fourweek, sixweek, eightweek])
 
 @user_passes_test(lambda u: u.is_staff)
 def jobs(request):

@@ -5,16 +5,20 @@
 /* body { font-size:10pt; } */
 a { color:black; text-decoration:none; }
 
+/* everything here is really designed for the timecard, specifically. */
 table { border-collapse:collapse; }
 table.data { border:0.5pt solid #000; width:100%; font-size:10pt; }
 table.data tr { border:0.5pt solid #777; }
 table.data th { text-align:left; }
 table.data td { line-height:12pt; 
-                padding-bottom:8pt; 
+                padding-bottom:0pt; 
                 border-right:0.5pt solid #bbb; }
 table.data td.last { border-right:0.5pt solid #777; }
+table.data tr.timecard-extra td { padding-bottom:24pt; }
 
 .noprint { display:none; }
 .float-right { float:right; }
+h3.float-right { margin:0pt; }
+.scrunch-top { margin-top:-15pt; }
 
 thead#timecard-thead th.squish { font-size:8pt; padding-right:-2em; }
