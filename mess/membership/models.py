@@ -55,7 +55,10 @@ class Member(models.Model):
         try:
             primary = self.accounts.get(accountmember__primary_account=True)
         except Account.DoesNotExist:
-            primary = self.accounts.all()[0]
+            try:
+                primary = self.accounts.all()[0]
+            except IndexError:
+                primary = Account()
         return primary
 
     def name_and_paccount(self):
