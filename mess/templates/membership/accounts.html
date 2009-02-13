@@ -10,6 +10,13 @@
         </div>
       </form>
       <h2>Account List</h2>
+      <form class="sorter" method="GET">
+        <ul class="clearfix">
+          <li> <label for="id_search">Account Name:</label> {{ form.search }} </li>
+          <li class="button"><input type="submit" value="Filter" class="button" /></li>
+          <li> <label for="id_note_q">Account Note:</label> {{ form.note_q }} </li>
+        </ul>
+      </form>
       {% include "snippets/pagination.html" %}
       <table class="data">
         <tr>

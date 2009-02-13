@@ -76,6 +76,9 @@ class MemberListFilterForm(forms.Form):
     missing_delinquent = forms.BooleanField(initial=False, required=False)
     departed = forms.BooleanField(initial=False, required=False)
 
+class AccountListFilterForm(forms.Form):
+    search = forms.CharField(required=False)
+    note_q = forms.CharField(required=False)
 
 #class RelatedAccountsForm(forms.Form):
 #    def __init__(self, member_instance, *args, **kwargs):

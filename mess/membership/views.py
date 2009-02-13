@@ -152,10 +152,23 @@ def accounts(request):
     else:
         member = models.Member.objects.get(user=request.user)
         account_objs = member.accounts.all()
+    if 'search' in request.GET:
+        form = forms.AccountListFilterForm(request.GET)
+        if form.is_valid():
+            search = form.cleaned_data.get('search')
+            if search:
+                account_objs = account_objs.filter(name__icontains=search)
+            note_q = form.cleaned_data.get('note_q')
+            if note_q:
+                account_objs = account_objs.filter(note__icontains=note_q)
+    else:
+        form = forms.AccountListFilterForm()
+        # should filter to hide closed accounts... 
     pager = p.Paginator(account_objs, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = _get_current_page(pager, page_number)
+    context['form'] = form
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
