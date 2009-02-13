@@ -61,15 +61,22 @@ class AccountForm(forms.ModelForm):
         model = models.Account
         exclude = ('balance', 'members')
 
-SORT_CHOICES = (
-        ('alpha', 'Alphabetical'),
-        ('newjoin', 'Date Joined (newest first)'),
-        ('oldjoin', 'Date Joined (oldest first)'),
+MEMBER_SORT_CHOICES = (
+    ('alpha', 'Alphabetical'),
+    ('newjoin', 'Date joined (newest first)'),
+    ('oldjoin', 'Date joined (oldest first)'),
+)
+
+ACCOUNT_SORT_CHOICES = (
+    ('alpha', 'Alphabetical'),
+    ('recent', 'Most recently added'),
+    ('hours', 'Hours balance (high to low)'),
+    ('balance', 'Account balance (high to low)'),
 )
 
 class MemberListFilterForm(forms.Form):
     search = forms.CharField(required=False)
-    sort_by = forms.ChoiceField(choices=SORT_CHOICES)
+    sort_by = forms.ChoiceField(choices=MEMBER_SORT_CHOICES)
     active = forms.BooleanField(initial=True, required=False)
     leave_of_absence = forms.BooleanField(initial=False, required=False)
     missing = forms.BooleanField(initial=False, required=False)
@@ -78,7 +85,10 @@ class MemberListFilterForm(forms.Form):
 
 class AccountListFilterForm(forms.Form):
     search = forms.CharField(required=False)
-    note_q = forms.CharField(required=False)
+    sort_by = forms.ChoiceField(choices=ACCOUNT_SORT_CHOICES)
+    active = forms.BooleanField(initial=True, required=False)
+    can_shop = forms.BooleanField(initial=True, required=False)
+    ebt_only = forms.BooleanField(initial=True, required=False)
 
 #class RelatedAccountsForm(forms.Form):
 #    def __init__(self, member_instance, *args, **kwargs):

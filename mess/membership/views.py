@@ -33,9 +33,9 @@ def members(request):
             sort = form.cleaned_data['sort_by']
             if sort == 'alpha':
                 members = members.order_by('user__username')
-            if sort == 'oldjoin':
+            elif sort == 'oldjoin':
                 members = members.order_by('date_joined')
-            if sort == 'newjoin':
+            elif sort == 'newjoin':
                 members = members.order_by('-date_joined')
             if not form.cleaned_data['active']:
                 members = members.exclude(status='a')
@@ -148,23 +148,42 @@ def member_form(request, username=None):
 def accounts(request):
     context = RequestContext(request)
     if request.user.is_staff:
-        account_objs = models.Account.objects.all()
+        accounts = models.Account.objects.all()
     else:
         member = models.Member.objects.get(user=request.user)
-        account_objs = member.accounts.all()
-    if 'search' in request.GET:
+        accounts = member.accounts.all()
+    if 'sort_by' in request.GET:
         form = forms.AccountListFilterForm(request.GET)
         if form.is_valid():
             search = form.cleaned_data.get('search')
             if search:
-                account_objs = account_objs.filter(name__icontains=search)
-            note_q = form.cleaned_data.get('note_q')
-            if note_q:
-                account_objs = account_objs.filter(note__icontains=note_q)
+                accounts = accounts.filter(
+                        Q(name__icontains=search) |
+                        Q(note__icontains=search))
+            sort = form.cleaned_data['sort_by']
+            if sort == 'alpha':
+                accounts = accounts.order_by('name')
+            elif sort == 'recent':
+                accounts = accounts.order_by('-id')
+            elif sort == 'hours':
+                accounts = accounts.order_by('-hours_balance')
+            elif sort == 'balance':
+                accounts = accounts.order_by('-balance')
+            if not form.cleaned_data['can_shop']:
+                accounts = accounts.exclude(can_shop=True)
+            if not form.cleaned_data['ebt_only']:
+                accounts = accounts.exclude(ebt_only=True)
+            if form.cleaned_data['active']:
+                accounts = accounts.filter(accountmember__shopper=False, 
+                        members__status='a')
+            else:
+                accounts = accounts.exclude(accountmember__shopper=False,
+                        members__status='a')
     else:
         form = forms.AccountListFilterForm()
-        # should filter to hide closed accounts... 
-    pager = p.Paginator(account_objs, PER_PAGE)
+        accounts = accounts.filter(accountmember__shopper=False, 
+                members__status='a')
+    pager = p.Paginator(accounts, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = _get_current_page(pager, page_number)

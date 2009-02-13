@@ -2,7 +2,7 @@
 
 {% block content %}
   <div id="double-column">
-      {% include "membership/snippets/page_menu.html" %}
+    {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <form action="{% url account-add %}">
         <div class="add-button">
@@ -12,9 +12,16 @@
       <h2>Account List</h2>
       <form class="sorter" method="GET">
         <ul class="clearfix">
-          <li> <label for="id_search">Account Name:</label> {{ form.search }} </li>
+          <li> 
+            <label for="id_search">Search:</label> {{ form.search }}
+            <label for="id_sort_by">Sort by:</label> {{ form.sort_by }}
+          </li>
           <li class="button"><input type="submit" value="Filter" class="button" /></li>
-          <li> <label for="id_note_q">Account Note:</label> {{ form.note_q }} </li>
+          <li>
+            {{ form.active }} <label for="id_active">active</label>
+            {{ form.can_shop }} <label for="id_active">can shop</label>
+            {{ form.ebt_only }} <label for="id_active">EBT only</label>
+          </li>
         </ul>
       </form>
       {% include "snippets/pagination.html" %}
