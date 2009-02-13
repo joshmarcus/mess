@@ -114,10 +114,9 @@ class Task(models.Model):
     def get_next_shift(self):
         if self.recur_rule:
             future_tasks = self.recur_rule.task_set.filter(time__gt=self.time)
-            next_task = future_tasks.order_by('time')[0]
-            return next_task.time
-        else:
-            return None
+            if future_tasks:
+                next_task = future_tasks.order_by('time')[0]
+                return next_task.time
 
     def set_recur_rule(self, frequency, interval, until):
         exclusions = []
