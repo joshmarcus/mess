@@ -1,9 +1,26 @@
 from django.conf.urls.defaults import *
 from mess.membership import models
 from mess.autocomplete.views import autocomplete
+from django.db.models import Q
 
-autocomplete.register('account', models.Account.objects.all(), ('name',), limit=10, label='name')
-autocomplete.register('member_with_paccount', models.Member.objects.all(), ('user__first_name__startswith','user__last_name__startswith','accounts__name__startswith'), limit=10, label=lambda m: m.name_and_paccount() )
+autocomplete.register('account', models.Account.objects.all(), ('name__istartswith',), limit=10, label='name')
+
+# create hook to branch autocomplete filter: '* = include inactive'
+# (this doesn't belong here in urls.py, but where should it live?)
+def member_spiffy_filter(query):
+    if '*' in query:
+        plain_query = query.strip('* ')
+        return (Q(user__first_name__istartswith=plain_query) |
+                Q(user__last_name__istartswith=plain_query) |
+                Q(accounts__name__istartswith=plain_query))
+    else:
+        return (Q(status='a') & (Q(user__first_name__istartswith=query) |
+                                 Q(user__last_name__istartswith=query) |
+                                 Q(accounts__name__istartswith=query)))
+
+autocomplete.register('member_spiffy', models.Member.objects.all(), member_spiffy_filter, limit=10, label=lambda m: m.autocomplete_label() )
+
+
 
 urlpatterns = patterns('mess.membership.views',
     url(r'^accounts$', 'accounts', name='accounts'),
@@ -30,4 +47,5 @@ urlpatterns = patterns('mess.membership.views',
 
     url('^autocomplete/(\w+)/$', autocomplete, name='membership-autocomplete'),
     #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
+    #url('^junkx/(\w+)/$', junk, name='junkx'),
 )

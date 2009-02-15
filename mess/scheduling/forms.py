@@ -45,9 +45,9 @@ class TaskForm(forms.ModelForm):
             view_name='membership-autocomplete', canroundtrip=True), 
         required=False) 
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
-        widget=AutoCompleteWidget('member_with_paccount', 
+        widget=AutoCompleteWidget('member_spiffy', 
             view_name='membership-autocomplete', canroundtrip=True), 
-        required=False) 
+        required=False, help_text='* = include inactive') 
     #recur_rule = forms.IntegerField(initial=self.instance.recur_rule.id, 
     #        widget=forms.HiddenInput)
     #affect = forms.ChoiceField(choices=AFFECT_CHOICES)

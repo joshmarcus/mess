@@ -18,11 +18,15 @@ class AutoComplete(object):
             return self.forbidden(ac_name)
         query = request.GET.get(query_param, '')
         
-        filter = Q()
-        for field in fields:
-            if not '__' in field:
-                field = '%s__startswith' % field
-            filter |= Q(**{field: query})
+        # allow hook to create arbitrary filters
+        if callable(fields):
+            filter = fields(query)
+        else:
+            filter = Q()
+            for field in fields:
+                if not '__' in field:
+                    field = '%s__startswith' % field
+                filter |= Q(**{field: query})
         
         qs = qs.filter(filter)[:limit]
         
