@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
+from django.template.loader import get_template
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -52,6 +53,14 @@ def anomalies(request):
 
     report = '<h1>Anomalies Report (%d blips)</h1>\n' % blips + report
     return HttpResponse(report)
+
+def contact(request):
+    context = RequestContext(request)
+    members = m_models.Member.objects.filter(status='a', accountmember__shopper=False)
+    context['emailable'] = members.filter(emails__isnull=False)
+    context['nonemailable'] = members.exclude(emails__isnull=False)
+    template = get_template('reporting/contact.html')
+    return HttpResponse(template.render(context))
 
 def transaction_list_report(request):
     # c is the context to be passed to the template
