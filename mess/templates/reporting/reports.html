@@ -9,21 +9,15 @@
 
   <h4>Accounts</h4>
   <ul>
-    <li><a href="{% url list %}?object=Accounts&filter=task__time__year%3D{{ nextyear }}&output=%7B%25+for+m+in+x.members.all+%25%7D%7B%7B+m+%7D%7D%3A+%7B%7B+m.next_shift.job+%7D%7D+%7B%7B+m.next_shift.time+%7D%7D%3Cbr%3E%7B%25+endfor+%25%7D%5CShifts+by+Member">With permanent shifts</a>
-    <li><a href="{% url list %}?object=Accounts&filter=members__work_status%3De%0D%0Amembers__status%3Da&output=%7B%25+for+m+in+x.members.all+%25%7D%7B%7B+m+%7D%7D%3A+%7B%7B+m.get_work_status_display+%7D%7D%3Cbr%3E%7B%25+endfor+%25%7D%5CMembers%0D%0Anote">With a work exemption</a>
-    <li><a href="{% url list %}?object=Accounts&filter=members__work_status%3Dc%0D%0Amembers__status%3Da&output=%7B%25+for+m+in+x.members.all+%25%7D%7B%7B+m+%7D%7D%3A+%7B%7B+m.get_work_status_display+%7D%7D%3Cbr%3E%7B%25+endfor+%25%7D%5CMembers%0D%0Anote">With a committee or other work commitment</a>
-    <li><a href="{% url list %}?object=Accounts&filter=task__time__gte%21%3D{{ today }}%0D%0Amembers__work_status__in%21%3Dec%0D%0Amembers__status=a&output=note">Maybe needing shifts??</a>
-    <li><a href="{% url list %}?object=Accounts&filter=members__status%3DL&output=%7B%25+for+m+in+x.members.all+%25%7D%7B%7B+m+%7D%7D%3A+%7B%7B+m.get_status_display+%7D%7D%3Cbr%3E%7B%25+endfor+%25%7D%5CMembers%0D%0Anote">With a member on LOA</a>
-    <li><a href="{% url list %}?object=Accounts&filter=accountmember__shopper%21%3DTrue&output=active_member_count">Without proxy shoppers</a>
-    <li><a href="{% url list %}?object=Accounts&filter=deposit__gte%3D50.00&output=deposit">With at least $50 deposit</a>
-    <li><a href="{% url list %}?object=Accounts&filter=can_shop%3DFalse&output=can_shop%0D%0Adeposit%0D%0Abalance%0D%0Ahours_balance">Frozen</a>
-    <li><a href="{% url list %}?object=Accounts&filter=hours_balance__gte%3D1.00%0D%0Amembers__status%3Da&output=hours_balance%0D%0Anote">Owing 1 hour or more</a>
+    {% for prepack in prepacked_account_lists %}
+      <li><a href="{% url list %}?object=Accounts&filter={{ prepack.filter|urlencode }}&output={{ prepack.output|urlencode }}{% if prepack.include_inactive %}&include_inactive=on{% endif %}&desc={{ prepack.name|urlencode }}">{{ prepack.name }}</a>
+    {% endfor %}
   </ul>
 
   <h4>Members</h4>
   <ul>
-    <li><a href="{% url list %}?object=Members&filter=emails__isnull%3DFalse%0D%0Astatus__in%3DaL&output=emails">With emails</a>
-    <li><a href="{% url list %}?object=Members&filter=emails__isnull%3DTrue%0D%0Aaccountmember__shopper%3DFalse%0D%0Astatus__in%3DaL&output=phones">Without emails</a>
+    <li><a href="{% url list %}?object=Members&filter=emails__isnull%3DFalse&output=emails&desc=with+Email">With emails</a>
+    <li><a href="{% url list %}?object=Members&filter=emails__isnull%3DTrue%0D%0Aaccountmember__shopper%3DFalse&output=phones&desc=without+Email+(phone+list)">Without emails</a>
     <li><a href="{% url contact_list %}">Contact Information</a>
   </ul>
 

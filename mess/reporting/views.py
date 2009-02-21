@@ -70,8 +70,36 @@ def contact(request):
 @user_passes_test(lambda u: u.is_staff)
 def reports(request):
     context = RequestContext(request)
-    context['today'] = datetime.date.today()
-    context['nextyear'] = context['today'].year+1
+    context['prepacked_account_lists'] = [
+          {'name':'With Permanent Shifts',
+           'filter':'task__time__year='+str(datetime.date.today().year+1),
+           'output':'{% for m in x.members.all %}{{ m }}: {{ m.next_shift }}<br>{% endfor %}\\Shifts by Member\r\nnote'},
+          {'name':'With A Work Exemption',
+           'filter':'members__work_status=e',
+           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'},
+          {'name':'With Committee or Commitment Work',
+           'filter':'members__work_status=c',
+           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'},
+          {'name':'Needing Shifts? Incomplete List',
+           'filter':'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
+           'output':'note'},
+          {'name':'With A Member On LOA',
+           'filter':'members__status=L',
+           'include_inactive':True,
+           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}'},
+          {'name':'With No Proxy Shoppers',
+           'filter':'accountmember__shopper!=True',
+           'output':'active_member_count'},
+          {'name':'With At Least $50 Deposit',
+           'filter':'deposit__gte=50.00',
+           'output':'deposit'},
+          {'name':'Frozen',
+           'filter':'can_shop=False',
+           'output':'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'},
+          {'name':'Owing 1 Hour or More',
+           'filter':'hours_balance++gte=1.00',
+           'output':'hours_balance\r\nnote'},
+        ]
     template = get_template('reporting/reports.html')    
     return HttpResponse(template.render(context))
 
@@ -82,8 +110,10 @@ def list(request):
     context = RequestContext(request)
     context['form'] = forms.ListFilterForm(request.GET)
     context['errors'] = []
+    if request.GET.has_key('desc'):
+        context['desc'] = request.GET['desc']
 
-    for requestfield in ['object','filter','output']:
+    for requestfield in ['object','include_inactive','filter','output']:
         if request.GET.has_key('object') and context['form'].is_valid():
             context[requestfield] = context['form'].cleaned_data[requestfield]
         else:
@@ -91,10 +121,15 @@ def list(request):
     
     if context['object'] == 'Accounts':
         objects = m_models.Account.objects.all()
+        if not context['include_inactive']:
+            objects = objects.filter(members__status='a', 
+                        accountmember__shopper=False).distinct()
         blank_object = m_models.Account()
         outputters = [ListOutputter('<a href="{% url account x.id %}">{{ x }}</a>',blank_object, 'Account')]
     elif context['object'] == 'Members':
         objects = m_models.Member.objects.all()
+        if not context['include_inactive']:
+            objects = objects.filter(status='a')
         blank_object = m_models.Member()
         outputters = [ListOutputter('<a href="{% url member x.user.username %}">{{ x }}</a>',blank_object, 'Member')]
     else:
