@@ -45,6 +45,7 @@ def anomalies(request):
         ('Comma in Name', mems.filter(user__first_name__contains=',')),
         ('Missing Lastname', mems.filter(user__last_name='Lastname')),
         ('Duplicate Name', find_dups(mems)),
+        ('Email without @', mems.filter(emails__isnull=False).exclude(emails__email__contains='@')),
         ]
     for issue, afflicteds in issues:
         report += '<h3>%s (%d members)</h3>\n' % (issue, len(afflicteds))
@@ -86,7 +87,7 @@ def reports(request):
           {'name':'With A Member On LOA',
            'filter':'members__status=L',
            'include_inactive':True,
-           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}'},
+           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}\\Members\r\nnote'},
           {'name':'With No Proxy Shoppers',
            'filter':'accountmember__shopper!=True',
            'output':'active_member_count'},
@@ -97,7 +98,7 @@ def reports(request):
            'filter':'can_shop=False',
            'output':'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'},
           {'name':'Owing 1 Hour or More',
-           'filter':'hours_balance++gte=1.00',
+           'filter':'hours_balance__gte=1.00',
            'output':'hours_balance\r\nnote'},
         ]
     template = get_template('reporting/reports.html')    
