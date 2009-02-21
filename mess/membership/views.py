@@ -169,20 +169,16 @@ def accounts(request):
                 accounts = accounts.order_by('-hours_balance')
             elif sort == 'balance':
                 accounts = accounts.order_by('-balance')
-            if not form.cleaned_data['can_shop']:
-                accounts = accounts.exclude(can_shop=True)
-            if not form.cleaned_data['ebt_only']:
-                accounts = accounts.exclude(ebt_only=True)
-            if form.cleaned_data['active']:
-                accounts = accounts.filter(accountmember__shopper=False, 
+            if not form.cleaned_data['active']:
+                accounts = accounts.exclude(accountmember__shopper=False, 
                         members__status='a')
-            else:
-                accounts = accounts.exclude(accountmember__shopper=False,
-                        members__status='a')
+            if not form.cleaned_data['inactive']:
+                accounts = accounts.filter(accountmember__shopper=False,
+                        members__status='a').distinct()
     else:
         form = forms.AccountListFilterForm()
         accounts = accounts.filter(accountmember__shopper=False, 
-                members__status='a')
+                members__status='a').distinct()
     pager = p.Paginator(accounts, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')

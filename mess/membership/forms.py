@@ -87,8 +87,9 @@ class AccountListFilterForm(forms.Form):
     search = forms.CharField(required=False)
     sort_by = forms.ChoiceField(choices=ACCOUNT_SORT_CHOICES)
     active = forms.BooleanField(initial=True, required=False)
-    can_shop = forms.BooleanField(initial=True, required=False)
-    ebt_only = forms.BooleanField(initial=True, required=False)
+    inactive = forms.BooleanField(initial=False, required=False)
+#   can_shop = forms.BooleanField(initial=True, required=False)
+#   ebt_only = forms.BooleanField(initial=True, required=False)
 
 #class RelatedAccountsForm(forms.Form):
 #    def __init__(self, member_instance, *args, **kwargs):
