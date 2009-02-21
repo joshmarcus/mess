@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import datetime
 import time
 
 from django.contrib.auth.decorators import user_passes_test
@@ -6,6 +7,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template.loader import get_template
+from django.template import Template, Context
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -13,6 +15,7 @@ from mess.membership import models as m_models
 from mess.scheduling import models as s_models
 #from mess.accounting.models import get_credit_choices, get_debit_choices
 #from mess.accounting.models import get_trans_total
+from mess.reporting import forms
 
 from mess.utils.search import list_usernames_from_fullname
 
@@ -54,6 +57,7 @@ def anomalies(request):
     report = '<h1>Anomalies Report (%d blips)</h1>\n' % blips + report
     return HttpResponse(report)
 
+@user_passes_test(lambda u: u.is_staff)
 def contact(request):
     context = RequestContext(request)
     members = m_models.Member.objects.filter(status='a', accountmember__shopper=False)
@@ -61,6 +65,106 @@ def contact(request):
     context['nonemailable'] = members.exclude(emails__isnull=False)
     template = get_template('reporting/contact.html')
     return HttpResponse(template.render(context))
+
+
+@user_passes_test(lambda u: u.is_staff)
+def reports(request):
+    context = RequestContext(request)
+    context['today'] = datetime.date.today()
+    context['nextyear'] = context['today'].year+1
+    template = get_template('reporting/reports.html')    
+    return HttpResponse(template.render(context))
+
+
+@user_passes_test(lambda u: u.is_staff)
+def list(request):
+    template = get_template('reporting/list.html')
+    context = RequestContext(request)
+    context['form'] = forms.ListFilterForm(request.GET)
+    context['errors'] = []
+
+    for requestfield in ['object','filter','output']:
+        if request.GET.has_key('object') and context['form'].is_valid():
+            context[requestfield] = context['form'].cleaned_data[requestfield]
+        else:
+            context[requestfield] = ''
+    
+    if context['object'] == 'Accounts':
+        objects = m_models.Account.objects.all()
+        blank_object = m_models.Account()
+        outputters = [ListOutputter('<a href="{% url account x.id %}">{{ x }}</a>',blank_object, 'Account')]
+    elif context['object'] == 'Members':
+        objects = m_models.Member.objects.all()
+        blank_object = m_models.Member()
+        outputters = [ListOutputter('<a href="{% url member x.user.username %}">{{ x }}</a>',blank_object, 'Member')]
+    else:
+        objects = [] 
+        outputters = []
+
+    for filterline in context['filter'].split('\r\n'):
+        if len(filterline) == 0:
+            continue
+        try:
+            filterq, filterval = filterline.split('=')
+            if filterval in ['True', 'False']:
+                filterval = {'True':True, 'False':False}[filterval]
+            if filterq[-1] == '!':
+                objects = objects.exclude(**{str(filterq[:-1]):filterval})
+            else:
+                objects = objects.filter(**{str(filterq):filterval}).distinct()
+        except:
+            context['errors'].append(filterline)
+
+    for outfield in context['output'].split('\r\n'):
+        if len(outfield) == 0:
+            continue
+        outputters.append(ListOutputter(outfield, blank_object))
+
+    context['result'] = [[y.render(x) for y in outputters] for x in objects]
+    context['outputfieldnames'] = outputters
+#   objectcontexts = [Context({'x':object}) for object in objects]
+#   outputfields = [Template(code[1]) for code in outputcodes]
+#   context['output'] = [[f.render(c) for f in outputfields] 
+#                               for c in objectcontexts]
+#   context['outputfieldnames'] = [code[0] for code in outputcodes]
+    return HttpResponse(template.render(context))
+
+class ListOutputter:
+    def __init__(self, field, blank_object, name=None):
+        self.field = field
+        self.name = name or field.title()
+        if '{' in field:
+            self.render = self.render_as_template
+            if '\\' in field:
+                self.field, self.name = field.split('\\',1)
+            self.template = Template(self.field)
+        else:
+            self.render = self.render_by_getattr
+
+    def render_badfield(self, object):
+        return 'error: '+self.field
+
+    def render_as_template(self, object):
+        object_context = Context({'x':object})
+        try:
+            return self.template.render(object_context)
+        except:
+            return 'error: '+self.field
+        
+    def render_by_getattr(self, object):
+        if not hasattr(object, self.field):
+            return 'error: '+self.field
+        attr = getattr(object, self.field)
+        if hasattr(attr, 'all'):
+            return '\n'.join([unicode(relobj) for relobj in attr.all()])
+        else:
+            return unicode(attr)
+
+    def render_by_coercion(self, object):
+        return unicode(object)
+
+    def __unicode__(self):
+        return self.name
 
 def transaction_list_report(request):
     # c is the context to be passed to the template

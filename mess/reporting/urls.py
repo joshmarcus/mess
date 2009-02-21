@@ -3,6 +3,8 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('mess.reporting.views',
     url(r'^anomalies/$', 'anomalies', name='anomalies'),
     url(r'^contact/$', 'contact', name='contact_list'),
+    url(r'^list/$', 'list', name='list'),
+    url(r'^reports/$', 'reports', name='reports'),
     url(r'^trans_summary/$', 'transaction_report',
                             {'report': 'all'}, name='trans_summary'),
     url(r'^trans_summary_today/$', 'transaction_report',

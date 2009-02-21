@@ -1,4 +1,5 @@
 from datetime import date
+import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -50,6 +51,13 @@ class Member(models.Model):
 
     def __unicode__(self):
         return self.user.get_full_name()
+
+    def next_shift(self):
+        tasks = self.task_set.filter(time__gte=datetime.date.today()).order_by('time')
+        if len(tasks):
+            return tasks[0]
+        else:
+            return None
 
     def primary_account(self):
         try:

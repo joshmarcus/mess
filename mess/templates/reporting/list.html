@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+  <h2>Custom List{% if object %}:
+      {{ result|length }} Matching {{ object }}
+    {% endif %}
+  </h2>
+
+  <form class="sorter" method="GET" style="float:right;">
+    <table>{{ form }}</table>
+    <input type="submit" value="Run Report">
+  </form>
+
+  <br>
+  {% for error in errors %}
+    Error: {{ error }}<br>
+  {% endfor %}
+
+  <table class="data">
+    <tr>
+      {% for fieldname in outputfieldnames %}
+        <th>{{ fieldname }}</th>
+      {% endfor %}
+    </tr>
+    {% for object in result %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        {% for field in object %}
+          <td>{{ field|linebreaksbr }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+
+  </div>
+</div>
+{% endblock %}
