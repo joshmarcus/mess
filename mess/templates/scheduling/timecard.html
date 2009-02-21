@@ -29,7 +29,8 @@
               <th class="squish">Excused</th>
               <th class="squish">Makeup</th>
               <th class="squish">Banked</th>
-              <th>Time /<br />Job</th>
+              <th>Time</th>
+              <th>Job</th>
               <th>Worker</th>
               <th class="printonly">Member<br />Initials</th>
               <th>Next<br />Shift</th>
@@ -48,19 +49,12 @@
               <td>{{ form.banked }}</td>
               <td class="time">
               {% if task.job.deadline %}
-                {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
+                {{ task.hours }} hours due by {{ task.time|date:"g:ia"|cut:".m." }}
               {% else %}
-                {{ task.time|date:"P" }} &ndash; {{ task.get_end|date:"P" }}
-              {% endif %}
-              {% comment %} don't think we need this in timecard -- gsf
-                <br />
-              {% if task.recur_rule %}
-              (recurs every {{ task.get_recurrence_display }}{% if task.recur_rule.until %}<br />until {{ task.recur_rule.until|date:"F jS" }}{% endif %})
+                {{ task.time|date:"g:ia"|cut:".m." }} &ndash; {{ task.get_end|date:"g:ia"|cut:".m." }}
               {% endif %}
               </td>
               <td>{{ task.job }}</td>
-              {% endcomment %}
-              <br />{{ task.job }}</td>
               <td>
                 {% if task.assigned %}
                   <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a> 
