@@ -173,6 +173,10 @@ class Task(models.Model):
                     member=self.member, account=self.account, 
                     recur_rule=self.recur_rule)
             task.save()
+
+    def duplicate(self):
+        new_task = Task(job=self.job, time=self.time, hours=self.hours)
+        new_task.save()
         
     def get_recurrence_display(self):
         if self.recur_rule:

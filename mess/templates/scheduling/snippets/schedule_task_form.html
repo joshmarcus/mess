@@ -1,3 +1,22 @@
+<div class="form-chunk task-pre-excuse">
+  <h5>This Day Only</h5>
+  <table>
+    <tr>
+      <td>
+        <label for="id_{{ form.prefix }}-excused">Excused</label><br>
+        {{ form.excused }}
+      </td>
+      <td>
+        <label for="id_{{ form.prefix }}-makeup">Makeup</label><br>
+        {{ form.makeup }}
+      </td>
+      <td>
+        <label for="id_{{ form.prefix }}-banked">Banked</label><br>
+        {{ form.banked }}
+      </td>
+    </tr>
+  </table>
+</div>
 <div class="form-chunk">
   <label for="id_{{ form.prefix }}-time_1">Time:</label> {{ form.time }}
   {% comment %}
@@ -8,7 +27,7 @@
   <span class="errors">{{ form.time.errors|join:" " }} {{ form.hours.errors|join:" " }}</span>
 </div>
 <div class="form-chunk">
-  {{ form.recur_rule }}
+ {% comment %}  {{ form.recur_rule }} {% endcomment %}
   <label for="id_{{ recur_form.prefix }}-frequency">Frequency:</label> {{ recur_form.frequency }}
   <span class="errors">{{ recur_form.frequency.errors|join:" " }}</span>
 </div>

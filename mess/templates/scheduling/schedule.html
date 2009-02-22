@@ -74,10 +74,11 @@
           <th>Time</th>
           <th>Job</th>
           <th>Workers</th>
+          <th> </th>
         </tr>
         {% for task in tasks %}
         <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}">
-          <td class="time">
+          <td class="time clickable">
           {% if task.job.deadline %}
             {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
           {% else %}
@@ -88,8 +89,8 @@
           (recurs every {{ task.get_recurrence_display }}{% if task.recur_rule.until %}<br />until {{ task.recur_rule.until|date:"F jS" }}{% endif %})
           {% endif %}
           </td>
-          <td>{{ task.job }}</td>
-          <td>
+          <td class="clickable">{{ task.job }}</td>
+          <td class="clickable">
             {% if task.assigned %}
             <a href="{% url member task.member.user.username %}">{{ task.member }}</a> 
             (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
@@ -98,9 +99,21 @@
             <span class="unassigned">Unassigned</span>
             {% endif %}
           </td>
+          <td>
+            {% if task.excused %}
+              {% if task.assigned %}Excused{% else %}One-Time Filled{% endif %}
+            {% else %}
+              {% if task.recur_rule or task.assigned %}
+                <form method="post">
+                  <input type="hidden" name="task-index" value="{{ task.form.prefix }}">
+                  <input type="submit" name="duplicate" value="{% if task.assigned %}Excuse and Duplicate{% else %}One-Time Fill{% endif %}">
+                </form>
+              {% endif %}
+            {% endif %}
+          </td>
         </tr>
         <tr class="task-edit{% if not task.form.errors %} hidden{% endif %}">
-          <td colspan="3" style="padding:0">
+          <td colspan="4" style="padding:0">
             <div class="task-form task-edit-form">
               <form method="post" name="edit{{ task.form.prefix }}">
                 <input type="hidden" name="task-index" value="{{ task.form.prefix }}" />

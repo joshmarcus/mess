@@ -39,6 +39,7 @@ class ParseDateTimeField(forms.Field):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = models.Task
+        exclude = ['recur_rule', 'hours_worked']
     time = ParseDateTimeField(widget=forms.SplitDateTimeWidget())
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
         widget=AutoCompleteWidget('account', 

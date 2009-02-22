@@ -65,7 +65,7 @@ def schedule(request, date=None):
     add_recur_form = forms.RecurForm(prefix='recur-add')
     tasks = models.Task.objects.filter(time__year=date.year).filter(
             time__month=date.month).filter(time__day=date.day).order_by(
-            'time', 'hours', 'job', 'recur_rule')
+            'time', 'hours', 'job', '-recur_rule')
     prepared_tasks = []
     for index, task in enumerate(tasks):
         task.form = forms.TaskForm(instance=task, prefix=str(index))
@@ -82,7 +82,13 @@ def schedule(request, date=None):
         else:
             task_index = request.POST.get('task-index')
             task = prepared_tasks[int(task_index)]
-            if 'remove' in request.POST:
+            if 'duplicate' in request.POST:
+                task.excused = True
+                task.save()
+                task.duplicate()
+                return HttpResponseRedirect(reverse('scheduling-schedule', 
+                        args=[date.date()]))
+            elif 'remove' in request.POST:
                 if task.recur_rule:
                     future_tasks = task.recur_rule.task_set.filter(
                             time__gt=task.time)
@@ -137,8 +143,9 @@ def timecard(request, date=None):
         # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
     tasks = models.Task.objects.filter(time__year=date.year).filter(
-            time__month=date.month).filter(time__day=date.day).order_by(
-            'time', 'hours', 'job', 'recur_rule')
+            time__month=date.month).filter(time__day=date.day).exclude(
+            account__isnull=True, excused=True).order_by(
+            'time', 'hours', 'job', '-recur_rule')
     if request.method == 'POST':
         formset = forms.TimecardFormSet(request.POST, queryset=tasks)
         if formset.is_valid():

@@ -111,11 +111,17 @@ function taskClick(e, taskDisplay) {
   YAHOO.util.Dom.removeClass(taskEdit, 'hidden');
   taskEdit.getElementsByTagName('form')[0].elements[2].select();
 }
+function hasClassClickable(node) {
+  return YAHOO.util.Dom.hasClass(node, 'clickable');
+}
 function taskClickAssign() {
   var taskDisplays = YAHOO.util.Dom.getElementsByClassName('task-display', 'tr');
   for (i=0; i<taskDisplays.length; i++) {
     var taskDisplay = taskDisplays[i];
-    YAHOO.util.Event.on(taskDisplay, 'click', taskClick, taskDisplay);
+    var taskClickables = YAHOO.util.Dom.getChildrenBy(taskDisplay,hasClassClickable);
+    for (j=0; j<taskClickables.length; j++) {
+      YAHOO.util.Event.on(taskClickables[j], 'click', taskClick, taskDisplay);
+    }
   }
 }
 function affectDisable(e) {
