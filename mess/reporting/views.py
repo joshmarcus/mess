@@ -133,6 +133,12 @@ def list(request):
             objects = objects.filter(status='a')
         blank_object = m_models.Member()
         outputters = [ListOutputter('<a href="{% url member x.user.username %}">{{ x }}</a>',blank_object, 'Member')]
+    elif context['object'] == 'Tasks':
+        objects = s_models.Task.objects.all()
+        if not context['include_inactive']:
+            objects = objects.filter(time__range=(datetime.date.today(),datetime.date.today()+datetime.timedelta(weeks=6)))
+        blank_object = s_models.Task()
+        outputters = [ListOutputter('<a href="{% url scheduling-task x.id %}">{{ x }}</a>', blank_object, 'Task')]
     else:
         objects = [] 
         outputters = []

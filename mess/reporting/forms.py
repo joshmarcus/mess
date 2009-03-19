@@ -4,6 +4,7 @@ from django import forms
 LIST_OBJECT_CHOICES = (
     ('Accounts', 'Accounts'),
     ('Members', 'Members'),
+    ('Tasks', 'Tasks'),
 )
 
 class ListFilterForm(forms.Form):
