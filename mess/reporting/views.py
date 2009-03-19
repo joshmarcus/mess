@@ -72,6 +72,12 @@ def contact(request):
 def reports(request):
     context = RequestContext(request)
     context['prepacked_account_lists'] = [
+          {'name':'Active Contact List',
+           'filter':'members__status__in=La',
+           'include_inactive':True,
+           'output':'members\r\n'+
+                '{% for y in x.members.all %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
+                '{% for y in x.members.all %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails'},
           {'name':'With Permanent Shifts',
            'filter':'task__time__year='+str(datetime.date.today().year+1),
            'output':'{% for m in x.members.all %}{{ m }}: {{ m.next_shift }}<br>{% endfor %}\\Shifts by Member\r\nnote'},
