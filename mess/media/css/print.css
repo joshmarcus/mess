@@ -21,6 +21,6 @@ table.data tr.timecard-extra td { padding-bottom:24pt; }
 .noprint { display:none; }
 .float-right { float:right; }
 h3.float-right { margin:0pt; }
-.scrunch-top { margin-top:-15pt; }
+.scrunch-top { margin-top:0pt; }
 
 thead#timecard-thead th.squish { font-size:8pt; padding-right:-2em; }
