@@ -48,6 +48,13 @@ def unassigned_for_month(request, month):
     return HttpResponse(simplejson.dumps(days))
 
 @user_passes_test(lambda u: u.is_staff)
+def task(request, task_id):
+    task = get_object_or_404(models.Task, id=task_id)
+#   date = str(task.time.date())
+    return HttpResponseRedirect(reverse('scheduling-schedule', 
+                    args=[task.time.date()])+'?jump_to_task_id='+str(task_id))
+
+@user_passes_test(lambda u: u.is_staff)
 def schedule(request, date=None):
     context = RequestContext(request)
     if date:
@@ -111,6 +118,13 @@ def schedule(request, date=None):
                 task.update_buffer()
             return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[date.date()]))
+
+    # else... if request.method != POST
+    elif request.GET.has_key('jump_to_task_id'):
+        try:
+            context['jump_to_task_id'] = int(request.GET['jump_to_task_id'])
+        except:
+            pass
 
     context['date'] = date
     a_day = datetime.timedelta(days=1)

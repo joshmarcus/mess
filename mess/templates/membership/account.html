@@ -111,7 +111,7 @@
         {% for task in tasks %}
           <tr><td class="{% if task.excused %}task-excused {% endif %}{% if task.makeup %}task-makeup {% endif %}{% if task.banked %}task-banked {% endif %}">
             {{ task.member }} &mdash; {{ task.job }} <br>
-            <a href="{% url scheduling-schedule task.time|date:"Y-m-d" %}">{{ task.time|date:"D n/j/y" }}</a>, {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
+            <a href="{% url scheduling-task task.id %}">{{ task.time|date:"D n/j/y" }}</a>, {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
             {% if task.excused %}<b>Excused</b>{% endif %}
             {% if task.makeup %}<b>Makeup</b>{% endif %}
             {% if task.banked %}<b>Banked</b>{% endif %}

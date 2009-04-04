@@ -142,7 +142,10 @@ def list(request):
     elif context['object'] == 'Tasks':
         objects = s_models.Task.objects.all()
         if not context['include_inactive']:
+            # show only tasks in the next 6 weeks...
             objects = objects.filter(time__range=(datetime.date.today(),datetime.date.today()+datetime.timedelta(weeks=6)))
+            # ...or in the next 4 weeks if we're sure it's a 4-week rotation
+            objects = objects.exclude(time__gt=datetime.date.today()+datetime.timedelta(weeks=4), recur_rule__interval=4)
         blank_object = s_models.Task()
         outputters = [ListOutputter('<a href="{% url scheduling-task x.id %}">{{ x }}</a>', blank_object, 'Task')]
     else:

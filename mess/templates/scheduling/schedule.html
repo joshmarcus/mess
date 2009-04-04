@@ -77,7 +77,7 @@
           <th> </th>
         </tr>
         {% for task in tasks %}
-        <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}">
+        <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}{% ifequal task.id jump_to_task_id %} hidden{% endifequal %}">
           <td class="time clickable">
           {% if task.job.deadline %}
             {{ task.time|date:"P" }} deadline for {{ task.hours }} hour task
@@ -112,7 +112,7 @@
             {% endif %}
           </td>
         </tr>
-        <tr class="task-edit{% if not task.form.errors %} hidden{% endif %}">
+        <tr class="task-edit{% ifnotequal task.id jump_to_task_id %}{% if not task.form.errors %} hidden{% endif %}{% endifnotequal %}">
           <td colspan="4" style="padding:0">
             <div class="task-form task-edit-form">
               <form method="post" name="edit{{ task.form.prefix }}">
