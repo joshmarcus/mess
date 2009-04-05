@@ -66,10 +66,12 @@
               </td>
               <td class="printonly"></td>  <!-- member initials -->
               <td class="last">
-                {% if task.get_next_shift %}
-                  {{ task.get_next_shift|date:"n/j/y" }}
-                {% else %}
-                  Ask!
+                {% if task.assigned %}
+                  {% if task.get_next_shift %}
+                    {{ task.get_next_shift|date:"n/j/y" }}
+                  {% else %}
+                    Ask!
+                  {% endif %}
                 {% endif %}
               </td>
             </tr>
@@ -90,7 +92,7 @@
           </tbody>
         </table>
         <div class="noprint"><input type="submit" value="Submit" /></div>
-        <div class="printonly">Mariposa Co-op phone is 215-729-2121.  Workshift hotline is 215-729-0303.</div>
+        <div class="printonly">Mariposa Co-op phone is 215-729-2121. <!-- Membership Office  is 215-729-0303. --></div>
       </form>
     </div>
   </div>
