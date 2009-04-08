@@ -61,8 +61,9 @@ class Member(models.Model):
 
     def primary_account(self):
         try:
-            primary = self.accounts.get(accountmember__primary_account=True)
-        except Account.DoesNotExist:
+            primary = self.accounts.filter(
+                    accountmember__primary_account=True)[0]
+        except IndexError:
             try:
                 primary = self.accounts.all()[0]
             except IndexError:
