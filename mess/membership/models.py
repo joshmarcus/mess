@@ -52,6 +52,10 @@ class Member(models.Model):
     def __unicode__(self):
         return self.user.get_full_name()
 
+    @property
+    def name(self):
+        return self.user.username
+
     def next_shift(self):
         tasks = self.task_set.filter(time__gte=datetime.date.today()).order_by('time')
         if len(tasks):

@@ -92,7 +92,10 @@ class Task(models.Model):
         ordering = ['time', 'hours', 'job']
 
     def __unicode__(self):
-        return str(self.job) + ' - ' + str(self.time)
+        try:
+            return u'%s - %s %s' % (self.job, self.time, self.member.name)
+        except AttributeError:
+            return u'%s - %s' % (self.job, self.time)
 
     @property
     def assigned(self):

@@ -15,8 +15,9 @@ class RecurRuleAdmin(admin.ModelAdmin):
     )
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('job', 'time', 'hours')
+    list_display = ('job', 'time', 'hours', 'member', 'account')
     list_filter = ('job', )
+    search_fields = ('member__user__first_name',)
 
 admin.site.register(models.Job)
 admin.site.register(models.RecurRule, RecurRuleAdmin)
