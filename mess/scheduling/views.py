@@ -160,9 +160,14 @@ def timecard(request, date=None):
     #        time__month=date.month).filter(time__day=date.day).exclude(
     #        account__isnull=True, excused=True).order_by(
     #        'time', 'hours', 'job', '-recur_rule')
+#
+# It seems our ordering was not deterministic enough, and that caused the 
+# 'Task with this None already exists' if the request.POST and the queryset 
+# ended up with different ordering.  Fixed by adding order_by 'id'.  -Paul
+#
     tasks = models.Task.objects.filter(time__range=(
         datetime.datetime.combine(date, datetime.time.min), 
-        datetime.datetime.combine(date, datetime.time.max)))
+        datetime.datetime.combine(date, datetime.time.max))).order_by('time','id')
     if request.method == 'POST':
         formset = forms.TimecardFormSet(request.POST, request.FILES, 
                 queryset=tasks)
