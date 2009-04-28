@@ -156,18 +156,14 @@ def timecard(request, date=None):
         today = datetime.date.today()
         # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
-    #tasks = models.Task.objects.filter(time__year=date.year).filter(
-    #        time__month=date.month).filter(time__day=date.day).exclude(
-    #        account__isnull=True, excused=True).order_by(
-    #        'time', 'hours', 'job', '-recur_rule')
-#
 # It seems our ordering was not deterministic enough, and that caused the 
 # 'Task with this None already exists' if the request.POST and the queryset 
 # ended up with different ordering.  Fixed by adding order_by 'id'.  -Paul
-#
     tasks = models.Task.objects.filter(time__range=(
         datetime.datetime.combine(date, datetime.time.min), 
-        datetime.datetime.combine(date, datetime.time.max))).order_by('time','id')
+        datetime.datetime.combine(date, datetime.time.max))).exclude(
+        account__isnull=True, excused=True).order_by('time', 'hours', 'job',
+        '-recur_rule', 'id')
     if request.method == 'POST':
         formset = forms.TimecardFormSet(request.POST, request.FILES, 
                 queryset=tasks)
@@ -178,7 +174,6 @@ def timecard(request, date=None):
     else:
         formset = forms.TimecardFormSet(queryset=tasks)
 
-    context['tasks'] = tasks
     context['formset'] = formset
     context['date'] = date
     a_day = datetime.timedelta(days=1)
