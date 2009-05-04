@@ -36,6 +36,11 @@ EMAIL_TYPES = (
     ('o','Other'),
 )
  
+class MemberManager(models.Manager):
+    'Custom manager to add extra methods'
+    def active(self):
+        return self.filter(status='a')
+
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, editable=False)
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
@@ -48,6 +53,8 @@ class Member(models.Model):
     has_key = models.BooleanField(default=False)
     #primary_account = models.ForeignKey('Account', blank=True, null=True)
     date_joined = models.DateField(default=date.today())
+
+    objects = MemberManager()
 
     def __unicode__(self):
         return self.user.get_full_name()

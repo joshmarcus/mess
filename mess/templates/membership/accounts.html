@@ -28,7 +28,6 @@
         <tr>
           <th>Name</th>
           <th>Members</th>
-          <th>Contact</th>
           <th>Balance</th>
         </tr>
         {% for account in page.object_list %}
@@ -37,25 +36,12 @@
               <a href="{% url account account.id %}">{{ account.name }}</a>
             </td>
             <td>
-              {% for member in account.members.all %}
+              {% for member in account.members.active %}
                 <ul>
                   <li>
-                    <a href="{% url member member.user.username %}">{{ member }}</a>
+                    <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.get_profile.emails.all|first }}
                   </li>
                 </ul>
-              {% endfor %}
-            </td>
-            <td>
-              {% for am in account.accountmember_set.all %}
-              {% if am.account_contact %}
-              <p>
-                <a href="{% url member am.member.user.username %}">{{ am.member }}</a>
-              </p>
-              <ul>
-                <li>{{ am.member.user.get_profile.phones.all|first }}</li>
-                <li>{{ am.member.user.get_profile.emails.all|first }}</li>
-              </ul>
-              {% endif %}
               {% endfor %}
             </td>
             <td>{{ account.balance|floatformat:2 }}</td>
