@@ -62,7 +62,7 @@ class Exclusion(models.Model):
 class TaskManager(models.Manager):
     'Custom manager to add extra methods'
     def unassigned(self):
-        return self.all().filter(models.Q(member=None) | models.Q(account=None))
+        return self.filter(models.Q(member=None) | models.Q(account=None))
 
 class Task(models.Model):
     """
