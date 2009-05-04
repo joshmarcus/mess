@@ -113,9 +113,11 @@ class Account(models.Model):
 class AccountMember(models.Model):
     account = models.ForeignKey(Account)
     member = models.ForeignKey(Member)
-    # is this member the contact for the account?
-    account_contact = models.BooleanField(default=True)
-    # is this the primary account for the member?
+    # account_contact displayed as "deposit holder" per shinara's request
+    # -- gsf 2009-05-03
+    account_contact = models.BooleanField(default=True, verbose_name="deposit holder")
+    # primary_account isn't being displayed for now.  not needed according
+    # to shinara -- gsf 2009-05-03
     primary_account = models.BooleanField(default=True)
     # is this member just a shopper on the account?
     shopper = models.BooleanField(default=False)

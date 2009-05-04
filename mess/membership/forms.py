@@ -13,9 +13,9 @@ EmailFormSet = inlineformset_factory(models.Member, models.Email,
 PhoneFormSet = inlineformset_factory(models.Member, models.Phone, 
         extra=0) #, min_num=1)
 RelatedAccountFormSet = inlineformset_factory(models.Member, 
-        models.AccountMember, extra=0)
+        models.AccountMember, exclude=('primary_account',), extra=0)
 RelatedMemberFormSet = inlineformset_factory(models.Account, 
-        models.AccountMember, extra=0)
+        models.AccountMember, exclude=('primary_account',), extra=0)
 
 # forms below needed for dynamic formsets
 class AddressForm(forms.ModelForm):
@@ -36,12 +36,12 @@ class PhoneForm(forms.ModelForm):
 class RelatedAccountForm(forms.ModelForm):
     class Meta:
         model = models.AccountMember
-        exclude = ('member',)
+        exclude = ('member', 'primary_account')
 
 class RelatedMemberForm(forms.ModelForm):
     class Meta:
         model = models.AccountMember
-        exclude = ('account',)
+        exclude = ('account', 'primary_account')
 
 class MemberForm(forms.ModelForm):
     class Meta:
