@@ -13,7 +13,7 @@
           <h5>Accounts</h5>
           <ul>
             {% for am in member.accountmember_set.all %}
-              <li{% if am.primary_account %} id="primary-acct"{% endif %}><a href="{% url account am.account.id %}">{{ am.account }}</a></li>
+              <li{% if am.account_contact %} id="primary-acct"{% endif %}><a href="{% url account am.account.id %}">{{ am.account }}</a></li>
             {% endfor %}
           </ul>
         </div>
@@ -64,10 +64,10 @@
     <h3>Icon Key</h3>
     <ul id="icon-key">
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif"/>Status</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/>Work Status</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif"/>Has Key</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/>Date Joined</li>
-      <li id="primary-acct-key"><img src="{{ MEDIA_URL }}images/bg-icon-primary-acct.png"/>Primary Account</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/>Work status</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif"/>Has key</li>
+      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/>Date joined</li>
+      <li id="primary-acct-key"><img src="{{ MEDIA_URL }}images/bg-icon-primary-acct.png"/>Deposit holder for account</li>
      </ul>
   </div>
 {% endblock %}
