@@ -202,6 +202,7 @@ def workhist(account):
     try:
         oldesttime = account.task_set.all().order_by('time')[0].time
         oldestweeks = ((today - oldesttime.date()).days / 7) + 2
+        oldestweeks = max(oldestweeks, 16)
     except IndexError:
         oldestweeks = 16
     for weeksaway in range(-oldestweeks,52):
