@@ -189,14 +189,21 @@ function reset_form() {
 //  }
 // }
 
-function task_future_hide() {
-    task_future_title = document.getElementById('task_future_title');
-    task_future_title.onclick = function() {
-        task_future_table = document.getElementById('task_future_table');
-        if (task_future_table.style.display == 'none')
-            task_future_table.style.display = 'block';
-        else
-            task_future_table.style.display = 'none';
+function show_or_hide(id) {
+    return function() {
+        elem = document.getElementById(id);
+        if (elem.style.display == 'none') {
+            elem.style.display = 'block';
+        } else {
+            elem.style.display = 'none';
+        }
     }
-    task_future_title.onclick()
+}
+
+function attach_hiders(prefix, n) {
+    for (i=0; i<n; i++) {
+        hider = document.getElementById(prefix+i+'hider');
+        hider.onclick = show_or_hide(prefix+i);
+        hider.onclick();
+    }
 }

@@ -187,6 +187,50 @@ def accounts(request):
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
+def workhist(account):
+    # complex data structures here:
+    # workhist[] is an array of weeks
+    # each week is a {} dictionary of {'days':[array], 'tasks':[array], 
+    #    'newmonth' and 'newyear'} (newmonth and newyear flags show month 
+    #    alongside the calendar)
+    # each day is a {} dictionary of {'week':(parent-pointer), 'date':(number),
+    #    'workflag':(flag for highlighting), 'task':last-task}
+    workhist = []
+    dayindex = {}
+    today = datetime.date.today()
+    lastsunday = today - datetime.timedelta(days=today.weekday()+1)
+    try:
+        oldesttime = account.task_set.all().order_by('time')[0].time
+        oldestweeks = ((today - oldesttime.date()).days / 7) + 2
+    except IndexError:
+        oldestweeks = 16
+    for weeksaway in range(-oldestweeks,52):
+        week = {'tasks':[]}
+        if weeksaway == -12:
+            week['flagcurrent'] = True
+        elif weeksaway == 7:
+            week['flagfuture'] = True
+        firstday = lastsunday + datetime.timedelta(days=7*weeksaway)
+        week['days'] = [{'week':week} for i in range(7)]
+        for i in range(7):
+            week['days'][i]['date'] = firstday + datetime.timedelta(days=i)
+            dayindex[week['days'][i]['date']] = week['days'][i]
+        if week['days'][6]['date'].day <= 7:
+            week['newmonth'] = week['days'][6]['date']
+        elif week['days'][6]['date'].day <= 14:
+            week['newyear'] = week['days'][6]['date'].year
+        workhist.append(week)
+    for task in account.task_set.all():
+        if task.time.date() in dayindex:
+            day = dayindex[task.time.date()]
+            if 'workflag' in day:
+                day['workflag'] = 'complex-workflag'
+            else:
+                day['workflag'] = task.simple_workflag
+            day['task'] = task
+            day['week']['tasks'].append(task)
+    return workhist        
+
 @user_passes_test(lambda u: u.is_authenticated())
 def account(request, id):
     account = get_object_or_404(models.Account, id=id)
@@ -198,10 +242,7 @@ def account(request, id):
     context['account'] = account
     transactions = account.transaction_set.all()
     context['transactions'] = transactions
-    context['tasks'] = account.task_set.filter(time__gt=
-            datetime.date.today()).order_by('time')
-    context['pasttasks'] = account.task_set.filter(time__lt=
-            datetime.date.today()).order_by('-time')
+    context['workhist'] = workhist(account)
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 

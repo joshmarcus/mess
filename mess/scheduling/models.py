@@ -106,6 +106,31 @@ class Task(models.Model):
         return (self.hours_worked == 0 and not self.excused)
 
     @property
+    def workflag(self):
+        flag = ''
+        if self.excused:
+            flag += 'excused '
+        elif self.unexcused:
+            flag += 'unexcused '
+        if self.makeup:
+            flag += 'makeup '
+        if self.banked:
+            flag += 'banked '
+        return flag.strip()
+        # possible values: '', 'excused', 'excusedmakeup', 'excusedbanked', 'excusedmakeupbanked', 'unexcused', 'unexcusedmakeup', 'unexcusedbanked', 'unexcusedmakeupbanked', 'makeup', 'banked', 'makeupbanked'
+
+    @property
+    def simple_workflag(self):
+        if ' ' in self.workflag:
+            return 'complex-workflag'
+        elif self.workflag != '':
+            return self.workflag
+        elif self.hours_worked:
+            return 'worked'
+        else:
+            return 'scheduled'
+
+    @property
     def timecard_submitted(self):
         return (self.hours_worked is not None)
 
