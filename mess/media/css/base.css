@@ -688,6 +688,7 @@ div #task-form form p input, div #task-form form p label{
 .task-hiding-spot td { padding:0px; line-height:0px; }
 .task-hiding-spot td div { line-height:10pt; }
 
+.workhist-today { border:1px solid black; }
 .workhist td { text-align:right; padding-left:5pt; }
 
 /*-------------------------------old stuff begins here

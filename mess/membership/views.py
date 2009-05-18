@@ -230,6 +230,7 @@ def workhist(account):
                 day['workflag'] = task.simple_workflag
             day['task'] = task
             day['week']['tasks'].append(task)
+    dayindex[today]['istoday'] = True
     return workhist        
 
 @user_passes_test(lambda u: u.is_authenticated())

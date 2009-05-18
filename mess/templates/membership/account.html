@@ -124,9 +124,9 @@
           <td>&nbsp;</td>
           {% for day in week.days %}
             {% if day.workflag %}
-              <td class="task-{{ day.workflag }}" title="{{ day.task.member }}. {{ day.task.job }}. {{ day.task.time|time:"g:ia" }}, {{ day.task.hours }} hours.  {{ day.workflag|capfirst }}"><b><u>{{ day.date|date:"j" }}</u></b></td>
+              <td class="task-{{ day.workflag }}{% if day.istoday %} workhist-today{% endif %}" title="{{ day.task.member }}. {{ day.task.job }}. {{ day.task.time|time:"g:ia" }}, {{ day.task.hours }} hours.  {{ day.workflag|capfirst }}"><b><u>{{ day.date|date:"j" }}</u></b></td>
             {% else %}
-              <td>{{ day.date|date:"j" }}</td>
+              <td {% if day.istoday %}class="workhist-today"{% endif %}>{{ day.date|date:"j" }}</td>
             {% endif %}
           {% endfor %}
         </tr>
