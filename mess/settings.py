@@ -79,11 +79,6 @@ TEMPLATE_DIRS = (
     PROJECT_ROOT + '/templates',
 )
 
-# project-wide fixtures -- only contains auth data for demo
-FIXTURE_DIRS = (
-    PROJECT_ROOT + '/fixtures',
-)
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
