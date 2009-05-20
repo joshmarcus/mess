@@ -12,6 +12,7 @@
     {% for prepack in prepacked_account_lists %}
       <li><a href="{% url list %}?object=Accounts&filter={{ prepack.filter|urlencode }}&output={{ prepack.output|urlencode }}{% if prepack.include_inactive %}&include_inactive=on{% endif %}&desc={{ prepack.name|urlencode }}">{{ prepack.name }}</a>
     {% endfor %}
+      <li><a href="{% url list %}?object=Accounts&filter=&output=%7B%25+for+y+in+x.accountmember_set.all+%25%7D%7B%7B+y.member+%7D%7D%7B%25+if+not+y.shopper+%25%7D%7B%25+ifequal+y.member.status+%27a%27+%25%7D%2A%7B%25+endifequal+%25%7D%7B%25+endif+%25%7D%3Cbr%3E%7B%25+endfor+%25%7D%5C%2A%3DElector%0D%0Aactive_member_count%0D%0Adeposit&desc=by%20Electors">By Electors</a>
   </ul>
 
   <h4>Members</h4>
@@ -23,6 +24,7 @@
 
   <h4>Tasks</h4>
   <ul>
+    <li><a href="{% url scheduling-rotation %}">Wall Calendar of Shift Rotations</a>
     <li><a href="{% url list %}?object=Tasks&filter=job__name%3DCashier&output=job%0D%0A%7B%25+if+x.assigned+%25%7D%3Ca+href%3D%22%7B%25+url+member+x.member.user.username+%25%7D%22%3E%7B%7B+x.member+%7D%7D%3C%2Fa%3E%7B%25+endif+%25%7D%5CMember%0D%0A%7B%25+if+x.assigned+%25%7D%3Ca+href%3D%22%7B%25+url+account+x.account.id+%25%7D%22%3E%7B%7B+x.account+%7D%7D%3C%2Fa%3E%7B%25+endif+%25%7D%5CAccount&desc=Scheduled+Cashiers">Scheduled Cashiers</a>
     <li><a href="{% url list %}?object=Tasks&filter=job__name%3DStore%20Keeper&output=job%0D%0A%7B%25+if+x.assigned+%25%7D%3Ca+href%3D%22%7B%25+url+member+x.member.user.username+%25%7D%22%3E%7B%7B+x.member+%7D%7D%3C%2Fa%3E%7B%25+endif+%25%7D%5CMember%0D%0A%7B%25+if+x.assigned+%25%7D%3Ca+href%3D%22%7B%25+url+account+x.account.id+%25%7D%22%3E%7B%7B+x.account+%7D%7D%3C%2Fa%3E%7B%25+endif+%25%7D%5CAccount&desc=Scheduled+Store+Keepers">Scheduled Store Keepers</a>
   </ul>
