@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    {% include "scheduling/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+
+    {% for tablex in rotationtables %}
+      <div {% if tablex.pagebreakafter %}class="pagebreakafter"{% endif %}>
+      <h2>{{ tablex.dayname }} {{ tablex.freq }}-Week Shifts</h2>
+      <table class="rotation">
+        <tr>
+          {% for cyclex in tablex.cycles %}
+            <th>Week {{ cyclex.letter }}:<br>
+              {% for datex in cyclex.dates %}
+                <a href="{% url scheduling-schedule datex|date:"Y-m-d" %}">{{ datex|date:"n/j" }}</a>,
+              {% endfor %}
+            </th>
+          {% endfor %}
+        </tr>
+        <tr class="rotation-main">
+          {% for cyclex in tablex.cycles %}
+            <td>
+              {% for task in cyclex.shifts %} 
+                <div class="rotation-shift{% if not task.assigned %} rotation-shift-unassigned{% endif %}">
+                  <b>{{ task.job }} 
+                  {% if not task.deadline %} <br /> 
+                    {{ task.time|time:"g:ia" }} &ndash; {{ task.get_end|time:"g:ia" }}
+                  {% endif %}</b>
+                  <hr />
+                  {% if task.assigned %}
+                    <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
+                    (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                    {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
+                  {% else %}
+                    <b class="noprint">Unassigned</b>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </td>
+          {% endfor %}
+        </tr>
+      </table>
+      </div>
+    {% endfor %}
+
+    </div>
+  </div>
+{% endblock content %}

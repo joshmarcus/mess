@@ -191,6 +191,61 @@ def old_rotations(date):
     eightweek = 'MNOPQRKL'[int(delta/7) % 8]
     return ', '.join([fourweek, sixweek, eightweek])
 
+def rotation(request):
+    # print listings of shifts according to rotation/repetition
+    # we're assuming a shift is permanently scheduled if it's 
+    # scheduled 10 rotations in the future.
+    context = RequestContext(request)
+    horizon = 10
+    rotationtables = []
+    for freq in [4,6]: 
+        for weekday in range(0,7):
+#   for freq in [4]:
+#       for weekday in range(1):
+            table = {'freq':freq, 'weekday':weekday, 'cycles':[]}
+            table['dayname'] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][weekday]
+            # gack...why am I hard-coding the pagebreaks here? because page-break-inside:avoid; doesn't work.
+            if freq == 4 or (freq == 6 and weekday in [2,4,6]):
+                table['pagebreakafter'] = True
+            for cycle in range(freq):
+                table['cycles'].append(cyclecolumn(freq, weekday, cycle))
+            rotationtables.append(table)
+
+    table = {'freq':4, 'weekday':6, 'dayname':'Dancer (by Sunday)', 'cycles':[]}
+    for cycle in range(4):
+        table['cycles'].append(cyclecolumn(4, 6, cycle, getdancers=True))
+    rotationtables.append(table)
+
+    context['rotationtables'] = rotationtables
+    template = loader.get_template('scheduling/rotation.html')
+    return HttpResponse(template.render(context))
+
+def cyclecolumn(freq, weekday, cycle, getdancers=False):
+    horizon = 10
+    cycle_begin = datetime.datetime(2009,1,26)
+    today = datetime.date.today()
+    first = cycle_begin + datetime.timedelta(days=weekday+7*cycle)
+    while first.date() < today:
+        first += datetime.timedelta(days=7*freq)
+    column = {}
+    column['dates'] = [first + datetime.timedelta(days=7*freq*i)
+        for i in range(horizon)]
+    if freq == 4:
+        column['letter'] = 'ABCD'[cycle]
+    elif freq == 6:
+        column['letter'] = 'EFGHIJ'[cycle]
+    lastdate = (column['dates'][-1]).date()
+    shifts = models.Task.objects.filter(time__range=(
+              datetime.datetime.combine(lastdate, datetime.time.min),
+              datetime.datetime.combine(lastdate, datetime.time.max)),
+              recur_rule__interval=freq, recur_rule__frequency='w',)
+    if getdancers:
+        shifts = shifts.filter(job__name__icontains='dancer')
+    else:
+        shifts = shifts.exclude(job__name__icontains='dancer')
+    column['shifts'] = shifts.order_by('time','job')
+    return column
+
 @user_passes_test(lambda u: u.is_staff)
 def jobs(request):
     context = {
