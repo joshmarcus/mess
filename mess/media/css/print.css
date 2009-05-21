@@ -27,6 +27,6 @@ thead#timecard-thead th.squish { font-size:8pt; padding-right:-2em; }
 
 div.pagebreakafter { page-break-after:always; }
 .rotation th, .rotation td { border:1pt solid black; padding:3pt; 
-    vertical-align:top; font-size:10pt; line-height:10pt; }
-.rotation-shift { min-height:62pt; border-bottom:1pt solid black; padding:5pt; }
-.rotation-shift hr { border:0pt; margin:3pt; }
+    vertical-align:top; font-size:10pt; line-height:9pt; }
+.rotation-shift { min-height:50pt; border-bottom:1pt solid black; padding:5pt; }
+.rotation-shift hr { border:0pt; margin:1pt; }
