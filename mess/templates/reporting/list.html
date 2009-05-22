@@ -20,6 +20,11 @@
     Error: {{ error }}<br>
   {% endfor %}
 
+  {% if textarea %}
+  <textarea class="data" cols="60" rows="10">{% for datum in textarea %}{{ datum }},
+{% endfor %}</textarea>
+  {% endif %}
+
   <table class="data">
     <tr>
       {% for fieldname in outputfieldnames %}

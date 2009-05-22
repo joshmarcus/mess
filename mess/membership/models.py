@@ -3,6 +3,7 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 # XXX: should these MEMBER_STATUSes go on Account instead?
 MEMBER_STATUS = (
@@ -63,6 +64,10 @@ class Member(models.Model):
     def name(self):
         return self.user.username
 
+    @property
+    def url(self):
+        return reverse('member', args=[self.user.username])
+
     def next_shift(self):
         tasks = self.task_set.filter(time__gte=datetime.date.today()).order_by('time')
         if len(tasks):
@@ -109,6 +114,10 @@ class Account(models.Model):
     @property
     def active_member_count(self):
         return len(self.accountmember_set.filter(shopper=False).filter(member__status='a'))
+
+    @property
+    def url(self):
+        return reverse('account', args=[self.id])
 
     def __unicode__(self):
         return self.name

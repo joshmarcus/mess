@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Template, Context
+from django.utils.safestring import mark_safe
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -157,8 +158,10 @@ def list(request):
             continue
         try:
             filterq, filterval = filterline.split('=')
-            if filterval in ['True', 'False']:
-                filterval = {'True':True, 'False':False}[filterval]
+            if filterval == 'True': 
+                filterval = True
+            if filterval == 'False': 
+                filterval = False
             if filterq[-1] == '!':
                 objects = objects.exclude(**{str(filterq[:-1]):filterval})
             else:
@@ -168,16 +171,15 @@ def list(request):
 
     for outfield in context['output'].split('\r\n'):
         if len(outfield) == 0:
-            continue
-        outputters.append(ListOutputter(outfield, blank_object))
+            pass
+        elif outfield[:4] == 'Box:':
+            y = ListOutputter(outfield[4:], blank_object)
+            context['textarea'] = [y.render(x) for x in objects]
+        else:
+            outputters.append(ListOutputter(outfield, blank_object))
 
     context['result'] = [[y.render(x) for y in outputters] for x in objects]
     context['outputfieldnames'] = outputters
-#   objectcontexts = [Context({'x':object}) for object in objects]
-#   outputfields = [Template(code[1]) for code in outputcodes]
-#   context['output'] = [[f.render(c) for f in outputfields] 
-#                               for c in objectcontexts]
-#   context['outputfieldnames'] = [code[0] for code in outputcodes]
     return HttpResponse(template.render(context))
 
 class ListOutputter:
@@ -190,10 +192,8 @@ class ListOutputter:
                 self.field, self.name = field.split('\\',1)
             self.template = Template(self.field)
         else:
+            self.fieldpath = self.field.split('.')
             self.render = self.render_by_getattr
-
-    def render_badfield(self, object):
-        return 'error: '+self.field
 
     def render_as_template(self, object):
         object_context = Context({'x':object})
@@ -203,16 +203,17 @@ class ListOutputter:
             return 'error: '+self.field
         
     def render_by_getattr(self, object):
-        if not hasattr(object, self.field):
-            return 'error: '+self.field
-        attr = getattr(object, self.field)
-        if hasattr(attr, 'all'):
-            return '\n'.join([unicode(relobj) for relobj in attr.all()])
+        for pathpiece in self.fieldpath:
+            if not hasattr(object, pathpiece):
+                return 'error: '+self.field
+            object = getattr(object, pathpiece)
+        if hasattr(object, 'all'):
+            return '\n'.join([unicode(relobj) for relobj in object.all()])
+        elif hasattr(object, 'url'):
+            # mark_safe  tells the template not to escape the <html tags>
+            return mark_safe(u'<a href="%s">%s</a>' % (object.url, object))
         else:
-            return unicode(attr)
-
-    def render_by_coercion(self, object):
-        return unicode(object)
+            return unicode(object)
 
     def __unicode__(self):
         return self.name
