@@ -24,7 +24,7 @@
               {% for task in cyclex.shifts %} 
                 <div class="rotation-shift{% if not task.assigned %} rotation-shift-unassigned{% endif %}">
                   <b>{{ task.job }} 
-                  {% if not task.deadline %} <br /> 
+                  {% if not task.job.deadline %} <br /> 
                     {{ task.time|time:"g:ia" }} &ndash; {{ task.get_end|time:"g:ia" }}
                   {% endif %}</b>
                   <hr />
@@ -32,8 +32,6 @@
                     <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
                     (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
                     {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
-                  {% else %}
-                    <b class="noprint">Unassigned</b>
                   {% endif %}
                 </div>
               {% endfor %}
