@@ -11,6 +11,7 @@ from django.template import Template, Context
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -272,6 +273,7 @@ class ListOutputter:
     def __unicode__(self):
         return self.name
 
+@user_passes_test(lambda u: u.is_staff)
 def memberwork(request):
     # list of members, summarizing work status, grouped by work status
     cycle_begin = datetime.datetime(2009,1,26)
@@ -285,45 +287,54 @@ def memberwork(request):
         weekbreaks[freq] = [datetime.datetime.combine(x, datetime.time.min) 
                             for x in dayz]
     memberwork = []
-    for member in m_models.Member.objects.filter(status='a',
-                accountmember__shopper=False).order_by('accounts'):
-        shift = member.task_set.filter(time__gte=datetime.date.today(), 
-                recur_rule__isnull=False).order_by('time')
-        if len(shift):
-            shift = shift[0]
-            shift.rotletter = old_rotations(shift.time, shift.recur_rule.interval)
-        else:
-            shift = None
-        if shift and shift.recur_rule.interval == 6:
-            freq = 6
-        else:
-            freq = 4
-        # return this very member object, but just add things onto it.
-        member.shift = shift
-        member.freq = freq
-        member.cycletasks = [member.task_set.filter(time__range=(
-                weekbreaks[freq][i], weekbreaks[freq][i+1])) 
-                for i in range(len(weekbreaks[freq])-1)]
-        if member.work_status == 'e':
-            section = 'Exempt'
-        elif member.work_status == 'c':
-            section = 'Committee'
-        elif member.shift == None:
-            section = 'No Regular Shift'
-        elif member.shift.job.name == 'Cashier':
-            section = 'Cashier Shift'
-        else:
-            section = 'Regular Shift'
-        member.section = section
-        memberwork.append(member)
-    section_names = ['Regular Shift', 'Cashier Shift', 'Committee', 
-                    'Exempt', 'No Regular Shift']
+    for member in m_models.Member.objects.filter(status__in='aL').order_by('accounts'):
+        memberwork.append(prepmemberwork(member, weekbreaks))
+    section_names = ['Regular Shift', 'Cashier Shift', 'Dancer Shift',
+         'Committee', 'Exempt', 'No Regular Shift', 'LOA', 'Proxy']
     sections = [{'name':x, 
                  'memberwork':[mw for mw in memberwork if mw.section == x]} 
                for x in section_names]
     return render_to_response('reporting/memberwork.html', locals(),
             context_instance=RequestContext(request))
 
+def prepmemberwork(member, weekbreaks):
+    # return this very member object, but just add things onto it.
+    shift = member.task_set.filter(time__gte=datetime.date.today(), 
+            recur_rule__isnull=False).order_by('time')
+    if len(shift):
+        shift = shift[0]
+        shift.rotletter = old_rotations(shift.time, shift.recur_rule.interval)
+    else:
+        shift = None
+    if shift and shift.recur_rule.interval == 6:
+        freq = 6
+    else:
+        freq = 4
+    member.shift = shift
+    member.freq = freq
+    member.cycletasks = [member.task_set.filter(time__range=(
+            weekbreaks[freq][i], weekbreaks[freq][i+1])) 
+            for i in range(len(weekbreaks[freq])-1)]
+    if len(member.accountmember_set.filter(shopper=False)) == 0:
+        section = 'Proxy'
+    elif member.status == 'L':
+        section = 'LOA'
+    elif member.work_status == 'e':
+        section = 'Exempt'
+    elif member.work_status == 'c':
+        section = 'Committee'
+    elif member.shift == None:
+        section = 'No Regular Shift'
+    elif member.shift.job.name == 'Cashier':
+        section = 'Cashier Shift'
+    elif 'Dancer' in member.shift.job.name:
+        section = 'Dancer Shift'
+    else:
+        section = 'Regular Shift'
+    member.section = section
+    return member
+
+@user_passes_test(lambda u: u.is_staff)
 def transaction_list_report(request):
     # c is the context to be passed to the template
     c = RequestContext(request)
@@ -363,6 +374,7 @@ def transaction_list_report(request):
     return render_to_response('reporting/transactions_list.html', c)
 
 
+@user_passes_test(lambda u: u.is_staff)
 def transaction_report(request, report='all'):
     """View to summerize transactions by type."""
     context = {}

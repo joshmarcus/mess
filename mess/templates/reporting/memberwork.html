@@ -3,10 +3,10 @@
 {% block content %}
   <div id="double-column">
     <div id="primary-content-wrapper">
-    <h2>Member Work Dashboard</h2>
+    <h2>Member Work Dashboard ({{ memberwork|length }} members)</h2>
 
     {% for section in sections %}
-    <h2>{{ section.name }}</h2>
+    <h2>{{ section.name }} ({{ section.memberwork|length }} members)</h2>
     <table class="memberwork data">
       <tr>
         <th>Member</th>
@@ -39,10 +39,12 @@
             <table class="cycletasks"><tr>
               {% for cyclex in member.cycletasks %}
                 <td>
+                  {% if not cyclex %} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endif %}
                   {% for task in cyclex %}
                     <span class="task-{{ task.simple_workflag }}">
                       {{ task.time|date:"n/j" }}{{ task.abbr_workflag }}
                     </span>
+                    {% if not forloop.last %}<br>{% endif %}
                   {% endfor %}
                 </td>
               {% endfor %}
