@@ -1,10 +1,13 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mess.reporting.views',
-    url(r'^anomalies/$', 'anomalies', name='anomalies'),
-    url(r'^contact/$', 'contact', name='contact_list'),
-    url(r'^list/$', 'list', name='list'),
     url(r'^reports/$', 'reports', name='reports'),
+    url(r'^list/$', 'list', name='list'),
+    url(r'^anomalies/$', 'anomalies', name='anomalies'),
+    url(r'^memberwork/$', 'memberwork', name='memberwork'),
+
+    # everything below here is partly unused or deprecated
+    url(r'^contact/$', 'contact', name='contact_list'),
     url(r'^trans_summary/$', 'transaction_report',
                             {'report': 'all'}, name='trans_summary'),
     url(r'^trans_summary_today/$', 'transaction_report',
@@ -21,19 +24,4 @@ urlpatterns = patterns('mess.reporting.views',
     url(r'^trans_summary_custom/$', 'transaction_report',
                             {'report': 'custom'}, name='trans_summary_custom'),
     url(r'^trans_list/$', 'transaction_list_report', name='trans_list'),
-
-    ## I'm deprecating these.  They will all be ?queries on trans_list --Paul
-    #url(r'^trans_list_today/$', 'transaction_list_report',
-    #                        {'report': 'today'}, name='trans_list_today',),
-    #url(r'^trans_list_yesterday/$', 'transaction_list_report',
-    #                        {'report': 'yesterday'},
-    #                        name='trans_list_yesterday',),
-    #url(r'^trans_list_week/$', 'transaction_list_report',
-    #                        {'report': 'week'}, name='trans_list_week',),
-    #url(r'^trans_list_month/$', 'transaction_list_report',
-    #                        {'report': 'month'}, name='trans_list_month'),
-    #url(r'^trans_list_year/$', 'transaction_list_report',
-    #                        {'report': 'year'}, name='trans_list_year'),
-    #url(r'^trans_list_custom/$', 'transaction_list_report',
-    #                        {'report': 'custom'}, name='trans_list_custom'),
 )

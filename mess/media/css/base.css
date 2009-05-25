@@ -697,6 +697,10 @@ div.rotation { page-break-inside:avoid; margin-bottom:12pt; }
 .rotation-shift { min-height:62pt; border-bottom:1pt solid black; padding:5pt; }
 .rotation-shift hr { border:0pt; margin:3pt; }
 
+/* the problem is that table.data td table td { should've never been set */
+#double-column #primary-content-wrapper table.cycletasks td { margin:0px; padding:0px; border:0px; }
+table.cycletasks { width:100%; }
+
 /*-------------------------------old stuff begins here
 
 div#logo {

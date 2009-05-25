@@ -183,13 +183,18 @@ def timecard(request, date=None):
     template = loader.get_template('scheduling/timecard.html')
     return HttpResponse(template.render(context))
 
-def old_rotations(date):
+def old_rotations(date, interval=None):
     cycle_begin = datetime.datetime(2009,1,26)
     delta = (date - cycle_begin).days
     fourweek = 'ABCD'[int(delta/7) % 4]
     sixweek = 'EFGHIJ'[int(delta/7) % 6]
     eightweek = 'MNOPQRKL'[int(delta/7) % 8]
-    return ', '.join([fourweek, sixweek, eightweek])
+    if interval == 4:
+        return fourweek
+    elif interval == 6:
+        return sixweek
+    else:
+        return ', '.join([fourweek, sixweek, eightweek])
 
 def rotation(request):
     # print listings of shifts according to rotation/repetition

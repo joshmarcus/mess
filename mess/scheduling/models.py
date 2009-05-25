@@ -121,7 +121,9 @@ class Task(models.Model):
 
     @property
     def simple_workflag(self):
-        if ' ' in self.workflag:
+        if 'unexcused' in self.workflag:
+            return 'unexcused'
+        elif ' ' in self.workflag:
             return 'complex-workflag'
         elif self.workflag != '':
             return self.workflag
@@ -129,6 +131,31 @@ class Task(models.Model):
             return 'worked'
         else:
             return 'scheduled'
+
+    @property
+    # this returns things like Y2 or EM3 or UB2
+    def abbr_workflag(self):
+        if self.hours_worked:   # gt 0
+            yeu = 'Y'
+            hrs = self.hours_worked
+        else:
+            hrs = self.hours
+            if self.excused:
+                yeu = 'E'
+            elif self.hours_worked == 0:
+                yeu = 'U'
+            else:
+                yeu = '_'
+        mb = ''
+        if self.makeup:
+            mb += 'M'
+        if self.banked:
+            mb += 'B'
+        if int(hrs) == hrs:
+            hrs = str(int(hrs))
+        else:
+            hrs = str(float(hrs))
+        return yeu + mb + hrs
 
     @property
     def timecard_submitted(self):

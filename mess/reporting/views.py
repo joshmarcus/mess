@@ -8,12 +8,15 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import Template, Context
+from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
 from mess.membership import models as m_models
 from mess.scheduling import models as s_models
+from mess.scheduling.views import old_rotations
 #from mess.accounting.models import get_credit_choices, get_debit_choices
 #from mess.accounting.models import get_trans_total
 from mess.reporting import forms
@@ -71,46 +74,97 @@ def contact(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def reports(request):
-    context = RequestContext(request)
-    context['prepacked_account_lists'] = [
-          {'name':'Active Contact List',
-           'filter':'members__status__in=La',
-           'include_inactive':True,
-           'output':'members\r\n'+
-                '{% for y in x.members.all %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.all %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails'},
-          {'name':'With Permanent Shifts',
-           'filter':'task__time__year='+str(datetime.date.today().year+1),
-           'output':'{% for m in x.members.all %}{{ m }}: {{ m.next_shift }}<br>{% endfor %}\\Shifts by Member\r\nnote'},
-          {'name':'With A Work Exemption',
-           'filter':'members__work_status=e',
-           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'},
-          {'name':'With Committee or Commitment Work',
-           'filter':'members__work_status=c',
-           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'},
-          {'name':'Needing Shifts? Incomplete List',
-           'filter':'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
-           'output':'note'},
-          {'name':'With A Member On LOA',
-           'filter':'members__status=L',
-           'include_inactive':True,
-           'output':'{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}\\Members\r\nnote'},
-          {'name':'With No Proxy Shoppers',
-           'filter':'accountmember__shopper!=True',
-           'output':'active_member_count'},
-          {'name':'With At Least $50 Deposit',
-           'filter':'deposit__gte=50.00',
-           'output':'deposit'},
-          {'name':'Frozen',
-           'filter':'can_shop=False',
-           'output':'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'},
-          {'name':'Owing 1 Hour or More',
-           'filter':'hours_balance__gte=1.00',
-           'output':'hours_balance\r\nnote'},
-        ]
-    template = get_template('reporting/reports.html')    
-    return HttpResponse(template.render(context))
+    # each named category can have various reports, each with a name and url
+    report_categories = [{'name':cat_name, 'reports':
+            [{'name':rpt_name, 'url':url} for rpt_name, url in cat_rpts] 
+            } for cat_name, cat_rpts in [
 
+        ('Accounts',[
+            listrpt('Accounts','Active Contact List',
+                'member__status__in=La',
+                'members\r\n'+
+                '{% for y in x.members.all %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
+                '{% for y in x.members.all %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails',
+                include_inactive='on'),
+                
+            listrpt('Accounts','With Permanent Shifts',
+                'task__time__year='+str(datetime.date.today().year+1),
+                '{% for m in x.members.all %}{{ m }}: {{ m.next_shift }}<br>{% endfor %}\\Shifts by Member\r\nnote'),
+
+            listrpt('Accounts','With A Work Exemption',
+                'members__work_status=e',
+                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
+
+            listrpt('Accounts','With Committee or Commitment Work',
+                'members__work_status=c',
+                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
+
+            listrpt('Accounts','Needing Shifts? Incomplete List',
+                'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
+                'note'),
+
+            listrpt('Accounts','With A Member On LOA',
+                'member__status=L',
+                '{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}\\Members\r\nnote',
+                include_inactive='on'),
+
+            listrpt('Accounts','With No Proxy Shoppers',
+                'accountmember__shopper!=True', 'active_member_count'),
+
+            listrpt('Accounts','With At Least $50 Deposit',
+                'deposit__gte=50.00', 'deposit'),
+
+            listrpt('Accounts','Frozen',
+                'can_shop=False', 
+                'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'),
+
+            listrpt('Accounts','Owing 1 Hour or More',
+                'hours_balance__gte=1.00', 'hours_balance\r\nnote'),
+
+            listrpt('Accounts','by Electors',
+                '',
+                '{% for y in x.accountmember_set.all %}{{ y.member }}{% if not y.shopper %}{% ifequal y.member.status "a" %}*{% endifequal %}{% endif %}<br>{% endfor %}\\*=Elector\r\nactive_member_count\r\ndeposit'),
+        ]),
+
+        ('Members',[
+            ('Member Work Dashboard', reverse('memberwork')),
+
+            listrpt('Members','with Email',
+                'emails__isnull=False', 'emails'),
+
+            listrpt('Members','without Email (phone list)',
+                'emails__isnull=True\r\naccountmember__shopper=False',
+                'phones'),
+
+            ('Contact Information', reverse('contact_list')),
+        ]),
+
+        ('Tasks',[
+            ('Wall Calendar of Shift Rotations',
+             reverse('scheduling-rotation')),
+
+            listrpt('Tasks','Scheduled Cashiers With Email',
+                'job__name=Cashier\r\nmember__isnull=False',
+                'job\r\nmember\r\naccount\r\nmember.emails\r\nBox:member.emails'),
+
+            listrpt('Tasks','Scheduled Storekeepers',
+                'job__name=Store Keeper\r\nmember__isnull=False',
+                'job\r\nmember\r\naccount'),
+
+            listrpt('Tasks','Unfilled Next 7 Days',
+                'member__isnull=True\r\nexcused=False\r\ntime__lte='+
+                    str(datetime.date.today()+datetime.timedelta(days=7)),
+                'job'),
+        ]),
+
+        ('Anomalies',[('Database Anomalies',reverse('anomalies'))]),
+        ('Transactions',[('Summary Today',reverse('trans_summary_today'))]),
+        ]]
+    return render_to_response('reporting/reports.html', locals(),
+            context_instance=RequestContext(request))
+
+def listrpt(object, desc, filter, output, include_inactive=''):
+    return (desc, reverse('list')+'?'+urlencode(locals()))
 
 @user_passes_test(lambda u: u.is_staff)
 def list(request):
@@ -217,6 +271,58 @@ class ListOutputter:
 
     def __unicode__(self):
         return self.name
+
+def memberwork(request):
+    # list of members, summarizing work status, grouped by work status
+    cycle_begin = datetime.datetime(2009,1,26)
+    weekbreaks = {}
+    for freq in [4,6]:
+        dayone = cycle_begin
+        while dayone.date() < datetime.date.today():
+            dayone += datetime.timedelta(days=7*freq)
+        dayz = [dayone+datetime.timedelta(days=7*freq*i) 
+                for i in range(-int(18/freq),1)]
+        weekbreaks[freq] = [datetime.datetime.combine(x, datetime.time.min) 
+                            for x in dayz]
+    memberwork = []
+    for member in m_models.Member.objects.filter(status='a',
+                accountmember__shopper=False).order_by('accounts'):
+        shift = member.task_set.filter(time__gte=datetime.date.today(), 
+                recur_rule__isnull=False).order_by('time')
+        if len(shift):
+            shift = shift[0]
+            shift.rotletter = old_rotations(shift.time, shift.recur_rule.interval)
+        else:
+            shift = None
+        if shift and shift.recur_rule.interval == 6:
+            freq = 6
+        else:
+            freq = 4
+        # return this very member object, but just add things onto it.
+        member.shift = shift
+        member.freq = freq
+        member.cycletasks = [member.task_set.filter(time__range=(
+                weekbreaks[freq][i], weekbreaks[freq][i+1])) 
+                for i in range(len(weekbreaks[freq])-1)]
+        if member.work_status == 'e':
+            section = 'Exempt'
+        elif member.work_status == 'c':
+            section = 'Committee'
+        elif member.shift == None:
+            section = 'No Regular Shift'
+        elif member.shift.job.name == 'Cashier':
+            section = 'Cashier Shift'
+        else:
+            section = 'Regular Shift'
+        member.section = section
+        memberwork.append(member)
+    section_names = ['Regular Shift', 'Cashier Shift', 'Committee', 
+                    'Exempt', 'No Regular Shift']
+    sections = [{'name':x, 
+                 'memberwork':[mw for mw in memberwork if mw.section == x]} 
+               for x in section_names]
+    return render_to_response('reporting/memberwork.html', locals(),
+            context_instance=RequestContext(request))
 
 def transaction_list_report(request):
     # c is the context to be passed to the template

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+    <h2>Member Work Dashboard</h2>
+
+    {% for section in sections %}
+    <h2>{{ section.name }}</h2>
+    <table class="memberwork data">
+      <tr>
+        <th>Member</th>
+        <th>Account(s)</th>
+        <th>Workshift</th>
+        <th>Work History</th>
+        <th>Notes</th>
+      </tr>
+      {% for member in section.memberwork %}
+        <tr>
+          <td><a href="{{ member.url }}">{{ member }}</a></td>
+          <td>
+            {% for accountmember in member.accountmember_set.all %}
+              <a href="{{ accountmember.account.url }}">{{ accountmember.account }}</a>{% if accountmember.shopper %}(s){% endif %}
+              {% if not forloop.last %}<br>{% endif %}
+            {% endfor %}
+          </td>
+          <td>
+            {% ifequal member.work_status "e" %}
+              <div class="task-exempt">Exempt</div>
+            {% endifequal %}
+            {% ifequal member.work_status "c" %}
+              <div class="task-committee">Committee or other Non-Shift work</div>
+            {% endifequal %}
+            {% if member.shift %}
+              {{ member.shift.time|date:"D" }}-{{ member.shift.rotletter }} {{ member.shift.job }} (<a href="{% url scheduling-task member.shift.id %}">{{ member.shift.time|date:"n/j g:ia" }}</a>)
+            {% endif %}
+          </td>
+          <td>
+            <table class="cycletasks"><tr>
+              {% for cyclex in member.cycletasks %}
+                <td>
+                  {% for task in cyclex %}
+                    <span class="task-{{ task.simple_workflag }}">
+                      {{ task.time|date:"n/j" }}{{ task.abbr_workflag }}
+                    </span>
+                  {% endfor %}
+                </td>
+              {% endfor %}
+            </tr></table>
+          </td>
+          <td>
+            {% for account in member.accounts.all %}
+              {{ account.note|linebreaksbr }} 
+              {% if not forloop.last %}<hr>{% endif %}
+            {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+    {% endfor %}
+
+    </div>
+  </div>
+{% endblock content %}
