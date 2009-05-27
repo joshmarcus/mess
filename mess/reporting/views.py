@@ -82,7 +82,7 @@ def reports(request):
 
         ('Accounts',[
             listrpt('Accounts','Active Contact List',
-                'member__status__in=La',
+                'members__status__in=La',
                 'members\r\n'+
                 '{% for y in x.members.all %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.all %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails',
@@ -105,7 +105,7 @@ def reports(request):
                 'note'),
 
             listrpt('Accounts','With A Member On LOA',
-                'member__status=L',
+                'members__status=L',
                 '{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}\\Members\r\nnote',
                 include_inactive='on'),
 
@@ -287,7 +287,11 @@ def memberwork(request):
         weekbreaks[freq] = [datetime.datetime.combine(x, datetime.time.min) 
                             for x in dayz]
     memberwork = []
+    distinctmembers = {}
     for member in m_models.Member.objects.filter(status__in='aL').order_by('accounts'):
+        if member in distinctmembers: 
+            continue
+        distinctmembers[member] = True
         memberwork.append(prepmemberwork(member, weekbreaks))
     section_names = ['Regular Shift', 'Cashier Shift', 'Dancer Shift',
          'Committee', 'Exempt', 'No Regular Shift', 'LOA', 'Proxy']
