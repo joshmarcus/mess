@@ -142,7 +142,7 @@ class AccountMember(models.Model):
         return u'%s: %s' % (self.account, self.member)
 
     class Meta:
-        ordering = ['account']
+        ordering = ['account', 'id']
     
 
 # possibly include IM and URL classes at some point
