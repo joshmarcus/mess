@@ -2,6 +2,7 @@ from datetime import date
 import datetime
 
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
@@ -40,7 +41,8 @@ EMAIL_TYPES = (
 class MemberManager(models.Manager):
     'Custom manager to add extra methods'
     def active(self):
-        return self.filter(status='a')
+        return self.filter(date_missing__isnull=True, 
+                date_departed__isnull=True)
 
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, editable=False)
@@ -61,6 +63,10 @@ class Member(models.Model):
 
     def __unicode__(self):
         return self.user.get_full_name()
+
+    @property
+    def is_active(self):
+        return not (self.date_missing or self.date_departed)
 
     @property
     def name(self):
