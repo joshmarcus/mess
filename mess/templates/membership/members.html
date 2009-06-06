@@ -19,9 +19,7 @@
         <li class="button"><input type="submit" value="Filter" class="button" /></li>
         <li>
           {{ form.active }} <label for="id_active">active</label> 
-          {{ form.leave_of_absence }} <label for="id_leave_of_absence">leave of absence</label>
           {{ form.missing }} <label for="id_missing">missing</label>
-          {{ form.missing_delinquent }} <label for="id_missing_delinquent">missing-delinquent</label>
           {{ form.departed }} <label for="id_departed">departed</label>
         </li>
       </ul>
@@ -31,8 +29,8 @@
       <tr>
         <th>Name</th>
         <th>Accounts</th>
-        <th>Status</th>
         <th>Date Joined</th>
+        <th>Status</th>
         <th>Email</th>
         <th>Phone</th>
       </tr>    
@@ -48,8 +46,8 @@
              {% endfor %}
            </ul>
         </td>
-        <td>{{ member.get_status_display }}</td>        
         <td>{{ member.date_joined }}</td>
+        <td>{{ member.verbose_status }}</td>        
         <td>
           <ul>
             {% for email in member.emails.all %}

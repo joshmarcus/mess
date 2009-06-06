@@ -38,15 +38,12 @@ def members(request):
             elif sort == 'newjoin':
                 members = members.order_by('-date_joined')
             if not form.cleaned_data['active']:
-                members = members.exclude(status='a')
-            if not form.cleaned_data['leave_of_absence']:
-                members = members.exclude(status='L')
+                members = members.filter(Q(date_missing__isnull=False)|
+                        Q(date_departed__isnull=False))
             if not form.cleaned_data['missing']:
-                members = members.exclude(status='m')
-            if not form.cleaned_data['missing_delinquent']:
-                members = members.exclude(status='x')
+                members = members.exclude(date_missing__isnull=False)
             if not form.cleaned_data['departed']:
-                members = members.exclude(status='d')
+                members = members.exclude(date_departed__isnull=False)
     else:
         form = forms.MemberListFilterForm()
         members = members.filter(status='a')

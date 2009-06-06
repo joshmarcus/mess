@@ -113,6 +113,15 @@ class Member(models.Model):
             return '* %s %s (%s)' % (self.user.first_name, self.user.last_name,
                                 self.primary_account().name)
 
+    @property
+    def verbose_status(self):
+        if self.date_departed:
+            return 'Departed since %s' % self.date_departed
+        elif self.date_missing:
+            return 'Missing since %s' % self.date_missing
+        else:
+            return 'Active'
+
     class Meta:
         ordering = ['user__username']
 
