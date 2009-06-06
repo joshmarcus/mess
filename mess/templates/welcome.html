@@ -2,91 +2,60 @@
 
 {% block title %}Welcome to The MESS{% endblock %}
 {% block logo %}The MESS{% endblock %}
+
+
 {% block content %}
-  <div id="left-column">
+
+{% if user.is_anonymous %}
+  <div id="double-column">
     <div id="primary-content-wrapper">
-      {% if user.is_anonymous %}
       <h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
       <div class="attention">
         <h3>Members and staff, please log in.</h3>
+        <p>MESS is already in use behind-the-scenes for workshift scheduling and member account maintenance.  
+          Soon all members will be able to use MESS to get and change their account information.
+          In the future, cashiers will use MESS to record purchase transactions.</p>
       </div>
-      {% else %}
-      <h2>Hello, {{ user.first_name }}!</h2>
-      {% endif %}
       <div class="attention">
-        <h4>This is a good place for a general announcement</h4>
-        <p>This is just test content I want to see what happens when I do this. And What does <a href="">a link</a> look like?</p>
-        <ul>
-          <li>Unordered list after a paragraph</li>
-          <li>Another list item</li>
-          <li>Another unordered list item</li>
-          <li>And just one more</li>
-        </ul>
+        <h3>Visitors and neighbors, for more info...</h3>
+        <p>Visit <a href="http://www.mariposa.coop/">Mariposa's main site!</a></p>
       </div>
-      <p>Second paragraph. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec quis purus vitae neque auctor ultricies. Phasellus in risus. Vivamus cursus eros vel lectus. Etiam malesuada. Maecenas sapien mi, elementum vel, pretium sed, facilisis ac, risus. Aliquam erat volutpat. Suspendisse potenti. Morbi convallis turpis sagittis dolor.</p>
-      <h4>Another fourth level heading which will span two lines</h4>
-      <ul>
-        <li>Unordered list item</li>
-        <li>Another list item</li>
-        <li>Another unordered list item</li>
-        <li>And just one more</li>
-      </ul>
-      <div class="attention">
-        <p>This is a div.attention p, which can be used to call attention to any section of content, such as instructions, or special notes.</p>
-      </div>
-      <p class="action">This is a p.action, which can be used to direct the user to some sort of action.</p>
-      <div class="attention">
-        <p class="action">This is a p.action in a div.attention.</p>
-      </div>
-      <h4>Forms</h4>
-      <p>Below is an example of how I'm beginning to imagining some forms being styled. This is a form.standard, inside of which is a table.form-table. I know it's a little goofy to use tables to lay out forms, but considering time constraints, browser behavior, and the user-base, I think it's fine for our purposes.</p>
-      <form class="standard">
-        <table class="form-table">
-          <tr>
-            <td><label for="first-item">First input label</label></td>
-            <td><input type="text"/></td>
-          </tr>
-          <tr>
-            <td><label for="second-item">Second label</label></td>
-            <td><input type="text"/></td>
-          </tr>
-          <tr>
-            <td><label for="third-item">Third label</label></td>
-            <td>
-              <select>
-                <option>Option 1</option>
-                <option>Option 2</option>
-                <option>Option 3</option>
-              </select>	
-            </td>
-          </tr>
-          <tr>
-            <td><label for="third-item">Text area, still working on this</label></td>
-            <td>
-              <textarea rows="10" cols="500"></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td>
-            </td>
-          </tr>
-        </table>
-      </form>
     </div>
   </div>
+
+{% else %}
+
+  <div id="left-column">
+    <div id="primary-content-wrapper">
+      <h2>Hello, {{ user.first_name }}!</h2>
+      <h3>Here are some announcements.</h3>
+      <p> </p>
+    </div>
+  </div>
+
   <div id ="right-column">
-    <h3>Accounts</h3>
+    <h3>{{ user.first_name }}'s Accounts</h3>
     <table>
       {# should ever only be one member in member_set #}
       {% for member in user.member_set.all %}
       {% for account in member.accounts.all %}
-      <tr>
-        <th><a href="{% url account account.id %}">{{ account }}</a></th>
-        <td>{{ account.balance|floatformat:2 }}</td>
-      </tr>
+        <p><a href="{% url account account.id %}">{{ account }}</a><br>
+        <ul>
+          <li>balance: {{ account.balance|floatformat:2 }}</li>
+          <li>next workshift: 
+            {% if member.next_shift %} 
+            {{ member.next_shift }}
+            {% else %}
+            None scheduled
+          </li>
+          {% endif %}
+        </ul>
+        </p>
       {% endfor %}
       {% endfor %}
     </table>
   </div><!--end right-column-->
-{% endblock %}
+
+  {% endif %}
+ {% endblock %}
 
