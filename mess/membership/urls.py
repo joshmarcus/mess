@@ -14,9 +14,11 @@ def member_spiffy_filter(query):
                 Q(user__last_name__istartswith=plain_query) |
                 Q(accounts__name__istartswith=plain_query))
     else:
-        return (Q(status='a') & (Q(user__first_name__istartswith=query) |
-                                 Q(user__last_name__istartswith=query) |
-                                 Q(accounts__name__istartswith=query)))
+        return (Q(date_departed__isnull=True) & 
+                Q(date_missing__isnull=True) &
+                   (Q(user__first_name__istartswith=query) |
+                    Q(user__last_name__istartswith=query) |
+                    Q(accounts__name__istartswith=query)))
 
 autocomplete.register('member_spiffy', models.Member.objects.all(), member_spiffy_filter, limit=10, label=lambda m: m.autocomplete_label() )
 
