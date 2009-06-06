@@ -70,14 +70,20 @@ class Member(models.Model):
         return self.user.get_full_name()
 
     @property
+    def current_loa(self):
+        loa_set = self.leaveofabsence_set.filter(
+                start__lte=datetime.datetime.now(),
+                end__gte=datetime.datetime.now())
+        if loa_set:
+            return loa_set[0]
+        
+    @property
     def is_active(self):
         return not (self.date_missing or self.date_departed)
 
     @property
     def is_on_loa(self):
-        return bool(self.leaveofabsence_set.filter(
-                start__lte=datetime.datetime.now(),
-                end__gte=datetime.datetime.now()))
+        return bool(self.current_loa)
 
     @property
     def name(self):
@@ -120,6 +126,8 @@ class Member(models.Model):
         elif self.date_missing:
             return 'Missing since %s' % self.date_missing
         else:
+            if self.is_on_loa:
+                return 'Active, but on leave until %s' % self.current_loa.end
             return 'Active'
 
     class Meta:
