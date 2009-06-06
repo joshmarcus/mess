@@ -149,14 +149,18 @@ def member_form(request, username=None):
 @user_passes_test(lambda u: u.is_authenticated())
 def accounts(request):
     context = RequestContext(request)
-    if request.user.is_staff:
-        accounts = models.Account.objects.all()
-    else:
+    if not request.user.is_staff:
         member = models.Member.objects.get(user=request.user)
         accounts = member.accounts.all()
-    if 'sort_by' in request.GET:
+    elif 'sort_by' in request.GET:
         form = forms.AccountListFilterForm(request.GET)
         if form.is_valid():
+            if form.cleaned_data['active'] and not form.cleaned_data['inactive']:
+                accounts = models.Account.objects.active()
+            elif not form.cleaned_data['active'] and form.cleaned_data['inactive']: 
+                accounts = models.Account.objects.inactive()
+            else:
+                accounts = models.Account.objects.all()
             search = form.cleaned_data.get('search')
             if search:
                 accounts = accounts.filter(
@@ -177,10 +181,9 @@ def accounts(request):
             if not form.cleaned_data['inactive']:
                 accounts = accounts.filter(accountmember__shopper=False,
                         members__status='a').distinct()
-    else:
+    else: # 'sort_by' not in request.GET:
         form = forms.AccountListFilterForm()
-        accounts = accounts.filter(accountmember__shopper=False, 
-                members__status='a').distinct()
+        accounts = models.Account.objects.active()
     pager = p.Paginator(accounts, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')

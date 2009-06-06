@@ -133,6 +133,17 @@ class LeaveOfAbsence(models.Model):
     end = models.DateField()
 
  
+class AccountManager(models.Manager):
+    'Custom manager to add extra methods'
+    def active(self):
+        return self.filter(members__date_missing__isnull=True, 
+                members__date_departed__isnull=True).distinct()
+
+    def inactive(self):
+        return self.exclude(members__date_missing__isnull=True, 
+                members__date_departed__isnull=True)
+
+
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
     #contact = models.ForeignKey(Member, related_name='contact_for')
@@ -145,6 +156,8 @@ class Account(models.Model):
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     note = models.TextField(blank=True)
+
+    objects = AccountManager()
 
     @property
     def active_member_count(self):

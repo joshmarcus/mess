@@ -66,7 +66,7 @@ def anomalies(request):
 @user_passes_test(lambda u: u.is_staff)
 def contact(request):
     context = RequestContext(request)
-    members = m_models.Member.objects.filter(status='a', accountmember__shopper=False)
+    members = m_models.Member.objects.active().filter(accountmember__shopper=False)
     context['emailable'] = members.filter(emails__isnull=False)
     context['nonemailable'] = members.exclude(emails__isnull=False)
     template = get_template('reporting/contact.html')
@@ -82,7 +82,7 @@ def reports(request):
 
         ('Accounts',[
             listrpt('Accounts','Active Contact List',
-                'members__status__in=La',
+                '',
                 'members\r\n'+
                 '{% for y in x.members.all %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.all %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails',
@@ -105,9 +105,8 @@ def reports(request):
                 'note'),
 
             listrpt('Accounts','With A Member On LOA',
-                'members__status=L',
-                '{% for m in x.members.all %}{{ m }}: {{ m.get_status_display }}<br>{% endfor %}\\Members\r\nnote',
-                include_inactive='on'),
+                'members__leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nmembers__leaveofabsence__end__gte='+str(datetime.date.today()),
+                '{% for m in x.members.all %}{% for l in m.leaveofabsence_set.all %}{{ m }}: LOA {{ l.start }} until {{ l.end }}<br>{% endfor %}{% endfor %}\\Members\r\nnote'),
 
             listrpt('Accounts','With No Proxy Shoppers',
                 'accountmember__shopper!=True', 'active_member_count'),
@@ -124,7 +123,7 @@ def reports(request):
 
             listrpt('Accounts','by Electors',
                 '',
-                '{% for y in x.accountmember_set.all %}{{ y.member }}{% if not y.shopper %}{% ifequal y.member.status "a" %}*{% endifequal %}{% endif %}<br>{% endfor %}\\*=Elector\r\nactive_member_count\r\ndeposit'),
+                '{% for y in x.accountmember_set.all %}{{ y.member }}{% if y.account_contact and not y.member.date_departed and not y.member.date_missing %}*{% endif %}<br>{% endfor %}\\*=Elector\r\nactive_member_count\r\ndeposit'),
         ]),
 
         ('Members',[
@@ -183,16 +182,17 @@ def list(request):
             context[requestfield] = ''
     
     if context['object'] == 'Accounts':
-        objects = m_models.Account.objects.all()
-        if not context['include_inactive']:
-            objects = objects.filter(members__status='a', 
-                        accountmember__shopper=False).distinct()
+        if context['include_inactive']:
+            objects = m_models.Account.objects.all()
+        else:
+            objects = m_models.Account.objects.active()
         blank_object = m_models.Account()
         outputters = [ListOutputter('<a href="{% url account x.id %}">{{ x }}</a>',blank_object, 'Account')]
     elif context['object'] == 'Members':
-        objects = m_models.Member.objects.all()
-        if not context['include_inactive']:
-            objects = objects.filter(status='a')
+        if context['include_inactive']:
+            objects = m_models.Member.objects.all()
+        else:
+            objects = m_models.Member.objects.active()
         blank_object = m_models.Member()
         outputters = [ListOutputter('<a href="{% url member x.user.username %}">{{ x }}</a>',blank_object, 'Member')]
     elif context['object'] == 'Tasks':
@@ -288,7 +288,7 @@ def memberwork(request):
                             for x in dayz]
     memberwork = []
     distinctmembers = {}
-    for member in m_models.Member.objects.filter(status__in='aL').order_by('accounts'):
+    for member in m_models.Member.objects.active().order_by('accounts'):
         if member in distinctmembers: 
             continue
         distinctmembers[member] = True
@@ -321,7 +321,7 @@ def prepmemberwork(member, weekbreaks):
             for i in range(len(weekbreaks[freq])-1)]
     if len(member.accountmember_set.filter(shopper=False)) == 0:
         section = 'Proxy'
-    elif member.status == 'L':
+    elif member.is_on_loa:
         section = 'LOA'
     elif member.work_status == 'e':
         section = 'Exempt'
