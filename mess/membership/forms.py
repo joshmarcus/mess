@@ -12,6 +12,8 @@ EmailFormSet = inlineformset_factory(models.Member, models.Email,
         extra=0) #, min_num=1)
 PhoneFormSet = inlineformset_factory(models.Member, models.Phone, 
         extra=0) #, min_num=1)
+LeaveOfAbsenceFormSet = inlineformset_factory(models.Member, models.LeaveOfAbsence, 
+        extra=0) #, min_num=1)
 RelatedAccountFormSet = inlineformset_factory(models.Member, 
         models.AccountMember, exclude=('primary_account',), extra=0)
 RelatedMemberFormSet = inlineformset_factory(models.Account, 
@@ -33,6 +35,11 @@ class PhoneForm(forms.ModelForm):
         model = models.Phone
         exclude = ('member',)
 
+class LeaveOfAbsenceForm(forms.ModelForm):
+    class Meta:
+        model = models.LeaveOfAbsence
+        exclude = ('member',)
+
 class RelatedAccountForm(forms.ModelForm):
     class Meta:
         model = models.AccountMember
@@ -46,6 +53,7 @@ class RelatedMemberForm(forms.ModelForm):
 class MemberForm(forms.ModelForm):
     class Meta:
         model = models.Member
+        exclude = ('status')
 
 class UserForm(forms.ModelForm):
     class Meta:

@@ -103,15 +103,17 @@ def member_form(request, username=None):
                 prefix='email')
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
+        LOA_formset = forms.LeaveOfAbsenceFormSet(request.POST, instance=member,
+                prefix='LOA')
         if (user_form.is_valid() and member_form.is_valid() and 
                 related_account_formset.is_valid() and 
                 address_formset.is_valid() and phone_formset.is_valid() 
-                and email_formset.is_valid()):
+                and email_formset.is_valid() and LOA_formet.is_valid()):
             user = user_form.save()
             member = member_form.save(commit=False)
             member.user = user
             member.save()
-            for formset in (related_account_formset, address_formset, 
+            for formset in (related_account_formset, LOA_formset, address_formset, 
                     email_formset, phone_formset):
                 _setattr_formset_save(formset, 'member', member)
             return HttpResponseRedirect(reverse('member', args=[user.username]))
@@ -125,13 +127,15 @@ def member_form(request, username=None):
         address_formset = forms.AddressFormSet(instance=member, 
                 prefix='address')
         email_formset = forms.EmailFormSet(instance=member, prefix='email')
-        phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')
+        phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')        
+        LOA_formset = forms.LeaveOfAbsenceFormSet(instance=member, prefix='LOA')
     context = RequestContext(request)
     context['member'] = member
     context['user_form'] = user_form
     context['member_form'] = member_form
     context['formsets'] = [
         (related_account_formset, 'Accounts'), 
+        (LOA_formset, 'Leaves of Absence'),
         (address_formset, 'Addresses'), 
         (email_formset, 'Email Addresses'),
         (phone_formset, 'Phones'),
