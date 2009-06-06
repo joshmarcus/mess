@@ -148,7 +148,9 @@ class Account(models.Model):
 
     @property
     def active_member_count(self):
-        return len(self.accountmember_set.filter(shopper=False).filter(member__status='a'))
+        return len(self.accountmember_set.filter(shopper=False).filter(
+            member__date_missing__isnull=True, 
+            member__date_departed__isnull=True))
 
     @property
     def url(self):

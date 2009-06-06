@@ -24,7 +24,7 @@
           {{ member.user.get_full_name }} 
         </h4>
         <ul class="quick-info">
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.get_status_display }}</li>
+          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.verbose_status }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/>{{ member.get_work_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/>{{ member.has_key }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/>{{ member.date_joined }}</li>
