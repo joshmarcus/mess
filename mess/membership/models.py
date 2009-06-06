@@ -36,7 +36,7 @@ EMAIL_TYPES = (
     ('s','School'),
     ('o','Other'),
 )
- 
+
 class MemberManager(models.Manager):
     'Custom manager to add extra methods'
     def active(self):
@@ -54,6 +54,8 @@ class Member(models.Model):
     has_key = models.BooleanField(default=False)
     #primary_account = models.ForeignKey('Account', blank=True, null=True)
     date_joined = models.DateField(default=date.today())
+    date_missing = models.DateField(blank=True, null=True)
+    date_departed = models.DateField(blank=True, null=True)
 
     objects = MemberManager()
 
@@ -98,6 +100,13 @@ class Member(models.Model):
         ordering = ['user__username']
 
 
+class LeaveOfAbsence(models.Model):
+    """ Leave of absence periods for members. """
+    member = models.ForeignKey(Member)
+    start = models.DateField()
+    end = models.DateField()
+
+ 
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
     #contact = models.ForeignKey(Member, related_name='contact_for')
