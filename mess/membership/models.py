@@ -44,6 +44,11 @@ class MemberManager(models.Manager):
         return self.filter(date_missing__isnull=True, 
                 date_departed__isnull=True)
 
+    def inactive(self):
+        return self.filter(Q(date_missing__isnull=False)|
+                Q(date_departed__isnull=False))
+
+
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, editable=False)
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
@@ -67,6 +72,12 @@ class Member(models.Model):
     @property
     def is_active(self):
         return not (self.date_missing or self.date_departed)
+
+    @property
+    def is_on_loa(self):
+        return bool(self.leaveofabsence_set.filter(
+                start__lte=datetime.datetime.now(),
+                end__gte=datetime.datetime.now()))
 
     @property
     def name(self):
