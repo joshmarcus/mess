@@ -193,14 +193,14 @@ def list(request):
         else:
             objects = m_models.Account.objects.active()
         blank_object = m_models.Account()
-        outputters = [ListOutputter('<a href="{% url account x.id %}">{{ x }}</a>',blank_object, 'Account')]
+        outputters = [ListOutputter('', blank_object, 'Account')]
     elif context['object'] == 'Members':
         if context['include_inactive']:
             objects = m_models.Member.objects.all()
         else:
             objects = m_models.Member.objects.active()
         blank_object = m_models.Member()
-        outputters = [ListOutputter('<a href="{% url member x.user.username %}">{{ x }}</a>',blank_object, 'Member')]
+        outputters = [ListOutputter('', blank_object, 'Member')]
     elif context['object'] == 'Tasks':
         objects = s_models.Task.objects.all()
         if not context['include_inactive']:
@@ -253,7 +253,10 @@ class ListOutputter:
                 self.field, self.name = field.split('\\',1)
             self.template = Template(self.field)
         else:
-            self.fieldpath = self.field.split('.')
+            if self.field:
+                self.fieldpath = self.field.split('.')
+            else:
+                self.fieldpath = []
             self.render = self.render_by_getattr
 
     def render_as_template(self, object):
@@ -270,9 +273,10 @@ class ListOutputter:
             object = getattr(object, pathpiece)
         if hasattr(object, 'all'):
             return '\n'.join([unicode(relobj) for relobj in object.all()])
-        elif hasattr(object, 'url'):
+        elif hasattr(object, 'get_absolute_url'):
             # mark_safe  tells the template not to escape the <html tags>
-            return mark_safe(u'<a href="%s">%s</a>' % (object.url, object))
+            return mark_safe(u'<a href="%s">%s</a>' % (
+                             object.get_absolute_url(), object))
         else:
             return unicode(object)
 

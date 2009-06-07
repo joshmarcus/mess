@@ -17,10 +17,10 @@
       </tr>
       {% for member in section.memberwork %}
         <tr>
-          <td><a href="{{ member.url }}">{{ member }}</a></td>
+          <td><a href="{{ member.get_absolute_url }}">{{ member }}</a></td>
           <td>
             {% for accountmember in member.accountmember_set.all %}
-              <a href="{{ accountmember.account.url }}">{{ accountmember.account }}</a>{% if accountmember.shopper %}(s){% endif %}
+              <a href="{{ accountmember.account.get_absolute_url }}">{{ accountmember.account }}</a>{% if accountmember.shopper %}(s){% endif %}
               {% if not forloop.last %}<br>{% endif %}
             {% endfor %}
           </td>

@@ -89,9 +89,9 @@ class Member(models.Model):
     def name(self):
         return self.user.username
 
-    @property
-    def url(self):
-        return reverse('member', args=[self.user.username])
+    @models.permalink
+    def get_absolute_url(self):
+        return ('member', [self.user.username])
 
     def next_shift(self):
         tasks = self.task_set.filter(time__gte=datetime.date.today()).order_by('time')
@@ -173,9 +173,9 @@ class Account(models.Model):
             member__date_missing__isnull=True, 
             member__date_departed__isnull=True))
 
-    @property
-    def url(self):
-        return reverse('account', args=[self.id])
+    @models.permalink
+    def get_absolute_url(self):
+        return ('account', [self.id])
 
     def __unicode__(self):
         return self.name
