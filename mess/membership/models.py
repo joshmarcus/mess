@@ -100,7 +100,7 @@ class Member(models.Model):
         else:
             return None
 
-    def primary_account(self):
+    def get_primary_account(self):
         try:
             primary = self.accounts.filter(
                     accountmember__primary_account=True)[0]
@@ -112,12 +112,12 @@ class Member(models.Model):
         return primary
 
     def autocomplete_label(self):
-        if self.status == 'a':
+        if self.is_active:
             return '%s %s (%s)' % (self.user.first_name, self.user.last_name, 
-                               self.primary_account().name)
+                               self.get_primary_account().name)
         else:
             return '* %s %s (%s)' % (self.user.first_name, self.user.last_name,
-                                self.primary_account().name)
+                                self.get_primary_account().name)
 
     @property
     def verbose_status(self):

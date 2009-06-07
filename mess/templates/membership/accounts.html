@@ -4,6 +4,7 @@
   <div id="double-column">
     {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
+      {% if user.is_staff %}	
       <form action="{% url account-add %}">
         <div class="add-button">
           <input type="submit" value="Add a new account!" />
@@ -23,6 +24,7 @@
           </li>
         </ul>
       </form>
+      {% endif %}
       {% include "snippets/pagination.html" %}
       <table class="data">
         <tr>

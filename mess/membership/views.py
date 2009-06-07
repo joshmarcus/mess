@@ -18,9 +18,10 @@ PER_PAGE = 50
 
 @user_passes_test(lambda u: u.is_authenticated())
 def members(request):
-    context = RequestContext(request)
     if not request.user.is_staff:
-        return member(request, request.user.username)
+        return HttpResponseRedirect(reverse('member', 
+            args=[request.user.username]))
+    context = RequestContext(request)
     members = models.Member.objects.all()
     if 'sort_by' in request.GET:
         form = forms.MemberListFilterForm(request.GET)
@@ -46,7 +47,8 @@ def members(request):
                 members = members.exclude(date_departed__isnull=False)
     else:
         form = forms.MemberListFilterForm()
-        members = models.Member.objects.active()
+        members = members.filter(Q(date_missing__isnull=False)|
+                Q(date_departed__isnull=False))
     context['form'] = form
     pager = p.Paginator(members, PER_PAGE)
     context['pager'] = pager
@@ -152,38 +154,43 @@ def accounts(request):
     if not request.user.is_staff:
         member = models.Member.objects.get(user=request.user)
         accounts = member.accounts.all()
-        form = None
-    elif 'sort_by' in request.GET:
-        form = forms.AccountListFilterForm(request.GET)
-        accounts = models.Account.objects.active()
-        if form.is_valid():
-            if form.cleaned_data['inactive']:
-                if form.cleaned_data['active']:
-                    accounts = models.Account.objects.all()
-                else:
-                    accounts = models.Account.objects.inactive()
-            search = form.cleaned_data.get('search')
-            if search:
-                accounts = accounts.filter(
-                        Q(name__icontains=search) |
-                        Q(note__icontains=search))
-            sort = form.cleaned_data['sort_by']
-            if sort == 'alpha':
-                accounts = accounts.order_by('name')
-            elif sort == 'recent':
-                accounts = accounts.order_by('-id')
-            elif sort == 'hours':
-                accounts = accounts.order_by('-hours_balance')
-            elif sort == 'balance':
-                accounts = accounts.order_by('-balance')
-    else: # 'sort_by' not in request.GET:
-        form = forms.AccountListFilterForm()
-        accounts = models.Account.objects.active()
+    else:
+        accounts = models.Account.objects.all()
+        if 'sort_by' in request.GET:
+            form = forms.AccountListFilterForm(request.GET)
+            if form.is_valid():
+                search = form.cleaned_data.get('search')
+                if search:
+                    accounts = accounts.filter(
+                            Q(name__icontains=search) |
+                            Q(note__icontains=search))
+                sort = form.cleaned_data['sort_by']
+                if sort == 'alpha':
+                    accounts = accounts.order_by('name')
+                elif sort == 'recent':
+                    accounts = accounts.order_by('-id')
+                elif sort == 'hours':
+                    accounts = accounts.order_by('-hours_balance')
+                elif sort == 'balance':
+                    accounts = accounts.order_by('-balance')
+                if not form.cleaned_data['active']:
+                    accounts = accounts.exclude(
+                            members__date_missing__isnull=True, 
+                            members__date_departed__isnull=True)
+                if not form.cleaned_data['inactive']:
+                    accounts = accounts.filter(
+                            members__date_missing__isnull=True, 
+                            members__date_departed__isnull=True).distinct()
+        else: 
+            form = forms.AccountListFilterForm()
+            accounts = accounts.filter(members__date_missing__isnull=True, 
+                    members__date_departed__isnull=True).distinct()
     pager = p.Paginator(accounts, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = _get_current_page(pager, page_number)
     context['form'] = form
+    context['query_string'] = request.META['QUERY_STRING'].split('&p=', 1)[0]
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
