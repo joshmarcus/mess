@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+    <h2>Page For Fixing "Deposit Holder" And "Shopper" Flags</h2>
+
+    <form method="POST">
+      {{ amformset.management_form }}
+      <table class="data">
+        <tr>
+          <th>Account</th>
+          <th>Flags</th>
+          <th>Member</th>
+          <th>Join Date</th>
+          <th>Departed Date</th>
+        </tr>
+        {% for form in amformset.forms %}
+        <tr style="{% if form.diffacct %}border-bottom:1px solid black;{% endif %}{% if form.anomaly %} background:#fdd;{% endif %}">
+          <td {% if form.diffacct %}style="padding-bottom:20pt;"{% endif %}>{{ form.id }}<a href="{{ form.instance.account.get_absolute_url }}">{{ form.instance.account }}</a></td>
+          <td>Deposit&nbsp;Holder:&nbsp;{{ form.account_contact }}&nbsp;&nbsp;&nbsp;&nbsp;Shopper:&nbsp;{{ form.shopper }}</td>
+{% comment %} it seems the member.get_absolute_url function is too slow :(          <td><a href="{{ form.instance.member.get_absolute_url }}">{{ form.instance.member }}</a></td> {% endcomment %}
+          <td>{{ form.instance.member }}</td>
+          <td>{{ form.instance.member.date_joined }}</td>
+          <td>{{ form.instance.member.date_departed }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <input type="submit" value="Save">
+
+      <br>{{ results }}
+    </form>
+
+    </div>
+  </div>
+{% endblock content %}
