@@ -370,6 +370,32 @@ def formset_form(request, medium):
     return HttpResponse(template.render(context))
 
 
+@user_passes_test(lambda u: u.is_staff)
+def accountmemberflags(request):
+    ''' show and allow editing of accountmember flags 
+        (contact aka deposit holder; shopper).  
+        this is kind of a report, but allows editing of the flags... '''
+    results = []
+    am = models.AccountMember.objects.all().order_by('-id')
+    if request.method == 'POST':
+        amformset = forms.AccountMemberFlagsFormSet(request.POST, queryset=am)
+        if amformset.is_valid():
+            amformset.save()
+            results.append('Formset was valid and saved...')
+        else:
+            results.append('Formset was invalid...')
+            results.append(amformset.errors)
+    else:
+        amformset = forms.AccountMemberFlagsFormSet(queryset=am)
+    # loop to mark each new account
+    curracct = None
+    for form in amformset.forms[::-1]:
+        form.diffacct = (form.instance.account != curracct)
+        form.anomaly = (form.instance.account_contact == form.instance.shopper)
+        curracct = form.instance.account
+    return render_to_response('membership/accountmemberflags.html', locals(),
+            context_instance=RequestContext(request))
+
 # helper functions below
 
 def _setattr_formset_save(formset, name, value):

@@ -99,6 +99,10 @@ class AccountListFilterForm(forms.Form):
 #   can_shop = forms.BooleanField(initial=True, required=False)
 #   ebt_only = forms.BooleanField(initial=True, required=False)
 
+AccountMemberFlagsFormSet = modelformset_factory(models.AccountMember, 
+                    exclude=('account', 'member', 'primary_account'), 
+                    extra=0)
+
 #class RelatedAccountsForm(forms.Form):
 #    def __init__(self, member_instance, *args, **kwargs):
 #        super(RelatedAccountsForm, self).__init__(*args, **kwargs)

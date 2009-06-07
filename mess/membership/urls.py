@@ -48,6 +48,7 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^(?P<username>\w+)/remove_phone/(?P<id>\d+)$', 'remove_contact', kwargs={'medium': 'phone'}, name='membership-remove-phone'),
 
     url('^autocomplete/(\w+)/$', autocomplete, name='membership-autocomplete'),
+    url('^accountmemberflags/$', 'accountmemberflags', name='accountmemberflags'),
     #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
     #url('^junkx/(\w+)/$', junk, name='junkx'),
 )

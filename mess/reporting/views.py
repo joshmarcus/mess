@@ -163,7 +163,11 @@ def reports(request):
                 'job'),
         ]),
 
-        ('Anomalies',[('Database Anomalies',reverse('anomalies'))]),
+        ('Anomalies',[
+            ('Page For Fixing "Deposit Holder" and "Shopper" Flags',
+                reverse('accountmemberflags')),
+            ('Database Anomalies',reverse('anomalies')),
+        ]),
         ('Transactions',[('Summary Today',reverse('trans_summary_today'))]),
         ]]
     return render_to_response('reporting/reports.html', locals(),

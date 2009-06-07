@@ -13,7 +13,7 @@
           <h5>Members ({{ account.active_member_count }} active)</h5>
           <ul>
             {% for am in account.accountmember_set.all %}
-            <li><a href="{% url member am.member.user.username %}">{{ am.member }}</a>{% if not am.member.is_active %} ({% if am.member.date_departed %}d{% else %}m{% endif %}){% endif %}{% if am.member.is_on_loa %} (L){% endif %}{% if am.shopper %} (S){% endif %}</li>
+              <li{% if am.account_contact %} id="primary-acct"{% endif %}><a href="{% url member am.member.user.username %}">{{ am.member }}</a>{% if not am.member.is_active %} ({% if am.member.date_departed %}d{% else %}m{% endif %}){% endif %}{% if am.member.is_on_loa %} (L){% endif %}{% if am.shopper %} (S){% endif %}</li>
             {% endfor %}
           </ul>
         </div>
@@ -95,6 +95,7 @@
       <li>(m) Missing</li>
       <li>(d) Departed</li>
       <li>(S) Proxy shopper</li>
+      <li id="primary-acct-key"><img src="{{ MEDIA_URL }}images/bg-icon-primary-acct.png"/>Deposit holder</li>
     </ul>
 
     <h3 id="workhist_title">Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h3>
@@ -108,7 +109,7 @@
           <tr><td class="task-committee">{{ member }}: Committee or other Non-Shift work</td></tr>
         {% endifequal %}
         {% if member.current_loa %}
-          <tr><td class="loa">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+          <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
         {% endif %}
       {% endfor %}
     </table>
