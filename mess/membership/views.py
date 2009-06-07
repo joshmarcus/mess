@@ -47,8 +47,8 @@ def members(request):
                 members = members.exclude(date_departed__isnull=False)
     else:
         form = forms.MemberListFilterForm()
-        members = members.filter(Q(date_missing__isnull=False)|
-                Q(date_departed__isnull=False))
+        members = members.exclude(date_missing__isnull=True,
+                date_departed__isnull=True)
     context['form'] = form
     pager = p.Paginator(members, PER_PAGE)
     context['pager'] = pager
