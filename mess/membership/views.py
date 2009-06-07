@@ -110,7 +110,7 @@ def member_form(request, username=None):
         if (user_form.is_valid() and member_form.is_valid() and 
                 related_account_formset.is_valid() and 
                 address_formset.is_valid() and phone_formset.is_valid() 
-                and email_formset.is_valid() and LOA_formet.is_valid()):
+                and email_formset.is_valid() and LOA_formset.is_valid()):
             user = user_form.save()
             member = member_form.save(commit=False)
             member.user = user
@@ -194,6 +194,11 @@ def accounts(request):
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
+def daterange(start, end):
+    while start < end:
+        yield start
+        start += datetime.timedelta(1)
+
 def workhist(account):
     # complex data structures here:
     # workhist[] is an array of weeks
@@ -223,9 +228,9 @@ def workhist(account):
         for i in range(7):
             week['days'][i]['date'] = firstday + datetime.timedelta(days=i)
             dayindex[week['days'][i]['date']] = week['days'][i]
-        if week['days'][6]['date'].day <= 7:
+        if 7 <= week['days'][6]['date'].day < 14:
             week['newmonth'] = week['days'][6]['date']
-        elif week['days'][6]['date'].day <= 14:
+        elif 14 <= week['days'][6]['date'].day < 21:
             week['newyear'] = week['days'][6]['date'].year
         workhist.append(week)
     for task in account.task_set.all():
@@ -237,6 +242,14 @@ def workhist(account):
                 day['workflag'] = task.simple_workflag
             day['task'] = task
             day['week']['tasks'].append(task)
+    for leave in models.LeaveOfAbsence.objects.filter(
+                        member__accounts__id=account.id):
+        for dayofleave in daterange(leave.start, leave.end):
+            if dayofleave not in dayindex: 
+                continue
+            day = dayindex[dayofleave]
+            if 'workflag' not in day:
+                day['workflag'] = 'LOA'
     dayindex[today]['istoday'] = True
     return workhist        
 

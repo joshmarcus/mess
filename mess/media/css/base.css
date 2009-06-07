@@ -683,6 +683,7 @@ div #task-form form p input, div #task-form form p label{
 .task-unexcused {background: #f00;}  /* bright red */
 .task-banked {background: #fcb;}   /* light orange */
 .task-complex-workflag {background: #fc0; }   /* bright orange */
+.task-LOA {background: #fff; }  /* white */
 .task-exempt {background: #ffc; }
 .task-committee {background: #fdb; }
 .task-hiding-spot td { padding:0px; line-height:0px; }
@@ -690,6 +691,8 @@ div #task-form form p input, div #task-form form p label{
 
 .workhist-today { border:1px solid black; }
 .workhist td { text-align:right; padding-left:5pt; }
+
+.LOA {background: #fff; }
 
 div.rotation { page-break-inside:avoid; margin-bottom:12pt; }
 .rotation th, .rotation td { border:1pt solid black; padding:3pt; 

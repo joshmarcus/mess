@@ -76,6 +76,7 @@ def contact(request):
 @user_passes_test(lambda u: u.is_staff)
 def reports(request):
     # each named category can have various reports, each with a name and url
+    past90d = datetime.date.today() - datetime.timedelta(90)
     report_categories = [{'name':cat_name, 'reports':
             [{'name':rpt_name, 'url':url} for rpt_name, url in cat_rpts] 
             } for cat_name, cat_rpts in [
@@ -135,6 +136,11 @@ def reports(request):
             listrpt('Members','without Email (phone list)',
                 'emails__isnull=True\r\naccountmember__shopper=False',
                 'phones'),
+
+            listrpt('Members','Departed since '+past90d.strftime('%B %e, %Y'),
+                'date_departed__gte='+str(past90d), 
+                'accounts\r\ndate_joined\r\ndate_departed',
+                include_inactive='on'),
 
             ('Contact Information', reverse('contact_list')),
         ]),

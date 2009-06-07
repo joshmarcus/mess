@@ -34,6 +34,9 @@
             {% if member.shift %}
               {{ member.shift.time|date:"D" }}-{{ member.shift.rotletter }} {{ member.shift.job }} (<a href="{% url scheduling-task member.shift.id %}">{{ member.shift.time|date:"n/j g:ia" }}</a>)
             {% endif %}
+            {% if member.current_loa %}
+              <div class="LOA">LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</div>
+            {% endif %}
           </td>
           <td>
             <table class="cycletasks"><tr>

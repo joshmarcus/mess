@@ -105,8 +105,11 @@
           <tr><td class="task-exempt">{{ member }}: Exempt</td></tr>
         {% endifequal %}
         {% ifequal member.work_status "c" %}
-          <tr><td class="task-committee">{{ member }} Committee or other Non-Shift work</td></tr>
+          <tr><td class="task-committee">{{ member }}: Committee or other Non-Shift work</td></tr>
         {% endifequal %}
+        {% if member.current_loa %}
+          <tr><td class="loa">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+        {% endif %}
       {% endfor %}
     </table>
 
@@ -150,6 +153,13 @@
         attach_hiders('workhist_future',1);
         attach_hiders('workhist_week',{{ workhist|length }}); 
     </script>
+
+    <h3>Leave of Absence History</h3>
+    {% for member in account.members.all %}
+      {% for leave in member.leaveofabsence_set.all %}
+        {{ member }}: LOA {{ leave.start }} until {{ leave.end }}<br>
+      {% endfor %}
+    {% endfor %}
 
   </div>
 {% endblock %}
