@@ -38,15 +38,15 @@ def members(request):
             elif sort == 'newjoin':
                 members = members.order_by('-date_joined')
             if not form.cleaned_data['active']:
-                members = members.filter(Q(date_missing__isnull=False)|
-                        Q(date_departed__isnull=False))
+                members = members.exclude(date_missing__isnull=True,
+                        date_departed__isnull=True)
             if not form.cleaned_data['missing']:
                 members = members.exclude(date_missing__isnull=False)
             if not form.cleaned_data['departed']:
                 members = members.exclude(date_departed__isnull=False)
     else:
         form = forms.MemberListFilterForm()
-        members = members.filter(status='a')
+        members = models.Member.objects.active()
     context['form'] = form
     pager = p.Paginator(members, PER_PAGE)
     context['pager'] = pager
@@ -152,15 +152,16 @@ def accounts(request):
     if not request.user.is_staff:
         member = models.Member.objects.get(user=request.user)
         accounts = member.accounts.all()
+        form = None
     elif 'sort_by' in request.GET:
         form = forms.AccountListFilterForm(request.GET)
+        accounts = models.Account.objects.active()
         if form.is_valid():
-            if form.cleaned_data['active'] and not form.cleaned_data['inactive']:
-                accounts = models.Account.objects.active()
-            elif not form.cleaned_data['active'] and form.cleaned_data['inactive']: 
-                accounts = models.Account.objects.inactive()
-            else:
-                accounts = models.Account.objects.all()
+            if form.cleaned_data['inactive']:
+                if form.cleaned_data['active']:
+                    accounts = models.Account.objects.all()
+                else:
+                    accounts = models.Account.objects.inactive()
             search = form.cleaned_data.get('search')
             if search:
                 accounts = accounts.filter(
@@ -175,12 +176,6 @@ def accounts(request):
                 accounts = accounts.order_by('-hours_balance')
             elif sort == 'balance':
                 accounts = accounts.order_by('-balance')
-            if not form.cleaned_data['active']:
-                accounts = accounts.exclude(accountmember__shopper=False, 
-                        members__status='a')
-            if not form.cleaned_data['inactive']:
-                accounts = accounts.filter(accountmember__shopper=False,
-                        members__status='a').distinct()
     else: # 'sort_by' not in request.GET:
         form = forms.AccountListFilterForm()
         accounts = models.Account.objects.active()
