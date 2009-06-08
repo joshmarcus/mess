@@ -177,7 +177,9 @@ def accounts(request):
                     accounts = accounts.exclude(
                             members__date_missing__isnull=True, 
                             members__date_departed__isnull=True)
-                if not form.cleaned_data['inactive']:
+                if form.cleaned_data['inactive']:
+                    context['inactive'] = True
+                else:
                     accounts = accounts.filter(
                             members__date_missing__isnull=True, 
                             members__date_departed__isnull=True).distinct()

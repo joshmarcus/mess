@@ -38,13 +38,21 @@
               <a href="{% url account account.id %}">{{ account.name }}</a>
             </td>
             <td>
-              {% for member in account.members.active %}
-                <ul>
-                  <li>
-                    <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.get_profile.emails.all|first }}
-                  </li>
-                </ul>
-              {% endfor %}
+              <ul>
+                {% for member in account.members.all %}
+                {% if member.is_active %}
+                <li>
+                  <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.get_profile.emails.all|first }}
+                </li>
+                {% else %}
+                {% if inactive %}
+                <li>
+                  <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.get_profile.emails.all|first }} ({{ member.verbose_status }})
+                </li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+              </ul>
             </td>
             <td>{{ account.balance|floatformat:2 }}</td>
           </tr>
