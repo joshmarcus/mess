@@ -7,26 +7,57 @@
 
     {% for tablex in rotationtables %}
       <div {% if tablex.pagebreakafter %}class="pagebreakafter"{% endif %}>
-      <h2>{{ tablex.dayname }} {{ tablex.freq }}-Week Shifts</h2>
+      <h2>{{ tablex.dayname }} {{ tablex.freq }}-Week {% if tablex.cashier6 %}Cashier{% endif %} Shifts</h2>
       <table class="rotation">
         <tr>
+          {% if tablex.ideals %}<td>
+            <a class="noprint" href="{% url scheduling-schedule tablex.idealdate %}">set ideal schedule</a>
+          </td>{% endif %}
           {% for cyclex in tablex.cycles %}
-            <th>Week {{ cyclex.letter }}:<br>
+            <th>Week {{ cyclex.letter }}:
               {% for datex in cyclex.dates %}
                 <a href="{% url scheduling-schedule datex|date:"Y-m-d" %}">{{ datex|date:"n/j" }}</a>,
               {% endfor %}
             </th>
           {% endfor %}
         </tr>
+        {% if tablex.ideals %}{% for ideal in tablex.ideals %}
+          <tr class="rotation-ideal">
+            <th class="rotation-ideal">
+              {{ ideal.job }}
+              {% if not ideal.job.deadline %}<br>
+                {{ ideal.time|time:"g:ia" }}&ndash;{{ ideal.get_end|time:"g:ia" }}
+              {% endif %}
+            </th>
+            {% for task in ideal.actuals %}
+              <td>
+                {% if not task %}<span class="noprint">(not scheduled)</span>{% endif %}
+                {% if not task.job.deadline and task.timediff %}
+                  {{ task.time|time:"g:ia" }} <br>
+                {% endif %}
+                {% if task.assigned %}
+                  <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
+                  (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                  {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}{% endif %}
         <tr class="rotation-main">
+          {% if tablex.ideals %}<th class="rotation-ideal">Other Shifts</th>{% endif %}
           {% for cyclex in tablex.cycles %}
             <td>
-              {% for task in cyclex.shifts %} 
+              {% for task in cyclex.shifts %}{% if not task.idealized %}
                 <div class="rotation-shift{% if not task.assigned %} rotation-shift-unassigned{% endif %}">
-                  <b>{{ task.job }} 
-                  {% if not task.job.deadline %} <br /> 
-                    {{ task.time|time:"g:ia" }} &ndash; {{ task.get_end|time:"g:ia" }}
-                  {% endif %}</b>
+                  {% if tablex.cashier6 %}
+                    {{ task.time|time:"g:i" }}&ndash;{{ task.get_end|time:"g:i" }}
+                  {% else %}
+                    <b>{{ task.job }} 
+                    {% if not task.job.deadline and not tablex.dancer %} <br /> 
+                      {{ task.time|time:"g:ia" }} &ndash; {{ task.get_end|time:"g:ia" }}
+                    {% endif %}</b>
+                  {% endif %}
                   <hr />
                   {% if task.assigned %}
                     <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
@@ -34,7 +65,7 @@
                     {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
                   {% endif %}
                 </div>
-              {% endfor %}
+              {% endif %}{% endfor %}
             </td>
           {% endfor %}
         </tr>

@@ -1,4 +1,4 @@
-import datetime, time
+import datetime, time, calendar
 from dateutil.relativedelta import relativedelta
 
 #from django.conf import settings
@@ -197,35 +197,51 @@ def old_rotations(date, interval=None):
         return ', '.join([fourweek, sixweek, eightweek])
 
 def rotation(request):
-    # print listings of shifts according to rotation/repetition
-    # we're assuming a shift is permanently scheduled if it's 
-    # scheduled 10 rotations in the future.
+    """
+    Print listings of shifts according to rotation cycles.
+    We'll assume a shift is permanent if it's scheduled 10 rotations ahead.
+    We try to match each 4-week shift to an 'ideal' slot on week of 1990-01-01.
+    I'm hard-coding pagebreaks because page-break-inside:avoid; doesn't work.
+    """ 
     context = RequestContext(request)
     horizon = 10
     rotationtables = []
-    for freq in [4,6]: 
-        for weekday in range(0,7):
-#   for freq in [4]:
-#       for weekday in range(1):
-            table = {'freq':freq, 'weekday':weekday, 'cycles':[]}
-            table['dayname'] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][weekday]
-            # gack...why am I hard-coding the pagebreaks here? because page-break-inside:avoid; doesn't work.
-            if freq == 4 or (freq == 6 and weekday in [2,4,6]):
-                table['pagebreakafter'] = True
-            for cycle in range(freq):
-                table['cycles'].append(cyclecolumn(freq, weekday, cycle))
-            rotationtables.append(table)
 
-    table = {'freq':4, 'weekday':6, 'dayname':'Dancer (by Sunday)', 'cycles':[]}
-    for cycle in range(4):
-        table['cycles'].append(cyclecolumn(4, 6, cycle, getdancers=True))
+    # get four-week rotations, idealizing them
+    for weekday in range(0,7):
+        table = {'freq':4, 'weekday':weekday, 'cycles':[], 
+                 'dayname':calendar.day_name[weekday], 'pagebreakafter':True}
+        table['idealdate'] = idealdate = datetime.date(1990, 1, 1+weekday)
+        table['ideals'] = models.Task.objects.filter(time__range=(
+                datetime.datetime.combine(idealdate, datetime.time.min),
+                datetime.datetime.combine(idealdate, datetime.time.max)))
+        for cycle in range(4):
+            column = cyclecolumn(4, weekday, cycle)
+            idealize(column['shifts'], table['ideals'])
+            table['cycles'].append(column)
+        rotationtables.append(table)
+
+    # get six-week cashier rotations
+    for weekday in range(0,7):
+        table = {'freq':6, 'weekday':weekday, 'cycles':[], 'cashier6':True,
+                 'dayname':calendar.day_name[weekday]}
+        if weekday in [2,4,6]:
+            table['pagebreakafter'] = True
+        for cycle in range(6):
+            table['cycles'].append(cyclecolumn(6, weekday, cycle, cashieronly=True))
+        rotationtables.append(table)
+
+    # get dancer shifts
+    cycles = [cyclecolumn(4, 6, cycle, getdancers=True) for cycle in range(4)]
+    table = {'freq':4, 'dayname':'Dancer (by Sunday)', 
+             'dancer':True, 'cycles':cycles}
     rotationtables.append(table)
 
     context['rotationtables'] = rotationtables
     template = loader.get_template('scheduling/rotation.html')
     return HttpResponse(template.render(context))
 
-def cyclecolumn(freq, weekday, cycle, getdancers=False):
+def cyclecolumn(freq, weekday, cycle, getdancers=False, cashieronly=False):
     horizon = 10
     cycle_begin = datetime.datetime(2009,1,26)
     today = datetime.date.today()
@@ -248,8 +264,48 @@ def cyclecolumn(freq, weekday, cycle, getdancers=False):
         shifts = shifts.filter(job__name__icontains='dancer')
     else:
         shifts = shifts.exclude(job__name__icontains='dancer')
+    if cashieronly:
+        shifts = shifts.filter(job__name='Cashier')
     column['shifts'] = shifts.order_by('time','job')
     return column
+
+def idealize(actualshifts, idealshifts):
+    """
+    Append the one best actual shift (or none) to each idealshift.actuals array
+    Mark actual shifts as .idealized=True.
+    We want to select the best matches, for example:
+          ideal(9am)---actual(10am)    ideal(2pm)---actual(3pm)
+          ideal(9am)---actual(10am)    ideal(2pm)-----None
+          ideal(9am)---actual(10am)       None------actual(3pm)
+          ideal(9am)-----None          ideal(2pm)---actual(3pm)
+       but still match:     ideal(9am)---actual(3pm)
+    To approximate this, we do several passes with increasing tolerance. 
+    """
+    for ideal in idealshifts:
+        try:
+            ideal.actuals.append(None)
+        except AttributeError:
+            ideal.actuals = [None]
+        if actualshifts:
+            ideal.actualizeddatetime = datetime.datetime.combine(
+                    actualshifts[0].time.date(), 
+                    ideal.time.time())
+    for tolerance_hours in [0, 1, 4, 16]:
+        tolerance = datetime.timedelta(hours=tolerance_hours)
+        for ideal in idealshifts:
+            if ideal.actuals[-1]:   # already matched on better tolerance
+                continue
+            for actual in actualshifts:
+                if hasattr(actual, 'idealized'):
+                    continue
+                if actual.job != ideal.job:
+                    continue
+                timediff = abs(ideal.actualizeddatetime - actual.time)
+                if timediff <= tolerance:
+                    ideal.actuals[-1] = actual
+                    actual.idealized = True
+                    actual.timediff = timediff.seconds
+                    break
 
 @user_passes_test(lambda u: u.is_staff)
 def jobs(request):
