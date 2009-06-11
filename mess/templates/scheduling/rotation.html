@@ -26,7 +26,7 @@
             <th class="rotation-ideal">
               {{ ideal.job }}
               {% if not ideal.job.deadline %}<br>
-                {{ ideal.time|time:"g:ia" }}&ndash;{{ ideal.get_end|time:"g:ia" }}
+                {{ ideal.time|time:"g:i" }}&ndash;{{ ideal.get_end|time:"g:i" }}
               {% endif %}
             </th>
             {% for task in ideal.actuals %}
@@ -36,7 +36,7 @@
                   {{ task.time|time:"g:ia" }} <br>
                 {% endif %}
                 {% if task.assigned %}
-                  <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
+                  <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a><br />
                   (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
                   {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
                 {% endif %}
