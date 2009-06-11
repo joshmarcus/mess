@@ -156,7 +156,11 @@ def accounts(request):
         accounts = member.accounts.all()
     else:
         accounts = models.Account.objects.all()
-        if 'sort_by' in request.GET:
+        if not 'sort_by' in request.GET:
+            form = forms.AccountListFilterForm()
+            accounts = accounts.filter(members__date_missing__isnull=True, 
+                    members__date_departed__isnull=True).distinct()
+        else: 
             form = forms.AccountListFilterForm(request.GET)
             if form.is_valid():
                 search = form.cleaned_data.get('search')
@@ -183,15 +187,11 @@ def accounts(request):
                     accounts = accounts.filter(
                             members__date_missing__isnull=True, 
                             members__date_departed__isnull=True).distinct()
-        else: 
-            form = forms.AccountListFilterForm()
-            accounts = accounts.filter(members__date_missing__isnull=True, 
-                    members__date_departed__isnull=True).distinct()
+        context['form'] = form
     pager = p.Paginator(accounts, PER_PAGE)
     context['pager'] = pager
     page_number = request.GET.get('p')
     context['page'] = _get_current_page(pager, page_number)
-    context['form'] = form
     context['query_string'] = request.META['QUERY_STRING'].split('&p=', 1)[0]
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
