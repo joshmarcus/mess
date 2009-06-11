@@ -32,8 +32,10 @@
             {% for task in ideal.actuals %}
               <td>
                 {% if not task %}<span class="noprint">(not scheduled)</span>{% endif %}
-                {% if not task.job.deadline and task.timediff %}
+                {% if not task.job.deadline %}
+                {% if task.timediff or not task.assigned %}
                   {{ task.time|time:"g:ia" }} <br>
+                {% endif %}
                 {% endif %}
                 {% if task.assigned %}
                   <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a><br />
