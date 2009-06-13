@@ -11,6 +11,7 @@ from django.template.loader import get_template
 
 #from mess.accounting import models as a_models
 from mess.membership import forms, models
+from mess.scheduling import models as s_models
 import datetime
 
 # number of members or accounts to show per page in respective lists
@@ -18,6 +19,9 @@ PER_PAGE = 50
 
 @user_passes_test(lambda u: u.is_authenticated())
 def members(request):
+    '''
+    list of all members (active by default)
+    '''
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('member', 
             args=[request.user.username]))
@@ -61,6 +65,9 @@ def members(request):
 
 @user_passes_test(lambda u: u.is_authenticated())
 def member(request, username):
+    '''
+    individual member page
+    '''
     user = get_object_or_404(User, username=username)
     if not request.user.is_staff and not (request.user.is_authenticated() 
             and request.user.id == user.id):
@@ -77,6 +84,9 @@ def member(request, username):
 
 @user_passes_test(lambda u: u.is_staff)
 def member_form(request, username=None):
+    '''
+    edit member info
+    '''
     if username:
         user = get_object_or_404(User, username=username)
         member = user.get_profile()
@@ -150,6 +160,9 @@ def member_form(request, username=None):
 
 @user_passes_test(lambda u: u.is_authenticated())
 def accounts(request):
+    '''
+    list of accounts
+    '''
     context = RequestContext(request)
     if not request.user.is_staff:
         member = models.Member.objects.get(user=request.user)
@@ -202,13 +215,16 @@ def daterange(start, end):
         start += datetime.timedelta(1)
 
 def workhist(account):
-    # complex data structures here:
-    # workhist[] is an array of weeks
-    # each week is a {} dictionary of {'days':[array], 'tasks':[array], 
-    #    'newmonth' and 'newyear'} (newmonth and newyear flags show month 
-    #    alongside the calendar)
-    # each day is a {} dictionary of {'week':(parent-pointer), 'date':(number),
-    #    'workflag':(flag for highlighting), 'task':last-task}
+    '''
+    Generates the work history object used to produce the workhistory calendar on account page.
+    complex data structures here:
+    workhist[] is an array of weeks
+    each week is a {} dictionary of {'days':[array], 'tasks':[array], 
+       'newmonth' and 'newyear'} (newmonth and newyear flags show month 
+       alongside the calendar)
+    each day is a {} dictionary of {'week':(parent-pointer), 'date':(number),
+       'workflag':(flag for highlighting), 'task':last-task}
+    '''
     workhist = []
     dayindex = {}
     today = datetime.date.today()
@@ -257,6 +273,9 @@ def workhist(account):
 
 @user_passes_test(lambda u: u.is_authenticated())
 def account(request, id):
+    '''
+    individual account page
+    '''
     account = get_object_or_404(models.Account, id=id)
     request_member = models.Member.objects.get(user=request.user)
     if not request.user.is_staff and not (request.user.is_authenticated() 
@@ -272,6 +291,9 @@ def account(request, id):
 
 @user_passes_test(lambda u: u.is_staff)
 def account_form(request, id=None):
+    '''
+    edit account info
+    '''
     context = RequestContext(request)
     if id:
         account = get_object_or_404(models.Account, id=id)
@@ -308,6 +330,9 @@ def account_form(request, id=None):
 
 @user_passes_test(lambda u: u.is_authenticated())
 def contact_form(request, username=None, medium=None, id=0):
+    '''
+    sub-page of member edit page.  ?
+    '''
     context = RequestContext(request)
     referer = request.META.get('HTTP_REFERER', '')
     user = get_object_or_404(User, username=username)
@@ -343,6 +368,9 @@ def contact_form(request, username=None, medium=None, id=0):
 
 @user_passes_test(lambda u: u.is_authenticated())
 def remove_contact(request, username=None, medium=None, id=None):
+    '''
+    delete a piece of contact info.
+    '''
     context = RequestContext(request)
     MediumModel = models.__getattribute__(medium.capitalize())
     medium_obj = get_object_or_404(MediumModel, id=id)
@@ -357,6 +385,56 @@ def remove_contact(request, username=None, medium=None, id=None):
     context['medium'] = medium
     template = get_template('membership/remove_contact.html')
     return HttpResponse(template.render(context))
+
+@user_passes_test(lambda u: u.is_staff)
+def depart_account(request, id):
+    # anna is working on this.
+    '''
+    confirms departure of all members on account.  prompts today's date but editable.
+    sets departure date and cancels all workshifts after said date.
+    '''
+    context = RequestContext(request)
+    account = get_object_or_404(models.Account, id=id)
+    if request.method == 'POST':   # user clicked one of the buttons
+        if 'cancel' in request.POST:   # cancel button
+            return HttpResponseRedirect(account.get_absolute_url())
+        form = forms.DateForm(request.POST)
+        if form.is_valid():            # save button
+            for mem in account.members.all():
+                if not mem.date_departed:
+                    mem.date_departed = form.cleaned_data['day']
+                    mem.save()
+                # open future workshifts.  
+                r_rule_switch = {}
+                for task in mem.task_set.filter(time__gt=mem.date_departed):
+                    task.member = None
+                    task.account = None
+                    # if the task had a recur rule, deal with it:
+                    # copy the recur rule into a new rule and set until date departed on old rule.
+                    # keep old tasks attached to the old rule.
+                    # switch future tasks to new rule.
+                    if task.recur_rule:
+                        if task.recur_rule in r_rule_switch:
+                            new_rule = r_rule_switch[task.recur_rule]
+                        else:
+                            new_rule = s_models.RecurRule(frequency=task.recur_rule.frequency, interval=task.recur_rule.interval, until=task.recur_rule.until)
+                            new_rule.save()
+                            task.recur_rule.until = mem.date_departed
+                            task.recur_rule.save()
+                            r_rule_switch[task.recur_rule]=new_rule
+                        task.recur_rule=new_rule
+                    task.save()
+                    # if it ahs a recur rule, check whether the recur rule is
+                    # in our dictionary.  if it's in there
+                    # if it has no recur rule, unset its member and account
+                    # else append 
+            return HttpResponseRedirect(account.get_absolute_url())
+    else:                         # show prompt with default form values.
+        form = forms.DateForm()
+    context['account']=account
+    context['form'] = form
+    return render_to_response('membership/depart.html', context)
+
 
 def formset_form(request, medium):
     context = RequestContext(request)
@@ -378,7 +456,7 @@ def accountmemberflags(request):
         (contact aka deposit holder; shopper).  
         this is kind of a report, but allows editing of the flags... '''
     results = []
-    am = models.AccountMember.objects.all().order_by('-id')
+    am = s.AccountMember.objects.all().order_by('-id')
     if request.method == 'POST':
         amformset = forms.AccountMemberFlagsFormSet(request.POST, queryset=am)
         if amformset.is_valid():

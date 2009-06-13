@@ -5,6 +5,7 @@ from django.forms.models import inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 from mess.membership import models
+import datetime
 
 AddressFormSet = inlineformset_factory(models.Member, models.Address, 
         extra=0) #, min_num=1)
@@ -90,6 +91,9 @@ class MemberListFilterForm(forms.Form):
     missing = forms.BooleanField(initial=False, required=False)
     missing_delinquent = forms.BooleanField(initial=False, required=False)
     departed = forms.BooleanField(initial=False, required=False)
+
+class DateForm(forms.Form):
+    day = forms.DateField(initial = datetime.date.today)
 
 class AccountListFilterForm(forms.Form):
     search = forms.CharField(required=False)
