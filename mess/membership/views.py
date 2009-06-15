@@ -456,7 +456,7 @@ def accountmemberflags(request):
         (contact aka deposit holder; shopper).  
         this is kind of a report, but allows editing of the flags... '''
     results = []
-    am = s.AccountMember.objects.all().order_by('-id')
+    am = models.AccountMember.objects.all().order_by('-id')
     if request.method == 'POST':
         amformset = forms.AccountMemberFlagsFormSet(request.POST, queryset=am)
         if amformset.is_valid():
