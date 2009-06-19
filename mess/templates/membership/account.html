@@ -16,6 +16,9 @@
               <li{% if am.account_contact %} id="primary-acct"{% endif %}><a href="{% url member am.member.user.username %}">{{ am.member }}</a>{% if not am.member.is_active %} ({% if am.member.date_departed %}d{% else %}m{% endif %}){% endif %}{% if am.member.is_on_loa %} (L){% endif %}{% if am.shopper %} (S){% endif %}</li>
             {% endfor %}
           </ul>
+          {% if account.active_member_count %}
+          <p><a href="{% url depart-account account.id %}">depart all members</a></p>
+          {% endif %}
         </div>
         <h4>
           {% if user.is_staff %}	
