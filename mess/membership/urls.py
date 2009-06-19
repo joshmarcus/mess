@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from mess.membership import models
 from mess.autocomplete.views import autocomplete
 from django.db.models import Q
+from django.contrib.auth import views as auth_views
 
 autocomplete.register('account', models.Account.objects.all(), ('name__istartswith',), limit=10, label='name')
 
@@ -48,8 +49,11 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^(?P<username>\w+)/remove_email/(?P<id>\d+)$', 'remove_contact', kwargs={'medium': 'email'}, name='membership-remove-email'),
     url(r'^(?P<username>\w+)/remove_phone/(?P<id>\d+)$', 'remove_contact', kwargs={'medium': 'phone'}, name='membership-remove-phone'),
 
-    url('^autocomplete/(\w+)/$', autocomplete, name='membership-autocomplete'),
-    url('^accountmemberflags/$', 'accountmemberflags', name='accountmemberflags'),
+    url(r'^autocomplete/(\w+)/$', autocomplete, name='membership-autocomplete'),
+    url(r'^accountmemberflags/$', 'accountmemberflags', name='accountmemberflags'),
+
+    url(r'^(?P<username>\w+)/adminresetpassword/$', 'admin_reset_password', name='admin_reset_password'),
+
     #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
     #url('^junkx/(\w+)/$', junk, name='junkx'),
 )

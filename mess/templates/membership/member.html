@@ -57,6 +57,9 @@
           {% endfor %} 
           </p>
         </div>
+        {% if user.is_staff %}
+          <a href="{% url admin_reset_password member.user.username %}">send password reset email</a>
+        {% endif %}
       </div>
     </div>
   </div>
