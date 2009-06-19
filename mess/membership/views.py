@@ -388,7 +388,6 @@ def remove_contact(request, username=None, medium=None, id=None):
 
 @user_passes_test(lambda u: u.is_staff)
 def depart_account(request, id):
-    # anna is working on this.
     '''
     confirms departure of all members on account.  prompts today's date but editable.
     sets departure date and cancels all workshifts after said date.
