@@ -231,10 +231,17 @@ def rotation(request):
             table['cycles'].append(cyclecolumn(6, weekday, cycle, cashieronly=True))
         rotationtables.append(table)
 
-    # get dancer shifts
-    cycles = [cyclecolumn(4, 6, cycle, getdancers=True) for cycle in range(4)]
+    # get dancer shifts, idealizing them
     table = {'freq':4, 'dayname':'Dancer (by Sunday)', 
-             'dancer':True, 'cycles':cycles}
+             'dancer':True, 'cycles':[]}
+    table['idealdate'] = idealdate = datetime.date(1990, 1, 8)
+    table['ideals'] = models.Task.objects.filter(time__range=(
+                datetime.datetime.combine(idealdate, datetime.time.min),
+                datetime.datetime.combine(idealdate, datetime.time.max)))
+    for cycle in range(4):
+        column = cyclecolumn(4, 6, cycle, getdancers=True)
+        idealize(column['shifts'], table['ideals'])
+        table['cycles'].append(column)
     rotationtables.append(table)
 
     context['rotationtables'] = rotationtables
