@@ -12,5 +12,6 @@ class ListFilterForm(forms.Form):
     object = forms.ChoiceField(required=False, choices=LIST_OBJECT_CHOICES)
     include_inactive = forms.BooleanField(required=False)
     filter = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':4, 'wrap':'off'}))
+    order_by = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':2, 'wrap':'off'}))
     output = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':6, 'wrap':'off'}))
 

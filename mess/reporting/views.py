@@ -105,9 +105,11 @@ def reports(request):
                 'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
                 'note'),
 
-            listrpt('Accounts','With A Member On LOA',
-                'members__leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nmembers__leaveofabsence__end__gte='+str(datetime.date.today()),
-                '{% for m in x.members.all %}{% for l in m.leaveofabsence_set.all %}{{ m }}: LOA {{ l.start }} until {{ l.end }}<br>{% endfor %}{% endfor %}\\Members\r\nnote'),
+# this duplicates all multi-member accounts :(
+#           listrpt('Accounts','With A Member On LOA',
+#               'members__leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nmembers__leaveofabsence__end__gte='+str(datetime.date.today()),
+#               '{% for m in x.members.all %}{% for l in m.leaveofabsence_set.all %}{{ m }}: LOA {{ l.start }} until {{ l.end }}<br>{% endfor %}{% endfor %}\\Members\r\nnote',
+#               order_by='members__leaveofabsence__end'),
 
             listrpt('Accounts','With No Proxy Shoppers',
                 'accountmember__shopper!=True', 'active_member_count'),
@@ -137,9 +139,20 @@ def reports(request):
                 'emails__isnull=True\r\naccountmember__shopper=False',
                 'phones'),
 
+            listrpt('Members','On LOA',
+                'leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today()),
+                'current_loa.start\r\ncurrent_loa.end\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
+                order_by='leaveofabsence__end'),
+
+            listrpt('Members','Back from LOA in Past Month',
+                'leaveofabsence__end__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today()-datetime.timedelta(30)),
+                '{% for l in x.leaveofabsence_set.all %}{{ l.end }}{% endfor %}\Return Date\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
+                order_by='-leaveofabsence__end'),
+
             listrpt('Members','Departed since '+past90d.strftime('%B %e, %Y'),
                 'date_departed__gte='+str(past90d), 
                 'accounts\r\ndate_joined\r\ndate_departed',
+                order_by='-date_departed',
                 include_inactive='on'),
 
             ('Contact Information', reverse('contact_list')),
@@ -173,7 +186,7 @@ def reports(request):
     return render_to_response('reporting/reports.html', locals(),
             context_instance=RequestContext(request))
 
-def listrpt(object, desc, filter, output, include_inactive=''):
+def listrpt(object, desc, filter, output, include_inactive='', order_by=''):
     return (desc, reverse('list')+'?'+urlencode(locals()))
 
 @user_passes_test(lambda u: u.is_staff)
@@ -185,7 +198,7 @@ def list(request):
     if request.GET.has_key('desc'):
         context['desc'] = request.GET['desc']
 
-    for requestfield in ['object','include_inactive','filter','output']:
+    for requestfield in ['object','include_inactive','filter','order_by','output']:
         if request.GET.has_key('object') and context['form'].is_valid():
             context[requestfield] = context['form'].cleaned_data[requestfield]
         else:
@@ -233,6 +246,14 @@ def list(request):
                 objects = objects.filter(**{str(filterq):filterval}).distinct()
         except:
             context['errors'].append(filterline)
+
+    for order_by_line in context['order_by'].split('\r\n'):
+        if len(order_by_line) == 0:
+            continue
+        try:
+            objects = objects.order_by(order_by_line).distinct()
+        except:
+            context['errors'].append(order_by_line)
 
     for outfield in context['output'].split('\r\n'):
         if len(outfield) == 0:
