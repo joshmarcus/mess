@@ -490,7 +490,8 @@ def admin_reset_password(request, username):
         return HttpResponse('Sorry. No emails on file for %s.' % member)
     phantomform = auth_forms.PasswordResetForm({'email': user.email})
     assert phantomform.is_valid()
-    phantomform.save()
+    # send https link, i.e. https://mess.mariposa.coop/passwordreset/...
+    phantomform.save(use_https=True)    
     message = '''<meta http-equiv="refresh" content="3;%s">
             Password reset email was sent to %s (%s).''' % \
             (member.get_absolute_url(), member, user.email)
