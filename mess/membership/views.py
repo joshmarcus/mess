@@ -478,21 +478,23 @@ def accountmemberflags(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_reset_password(request, username):
+    ''' Send a password reset link to the member.  This function makes
+    auth_forms think a passwordresetform was submitted for the user.email '''
     user = get_object_or_404(User, username=username)
     member = user.get_profile()
-    emails = member.emails.all()
-    if not user.email:
-        if not emails:
-            return HttpResponse('Sorry. No emails on file for %s.' % member)
+    emails = member.emails.all()    # get MESS emails to replace user.email
+    if emails:
         user.email = emails[0].email
         user.save()
+    elif not user.email:
+        return HttpResponse('Sorry. No emails on file for %s.' % member)
     phantomform = auth_forms.PasswordResetForm({'email': user.email})
     assert phantomform.is_valid()
     phantomform.save()
-    message = 'Password reset email was sent to %s.' % member
+    message = '''<meta http-equiv="refresh" content="3;%s">
+            Password reset email was sent to %s (%s).''' % \
+            (member.get_absolute_url(), member, user.email)
     return HttpResponse(message)
-#   return render_to_response('message.html', locals(),
-#           context_instance=RequestContext(request))
 
 # helper functions below
 
