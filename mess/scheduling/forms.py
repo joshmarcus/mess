@@ -71,6 +71,12 @@ class TaskForm(forms.ModelForm):
     #        widget=forms.HiddenInput)
     #affect = forms.ChoiceField(choices=AFFECT_CHOICES)
 
+    # must set both account and member.  if only one is set, clear it.
+    def clean(self):
+        if not self.cleaned_data['account'] or not self.cleaned_data['member']:
+            self.cleaned_data['account'] = self.cleaned_data['member'] = None
+        return self.cleaned_data
+
 class JobForm(forms.ModelForm):
     class Meta:
         model = models.Job
