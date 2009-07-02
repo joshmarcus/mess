@@ -36,15 +36,33 @@ class ParseDateTimeField(forms.Field):
         except ValueError:
             raise forms.ValidationError(u'Enter a valid time.')
 
+class AccountTangleWidget(AutoCompleteWidget):
+    ''' 
+    We want to click a member, and auto-fill their account field.
+    But then the accountid will be a string.
+    (I don't want to make a special xhr just to get the numeric accountid.)
+    This widget gets the numeric accountid after submission.
+    '''
+    def __init__(self):
+        super(AccountTangleWidget, self).__init__('account', 
+                view_name='membership-autocomplete', canroundtrip=True)
+
+    def value_from_datadict(self, data, files, name):
+        raw_data = data.get(name, None)
+        if raw_data is None or raw_data == '':
+            return raw_data
+        try:
+            return int(raw_data)
+        except ValueError:
+            return m_models.Account.objects.get(name=raw_data).id
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = models.Task
         exclude = ['recur_rule', 'hours_worked']
     time = ParseDateTimeField(widget=forms.SplitDateTimeWidget())
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
-        widget=AutoCompleteWidget('account', 
-            view_name='membership-autocomplete', canroundtrip=True), 
-        required=False) 
+        widget=AccountTangleWidget(), required=False) 
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=AutoCompleteWidget('member_spiffy', 
             view_name='membership-autocomplete', canroundtrip=True), 

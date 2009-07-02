@@ -52,6 +52,21 @@ function yui_autocomplete(name, ac_url, force_selection) {
             if (selected_item.label != input.value && !force_selection)
                 hidden.value = input.value;
         });  */
+
+        // Set up account tangling for MESS:
+        if (typeof(window['ACCOUNTTANGLE']) != 'undefined' && 
+                ACCOUNTTANGLE && (name.indexOf('member') > 1)) {
+            var formsetid = name.split('-')[0];
+            var accountfield = document.getElementById('id_'+formsetid+'-account');
+            var accounthidden = document.getElementById('id_hidden_'+formsetid+'-account');
+            autocomplete.itemSelectEvent.subscribe(function (type, args) {
+                label = args[2].label;
+                account = label.substring(label.indexOf('(')+1, label.length-1);
+                accountfield.value = account
+                accounthidden.value = account
+            });
+        }
+
     });
 }
 
