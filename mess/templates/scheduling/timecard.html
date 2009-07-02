@@ -58,7 +58,8 @@
               <td>
                 {% if task.assigned %}
                   <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a> 
-                  (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                  (<a href="{% url account task.account.id %}">{{ task.account }}</a>)
+                  {% if task.new_date %}NEW {{ task.new_date|date:"n/j" }}{% endif %}<br />
                   {% for phone in task.member.phones.all %} {{ phone }} {% endfor %}
                 {% else %}
                   <span class="unassigned noprint">Unassigned</span>

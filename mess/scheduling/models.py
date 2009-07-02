@@ -166,6 +166,15 @@ class Task(models.Model):
         end = self.time + delta_hours
         return end
 
+    def new_date(self):
+        if self.member:
+            trainingjobs = ['Orientation Attendee','Shadow Cashier',
+                            'Cashier Training Attendee']
+            oldshifts = self.member.task_set.filter(time__lte=self.time
+                ).exclude(job__name__in=trainingjobs)
+            if 0 < len(oldshifts) < 4:
+                return oldshifts[0].time
+
     def get_next_shift(self):
         if self.recur_rule:
             future_tasks = self.recur_rule.task_set.filter(time__gt=self.time)

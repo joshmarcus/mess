@@ -149,6 +149,11 @@ def reports(request):
                 '{% for l in x.leaveofabsence_set.all %}{{ l.end }}{% endfor %}\Return Date\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
                 order_by='-leaveofabsence__end'),
 
+            listrpt('Members','New since '+past90d.strftime('%B %e, %Y'),
+                'date_joined__gte='+str(past90d), 
+                'accounts\r\ndate_joined',
+                order_by='-date_joined'),
+
             listrpt('Members','Departed since '+past90d.strftime('%B %e, %Y'),
                 'date_departed__gte='+str(past90d), 
                 'accounts\r\ndate_joined\r\ndate_departed',
