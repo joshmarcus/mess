@@ -59,7 +59,8 @@
         </div>
         {% if user.is_staff %}
           <form method="POST" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('We are testing MESS member login.  Passwords should only be given to members who know they are testing the system.  Click OK if you really want to send the password reset email.');"><input type="submit" value="send email to reset password"></form>
-          <!-- <a href="{% url admin_reset_password member.user.username %}" onclick="return confirm('We are testing MESS member login.  Passwords should only be sent to members who know they are testing the system.  Click OK if you really want to send the password reset email.');">send password reset email</a> -->
+        {% else %}
+          <a href="{% url auth_password_change %}">Change Your Password</a>
         {% endif %}
       </div>
     </div>
