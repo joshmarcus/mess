@@ -58,7 +58,7 @@ def anomalies(request):
         for m in afflicteds:
             report += '<a href="/membership/members/%s">%s</a> \
                 (<a href="/membership/accounts/%s">%s</a>)<br>\n' % \
-                (m.user.username, m, m.primary_account().id, m.primary_account())
+                (m.user.username, m, m.get_primary_account().id, m.get_primary_account())
 
     report = '<h1>Anomalies Report (%d blips)</h1>\n' % blips + report
     return HttpResponse(report)
@@ -82,28 +82,16 @@ def reports(request):
             } for cat_name, cat_rpts in [
 
         ('Accounts',[
-            listrpt('Accounts','Active Contact List',
+            listrpt('Accounts','Active Contacts',
                 '',
-                'members\r\n'+
-                '{% for y in x.members.all %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.all %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails',
-                include_inactive='on'),
+                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Deposit, (s)=Shopper\r\n'+
+                '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
+                '{% for y in x.members.active %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails\r\ndeposit'),
                 
-            listrpt('Accounts','With Permanent Shifts',
-                'task__time__year='+str(datetime.date.today().year+1),
-                '{% for m in x.members.all %}{{ m }}: {{ m.next_shift }}<br>{% endfor %}\\Shifts by Member\r\nnote'),
-
-            listrpt('Accounts','With A Work Exemption',
-                'members__work_status=e',
-                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
-
-            listrpt('Accounts','With Committee or Commitment Work',
-                'members__work_status=c',
-                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
-
-            listrpt('Accounts','Needing Shifts? Incomplete List',
-                'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
-                'note'),
+# broken :(
+#           listrpt('Accounts','Needing Shifts? Incomplete List',
+#               'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
+#               'note'),
 
 # this duplicates all multi-member accounts :(
 #           listrpt('Accounts','With A Member On LOA',
@@ -112,7 +100,7 @@ def reports(request):
 #               order_by='members__leaveofabsence__end'),
 
             listrpt('Accounts','With No Proxy Shoppers',
-                'accountmember__shopper!=True', 'active_member_count'),
+                'accountmember__shopper!=True', 'members\r\nactive_member_count'),
 
             listrpt('Accounts','With At Least $50 Deposit',
                 'deposit__gte=50.00', 'deposit'),
@@ -124,54 +112,48 @@ def reports(request):
             listrpt('Accounts','Owing 1 Hour or More',
                 'hours_balance__gte=1.00', 'hours_balance\r\nnote'),
 
-            listrpt('Accounts','by Electors',
-                '',
-                '{% for y in x.accountmember_set.all %}{{ y.member }}{% if y.account_contact and not y.member.date_departed and not y.member.date_missing %}*{% endif %}<br>{% endfor %}\\*=Elector\r\nactive_member_count\r\ndeposit'),
         ]),
 
         ('Members',[
-            ('Member Work Dashboard', reverse('memberwork')),
 
             listrpt('Members','with Email',
-                'emails__isnull=False', 'emails'),
+                'emails__isnull=False', 'accounts\r\nemails\r\nBox:emails',
+                order_by='accounts'),
 
             listrpt('Members','without Email (phone list)',
                 'emails__isnull=True\r\naccountmember__shopper=False',
-                'phones'),
+                'accounts\r\nphones', order_by='accounts'),
 
             listrpt('Members','On LOA',
                 'leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today()),
                 'current_loa.start\r\ncurrent_loa.end\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
                 order_by='leaveofabsence__end'),
 
-            listrpt('Members','Back from LOA in Past Month',
+            listrpt('Members','Back from LOA',
                 'leaveofabsence__end__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today()-datetime.timedelta(30)),
                 '{% for l in x.leaveofabsence_set.all %}{{ l.end }}{% endfor %}\Return Date\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
                 order_by='-leaveofabsence__end'),
 
-            listrpt('Members','New since '+past90d.strftime('%B %e, %Y'),
+            listrpt('Members','New',# since '+past90d.strftime('%B %e, %Y'),
                 'date_joined__gte='+str(past90d), 
                 'accounts\r\ndate_joined',
                 order_by='-date_joined'),
 
-            listrpt('Members','Departed since '+past90d.strftime('%B %e, %Y'),
+            listrpt('Members','Recently Departed',# (since '+past90d.strftime('%B %e, %Y')+')',
                 'date_departed__gte='+str(past90d), 
                 'accounts\r\ndate_joined\r\ndate_departed',
                 order_by='-date_departed',
                 include_inactive='on'),
-
-            ('Contact Information', reverse('contact_list')),
         ]),
 
         ('Tasks',[
-            ('Wall Calendar of Shift Rotations',
-             reverse('scheduling-rotation')),
+            ('Wall Calendar', reverse('scheduling-rotation')),
 
-            listrpt('Tasks','Scheduled Cashiers With Email',
+            listrpt('Tasks','Cashiers With Email',
                 'job__name=Cashier\r\nmember__isnull=False',
                 'job\r\nmember\r\naccount\r\nmember.emails\r\nBox:member.emails'),
 
-            listrpt('Tasks','Scheduled Storekeepers',
+            listrpt('Tasks','Storekeepers',
                 'job__name=Store Keeper\r\nmember__isnull=False',
                 'job\r\nmember\r\naccount'),
 
@@ -179,14 +161,45 @@ def reports(request):
                 'member__isnull=True\r\nexcused=False\r\ntime__lte='+
                     str(datetime.date.today()+datetime.timedelta(days=7)),
                 'job'),
+
+        ]),
+
+        ('Member Work',[
+            ('Member Work Dashboard', reverse('memberwork')),
+            ('Need Shift', reverse('memberwork')+'?section=Need Shift'),
+            ('Regular Shift', reverse('memberwork')+'?section=Regular Shift'),
+            ('Exemptions', reverse('memberwork')+'?section=Exempt'),
+            ('Committee', reverse('memberwork')+'?section=Committee'),
         ]),
 
         ('Anomalies',[
-            ('Page For Fixing "Deposit Holder" and "Shopper" Flags',
+            ('Page For Fixing "Deposit Holder" and "Shopper"',
                 reverse('accountmemberflags')),
             ('Database Anomalies',reverse('anomalies')),
         ]),
-        ('Transactions',[('Summary Today',reverse('trans_summary_today'))]),
+
+        ('Old Reports',[
+            ('Transaction Summary Today',reverse('trans_summary_today')),
+
+            ('Member Contact Information', reverse('contact_list')),
+
+            listrpt('Accounts','Accounts With Permanent Shifts',
+                'task__time__year='+str(datetime.date.today().year+1),
+                '{% for m in x.members.all %}{{ m }}: {{ m.next_shift }}<br>{% endfor %}\\Shifts by Member\r\nnote'),
+
+            listrpt('Accounts','Accounts With A Work Exemption',
+                'members__work_status=e',
+                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
+
+            listrpt('Accounts','Accounts With Committee Work',
+                'members__work_status=c',
+                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
+
+            listrpt('Accounts','Electors (use Active Contacts instead)',
+                '',
+                '{% for y in x.accountmember_set.all %}{{ y.member }}{% if y.account_contact and not y.member.date_departed and not y.member.date_missing %}*{% endif %}<br>{% endfor %}\\*=Elector\r\nactive_member_count\r\ndeposit'),
+
+        ]),
         ]]
     return render_to_response('reporting/reports.html', locals(),
             context_instance=RequestContext(request))
@@ -302,10 +315,15 @@ class ListOutputter:
                 return 'error: '+self.field
             object = getattr(object, pathpiece)
         if hasattr(object, 'all'):
-            return '\n'.join([unicode(relobj) for relobj in object.all()])
-        elif hasattr(object, 'get_absolute_url'):
+            return mark_safe(u'<br>'.join([self._render_obj(relobj) 
+                                           for relobj in object.all()]))
+        else:
+            return self._render_obj(object)
+
+    def _render_obj(self, object):
+        if hasattr(object, 'get_absolute_url'):
             # mark_safe  tells the template not to escape the <html tags>
-            return mark_safe(u'<a href="%s">%s</a>' % (
+            return mark_safe(u'<a href="%s">%s</a>' %(
                              object.get_absolute_url(), object))
         else:
             return unicode(object)
@@ -315,7 +333,9 @@ class ListOutputter:
 
 @user_passes_test(lambda u: u.is_staff)
 def memberwork(request):
-    # list of members, summarizing work status, grouped by work status
+    '''
+    list of members, summarizing work status, grouped by work status
+    '''
     cycle_begin = datetime.datetime(2009,1,26)
     weekbreaks = {}
     for freq in [4,6]:
@@ -328,13 +348,28 @@ def memberwork(request):
                             for x in dayz]
     memberwork = []
     distinctmembers = {}
+    proxypair = {}
     for member in m_models.Member.objects.active().order_by('accounts'):
         if member in distinctmembers: 
             continue
         distinctmembers[member] = True
-        memberwork.append(prepmemberwork(member, weekbreaks))
-    section_names = ['Regular Shift', 'Cashier Shift', 'Dancer Shift',
-         'Committee', 'Exempt', 'No Regular Shift', 'LOA', 'Proxy']
+        mw = prepmemberwork(member, weekbreaks)
+        memberwork.append(mw)
+
+        # If a proxy has a shift, and someone else in the account needs
+        # a shift, match them up in a 'proxy shift pairs' section.
+        # This way 'Need Shift' is only people who REALLY need a shift.
+        if mw.section == 'Proxy' and mw.shift:
+            proxypair[mw.get_primary_account()] = mw
+    for mw in memberwork:
+        if mw.section == 'Need Shift' and mw.get_primary_account() in proxypair:
+            mw.section = 'Proxy Shift Pairs'
+            proxypair[mw.get_primary_account()].section = 'Proxy Shift Pairs'
+
+    section_names = ['Regular Shift', 'Cashiers', 'Dancers', 'Committee', 
+        'Exempt', 'LOA', 'Need Shift', 'Proxy Shift Pairs', 'Proxy']
+    if 'section' in request.GET:
+        section_names = [request.GET['section']]
     sections = [{'name':x, 
                  'memberwork':[mw for mw in memberwork if mw.section == x]} 
                for x in section_names]
@@ -345,7 +380,7 @@ def prepmemberwork(member, weekbreaks):
     # return this very member object, but just add things onto it.
     shift = member.task_set.filter(time__gte=datetime.date.today(), 
             recur_rule__isnull=False).order_by('time')
-    if len(shift):
+    if shift.count():
         shift = shift[0]
         shift.rotletter = old_rotations(shift.time, shift.recur_rule.interval)
     else:
@@ -359,7 +394,7 @@ def prepmemberwork(member, weekbreaks):
     member.cycletasks = [member.task_set.filter(time__range=(
             weekbreaks[freq][i], weekbreaks[freq][i+1])) 
             for i in range(len(weekbreaks[freq])-1)]
-    if len(member.accountmember_set.filter(shopper=False)) == 0:
+    if member.accountmember_set.filter(shopper=False).count() == 0:
         section = 'Proxy'
     elif member.is_on_loa:
         section = 'LOA'
@@ -368,11 +403,11 @@ def prepmemberwork(member, weekbreaks):
     elif member.work_status == 'c':
         section = 'Committee'
     elif member.shift == None:
-        section = 'No Regular Shift'
+        section = 'Need Shift'
     elif member.shift.job.name == 'Cashier':
-        section = 'Cashier Shift'
+        section = 'Cashiers'
     elif 'Dancer' in member.shift.job.name:
-        section = 'Dancer Shift'
+        section = 'Dancers'
     else:
         section = 'Regular Shift'
     member.section = section
