@@ -347,7 +347,8 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 			ul#local-nav li {
 				background:none !important;
 				padding-left:0 !important;
-				font-size:1.1em;
+				/* increased font size */
+				font-size:1.2em;
 				margin-right:.25em;
 				padding-right:.5em;
 				display:inline;
