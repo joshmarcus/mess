@@ -29,6 +29,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.db import transaction
+from django.db.models import Q
 
 from mess.membership import models
 from mess.scheduling import models as s_models
@@ -139,10 +140,20 @@ class Column:
         if self.dest == None:
             # should perhaps annotate that we're throwing data away...
             pass
+        elif data == None:
+            return
         elif self.dest[:5] == 'user.':
+            olddata = getattr(new_object.user, self.dest[5:])
             setattr(new_object.user, self.dest[5:], data)
+            newdata = getattr(new_object.user, self.dest[5:])
         else:
+            olddata = getattr(new_object, self.dest)
             setattr(new_object, self.dest, data)
+            newdata = getattr(new_object, self.dest)
+        if olddata == newdata:
+            print 'verified data %s = %s ' % (self.dest, repr(data))
+        else:
+            print 'UPDATED DATA %s = %s ' % (self.dest, repr(data))
 
 
 # here is a slew of parser functions, used to parse excel data
@@ -209,7 +220,7 @@ def generate_pass(headers, arguments_are_ignored, backup_row=None):
 
 def date_format(d):
     if d == '':
-        return '1903-01-01'
+        return None # '1903-01-01'
     try:
         ret = datetime.date(*xlrd.xldate_as_tuple(float(d),0)[:3])
         print 'parsed date: %s' % ret
@@ -219,7 +230,7 @@ def date_format(d):
     try:
         return datetime.date(*time.strptime(d,'"%B %d, %Y"')[:3])
     except:
-        return '1902-01-01'
+        return None # '1902-01-01'
 
 def get_all_notes(headers, excel_row, backup_row=None):
     # start with notes in the Accountname field (column 0)
@@ -447,7 +458,24 @@ def set_work_hist(data, new_member):
             job = job,
             member = new_member,
             account = acct)
-        
+
+
+def heuristic_get_member(excel_row, columns, account):
+    slugname = columns['member'][0].fetch_data(excel_row)
+    try:
+        return account.members.get(user__username__icontains=slugname)
+    except (models.Member.DoesNotExist, models.Member.MultipleObjectsReturned):
+        pass
+    if slugname == 'blanknam' and account.members.count() == 1:
+        return account.members.all()[0]
+    try:
+        firstname = columns['member'][1].fetch_data(excel_row)
+        lastname = columns['member'][2].fetch_data(excel_row)
+        return account.members.get(Q(user__first_name__icontains=firstname) | Q(user__last_name__icontains=lastname))
+    except models.Member.DoesNotExist:
+        return 'MEMBER NOT GOTTEN %s %s %s' % (slugname, firstname, lastname)
+    except models.Member.MultipleObjectsReturned:
+        return 'MEMBER NOT GOTTEN %s %s %s -- MULTIPLE' % (slugname, firstname, lastname)
 
 def postmigrate(excel_row, columns, account_name, section):
     if account_name == '':
@@ -455,23 +483,24 @@ def postmigrate(excel_row, columns, account_name, section):
     if section not in ['1.0','3.0','3.5','4.0','5.0','6.0']:
         return 'SKIPPED'
     try:
-        account = models.Account.objects.get(name=account_name)
-    except:
+        account = models.Account.objects.get(name__iexact=account_name)
+    except models.Account.DoesNotExist:
         return 'ACCOUNT NOT GOTTEN'
+    except models.Account.MultipleObjectsReturned:
+        return 'ACCOUNT NOT GOTTEN -- MULTIPLE'
     for column in columns['account_post']:
         Cell(excel_row, column).migrate(account)
     account.save()
     print repr('saved account %s...' % account_name)
 
-    slugname = columns['member'][0].fetch_data(excel_row)
-    try:
-        member = account.members.get(user__username__icontains=slugname)
-    except:
-        return 'MEMBER NOT GOTTEN'
+    member = heuristic_get_member(excel_row, columns, account)
+    if isinstance(member, basestring):   # error returned as string
+        return member
+
     for column in columns['member_post']:
         Cell(excel_row, column).migrate(member)
     member.save()
-    return 'saved member %s...' % slugname
+    return 'saved member %s...' % member.user.username
 
 
 @transaction.commit_on_success
