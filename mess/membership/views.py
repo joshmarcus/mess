@@ -436,6 +436,36 @@ def depart_account(request, id):
     return render_to_response('membership/depart.html', context)
 
 
+#####anna working here
+@user_passes_test(lambda u: u.is_staff)
+def loa_account(request, id):
+    '''
+    confirms new leave of absence for all members on account.  
+    start and end defaults specified in membership/forms.py > TwoDatesForm
+    duplicates each workshift scheduled between the two, inclusive.
+    '''
+    context = RequestContext(request)
+    account = get_object_or_404(models.Account, id=id)
+    ####anna bookmark.
+    if request.method == 'POST':   # user clicked one of the buttons
+        if 'cancel' in request.POST:   # cancel button
+            return HttpResponseRedirect(account.get_absolute_url())
+        form = forms.TwoDatesForm(request.POST)
+        if form.is_valid():            # save button,
+            #for mem in account.members.all():
+                # save new LOA object, with start end dates.
+                # duplicate workshifts in that range.
+            return HttpResponseRedirect(account.get_absolute_url())
+    else:                         # show prompt with default form values.
+        form = forms.TwoDatesForm()
+    context['account']=account
+    context['form'] = form
+    return render_to_response('membership/loa_account.html', context)
+
+#### /anna
+
+
+
 def formset_form(request, medium):
     context = RequestContext(request)
     form_name = ''.join([x.capitalize() for x in medium.split('_')]) + 'Form'

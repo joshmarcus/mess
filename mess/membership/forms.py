@@ -95,6 +95,12 @@ class MemberListFilterForm(forms.Form):
 class DateForm(forms.Form):
     day = forms.DateField(initial = datetime.date.today)
 
+class TwoDatesForm(forms.Form):
+    # endtime defaults to 60 days from today.
+    start = forms.DateField(initial = datetime.date.today)
+    default_end = datetime.date.today() + datetime.timedelta(60)
+    end = forms.DateField(initial = default_end)
+
 class AccountListFilterForm(forms.Form):
     search = forms.CharField(required=False)
     sort_by = forms.ChoiceField(choices=ACCOUNT_SORT_CHOICES)
