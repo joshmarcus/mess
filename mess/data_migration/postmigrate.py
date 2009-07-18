@@ -477,7 +477,9 @@ def heuristic_get_member(excel_row, columns, account):
         return account.members.get(Q(user__first_name__icontains=firstname) | Q(user__last_name__icontains=lastname))
     except models.Member.DoesNotExist:
         if slugname == 'blanknam':
-            return 'member not gotten %s %s %s' % (slugname, firstname, lastname)
+            return 'WARNING member not gotten %s %s %s' % (slugname, firstname, lastname)
+        elif account.members.count() == 0:
+            return 'WARNING account no members (%s %s %s)' % (slugname, firstname, lastname)
         else:
             return 'MEMBER NOT GOTTEN %s %s %s' % (slugname, firstname, lastname)
     except models.Member.MultipleObjectsReturned:
