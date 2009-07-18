@@ -95,11 +95,16 @@ class MemberListFilterForm(forms.Form):
 class DateForm(forms.Form):
     day = forms.DateField(initial = datetime.date.today)
 
-class TwoDatesForm(forms.Form):
-    # endtime defaults to 60 days from today.
-    start = forms.DateField(initial = datetime.date.today)
-    default_end = datetime.date.today() + datetime.timedelta(60)
-    end = forms.DateField(initial = default_end)
+class LoaForm(forms.Form):
+    ENDDEF = 365  # days from today for endtime default
+    start = forms.DateField(initial=datetime.date.today)
+    default_end = datetime.date.today() + datetime.timedelta(ENDDEF)
+    end = forms.DateField(initial=default_end)
+    c_tuple = (('short', 'free each shift for one-time fill'),
+               ('long', 'remove members from shifts entirely'))
+    shifts_during_LOA = forms.ChoiceField(choices=c_tuple,
+                                          widget=forms.RadioSelect, 
+                                          initial='long')
 
 class AccountListFilterForm(forms.Form):
     search = forms.CharField(required=False)

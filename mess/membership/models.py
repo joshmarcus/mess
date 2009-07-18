@@ -100,6 +100,47 @@ class Member(models.Model):
         else:
             return None
 
+    def remove_from_shifts(self, start, end=None):
+        '''
+        Removes member from workshifts that haven't happened yet.
+        End date is optional.
+        '''
+
+        # handle start and end dates in the past
+        if start < datetime.date.today():
+            start = datetime.date.today()
+        if end and end < datetime.date.today():
+            return          # end date in past; don't mess with shifts.
+
+        # switch all post-start tasks to new recur rule; 
+        # set old recur_rule.until as our start date.
+        tasks = self.task_set.filter(time__gte=start)
+        r_rule_switch = {}
+        for task in tasks:
+            if task.recur_rule:
+                if task.recur_rule in r_rule_switch:
+                    new_rule = r_rule_switch[task.recur_rule]
+                else:
+                    new_rule = task.duplicate_recur_rule()
+                    task.recur_rule.until = start
+                    task.recur_rule.save()
+                    r_rule_switch[task.recur_rule] = new_rule
+                task.recur_rule = new_rule
+
+            # task is inside LOA and should be released for one-time fill.
+            # i.e. no longer point to any recur rule
+            if end:
+                if task.time.date() <= end:
+                    task.recur_rule = None
+                    task.member = task.account = None
+                    
+            # permanently remove from workshift (no end date)
+            else:
+                task.member = task.account = None
+
+            task.save()
+
+
     def get_primary_account(self):
         try:
             primary = self.accounts.filter(

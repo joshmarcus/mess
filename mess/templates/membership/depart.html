@@ -10,7 +10,8 @@
     <div id="primary-content-wrapper">
       <h2>Confirm {{ account.name }} departures</h2>
       <p>Pressing 'depart' will mark all members on this account as departed, 
-        and remove each of them from all workshifts as of their departed date.</p>
+        and remove each of them from all workshifts as of their departed date.
+        (If departed date is in the past, removes as of today).</p>
       <p>Departing members:</p>
       <ul>
         {% for mem in account.members.all %}

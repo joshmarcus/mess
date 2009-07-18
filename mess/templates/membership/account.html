@@ -17,7 +17,9 @@
             {% endfor %}
           </ul>
           {% if account.active_member_count %}
-          <p><a href="{% url depart-account account.id %}">depart all members</a></p>
+          <ul>
+            <li><a href="{% url depart-account account.id %}">depart all members</a></li>
+            <li><a href="{% url loa-account account.id %}">loa all members</a></li>
           {% endif %}
         </div>
         <h4>

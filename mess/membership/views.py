@@ -12,7 +12,6 @@ from django.template.loader import get_template
 
 #from mess.accounting import models as a_models
 from mess.membership import forms, models
-from mess.scheduling import models as s_models
 import datetime
 
 # number of members or accounts to show per page in respective lists
@@ -395,39 +394,17 @@ def depart_account(request, id):
     '''
     context = RequestContext(request)
     account = get_object_or_404(models.Account, id=id)
-    if request.method == 'POST':   # user clicked one of the buttons
+    if request.method == 'POST':       # user clicked one of the buttons
         if 'cancel' in request.POST:   # cancel button
             return HttpResponseRedirect(account.get_absolute_url())
         form = forms.DateForm(request.POST)
         if form.is_valid():            # save button
+            # for each member, enter the date departed and get them off of their workshifts.
             for mem in account.members.all():
                 if not mem.date_departed:
                     mem.date_departed = form.cleaned_data['day']
                     mem.save()
-                # open future workshifts.  
-                r_rule_switch = {}
-                for task in mem.task_set.filter(time__gt=mem.date_departed):
-                    task.member = None
-                    task.account = None
-                    # if the task had a recur rule, deal with it:
-                    # copy the recur rule into a new rule and set until date departed on old rule.
-                    # keep old tasks attached to the old rule.
-                    # switch future tasks to new rule.
-                    if task.recur_rule:
-                        if task.recur_rule in r_rule_switch:
-                            new_rule = r_rule_switch[task.recur_rule]
-                        else:
-                            new_rule = s_models.RecurRule(frequency=task.recur_rule.frequency, interval=task.recur_rule.interval, until=task.recur_rule.until)
-                            new_rule.save()
-                            task.recur_rule.until = mem.date_departed
-                            task.recur_rule.save()
-                            r_rule_switch[task.recur_rule]=new_rule
-                        task.recur_rule=new_rule
-                    task.save()
-                    # if it ahs a recur rule, check whether the recur rule is
-                    # in our dictionary.  if it's in there
-                    # if it has no recur rule, unset its member and account
-                    # else append 
+                mem.remove_from_shifts(form.cleaned_data['day'])
             return HttpResponseRedirect(account.get_absolute_url())
     else:                         # show prompt with default form values.
         form = forms.DateForm()
@@ -435,36 +412,35 @@ def depart_account(request, id):
     context['form'] = form
     return render_to_response('membership/depart.html', context)
 
-
-#####anna working here
+####anna bookmark.
 @user_passes_test(lambda u: u.is_staff)
 def loa_account(request, id):
     '''
     confirms new leave of absence for all members on account.  
-    start and end defaults specified in membership/forms.py > TwoDatesForm
+    start and end defaults specified in membership/forms.LoaForm
     duplicates each workshift scheduled between the two, inclusive.
     '''
     context = RequestContext(request)
     account = get_object_or_404(models.Account, id=id)
-    ####anna bookmark.
-    if request.method == 'POST':   # user clicked one of the buttons
+    if request.method == 'POST':       # user clicked one of the buttons
         if 'cancel' in request.POST:   # cancel button
             return HttpResponseRedirect(account.get_absolute_url())
-        form = forms.TwoDatesForm(request.POST)
+        form = forms.LoaForm(request.POST)
         if form.is_valid():            # save button,
-            #for mem in account.members.all():
-                # save new LOA object, with start end dates.
-                # duplicate workshifts in that range.
+            for mem in account.members.all():
+                s = form.cleaned_data['start']
+                e = form.cleaned_data['end']
+                new_loa = models.LeaveOfAbsence(member=mem, start=s, end=e)
+                new_loa.save()
+                if form.cleaned_data['shifts_during_LOA'] == 'long':
+                    e = None   # members shd be removed from all workshifts
+                mem.remove_from_shifts(s, e)
             return HttpResponseRedirect(account.get_absolute_url())
     else:                         # show prompt with default form values.
-        form = forms.TwoDatesForm()
+        form = forms.LoaForm()
     context['account']=account
     context['form'] = form
     return render_to_response('membership/loa_account.html', context)
-
-#### /anna
-
-
 
 def formset_form(request, medium):
     context = RequestContext(request)
