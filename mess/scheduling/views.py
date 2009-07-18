@@ -67,7 +67,8 @@ def schedule(request, date=None):
         today = datetime.date.today()
         # need datetime object for rrule, but datetime.today is, like, now
         date = datetime.datetime(today.year, today.month, today.day)
-    add_task_form = forms.TaskForm(instance=models.Task(time=date), 
+    add_time = date + datetime.timedelta(hours=9)
+    add_task_form = forms.TaskForm(instance=models.Task(time=add_time), 
             prefix='add')
     add_recur_form = forms.RecurForm(prefix='recur-add')
     tasks = models.Task.objects.filter(time__year=date.year).filter(

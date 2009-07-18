@@ -167,12 +167,25 @@ class Task(models.Model):
         return end
 
     def new_date(self):
+        '''
+        If they have 4 or more past shifts that they actually did this year,
+        then they're no longer new.  Except if it's a cashier, then the past
+        shifts have to be cashiering shifts.
+        '''
         if self.member:
             trainingjobs = ['Orientation Attendee','Shadow Cashier',
                             'Cashier Training Attendee']
-            oldshifts = self.member.task_set.filter(time__lte=self.time
-                ).exclude(job__name__in=trainingjobs)
-            if 0 < len(oldshifts) < 4:
+            oldshifts = self.member.task_set.filter(time__lte=self.time,
+                time__gt=datetime.date.today - datetime.timedelta(365),
+                hours_worked__gt=0).exclude(job__name__in=trainingjobs)
+            if self.job.name == 'Cashier':
+                oldshifts = oldshifts.filter(job__name=self.job.name)
+                # FIXME only enough time for 2 past cashier shifts...
+                # remove this line in October 2009:
+                if len(oldshifts) >= 2: return
+            if len(oldshifts) == 0:
+                return self.time
+            if len(oldshifts) < 4:
                 return oldshifts[0].time
 
     def get_next_shift(self):
