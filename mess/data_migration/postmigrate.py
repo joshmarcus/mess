@@ -160,9 +160,12 @@ class Column:
 
 def split_notes(actstr):
     ''' try to split things like  "Best Fest NEEDS SHIFT" '''
-    # find last lowercase character
     if actstr == '': 
         return '', ''
+    # don't split if it's a final uppercase letter like Madame K
+    if len(actstr) >= 2 and actstr[-1] in string.uppercase and actstr[-2] == ' ':
+        return actstr.strip(), ''
+    # find last lowercase character
     s = len(actstr) - 1
     while s >= 0 and actstr[s] not in unicode(string.lowercase):
         s -= 1
@@ -473,11 +476,14 @@ def heuristic_get_member(excel_row, columns, account):
         lastname = columns['member'][2].fetch_data(excel_row)
         return account.members.get(Q(user__first_name__icontains=firstname) | Q(user__last_name__icontains=lastname))
     except models.Member.DoesNotExist:
-        return 'MEMBER NOT GOTTEN %s %s %s' % (slugname, firstname, lastname)
+        if slugname == 'blanknam':
+            return 'member not gotten %s %s %s' % (slugname, firstname, lastname)
+        else:
+            return 'MEMBER NOT GOTTEN %s %s %s' % (slugname, firstname, lastname)
     except models.Member.MultipleObjectsReturned:
         return 'MEMBER NOT GOTTEN %s %s %s -- MULTIPLE' % (slugname, firstname, lastname)
 
-def postmigrate(excel_row, columns, account_name, section):
+def postmigrate(excel_row, columns, account_name, section, foundaccts):
     if account_name == '':
         return 'SKIPPED'
     if section not in ['1.0','3.0','3.5','4.0','5.0','6.0']:
@@ -492,6 +498,8 @@ def postmigrate(excel_row, columns, account_name, section):
         Cell(excel_row, column).migrate(account)
     account.save()
     print repr('saved account %s...' % account_name)
+    if account in foundaccts:
+        foundaccts[account] = True
 
     member = heuristic_get_member(excel_row, columns, account)
     if isinstance(member, basestring):   # error returned as string
@@ -519,12 +527,19 @@ def main():
     else:
         rows_to_import = datasheet.nrows
     
+    # keep track of which existing accounts were postmigrated
+    foundaccts = dict([(x,False) for x in models.Account.objects.active()])
     for n in range(1, rows_to_import):
         excel_row = datasheet.row(n) 
         section = columns['section'].fetch_data(excel_row)
         account_name = columns['account_name'].fetch_data(excel_row)
-        result = postmigrate(excel_row, columns, account_name, section)
+        result = postmigrate(excel_row, columns, account_name, section, foundaccts)
         print repr('%s section %s, row %d, account %s' %  
                 (result, section, n, account_name))
+
+    for acct, wasfound in foundaccts.iteritems():
+        if not wasfound:
+            print repr('MESS active account %s was NOT FOUND in the input.' % 
+                    acct.name)
 
 main()
