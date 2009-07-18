@@ -483,23 +483,39 @@ def heuristic_get_member(excel_row, columns, account):
     except models.Member.MultipleObjectsReturned:
         return 'MEMBER NOT GOTTEN %s %s %s -- MULTIPLE' % (slugname, firstname, lastname)
 
+def heuristic_get_account(account_name):
+    try:
+        return models.Account.objects.get(name__iexact=account_name)
+    except models.Account.MultipleObjectsReturned:
+        return 'ACCOUNT NOT GOTTEN AS %s -- MULTIPLE' % account_name
+    except models.Account.DoesNotExist:
+        try:
+            acct = models.Account.objects.get(name__istartswith=account_name)
+            print repr('WARNING NOT EXACT %s as %s' % (account_name, acct.name))
+            return acct
+        except models.Account.MultipleObjectsReturned:
+            return 'ACCOUNT NOT GOTTEN STARTSWITH %s -- MULTIPLE' % account_name
+        except models.Account.DoesNotExist:
+            return 'ACCOUNT NOT GOTTEN STARTSWITH %s' % account_name
+
 def postmigrate(excel_row, columns, account_name, section, foundaccts):
     if account_name == '':
         return 'SKIPPED'
     if section not in ['1.0','3.0','3.5','4.0','5.0','6.0']:
         return 'SKIPPED'
-    try:
-        account = models.Account.objects.get(name__iexact=account_name)
-    except models.Account.DoesNotExist:
-        return 'ACCOUNT NOT GOTTEN'
-    except models.Account.MultipleObjectsReturned:
-        return 'ACCOUNT NOT GOTTEN -- MULTIPLE'
+
+    account = heuristic_get_account(account_name)
+    if isinstance(account, basestring):  # error returned as string
+        return account
+    if account in foundaccts and foundaccts[account] == True:
+        return 'OOPS!  ALREADY MIGRATED ACCOUNT'
+    if account in foundaccts:
+        foundaccts[account] = True
+
     for column in columns['account_post']:
         Cell(excel_row, column).migrate(account)
     account.save()
     print repr('saved account %s...' % account_name)
-    if account in foundaccts:
-        foundaccts[account] = True
 
     member = heuristic_get_member(excel_row, columns, account)
     if isinstance(member, basestring):   # error returned as string

@@ -124,6 +124,11 @@ def reports(request):
                 'emails__isnull=True\r\naccountmember__shopper=False',
                 'accounts\r\nphones', order_by='accounts'),
 
+            listrpt('Members','Depositors on LOA',
+                'leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today())+'\r\naccountmember__shopper=False',
+                'current_loa.start\r\ncurrent_loa.end\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
+                order_by='leaveofabsence__end'),
+
             listrpt('Members','On LOA',
                 'leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today()),
                 'current_loa.start\r\ncurrent_loa.end\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
