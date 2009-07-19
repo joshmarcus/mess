@@ -1,6 +1,5 @@
 from datetime import date
 
-from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -17,12 +16,9 @@ from mess.membership import models as m_models
 # cashier permission is the first if
 @user_passes_test(lambda u: u.is_authenticated())
 def transaction(request):
-    if not request.user.is_staff:
-        if not request.user.get_profile().is_cashier_today:
-            return HttpResponse('Sorry, you do not have cashier permission.')
-        if request.META['REMOTE_ADDR'] != settings.MARIPOSA_IP:
-            return HttpResponse('Sorry, you do not have cashier permission. %s' 
-                                 % request.META['REMOTE_ADDR'])
+    if not m_models.cashier_permission(request):
+        return HttpResponse('Sorry, you do not have cashier permission. %s' 
+                             % request.META['REMOTE_ADDR'])
 
     context = RequestContext(request)
     if 'account' in request.GET:

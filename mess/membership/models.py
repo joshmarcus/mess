@@ -1,6 +1,7 @@
 from datetime import date
 import datetime
 
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -180,6 +181,20 @@ class Member(models.Model):
     class Meta:
         ordering = ['user__username']
 
+def cashier_permission(request):
+    ''' 
+    used as a template context processor before showing 'cashier' tab 
+    bool(returnvalue['can_cashier_now']) is trusted by template
+    bool(returnvalue) is trusted by accounting/views
+    '''
+    if not request.user.is_authenticated():
+        return {}     # no permission, bool({}) = False
+    if request.user.is_staff:
+        return {'can_cashier_now':True}
+    if (request.user.get_profile().is_cashier_today
+        and request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP):
+        return {'can_cashier_now':True}
+    return {}     # no permission, bool({}) = False
 
 class LeaveOfAbsence(models.Model):
     """ Leave of absence periods for members. """

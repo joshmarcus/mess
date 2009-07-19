@@ -57,6 +57,8 @@
           {% endif %}
           {% if user.is_staff %}
           <li><a href="{% url reports %}"{% active_class request '^reporting' %}>Reports</a></li>
+          {% endif %}
+          {% if can_cashier_now %}
           <li><a href="{% url transaction %}"{% active_class request '^accounting' %}>Cashier</a></li>
           {% endif %}
         </ul>
