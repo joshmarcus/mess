@@ -16,8 +16,8 @@
   <tr class="{% cycle 'odd' 'even' %}" >
     <td>{{ transaction.id }}</td>
     <td class="nowrap">{{ transaction.timestamp|date:"g:i A" }}</td>
-    <td><a href="{% url account transaction.account.id %}">{{ transaction.account }}</a></td>
-    <td><a href="{% url member transaction.member.user.username %}">{{ transaction.member.user.get_full_name }}</a></td>
+    <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account }}</a></td>
+    <td>{% if transaction.member %}<a href="{{ transaction.member.get_absolute_url }}">{{ transaction.member }}</a>{% endif %}</td>
     <td>{{ transaction.note }}</td>
     <td>{{ transaction.get_purchase_type_display }}</td>
     <td>{{ transaction.purchase_amount|floatformat:2 }}</td>

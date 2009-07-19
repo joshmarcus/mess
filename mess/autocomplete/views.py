@@ -28,7 +28,7 @@ class AutoComplete(object):
                     field = '%s__startswith' % field
                 filter |= Q(**{field: query})
         
-        qs = qs.filter(filter)[:limit]
+        qs = qs.filter(filter).distinct()[:limit]
         
         if isinstance(label, basestring):
             if key == 'pk':

@@ -235,6 +235,12 @@ class Account(models.Model):
             member__date_missing__isnull=True, 
             member__date_departed__isnull=True))
 
+    def autocomplete_label(self):
+        if self.active_member_count:
+            return self.name
+        else:
+            return '* '+self.name
+
     @models.permalink
     def get_absolute_url(self):
         return ('account', [self.id])

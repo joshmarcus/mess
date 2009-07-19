@@ -55,7 +55,7 @@ function yui_autocomplete(name, ac_url, force_selection) {
                 hidden.value = input.value;
         });  */
 
-        // Set up account tangling for MESS:
+        // Set up accounttangle for scheduling (pick member auto-picks acct):
         if (typeof(window['ACCOUNTTANGLE']) != 'undefined' && 
                 ACCOUNTTANGLE && (name.indexOf('member') > 1)) {
             var formsetid = name.split('-')[0];
@@ -66,6 +66,15 @@ function yui_autocomplete(name, ac_url, force_selection) {
                 account = label.substring(label.indexOf('(')+1, label.length-1);
                 accountfield.value = account
                 accounthidden.value = account
+            });
+        }
+
+        // Set up get cashier info (picking account fetches info):
+        if (typeof(window['GETCASHIERINFO']) != 'undefined' &&  
+                GETCASHIERINFO && (name == 'account')) {
+            autocomplete.itemSelectEvent.subscribe(function (type, args) {
+                var account_id = args[2].id;
+                memberFilter(account_id);
             });
         }
 

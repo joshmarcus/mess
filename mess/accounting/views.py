@@ -31,6 +31,8 @@ def transaction(request):
         form = forms.TransactionForm(request.POST)
         if form.is_valid():
             form.save()
+            form.instance.entered_by = request.user
+            form.instance.save()
             return HttpResponseRedirect(reverse('transaction'))
     else:
         form = forms.TransactionForm()

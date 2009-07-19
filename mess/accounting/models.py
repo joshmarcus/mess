@@ -31,7 +31,7 @@ PAYMENT_CHOICES = (
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account)
-    member = models.ForeignKey(Member)
+    member = models.ForeignKey(Member, blank=True, null=True)
     purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,
         blank=True, default='P')
     purchase_amount = models.DecimalField(max_digits=5, decimal_places=2, 
@@ -42,11 +42,13 @@ class Transaction(models.Model):
         default=0, blank=True)
     note = models.CharField(max_length=256, blank=True)
     account_balance = models.DecimalField(max_digits=5, decimal_places=2)
+    entered_by = models.ForeignKey(User, blank=True, null=True)
     # reference is for check numbers, etc.  will uncomment when necessary
     #reference = models.PositiveIntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return str(self.date)
+        return '%s %s' % (self.account, 
+                          self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
     def save(self, force_insert=False, force_update=False):
         balance = self.account.balance

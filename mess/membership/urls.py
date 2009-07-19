@@ -23,7 +23,16 @@ def member_spiffy_filter(query):
 
 autocomplete.register('member_spiffy', models.Member.objects.all(), member_spiffy_filter, limit=10, label=lambda m: m.autocomplete_label() )
 
+def account_spiffy_filter(query):
+    if '*' in query:
+        plain_query = query.strip('* ')
+        return Q(name__istartswith=plain_query)
+    else:
+        return (Q(members__date_missing__isnull=True) &
+                Q(members__date_departed__isnull=True) &
+                Q(name__istartswith=query))
 
+autocomplete.register('account_spiffy', models.Account.objects.all(), account_spiffy_filter, limit=10, label=lambda a: a.autocomplete_label() )
 
 urlpatterns = patterns('mess.membership.views',
     url(r'^accounts$', 'accounts', name='accounts'),
