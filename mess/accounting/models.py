@@ -10,10 +10,12 @@ from mess.membership.models import Account, Member
 PURCHASE_CHOICES = (
     ('P','Purchase'),
     ('B','Bulk Purchase'),
+    ('A','After-Hours Purchase'),
     ('U','Dues'),
-    ('S','Misc Sales'),
-    ('T','Trade'),
-    ('W','Work Credit'),
+    ('O','Deposit'),
+#   ('S','Misc Sales'),   what is Misc Sales?
+#   ('T','Trade'),    what is Trade?
+    ('X','Correction'),
 )
 
 PAYMENT_CHOICES = (
@@ -22,6 +24,8 @@ PAYMENT_CHOICES = (
     ('K','Check'),
     ('M','Money Order'),
     ('E','EBT'),
+    ('W','Work Credit'),
+    ('X','Correction'),
 )
 
 class Transaction(models.Model):
@@ -29,7 +33,7 @@ class Transaction(models.Model):
     account = models.ForeignKey(Account)
     member = models.ForeignKey(Member)
     purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,
-        blank=True)
+        blank=True, default='P')
     purchase_amount = models.DecimalField(max_digits=5, decimal_places=2, 
         default=0, blank=True)
     payment_type = models.CharField(max_length=1, choices=PAYMENT_CHOICES,
