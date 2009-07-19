@@ -74,6 +74,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'mess.urls'
 
 LOCATION = 'Cashier'
+MARIPOSA_IP = '127.0.0.1'
 
 TEMPLATE_DIRS = (
     PROJECT_ROOT + '/templates',

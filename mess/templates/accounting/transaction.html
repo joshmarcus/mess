@@ -15,7 +15,7 @@
   <div id="double-column" >
    {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <form class="standard" method="post" >
+      <form class="standard" method="post" onsubmit="return confirm('Please double-check the transaction, then click OK.');">
         <table>
           {{ form }}
           <tr>
@@ -23,88 +23,6 @@
             <td><input class="button" type="submit" value="Submit" /></td>
           </tr>
         </table>
-        {% comment %}
-        <input type="hidden" id="id_member" value="" />
-        <input type="hidden" id="id_account" value="" />
-        <table class="form-table">
-          <tr id="account_row" >
-            <th>
-              <label for="account-input">Account</label>
-            </th>
-            <td colspan="2" >
-              <div id="account">              
-                <input id="account-input" name="account" type="text">
-                <div id="account-container"></div>
-              </div>              
-            </td>
-            <td colspan="2" ></td>            
-          </tr>
-          <tr id="member_row">
-            <th>
-              <label for="member-input" >Member</label>
-            </th>
-            <td colspan="2" >
-              <div id="member">              
-                <input id="member-input" name="member" />
-                <div id="member-container" ></div>
-              </div>
-            </td>
-            <td colspan="2" ></td>
-          </tr>
-          <tr id="debit_row">
-            <td id="debit_type">
-              <select id="id_debit_type" name="debit_type" >
-                <option value="" selected>Select Payment</option>
-                {% for v, t in debit_choices %}
-                  <option value={{ v }} >{{ t }}</option>
-                {% endfor %}
-              </select>
-            </td>
-              <th id="debit_label" >
-                <label for="id_debit" >Amount</label>
-              </th>
-              <td id="debit_amount">        
-                <input type="text" size="5" autocomplete="off"
-                        id="id_debit" name="debit" />
-              </td>
-              <th id="ref_label">
-                <label for="id_ref" >Reference</label>
-              </th>
-              <td id="ref_text" >
-                <input type="text" size="5" autocomplete="off"
-                        id="id_ref" name="ref" />
-              </td>
-          </tr>
-          <tr id="credit_row" >
-            <td id="credit_type">
-              <select id="id_credit_type" name="credit_type" >
-                <option value="" selected>Select Purchase</option>
-                {% for v, t in credit_choices %}
-                  <option value={{ v }} >{{ t }}</option>
-                {% endfor %}
-              </select>
-            </td>
-              <th id="credit_label" >
-                <label for="id_credit" >Amount</label>
-              </th>
-              <td id="credit_amount" >        
-                <input type="text" size="5" autocomplete="off"
-                      id="id_credit" name="credit" />
-              </td>
-          </tr>
-          <tr id="last_row">
-            <th>
-              <label for="id_note">Note</label>
-            </th>
-            <td colspan="2" >
-              <textarea rows="3" cols="2" id="id_note" name="note" /></textarea>
-            </td>
-            <td id="buttons" colspan="2" >
-              <input class="button" type="submit" value="Save Transaction" >
-            </td>
-          </tr>
-        </table>
-        {% endcomment %}
       </form>
       <div id="transactions">
         <h2>Today's Transactions</h2>
@@ -112,9 +30,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block pop_up %}
-  <div id="message" ></div>
-  <div id="list" ></div>
 {% endblock %}

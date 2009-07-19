@@ -86,6 +86,12 @@ class Member(models.Model):
         return bool(self.current_loa)
 
     @property
+    def is_cashier_today(self):
+        shifts = self.task_set.filter(job__name='Cashier', time__range=(
+            datetime.date.today(), datetime.date.today()+datetime.timedelta(1)))
+        return bool(shifts.count())
+
+    @property
     def name(self):
         return self.user.username
 
@@ -95,7 +101,7 @@ class Member(models.Model):
 
     def next_shift(self):
         tasks = self.task_set.filter(time__gte=datetime.date.today()).order_by('time')
-        if len(tasks):
+        if tasks.count():
             return tasks[0]
         else:
             return None
