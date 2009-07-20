@@ -74,7 +74,7 @@ function yui_autocomplete(name, ac_url, force_selection) {
                 GETCASHIERINFO && (name == 'account')) {
             autocomplete.itemSelectEvent.subscribe(function (type, args) {
                 var account_id = args[2].id;
-                memberFilter(account_id);
+                getAccountInfo(account_id);
             });
         }
 

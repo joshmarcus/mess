@@ -245,6 +245,14 @@ class Account(models.Model):
     def get_absolute_url(self):
         return ('account', [self.id])
 
+    def verbose_balance(self):
+        if self.balance > 0:
+            return 'Owes %.2f' % self.balance
+        elif self.balance < 0:
+            return 'Has credit of (%.2f)' % -self.balance
+        else:
+            return 'Zero balance'
+
     def __unicode__(self):
         return self.name
     

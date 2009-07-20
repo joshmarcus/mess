@@ -21,11 +21,17 @@ def transaction(request):
                              % request.META['REMOTE_ADDR'])
 
     context = RequestContext(request)
-    if 'account' in request.GET:
+    if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
         account = m_models.Account.objects.get(id=account_id)
         context['account'] = account
-        template = get_template('accounting/snippets/members.html')
+        if request.GET['getcashierinfo'] == 'members':
+            template = get_template('accounting/snippets/members.html')
+        elif request.GET['getcashierinfo'] == 'transactions':
+            context['transactions'] = account.transaction_set.all()
+            template = get_template('accounting/snippets/transactions.html')
+        elif request.GET['getcashierinfo'] == 'acctinfo':
+            template = get_template('accounting/snippets/acctinfo.html')
         return HttpResponse(template.render(context))
     if request.method == 'POST':
         form = forms.TransactionForm(request.POST)

@@ -14,7 +14,8 @@
   <div id="double-column" >
    {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <form class="standard" method="post" onsubmit="return confirm('Please double-check the transaction, then click OK.');">
+      <div class="profile" id="acctinfo"><!-- filled by ajax --></div>
+      <form class="standard" id="transaction" method="post" onsubmit="return confirm('Please double-check the transaction, then click OK.');">
         <table>
           {{ form }}
           <tr>

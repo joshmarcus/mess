@@ -702,6 +702,10 @@ div.rotation { page-break-inside:avoid; margin-bottom:12pt; }
 .rotation-shift hr { border:0pt; margin:3pt; }
 th.rotation-ideal { font-size:12pt; line-height:12pt; padding-bottom:20pt; }
 
+form#transaction { width:50%; }
+div#acctinfo { float:right; margin:5pt; padding:5pt; width:40%; }
+div#acctinfo h4.warning { background:red; }
+
 /* the problem is that table.data td table td { should've never been set */
 #double-column #primary-content-wrapper table.cycletasks td { margin:0px; padding:0px; border:0px; }
 table.cycletasks { width:100%; }
