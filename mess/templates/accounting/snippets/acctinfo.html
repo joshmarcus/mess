@@ -1,0 +1,9 @@
+<h4>{{ account.name }}<a href="{{ account.get_absolute_url }}">view</a></h4>
+<ul class="quick-info">
+  <li>{{ account.verbose_balance }}</li>
+  <li>Hours Balance: {{ account.hours_balance }}</li>
+<!-- may be wrong <li>Can Shop: {{ account.can_shop|yesno }}</li> -->
+</ul>
+{% if not account.can_shop %}<h4 class="warning">CAN NOT SHOP</h4>{% endif %}
+{% if account.ebt_only %}<h4 class="warning">EBT Only</h4>{% endif %}
+{% if not account.active_member_count %}<h4 class="warning">INACTIVE ACCOUNT</h4>{% endif %}
