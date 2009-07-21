@@ -38,6 +38,12 @@
         {% endfor %}
       </tr>
     {% endfor %}
+    <tr>
+      <th>Totals:</th>
+      {% for total in totals %}
+        <td>{% if total %}{{ total }}{% endif %}</td>
+      {% endfor %}
+    </tr>
   </table>
 
   </div>

@@ -80,6 +80,10 @@ def prepare_columns(headers):
             Column(headers, 0, porter=set_shopper_flag),
             ],
         'account_post': [
+            Column(headers, 'Old Balance', parser=or_zero, dest='balance'),
+            Column(headers, 'Hours Balance', parser=or_zero, dest='hours_balance'),
+            Column(headers, 'Cumulative deposit', parser=or_zero, dest='deposit'),
+            Column(headers, 'Active Members', porter=am_compare_and_warn),
             ],
         'member_post': [
             Column(headers, 'Join Date', date_format, 'date_joined'),
@@ -153,7 +157,13 @@ class Column:
         if olddata == newdata:
             print 'verified data %s = %s ' % (self.dest, repr(data))
         else:
-            print 'UPDATED DATA %s = %s ' % (self.dest, repr(data))
+            try:
+                if float(olddata) == float(newdata):
+                    print 'verified data %s = %s ' % (self.dest, repr(data))
+                else:
+                    print 'UPDATED DATA %s = %s ' % (self.dest, repr(data))
+            except:
+                print 'UPDATED DATA %s = %s ' % (self.dest, repr(data))
 
 
 # here is a slew of parser functions, used to parse excel data
@@ -306,6 +316,18 @@ def parse_shift(headers, excel_row, backup_row=None, shift_for_proxy=False):
         
 
 # and here is a slew of porter functions, used to migrate data into the db
+
+def am_compare_and_warn(excel_active_members, mess_account):
+    try:
+        xam = int(float(excel_active_members))
+    except ValueError:
+        print 'could not parse active member count %s' % excel_active_members
+        return
+    mam = mess_account.active_member_count
+    if xam == mam:
+        print 'verified %s active members' % xam
+    elif mam > 0:
+        print 'WARNING: %s active members in Excel, %s in MESS' % (xam, mam)
 
 def create_unique_user(slug, count=0, countstr=''):
     username = slug + countstr

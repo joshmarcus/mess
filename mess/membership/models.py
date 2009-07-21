@@ -1,5 +1,6 @@
 from datetime import date
 import datetime
+from decimal import Decimal
 
 from django.conf import settings
 from django.db import models
@@ -101,11 +102,15 @@ class Member(models.Model):
         return ('member', [self.user.username])
 
     def next_shift(self):
-        tasks = self.task_set.filter(time__gte=datetime.date.today()).order_by('time')
+        tasks = self.task_set.filter(time__gte=datetime.date.today())
         if tasks.count():
             return tasks[0]
-        else:
-            return None
+
+    def regular_shift(self):
+        tasks = self.task_set.filter(time__gte=datetime.date.today(),
+                recur_rule__isnull=False)
+        if tasks.count():
+            return tasks[0]
 
     def remove_from_shifts(self, start, end=None):
         '''
@@ -252,6 +257,41 @@ class Account(models.Model):
             return 'Has credit of (%.2f)' % -self.balance
         else:
             return 'Zero balance'
+
+    def max_allowed_to_owe(self):
+        if self.active_member_count == 0:
+            return 0
+        sixmonthsago = datetime.date.today() - datetime.timedelta(6*30)
+        oldmembers = self.accountmember_set.filter(shopper=False,
+                        member__date_joined__lt=sixmonthsago)
+        if oldmembers:
+            return self.active_member_count * 25
+        else:
+            return self.active_member_count * 5
+
+    def must_pay(self):
+        if self.balance > self.max_allowed_to_owe():
+            return self.balance - self.max_allowed_to_owe()
+
+    def must_work(self):
+        if self.hours_balance > Decimal('0.03'):
+            return self.hours_balance
+
+    def obligations(self):
+        obligations = self.active_member_count
+        if not obligations:
+            return
+        for am in self.accountmember_set.all():
+            if am.member.is_on_loa and not am.shopper:
+                obligations -= 1
+        if not obligations:
+            return 'On Leave Of Absence'
+        for am in self.accountmember_set.all():
+            if (am.member.regular_shift()
+                    or (am.member.work_status in 'ec' and not am.shopper)):
+                obligations -= 1
+        if obligations:
+            return 'Needs Shift'
 
     def __unicode__(self):
         return self.name

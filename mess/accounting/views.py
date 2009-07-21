@@ -33,12 +33,13 @@ def transaction(request):
         elif request.GET['getcashierinfo'] == 'acctinfo':
             template = get_template('accounting/snippets/acctinfo.html')
         return HttpResponse(template.render(context))
+
     if request.method == 'POST':
         form = forms.TransactionForm(request.POST)
         if form.is_valid():
-            form.save()
-            form.instance.entered_by = request.user
-            form.instance.save()
+            transaction = form.save(commit=False)
+            transaction.entered_by = request.user
+            transaction.save()
             return HttpResponseRedirect(reverse('transaction'))
     else:
         form = forms.TransactionForm()

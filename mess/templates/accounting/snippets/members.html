@@ -1,4 +1,4 @@
 <option value="" selected="selected">---------</option>
 {% for member in account.members.all %}
-  <option value="{{ member.id }}">{{ member }}</option>
+  <option value="{{ member.id }}">{{ member }}{% if not member.is_active %}{% if member.date_departed %} (departed){% else %} (missing?){% endif %}{% endif %}{% if member.is_on_loa %} (on leave until {{ member.current_loa.end|date:"n/j/Y" }}){% endif %}</option>
 {% endfor %}

@@ -151,6 +151,15 @@ def reports(request):
                 include_inactive='on'),
         ]),
 
+        ('Accounting',[
+            listrpt('Accounts','All Balances and Deposits',
+                '','balance\r\ndeposit\r\nactive_member_count',
+                include_inactive='on'),
+
+            listrpt('Accounts','Active Balances and Deposits',
+                '','balance\r\ndeposit\r\nactive_member_count'),
+        ]),
+
         ('Tasks',[
             ('Wall Calendar', reverse('scheduling-rotation')),
 
@@ -288,12 +297,14 @@ def list(request):
             outputters.append(ListOutputter(outfield, blank_object))
 
     context['result'] = [[y.render(x) for y in outputters] for x in objects]
+    context['totals'] = [y.total for y in outputters[1:]]
     context['outputfieldnames'] = outputters
     return HttpResponse(template.render(context))
 
 class ListOutputter:
     def __init__(self, field, blank_object, name=None):
         self.field = field
+        self.total = 0
         self.name = name or field.title()
         if '{' in field:
             self.render = self.render_as_template
@@ -331,6 +342,10 @@ class ListOutputter:
             return mark_safe(u'<a href="%s">%s</a>' %(
                              object.get_absolute_url(), object))
         else:
+            try:
+                self.total += object
+            except:
+                pass
             return unicode(object)
 
     def __unicode__(self):
