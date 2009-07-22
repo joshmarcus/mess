@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="left-column">
+    <ul id="local-nav">
+      <li><a class="active" href="{% url members %}">Members</a></li>
+      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
+    </ul>
+
+    <div id="primary-content-wrapper">
+      <h2>New {{ account.name }} Leave of Absence</h2>
+      <p>This new LOA will apply to all members on this account.
+        To place just one member on leave, do so from the member page (linked
+        from each name).</p>
+
+      <p>Members going on leave:</p>
+      <ul>
+        {% for mem in account.members.all %}
+        <li><a href="{% url member mem.user.username %}">{{ mem.user.get_full_name }}</a> ({{ mem.user.username }})</li>
+        {% endfor %}
+      </ul>
+      <p>LOA date range:</p>
+      <form method="POST">
+        <table>{{ form }}</table>
+        <div>
+          <input type="submit" value="On Leave" name="on leave">
+          <input type="submit" value="Cancel" name="cancel">
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+
+      
