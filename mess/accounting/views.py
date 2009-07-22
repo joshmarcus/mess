@@ -69,8 +69,8 @@ def close_out(request, type='all'):
                         }
                 #testing[transaction] = data
                 f = CloseOutForm(data)
-                f.is_valid()
-                f.save()
+                if f.is_valid():
+                    f.save()
         context['testing'] = testing
         return HttpResponseRedirect(reverse('close_out'))
     if not request.method == 'POST':
