@@ -1,83 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
-<div id="left-column" >
-  {% include "reporting/snippets/page_menu.html" %}
+<div id="double-column" >
   <div id="primary-content-wrapper" >
-    <table class="data" >
-	  <caption>{{ report_title }}</caption>
-      <tr>
-        <th colspan="2" >Credits</th>
-        <th colspan="2" >Debits</th>
-      </tr>
-      <tr class="{% cycle 'odd' 'even' %}" > 
-        <td>Extras</td>
-		<td>{{ total_extras }}</td>
-        <td>Credit Cards</td>
-		<td>{{ total_credit_card }}</td> 
-      </tr>
-      <tr>
-        <td>Purchases</td>
-		<td>{{ total_purchase }}</td>
-        <td>Debit Cards</td>
-		<td>{{ total_debit_card }}</td>  
-      </tr>
-      <tr>
-        <td>Bulk Orders</td>
-		<td>{{ total_bulk_purchase }}</td>
-        <td>Checks</td>
-		<td>{{ total_check}}</td>  
-      </tr>
-      <tr>
-        <td>Dues</td>
-		<td>{{ total_dues }}</td>
-        <td>Money Orders</td>
-		<td>{{ total_money_order}}</td>
-      </tr>
-      <tr>
-        <td>Misc Sales</td>
-		<td> {{ total_misc_sales }}</td>
-        <td>EBT</td>
-		<td>{{ total_ebt }}</td>
-      </tr>
-      <tr>
-        <td>Trades</td>
-		<td>{{ total_trade }}</td>
-        <td>Deposits</td>
-		<td>{{ total_deposit }}</td>
-      </tr>
-      <tr>
-        <td>Work Credit</td>
-		<td>{{ total_work_credit }}</td>
-        <td>Key Deposits</td>
-		<td>{{ total_key_deposit }}</td>
-      </tr>
-      <tr>
-        <td></td>
-		<td></td>
-        <td>Misc Debits</td>
-		<td>{{ total_misc_debit }}</td>
-	  </tr>
-      <tr>
-        <td class="last-row"><strong>Total Credits</strong></td>
-		<td class="last-row">{{ total_credits }}</td>            
-        <td class="last-row"><strong>Total Debits</strong></td>
-		<td class="last-row">{{ total_debits }}</td>
-      </tr>
-    </table>
+    <h2>Transaction Totals</h2>
+    <table class="data"><tr>
+      <th>Purchases</th>
+      <th>Payments</th>
+      <td></td>
+    </tr><tr><td>
+      <table>      
+        {% for x in purchases_by_type %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td>{{ x.type }}</td>
+            <td>{{ x.total }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </td><td>
+      <table>      
+        {% for x in payments_by_type %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td>{{ x.type }}</td>
+            <td>{{ x.total }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </td><td>
+      <form class="sorter noprint" method="GET" style="float:right;">
+        <table>{{ form }}</table>
+        <input type="submit" value="Filter">
+      </form>
+    </td></tr></table>
+    {% if list_each %}
+      <div id="transactions">
+        {% include "accounting/snippets/transactions.html" %}
+      </div>
+    {% endif %}
   </div>
-</div>
-<div id="right-column">
-  <h3>Filter</h3>
-  <ul>
-    <li><a href="{% url trans_summary %}">All</a></li>
-    <li><a href="{% url trans_summary_today %}">Today</a></li>
-    <li><a href="{% url trans_summary_yesterday %}">Yesterday</a></li>
-    <li><a href="{% url trans_summary_week %}">Week</a></li>
-    <li><a href="{% url trans_summary_month %}">Month</a></li>
-    <li><a href="{% url trans_summary_year %}">Year</a></li>
-    <li><a href="{% url trans_summary_custom %}">Custom</a></li>
-    <li class="last-item"><a href="{% url trans_list %}">List Transactions</a></li>
-  </ul>  
-  {% include "reporting/snippets/page_menu.html" %}
 </div>
 {% endblock %}

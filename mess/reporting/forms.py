@@ -1,3 +1,4 @@
+import datetime
 
 from django import forms
 
@@ -15,3 +16,7 @@ class ListFilterForm(forms.Form):
     order_by = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':2, 'wrap':'off'}))
     output = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':6, 'wrap':'off'}))
 
+class TransactionFilterForm(forms.Form):
+    start = forms.DateTimeField(initial=datetime.date.today())
+    end = forms.DateTimeField(initial=datetime.date.today()+datetime.timedelta(1))
+    list_each = forms.BooleanField(required=False)

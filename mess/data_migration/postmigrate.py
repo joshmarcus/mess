@@ -327,7 +327,8 @@ def am_compare_and_warn(excel_active_members, mess_account):
     if xam == mam:
         print 'verified %s active members' % xam
     elif mam > 0:
-        print 'WARNING: %s active members in Excel, %s in MESS' % (xam, mam)
+        print 'NOT EQUAL: %s has %s active members in Excel, %s in MESS' % (
+                mess_account.name, xam, mam)
 
 def create_unique_user(slug, count=0, countstr=''):
     username = slug + countstr

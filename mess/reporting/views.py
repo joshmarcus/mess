@@ -12,6 +12,7 @@ from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.db.models.aggregates import Sum
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -158,6 +159,8 @@ def reports(request):
 
             listrpt('Accounts','Active Balances and Deposits',
                 '','balance\r\ndeposit\r\nactive_member_count'),
+
+            ('Transaction Summary',reverse('trans_summary')),
         ]),
 
         ('Tasks',[
@@ -193,8 +196,6 @@ def reports(request):
         ]),
 
         ('Old Reports',[
-            ('Transaction Summary Today',reverse('trans_summary_today')),
-
             ('Member Contact Information', reverse('contact_list')),
 
             listrpt('Accounts','Accounts With Permanent Shifts',
@@ -433,6 +434,7 @@ def prepmemberwork(member, weekbreaks):
     member.section = section
     return member
 
+
 @user_passes_test(lambda u: u.is_staff)
 def transaction_list_report(request):
     # c is the context to be passed to the template
@@ -474,131 +476,43 @@ def transaction_list_report(request):
 
 
 @user_passes_test(lambda u: u.is_staff)
-def transaction_report(request, report='all'):
-    """View to summerize transactions by type."""
-    context = {}
-    context['page_name'] = 'Transaction Summaries'
-    if report == 'all':
-        report_title = 'Summary of All Transactions'
-        start_date = date(1900, 01, 01)        
-        end_date = date.today() + timedelta(days=1) 
-    elif report == 'today':
-        start_date = date.today()
-        end_date = start_date + timedelta(days=1)                
-        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transactions Summary for Today, %s' % formatted_date
-    elif report == 'yesterday':
-        start_date = date.today() - timedelta(days=1)        
-        end_date = date.today()
-        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transactions Summary for Yesterday, ' + formatted_date
-    elif report == 'week':
-        d = date.today()
-        start_date = d - timedelta(days=d.weekday())        
-        end_date = date.today() + timedelta(days=1)
-        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transaction Summary for the Week Beginning ' + formatted_date
-    elif report == 'month':
-        start_date = date(date.today().year, date.today().month , 01)        
-        end_date = date.today() + timedelta(days=1)
-        formatted_date = start_date.strftime('%B, %Y')        
-        report_title = 'Transactions Summary for the Month of ' + formatted_date
-    elif report == 'year':
-        start_date =  date(date.today().year, 01, 01)
-        end_date = date.today() + timedelta(days=1)
-        formatted_date = start_date.strftime('%Y')        
-        report_title = 'Transaction Summary for Year of ' + formatted_date
-    elif report == 'custom':
-        start_date = date.today() - timedelta(days=1)        
-        end_date = date.today()
-        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-        report_title = 'Transaction Summary from ' + formatted_date
-        report_title += 'to ' + end_date.strftime('%A, %B %d, %Y')
+def transaction_report(request):
+    """View to summarize transactions by type."""
+    if request.GET.has_key('start'):
+        form = forms.TransactionFilterForm(request.GET)
+    else:
+        form = forms.TransactionFilterForm()
+    if form.is_valid():
+#    if request.GET.has_key('start') and form.is_valid():
+        start = form.cleaned_data.get('start')
+        end = form.cleaned_data.get('end')
+        list_each = form.cleaned_data.get('list_each')
+    else:
+        start = datetime.date.today()
+        end = start + datetime.timedelta(1)
+        list_each = False
+    transactions = a_models.Transaction.objects.filter(
+                   timestamp__range=(start, end))
 
-    context['report_title'] = report_title
-    context['total_credits'] = 0
-    context['total_debits'] = 0
-    #d = date.today()
-    #context['date'] = d.strftime('%A, %B %d, %Y')
-    for type, name in a_models.PURCHASE_CHOICES:
-        name = name.lower().replace(' ','_')
-        total_name = 'total_' + name
-        transactions = Transaction.objects.filter(
-                timestamp__range=(start_date, end_date),
-                purchase_type=type)
-        context[name] = transactions
-        context[total_name] = get_trans_total(transactions, 'purchase')
-        context['total_credits'] += context[total_name]
-    for type, name in a_models.PAYMENT_CHOICES:
-        name = name.lower().replace(' ','_')
-        total_name = 'total_' + name
-        transactions = Transaction.objects.filter(
-                timestamp__range=(start_date, end_date),
-                payment_type=type)
-        context[name] = transactions
-        context[total_name] = get_trans_total(transactions, 'payment')
-        context['total_debits'] += context[total_name]
+    # add up the totals.  This should become a helper function to use elsewhere.
+    purchases_by_type = []
+    grand_total = 0
+    for (code, type) in a_models.PURCHASE_CHOICES:
+        total_by_type = transactions.filter(purchase_type=code).aggregate(
+                        Sum('purchase_amount')).values()[0]
+        purchases_by_type.append({'type':type, 'total':total_by_type})
+        grand_total += total_by_type or 0
+    purchases_by_type.append({'type':'Total Purchases', 'total':grand_total})
 
-    return render_to_response('reporting/transactions_summary.html', context,
+    payments_by_type = []
+    grand_total = 0
+    for (code, type) in a_models.PAYMENT_CHOICES:
+        total_by_type = transactions.filter(payment_type=code).aggregate(
+                        Sum('payment_amount')).values()[0]
+        payments_by_type.append({'type':type, 'total':total_by_type})
+        grand_total += total_by_type or 0
+    payments_by_type.append({'type':'Total Payments', 'total':grand_total})
+
+    return render_to_response('reporting/transactions_summary.html', locals(),
             context_instance=RequestContext(request))
 
-
-# helper functions below
-
-def get_trans_total(trans, type='all'):
-    total = 0
-    if type == 'all' or type == 'purchase':
-        for tran in trans:
-            total += tran.purchase_amount
-    if type == 'all' or type == 'payment':
-        for tran in trans:
-            total += tran.payment_amount
-    return total
-
-    #def transaction_list_report(request, report='all'):
-#    """View to list transactions."""
-#    context = {}
-#    context['page_name'] = 'Transactions'
-#    if report == 'all':
-#        report_title = 'All Transactions'
-#        start_date = date(1900, 01, 01)        
-#        end_date = date.today() + timedelta(days=1) 
-#    elif report == 'today':
-#        start_date = date.today()
-#        end_date = start_date + timedelta(days=1)                
-#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transactions Summary for Today, ' + formatted_date
-#    elif report == 'yesterday':
-#        start_date = date.today() - timedelta(days=1)        
-#        end_date = date.today()
-#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transactions Summary for Yesterday, ' + formatted_date
-#    elif report == 'week':
-#        d = date.today()
-#        start_date = d - timedelta(days=d.weekday())        
-#        end_date = date.today()
-#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transaction Summary for the Week Beginning ' + formatted_date
-#    elif report == 'month':
-#        start_date = date(date.today().year, date.today().month , 01)        
-#        end_date = date.today()
-#        formatted_date = start_date.strftime('%B, %Y')        
-#        report_title = 'Transactions Summary for the Month of ' + formatted_date
-#    elif report == 'year':
-#        start_date = date(date.today().year, 01, 01)  
-#        end_date = date.today() + timedelta(days=1)
-#        formatted_date = start_date.strftime('%Y')        
-#        report_title = 'Transaction Summary for Year of ' + formatted_date
-#    elif report == 'custom':
-#        start_date = date.today() - timedelta(days=1)        
-#        end_date = date.today()
-#        formatted_date = start_date.strftime('%A, %B %d, %Y')        
-#        report_title = 'Transaction Summary from ' + formatted_date
-#        report_title += 'to ' + end_date.strftime('%A, %B %d, %Y')
-#
-#    context['report_title'] = report_title
-#    context['transactions'] = Transaction.objects.filter(date__range =
-#                                                    (start_date, end_date),)
-#    
-#    return render_to_response('reporting/transactions_list.html', context,
-#                                context_instance=RequestContext(request))
