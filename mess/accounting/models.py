@@ -57,6 +57,7 @@ class Transaction(models.Model):
         self.account.save()
         super(Transaction, self).save(force_insert, force_update)
 
+
 class Reconciliation(models.Model):
     # reconciled_by provides a record of who did the reconciling, and could 
     # relate to Member or User, and overlaps with 

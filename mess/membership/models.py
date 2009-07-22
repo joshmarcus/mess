@@ -8,7 +8,6 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-# XXX: should these MEMBER_STATUSes go on Account instead?
 MEMBER_STATUS = (
     ('a', 'Active'),
     ('L', 'Leave of Absence'),
@@ -21,6 +20,14 @@ WORK_STATUS = (
     ('w', 'Workshift'),  # Member is active and should have a workshift
     ('c', 'Committee'), # Anything not tracked shift by shift
     ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
+)
+EXEMPTION_TYPES = (
+    ('k', 'Kids'),
+    ('s', 'Seniors'),
+    ('c', 'Caretaker'),
+    ('p', 'Single Parent'),
+    ('h', 'Health'),
+    ('S', 'Special'),
 )
 ADDRESS_TYPES = (
     ('h','Home'),
@@ -201,13 +208,22 @@ def cashier_permission(request):
         return {'can_cashier_now':True}
     return {}     # no permission, bool({}) = False
 
+
 class LeaveOfAbsence(models.Model):
     """ Leave of absence periods for members. """
     member = models.ForeignKey(Member)
     start = models.DateField()
     end = models.DateField()
 
- 
+
+class WorkExemption(models.Model):
+    """ Work exemptions for members. """
+    type = models.CharField(max_length=1, choices=EXEMPTION_TYPES, default='k')
+    member = models.ForeignKey(Member)
+    start = models.DateField()
+    end = models.DateField()
+
+
 class AccountManager(models.Manager):
     'Custom manager to add extra methods'
     def active(self):
