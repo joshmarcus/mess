@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Cashier Account Info</h2>
+    <table class="data">
+      <tr>
+        <th>Account</th>
+        <th>Balance</th>
+        <th>Hours<br> Balance</th>
+        <th>EBT Only</th>
+        <th>Obligations</th>
+        <th>Must Work</th>
+        <th>Must Pay</th>
+        <th>Can Not Shop</th>
+        <th>Account Closed</th>
+      </tr>
+      {% for account in accounts %}
+        <tr class="profile">
+          <td><a href="{{ account.get_absolute_url }}">{{ account }}</a></td>
+          <td>{{ account.balance }}</td>
+          <td>{{ account.hours_balance }}</td>
+          <td>{% if account.ebt_only %}<h4>EBT Only</h4>{% endif %}</td>
+          <td>{% if account.obligations %}<h4>{{ account.obligations }}</h4>{% endif %}</td>
+          <td>{% if account.must_work %}<h4 class="warning">MUST WORK</h4>{% endif %}</td>
+          <td>{% if account.must_pay %}<h4 class="warning">MUST PAY {{ account.must_pay }}</h4>{% endif %}</td>
+          <td>{% if not account.can_shop %}<h4 class="warning">CAN NOT SHOP</h4>{% endif %}</td>
+          <td>{% if not account.active_member_count %}<h4 class="warning">ACCOUNT CLOSED</h4>{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

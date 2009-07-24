@@ -25,3 +25,15 @@ class TransactionForm(forms.ModelForm):
 class CloseOutForm(forms.ModelForm):
     class Meta:
         model = models.Reconciliation
+
+class CloseOutFixForm(forms.Form):
+    transaction = forms.ModelChoiceField(models.Transaction.objects.all(),
+        widget=forms.HiddenInput)
+    fix_payment = forms.DecimalField(widget=forms.HiddenInput)
+
+class BillingForm(forms.Form):
+    bill_type = forms.ChoiceField(
+                choices=(('Deposit','Deposit'),('Dues','Dues')))
+    amount_per_member = forms.DecimalField(initial=20)
+    max_deposit_per_member = forms.DecimalField(initial=100)
+

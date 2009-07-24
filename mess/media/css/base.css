@@ -677,6 +677,9 @@ div #task-form form p input, div #task-form form p label{
     display: block;
 }
 
+tr.profile h4 {background:#d18405; color:#fff; font-size:1em;}
+tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
+
 .task-scheduled {background: #ffa; }  /* yellow */
 .task-worked {background: #beb; }   /* green */
 .task-makeup {background: #bbe;}    /* blue */
@@ -705,6 +708,8 @@ th.rotation-ideal { font-size:12pt; line-height:12pt; padding-bottom:20pt; }
 form#transaction { width:50%; }
 div#acctinfo { float:right; margin:5pt; padding:5pt; width:40%; }
 div#acctinfo h4.warning { background:red; }
+
+#primary-content-wrapper table.data table.closeout td {padding-bottom:0.2em;}
 
 /* the problem is that table.data td table td { should've never been set */
 #double-column #primary-content-wrapper table.cycletasks td { margin:0px; padding:0px; border:0px; }

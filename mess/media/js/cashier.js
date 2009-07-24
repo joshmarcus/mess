@@ -38,6 +38,17 @@ function getAccountInfo(account_id) {
 
 }
 
+// fills in the form fields so you can reverse a previous transaction
+function reverseit(transid, accountid, accountname, purchase_type, purchase_amount, payment_type, payment_amount) {
+    document.getElementById('id_hidden_account').value = accountid;
+    document.getElementById('id_account').value = accountname;
+    document.getElementById('id_purchase_type').value = purchase_type;
+    document.getElementById('id_purchase_amount').value = -purchase_amount;
+    document.getElementById('id_payment_type').value = payment_type;
+    document.getElementById('id_payment_amount').value = -payment_amount;
+    document.getElementById('id_note').value = '@'+transid+' reversed because';
+}
+
 window.onload = function() {
   document.getElementById('id_account').focus();
 }

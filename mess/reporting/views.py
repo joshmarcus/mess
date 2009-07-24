@@ -106,9 +106,9 @@ def reports(request):
             listrpt('Accounts','With At Least $50 Deposit',
                 'deposit__gte=50.00', 'deposit'),
 
-            listrpt('Accounts','Frozen',
-                'can_shop=False', 
-                'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'),
+#           listrpt('Accounts','Frozen',
+#               'can_shop=False', 
+#               'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'),
 
             listrpt('Accounts','Owing 1 Hour or More',
                 'hours_balance__gte=1.00', 'hours_balance\r\nnote'),
@@ -161,6 +161,10 @@ def reports(request):
                 '','balance\r\ndeposit\r\nactive_member_count'),
 
             ('Transaction Summary',reverse('trans_summary')),
+
+            ('Dues and Deposits Billing',reverse('billing')),
+
+            ('Cashier Account Info',reverse('cashier_acctinfo')),
         ]),
 
         ('Tasks',[
@@ -473,6 +477,13 @@ def transaction_list_report(request):
 
     c['transactions'] = trans
     return render_to_response('reporting/transactions_list.html', c)
+
+
+def cashier_acctinfo(request):
+    '''Report showing cashier info and alerts for each account.'''
+    accounts = m_models.Account.objects.active()
+    return render_to_response('reporting/cashier_acctinfo.html', locals(),
+            context_instance=RequestContext(request))
 
 
 @user_passes_test(lambda u: u.is_staff)

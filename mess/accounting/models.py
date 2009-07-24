@@ -13,9 +13,8 @@ PURCHASE_CHOICES = (
     ('A','After-Hours Purchase'),
     ('U','Dues'),
     ('O','Deposit'),
-#   ('S','Misc Sales'),   what is Misc Sales?
+    ('S','Misc Sales'),   # what is Misc Sales?  it's on the cash sheets...
 #   ('T','Trade'),    what is Trade?
-    ('X','Correction'),
 )
 
 PAYMENT_CHOICES = (
@@ -25,7 +24,6 @@ PAYMENT_CHOICES = (
     ('M','Money Order'),
     ('E','EBT'),
     ('W','Work Credit'),
-    ('X','Correction'),
 )
 
 class Transaction(models.Model):
@@ -51,12 +49,75 @@ class Transaction(models.Model):
                           self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
     def save(self, force_insert=False, force_update=False):
+        # purchase_amount and purchase_type must appear together
+        if bool(self.purchase_amount) is not bool(self.purchase_type):
+            self.purchase_amount = 0
+            self.purchase_type = ''
+        if bool(self.payment_amount) is not bool(self.payment_type):
+            self.payment_amount = 0
+            self.payment_type = ''
         balance = self.account.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance
         self.account.save()
         super(Transaction, self).save(force_insert, force_update)
 
+    def fixes_target(self):
+        '''
+        If this transaction is a correction, returns the target of the fix.
+        Determined based on note starting with "@id "
+        '''
+        try:
+            if self.note[0] == '@':
+                target_id = self.note.split()[0][1:]
+                target = Transaction.objects.get(id=target_id)
+                if target.note and target.note[0] == '@':
+                    return None  # disregard recursive fixers
+                return target
+        except:
+            return None
+
+    def fixers(self):
+        if self.note and self.note[0] == '@':
+            return None  # disregard recursive fixers
+        return Transaction.objects.filter(note__startswith='@%s ' % self.id)
+        
+    def fixed_payment_amount(self):
+        payment = self.payment_amount
+        for fixer in self.fixers():
+            payment += fixer.payment_amount
+        return payment
+
+    def fixed_purchase_amount(self):
+        purchase = self.purchase_amount
+        for fixer in self.fixers():
+            purchase += fixer.purchase_amount
+        return purchase
+
+    def reverse(self, entered_by, reason=''):
+        rev = Transaction(account=self.account,
+                          member=self.member,
+                          payment_type=self.payment_type,
+                          payment_amount= -self.fixed_payment_amount(),
+                          purchase_type=self.purchase_type,
+                          purchase_amount= -self.fixed_purchase_amount(),
+                          note='@%s reversed: %s' % (self.id, reason),
+                          entered_by=entered_by)        
+        rev.save()
+
+    def fix_payment(self, entered_by, fix_payment):
+        keep_purchase_amount = self.fixed_purchase_amount()
+        self.reverse(entered_by=entered_by, reason='to fix payment')
+        fix = Transaction(account=self.account,
+                          member=self.member,
+                          payment_type=self.payment_type,
+                          payment_amount=fix_payment,
+                          purchase_type=self.purchase_type,
+                          purchase_amount=keep_purchase_amount,
+                          note='@%s fixed payment' % self.id,
+                          entered_by=entered_by)
+        fix.save()
+        
 
 class Reconciliation(models.Model):
     # reconciled_by provides a record of who did the reconciling, and could 

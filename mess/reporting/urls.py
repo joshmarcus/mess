@@ -6,6 +6,7 @@ urlpatterns = patterns('mess.reporting.views',
     url(r'^anomalies/$', 'anomalies', name='anomalies'),
     url(r'^memberwork/$', 'memberwork', name='memberwork'),
     url(r'^trans_summary/$', 'transaction_report', name='trans_summary'),
+    url(r'^cashier_acctinfo/$', 'cashier_acctinfo', name='cashier_acctinfo'),
 
     # everything below here is partly unused or deprecated
     url(r'^contact/$', 'contact', name='contact_list'),

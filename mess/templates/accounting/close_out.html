@@ -1,57 +1,45 @@
 {% extends "base.html" %}
+{% block head %}
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/closeout.js"></script>
+{% endblock head %}
 
 {% block content %}
-  <div id="left-column" >
+  <div id="double-column" >
     {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <h2>Cashier</h2>
-      <h3>Close Out for {{ date }}</h3>
-      <h4>Transactions are being reconciled by {{ user.get_full_name }}.</h4>
-      <form class="standard" id='form' name='form' method='post'>
-        <input type="hidden" id="id_reconciled_by" name="id_reconciled_by" value={{ user.id }} >
-        <table class="form-table" >
-          <tr>
-            <th>ID</th>
-            <th>Time</th>
-            <th>Account</th>
-            <th>Member</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>Reconcile</th>
-          </tr>
-        {% for key, data  in tran_list.items %}
-          <tr class="{% cycle 'odd' 'even' %}">
-            <td>
-              <input type="hidden" id="{{ key }}_transaction" name="{{ key }}_transaction" value="{{ key }}">
-              {{ data.transaction.id }}
-            </td>
-            <td class="nowrap">{{ data.transaction.timestamp|date:"g:i:s A" }}</td>
-            <td>{{ data.transaction.account }}</td>
-            <td>{{ data.transaction.member.user.get_full_name }}</td>
-            <td>{{ data.type }}</td>
-            <td>{{ data.amount }}</td>
-            <td>
-          {% for r in data.transaction.reconciliation_set.all %}
-              {{ r.reconciled_by.get_full_name }}
-              <input type="checkbox" id="{{ key }}_reconciled" name={{ key }}_reconciled value="True"
-              {% if r.reconciled %}checked{% endif%}>
-              <br />
-          {% endfor %}
-              Reconcile Now
-              <input type="checkbox" id={{ key }}_reconcile name={{ key }}_reconcile value={{ data.reconciled }}>
-            </td>
-          </tr>
-        {% endfor %}
-        </table>
-        <input type='reset' value='Reset' >
-        <input type='submit' value='Done' >
+      <h2>Close Out for {{ date|date:"l, F j, Y" }}</h2>
+
+      <!-- hidden form used by js -->
+      <form id="closeoutfixform" method="POST">
+        {{ closeoutfixform }}
       </form>
+
+      <table class="data">
+        <tr>
+          {% for column in columns %}
+            <th>{{ column.type }}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for column in columns %}
+            <td>
+              <p>Total: {{ column.total|floatformat:"2" }}</p>
+              <table class="closeout">
+                {% for trans in column.transactions %}
+                  {% if not trans.fixes_target %}
+                  <tr>
+                    <td>{{ trans.timestamp|time:"g:i" }}</td>
+                    <td><a href="{{ trans.account.get_absolute.url }}">{{ trans.account }}</a></td>
+                    <td>{{ trans.fixed_payment_amount|floatformat:"2" }}{% if trans.note %}<span title="{{ trans.note }}">*</span>{% endif %}</td>
+                    <td><input type="button" value="fix{% if trans.fixers %}ed{% endif %}" onclick="fixit({{ trans.id }}, '{{ trans.fixed_payment_amount|floatformat:"2" }}', '{{ trans.account }}');"></td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            </td>
+          {% endfor %}
+        </tr>
+      </table>
     </div>
-  </div>
-  <div id="right-column">
-    <h3>Transaction Types</h3>
-    <ul>
-      <li><a href={% url close_out %} >All Transactions</a></li>
-    </ul>
   </div>
 {% endblock %}
