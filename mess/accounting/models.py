@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.db import models
+from django.db.transaction import commit_on_success
 from django.core import exceptions
 from django.contrib.auth.models import User
 
@@ -132,4 +133,16 @@ class Reconciliation(models.Model):
 
     def __unicode__(self):
         return str(self.date)
+
+@commit_on_success
+def commit_potential_bills(accounts, bill_type, entered_by):
+    for account in accounts:
+        bill = Transaction(account=account,
+                           purchase_type=bill_type,
+                           purchase_amount=account.potential_bill,
+                           entered_by=entered_by)
+        bill.save()
+        if bill_type == 'O': #deposit
+            account.deposit += account.potential_bill
+            account.save()
 

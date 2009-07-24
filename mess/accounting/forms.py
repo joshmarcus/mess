@@ -33,7 +33,6 @@ class CloseOutFixForm(forms.Form):
 
 class BillingForm(forms.Form):
     bill_type = forms.ChoiceField(
-                choices=(('Deposit','Deposit'),('Dues','Dues')))
+                choices=(('O','Deposit'),('U','Dues')))
     amount_per_member = forms.DecimalField(initial=20)
     max_deposit_per_member = forms.DecimalField(initial=100)
-

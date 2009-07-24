@@ -252,9 +252,17 @@ class Account(models.Model):
 
     @property
     def active_member_count(self):
-        return len(self.accountmember_set.filter(shopper=False).filter(
+        return self.accountmember_set.filter(shopper=False).filter(
             member__date_missing__isnull=True, 
-            member__date_departed__isnull=True))
+            member__date_departed__isnull=True).count()
+
+    def billable_member_count(self):
+        ''' active members MINUS anyone on leave of absence '''
+        return self.accountmember_set.filter(shopper=False).filter(
+            member__date_missing__isnull=True,
+            member__date_departed__isnull=True).exclude(
+            member__leaveofabsence__start__lte=datetime.datetime.now(),
+            member__leaveofabsence__end__gte=datetime.datetime.now()).count()
 
     def autocomplete_label(self):
         if self.active_member_count:

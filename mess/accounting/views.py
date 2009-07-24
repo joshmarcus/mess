@@ -101,24 +101,28 @@ def billing(request):
     if request.method=='POST':
         form = forms.BillingForm(request.POST)
         assert form.is_valid(), repr(form.errors)
-        if request.POST['action'] == 'Commit':
-            return HttpResponse('Thank you.  Billing does not work yet.')
-        total_active_members = 0
+        total_billable_members = 0
         total_deposits = 0
         total_potential_bills = 0
         accounts = m_models.Account.objects.active()
         for account in accounts:
-            total_active_members += account.active_member_count
+            billable_members = account.billable_member_count()
+            total_billable_members += billable_members
             total_deposits += account.deposit
-            potential_bill = (form.cleaned_data['amount_per_member'] *
-                                      account.active_member_count)
-            if form.cleaned_data['bill_type'] == 'Deposit':
+            potential_bill = (form.cleaned_data['amount_per_member'] * 
+                                      billable_members)
+            if form.cleaned_data['bill_type'] == 'O':   # O = Deposit
                 max_deposit = (form.cleaned_data['max_deposit_per_member'] *
-                                      account.active_member_count)
+                                      billable_members)
                 if account.deposit + potential_bill > max_deposit:
                     potential_bill = max(max_deposit - account.deposit, 0)
             account.potential_bill = potential_bill
             total_potential_bills += potential_bill
+        if request.POST['action'] == 'Commit':
+            models.commit_potential_bills(accounts, 
+                                      bill_type=form.cleaned_data['bill_type'],
+                                      entered_by=request.user)
+            return HttpResponse('Billing was completed.  Thank you.')
     else:
         form = forms.BillingForm()
     return render_to_response('accounting/billing.html', locals(),
