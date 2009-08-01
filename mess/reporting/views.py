@@ -153,6 +153,8 @@ def reports(request):
         ]),
 
         ('Accounting',[
+            ('Cash Sheets',reverse('cashsheet')),
+
             listrpt('Accounts','All Balances and Deposits',
                 '','balance\r\ndeposit\r\nactive_member_count',
                 include_inactive='on'),
@@ -163,8 +165,6 @@ def reports(request):
             ('Transaction Summary',reverse('trans_summary')),
 
             ('Dues and Deposits Billing',reverse('billing')),
-
-            ('Cashier Account Info',reverse('cashier_acctinfo')),
         ]),
 
         ('Tasks',[
@@ -477,13 +477,6 @@ def transaction_list_report(request):
 
     c['transactions'] = trans
     return render_to_response('reporting/transactions_list.html', c)
-
-
-def cashier_acctinfo(request):
-    '''Report showing cashier info and alerts for each account.'''
-    accounts = m_models.Account.objects.active()
-    return render_to_response('reporting/cashier_acctinfo.html', locals(),
-            context_instance=RequestContext(request))
 
 
 @user_passes_test(lambda u: u.is_staff)

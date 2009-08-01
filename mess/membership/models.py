@@ -159,7 +159,6 @@ class Member(models.Model):
 
             task.save()
 
-
     def get_primary_account(self):
         try:
             primary = self.accounts.filter(
@@ -289,9 +288,9 @@ class Account(models.Model):
         oldmembers = self.accountmember_set.filter(shopper=False,
                         member__date_joined__lt=sixmonthsago)
         if oldmembers:
-            return self.active_member_count * 25
+            return self.active_member_count * Decimal('25.00')
         else:
-            return self.active_member_count * 5
+            return self.active_member_count * Decimal('5.00')
 
     def must_pay(self):
         if self.balance > self.max_allowed_to_owe():
@@ -302,20 +301,53 @@ class Account(models.Model):
             return self.hours_balance
 
     def obligations(self):
-        obligations = self.active_member_count
+        obligations = self.billable_member_count()
         if not obligations:
+            if self.active_member_count:
+                return 'On Leave'
             return
-        for am in self.accountmember_set.all():
-            if am.member.is_on_loa and not am.shopper:
-                obligations -= 1
-        if not obligations:
-            return 'On Leave Of Absence'
         for am in self.accountmember_set.all():
             if (am.member.regular_shift()
                     or (am.member.work_status in 'ec' and not am.shopper)):
                 obligations -= 1
         if obligations:
             return 'Needs Shift'
+
+    def frozen_flags(self):
+        flags = []
+        # must pay?
+        if self.balance > 0:
+            sixmonthsago = datetime.date.today() - datetime.timedelta(6*30)
+            oldmembers = self.members.filter(date_joined__lt=sixmonthsago)
+            if oldmembers.count():
+                max_balance = self.active_member_count * Decimal('25.00')
+            else:
+                max_balance = self.active_member_count * Decimal('5.00')
+            if self.balance > max_balance:
+                flags.append('MUST PAY %s' % (self.balance - max_balance))
+        # must work?
+        if self.hours_balance > Decimal('0.03'):
+            flags.append('MUST WORK')
+        if not self.can_shop:
+            flags.append('CANNOT SHOP')
+        if not self.active_member_count:
+            flags.append('ACCOUNT CLOSED')
+        return flags
+
+    def notice_flags(self):
+        flags = []
+        obligations = self.billable_member_count()
+        if not obligations and self.active_member_count:
+            flags.append('On Leave')
+        satisfactions = self.accountmember_set.filter(
+            Q(member__work_status__in='ec', shopper=False) |
+            Q(member__task__time__gte=datetime.date.today(), 
+              member__task__recur_rule__isnull=False)).count()
+        if obligations > satisfactions:
+            flags.append('Needs Shift')
+        if self.ebt_only:
+            flags.append('EBT Only')
+        return flags
 
     def __unicode__(self):
         return self.name

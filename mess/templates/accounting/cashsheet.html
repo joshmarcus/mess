@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load messmoney %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Cash Sheet as of {% now "l, F jS, Y, g:ia" %}</h2>
+    <table class="data pagebreakafter cashsheet">
+      <thead>
+        <tr>
+          <th>Account</th>
+          {% comment %}<th class="tiny">Active<br>Members</th>{% endcomment %}
+          <th class="tiny">Hours<br>Balance</th>
+          <th>Old<br>Balance</th>
+          <th>Misc.</th>
+          <th>Dues &amp;<br>Deposits</th>
+          <th>Bulk<br>Orders</th>
+          <th>After-<br>Hours</th>
+          <th>Regular<br>Sales</th>
+          <th>Credit/<br>Debit<br>Card</th>
+          <th>Check/<br>Money<br>Order</th>
+          <th>New<br>Balance</th>
+        </tr>
+      </thead>
+      {% for account in accounts %}
+        {% if forloop.counter|divisibleby:"25" %}  <!-- 25 rows per page -->
+          </table>
+          <table class="data pagebreakafter cashsheet">
+            <thead>
+              <tr>
+                <th>Account</th>
+                {% comment %}<th class="tiny">Active<br>Members</th>{% endcomment %}
+                <th class="tiny">Hours<br>Balance</th>
+                <th>Old<br>Balance</th>
+                <th>Misc.</th>
+                <th>Dues &amp;<br>Deposits</th>
+                <th>Bulk<br>Orders</th>
+                <th>After-<br>Hours</th>
+                <th>Regular<br>Sales</th>
+                <th>Credit/<br>Debit<br>Card</th>
+                <th>Check/<br>Money<br>Order</th>
+                <th>New<br>Balance</th>
+              </tr>
+            </thead>
+        {% endif %}
+        <tr>
+          <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a>
+            {% if account.notice_flags %}
+              <div class="notice">
+                {{ account.notice_flags|join:" ... " }}
+              </div>
+            {% endif %}
+          </td>
+          {% comment %} <td class="tiny">{{ account.active_member_count }}</td> {% endcomment %}
+          <td class="tiny">{{ account.hours_balance|messmoney }}</td>
+          <td class="oldbalance">{{ account.balance|messmoney }}</td>
+          {% if account.frozen_flags %}
+            <td colspan="5" class="frozen">
+              {{ account.frozen_flags|join:" ... " }}
+            </td>
+          {% else %}
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          {% endif %}
+          <td></td>
+          <td></td>
+          <td class="newbalance"></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

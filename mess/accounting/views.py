@@ -94,6 +94,12 @@ def close_out(request, date=None):
     return render_to_response('accounting/close_out.html', locals(),
             context_instance=RequestContext(request))
 
+@user_passes_test(lambda u: u.is_staff)
+def cashsheet(request):
+    ''' printable cash sheet for all active accounts '''
+    accounts = m_models.Account.objects.active()
+    return render_to_response('accounting/cashsheet.html', locals(),
+            context_instance=RequestContext(request))
 
 @user_passes_test(lambda u: u.is_staff)
 def billing(request):
