@@ -54,6 +54,38 @@ def transaction(request):
 
 # cashier permission is the first if
 @user_passes_test(lambda u: u.is_authenticated())
+def cashsheet_input(request):
+    if not m_models.cashier_permission(request):
+        return HttpResponse('Sorry, you do not have cashier permission. %s' 
+                             % request.META['REMOTE_ADDR'])
+    
+    if 'getcashierinfo' in request.GET:
+        account_id = request.GET['account']
+        account = m_models.Account.objects.get(id=account_id)
+        if request.GET['getcashierinfo'] == 'balance':
+            return HttpResponse(account.balance)
+        elif request.GET['getcashierinfo'] == 'hours_balance':
+            return HttpResponse(account.hours_balance)
+        else: # request.GET['getcashierinfo'] == 'acct_flags':
+            template_file = 'accounting/snippets/acct_flags.html'
+            return render_to_response(template_file, locals())
+
+    if request.method == 'POST':
+        form = forms.CashsheetForm(request.POST)
+        if form.is_valid():
+            form.save(entered_by=request.user)
+            return HttpResponseRedirect(reverse('cashsheet_input'))
+    else:
+        form = forms.CashsheetForm()
+    today = datetime.date.today()
+    transactions = models.Transaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)))
+    can_reverse = True
+    return render_to_response('accounting/cashsheet_input.html', locals(),
+            context_instance=RequestContext(request))
+
+# cashier permission is the first if
+@user_passes_test(lambda u: u.is_authenticated())
 def close_out(request, date=None):
     '''Page to double-check payment amounts'''
     if not m_models.cashier_permission(request):

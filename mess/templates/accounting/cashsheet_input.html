@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load messmoney %}
+
+{% block head %}
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/cashsheet_input.js"></script>
+{% endblock head %}
+
+{% block content %}
+  <div id="double-column" >
+   {% include "accounting/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+
+<form method="POST">
+      <table class="data cashsheet">
+        <tr>
+          <th>Account</th>
+          <th>Hours<br>Balance</th>
+          <th>Old<br>Balance</th>
+          <th>Misc.<br>Sales</th>
+          <th>Dues &amp;<br>Deposits</th>
+          <th>Bulk<br>Orders</th>
+          <th>After-<br>Hours</th>
+          <th>Regular<br>Sales</th>
+          <th>Credit/<br>Debit<br>Card</th>
+          <th>Check/<br>Money<br>Order</th>
+          <th>New Balance</th>
+          <th><!-- submit --></th>
+        </tr>
+        <tr>
+          <td>{{ form.account }}
+            <div id="flags">
+              {% include "accounting/snippets/acct_flags.html" %}
+            </div>
+          </td>
+          <td>
+            <span id="hours_balance">
+              {{ account.hours_balance|messmoney }}
+            </span>
+          </td>
+          <td>
+            <span id="balance_disp">{{ account.balance|messmoney }}</span>
+            <!-- hidden field used for javascript only -->
+            <input type="hidden" id="balance_val" value="{{ account.balance }}">
+          </td>
+          <td>{{ form.misc_sales }}</td>
+          <td>{{ form.dues_deposits }}</td>
+          <td>{{ form.bulk_orders }}</td>
+          <td>{{ form.after_hours }}</td>
+          <td>{{ form.regular_sales }}</td>
+          <td>({{ form.credit_debit }})</td>
+          <td>({{ form.check_mo }})</td>
+          <td><span id="newbalance"></span></td>
+          <td><input type="submit" value="Submit"></td>
+        </tr>
+      </table>
+      {{ form.errors }}
+</form>
+
+      <div id="transactions">
+        <h2>Today's Transactions</h2>
+        {% include "accounting/snippets/transactions.html" %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

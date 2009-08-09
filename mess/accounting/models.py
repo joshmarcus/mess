@@ -98,10 +98,10 @@ class Transaction(models.Model):
     def reverse(self, entered_by, reason=''):
         rev = Transaction(account=self.account,
                           member=self.member,
-                          payment_type=self.payment_type,
-                          payment_amount= -self.fixed_payment_amount(),
                           purchase_type=self.purchase_type,
                           purchase_amount= -self.fixed_purchase_amount(),
+                          payment_type=self.payment_type,
+                          payment_amount= -self.fixed_payment_amount(),
                           note='@%s reversed: %s' % (self.id, reason),
                           entered_by=entered_by)        
         rev.save()
@@ -111,10 +111,10 @@ class Transaction(models.Model):
         self.reverse(entered_by=entered_by, reason='to fix payment')
         fix = Transaction(account=self.account,
                           member=self.member,
-                          payment_type=self.payment_type,
-                          payment_amount=fix_payment,
                           purchase_type=self.purchase_type,
                           purchase_amount=keep_purchase_amount,
+                          payment_type=self.payment_type,
+                          payment_amount=fix_payment,
                           note='@%s fixed payment' % self.id,
                           entered_by=entered_by)
         fix.save()

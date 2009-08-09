@@ -22,6 +22,61 @@ class TransactionForm(forms.ModelForm):
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=SelectAfterAjax(), required=False)
 
+class CashsheetForm(forms.Form):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account_spiffy',
+            view_name='membership-autocomplete', canroundtrip=True))
+    misc_sales = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+    dues_deposits = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+    bulk_orders = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+    after_hours = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+    regular_sales = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+    credit_debit = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+    check_mo = forms.DecimalField(required=False,
+        widget=forms.TextInput(attrs={'size':'4'}))
+
+    def save(self, entered_by=None):
+        purchases = [(purchase_type, self.cleaned_data[fieldname])
+            for purchase_type, fieldname in (
+                ('S', 'misc_sales'),
+                ('U', 'dues_deposits'),
+                ('B', 'bulk_orders'),
+                ('A', 'after_hours'),
+                ('P', 'regular_sales'))
+            if self.cleaned_data[fieldname]]
+        payments = [(payment_type, self.cleaned_data[fieldname])
+            for payment_type, fieldname in (
+                ('C', 'credit_debit'),
+                ('K', 'check_mo'))
+            if self.cleaned_data[fieldname]]
+        if len(purchases) == len(payments) == 1:
+            trans = models.Transaction(account=self.cleaned_data['account'],
+                                       payment_type=payments[0][0],
+                                       payment_amount=payments[0][1],
+                                       purchase_type=purchases[0][0],
+                                       purchase_amount=purchases[0][1],
+                                       entered_by=entered_by)
+            trans.save()
+        else:
+            for purchase in purchases:
+                trans = models.Transaction(account=self.cleaned_data['account'],
+                                       purchase_type=purchase[0],
+                                       purchase_amount=purchase[1],
+                                       entered_by=entered_by)
+                trans.save()
+            for payment in payments:
+                trans = models.Transaction(account=self.cleaned_data['account'],
+                                       payment_type=payment[0],
+                                       payment_amount=payment[1],
+                                       entered_by=entered_by)
+                trans.save()
+
 class CloseOutForm(forms.ModelForm):
     class Meta:
         model = models.Reconciliation

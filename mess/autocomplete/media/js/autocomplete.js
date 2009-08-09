@@ -27,7 +27,9 @@ function yui_autocomplete(name, ac_url, force_selection) {
 
         var autocomplete = new YAHOO.widget.AutoComplete(input, container, datasource);
         autocomplete.resultTypeList = false;
-        autocomplete.queryDelay = .5;
+        // I'm reducing queryDelay.  I hope this doesn't break things. -Paul
+        // autocomplete.queryDelay = .5;
+        autocomplete.queryDelay = .2;
         // Don't clear pre-filled value onblur.
         //autocomplete.forceSelection = force_selection;
         autocomplete.forceSelection = false;

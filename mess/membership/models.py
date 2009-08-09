@@ -324,7 +324,7 @@ class Account(models.Model):
             else:
                 max_balance = self.active_member_count * Decimal('5.00')
             if self.balance > max_balance:
-                flags.append('MUST PAY %s' % (self.balance - max_balance))
+                flags.append('MUST PAY') # %s' % (self.balance - max_balance))
         # must work?
         if self.hours_balance > Decimal('0.03'):
             flags.append('MUST WORK')

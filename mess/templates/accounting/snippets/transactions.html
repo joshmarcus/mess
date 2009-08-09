@@ -1,3 +1,5 @@
+{% load messmoney %}
+
 <table class="data" >
   <tr>
     <th>ID</th>
@@ -21,10 +23,10 @@
     <td>{% if transaction.member %}<a href="{{ transaction.member.get_absolute_url }}">{{ transaction.member }}</a>{% endif %}</td>
     <td>{{ transaction.note }}</td>
     <td>{{ transaction.get_purchase_type_display }}</td>
-    <td>{% if transaction.purchase_amount %}{{ transaction.purchase_amount|floatformat:2 }}{% endif %}</td>
+    <td>{% if transaction.purchase_amount %}{{ transaction.purchase_amount|messmoney }}{% endif %}</td>
     <td>{{ transaction.get_payment_type_display }}</td>
-    <td>{% if transaction.payment_amount %}{{ transaction.payment_amount|floatformat:2 }}{% endif %}</td>
-    <td>{{ transaction.account_balance|floatformat:2 }}</td>
+    <td>{% if transaction.payment_amount %}{{ transaction.payment_amount|messmoney:"payment" }}{% endif %}</td>
+    <td>{{ transaction.account_balance|messmoney }}</td>
     <td>{{ transaction.entered_by.username }}{% if can_reverse %}<input type="button" value="X" onclick="reverseit({{ transaction.id }}, {{ transaction.account.id }}, '{{ transaction.account }}', '{{ transaction.purchase_type }}', {{ transaction.purchase_amount }}, '{{ transaction.payment_type }}', {{ transaction.payment_amount }});">{% endif %}</td>
   </tr>
     {% endfor %}
