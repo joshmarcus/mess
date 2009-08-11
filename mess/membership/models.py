@@ -212,7 +212,8 @@ class LeaveOfAbsence(models.Model):
     """ Leave of absence periods for members. """
     member = models.ForeignKey(Member)
     start = models.DateField()
-    end = models.DateField()
+    end = models.DateField(help_text="Remember!: Editing a Leave of absense directly does not affect member's workshifts.  Please remove them manually from any workshifts that fall within the leave.")
+    
 
 
 class WorkExemption(models.Model):
