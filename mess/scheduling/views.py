@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
-from django.template import loader, RequestContext
+from django.template import loader, RequestContext, Context
 from django.utils import simplejson
 #from django.views.generic.create_update import *
 
@@ -197,6 +197,7 @@ def old_rotations(date, interval=None):
     else:
         return ', '.join([fourweek, sixweek, eightweek])
 
+@user_passes_test(lambda u: u.is_staff)
 def rotation(request):
     """
     Print listings of shifts according to rotation cycles.
@@ -362,6 +363,30 @@ def job_edit(request, job_id=None):
     return render_to_response('scheduling/job_form.html', context,
                                 context_instance=RequestContext(request))
 
+@user_passes_test(lambda u: u.is_staff)
+def reminder(request, date):
+    " send email reminder to all scheduled workers for this date "
+    from django.core.mail import send_mail
+    date = datetime.date(*time.strptime(date, "%Y-%m-%d")[:3])
+    previous_date = date - datetime.timedelta(1)
+    next_date = date + datetime.timedelta(1)
+    tasks = models.Task.objects.filter(
+            time__range=(date, date+datetime.timedelta(1)),
+            member__isnull=False)
+    noemail = tasks.filter(member__emails__isnull=True)
+    tasks = tasks.filter(member__emails__isnull=False).distinct()
+    message_template = loader.get_template('scheduling/reminder_mail.html')
+    messages = []
+    for task in tasks:
+        message = message_template.render(Context({'task':task}))
+        messages.append(unicode(message))
+        if request.method == 'POST':
+            (to, subject, message) = message.split('\n', 2)
+            to = to.split(' ', 1)[1]
+            subject = subject.split(' ', 1)[1]
+            send_mail(subject, message, None, [to])
+    return render_to_response('scheduling/reminder.html', locals(),
+                                context_instance=RequestContext(request))
 
 # unused below
 

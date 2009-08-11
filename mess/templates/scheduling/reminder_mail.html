@@ -1,0 +1,29 @@
+To: {{ task.member.user.first_name }} <{{ task.member.emails.all.0.email }}>
+Subject: {% if task.excused %}Excused Workshift{% else %}You're Scheduled to Work{% endif %} {% if task.job.deadline or task.job.is_dancer %}by {{ task.time|date:"l, F jS, Y" }}{% else %}{{ task.time|date:"l, F jS, Y, g:ia" }}{% endif %}
+
+Dear {{ task.member.user.first_name }},
+{% if task.excused %}
+You have an excused workshift on {{ task.time|date:"l, F jS, Y, g:ia" }}
+Please be sure to make up the hours that are excused.
+
+Thank you,
+
+Mariposa Food Co-op
+{% else %}
+You're scheduled to work as a member of Mariposa Food Co-op:
+    {% if task.job.deadline or task.job.is_dancer %}Date due: {{ task.time|date:"l, F jS, Y" }}
+    {% else %}Date: {{ task.time|date:"l, F jS, Y" }}
+    Time: {{ task.time|date:"g:ia" }}
+    {% endif %}Job: {{ task.job }}
+    Account: {{ task.account }}
+
+The co-op depends on your work as a member, so please make every effort to
+attend as scheduled.  If you cannot work at this time, please try to find
+someone else to cover your shift.  As a last resort, you may call the co-op
+at 215-729-2121 to ask to be re-scheduled well in advance of an absence.
+
+{% if task.job.deadline or task.job.is_dancer %}We'll see you by {{ task.time|date:"l" }}!
+{% else %}We'll see you on {{ task.time|date:"l" }}!
+{% endif %}
+Mariposa Food Co-op
+{% endif %}

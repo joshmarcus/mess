@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    {% include "scheduling/snippets/page_menu.html" %}
+      <h2>
+        <a href="{% url scheduling-reminder previous_date|date:"Y-m-d" %}" id="previous-day">&larr;</a> 
+        {{ date|date:"l, F jS, Y" }} 
+        <a href="{% url scheduling-reminder next_date|date:"Y-m-d" %}" id="next-day">&rarr;</a>
+      </h2>
+
+    {% ifequal request.method "POST" %}
+      <h3> Reminders were sent. </h3>
+    {% endifequal %}
+    {% ifnotequal request.method "POST" %}
+      <form method="POST"><input type="submit" value="Send Emails Now!"></form>
+    {% endifnotequal %}
+
+    {% if noemail %}
+      <hr>
+      <h2>Workers Without Email</h2>
+      <tt>
+        {% for task in noemail %}
+          <a href="{{ task.member.get_absolute_url }}">{{ task.member }}</a>
+          (<a href="{{ task.account.get_absolute_url }}">{{ task.account }}</a>), 
+          {{ task.member.phones.all|join:", " }},
+          {{ task.job }}, {{ task.time|date:"g:ia" }}<br />
+        {% endfor %}
+      </tt>
+    {% endif %}
+
+    <hr>
+    <h2>Email Messages</h2>
+    {% for message in messages %}
+      <hr>
+      <pre>{{ message|escape }}</pre>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

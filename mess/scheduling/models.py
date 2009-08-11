@@ -41,6 +41,9 @@ class Job(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def is_dancer(self):
+        return self.name[:4].lower() == 'danc'
     
     class Meta:
         ordering = ['name']
