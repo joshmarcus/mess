@@ -1,5 +1,5 @@
 To: {{ task.member.user.first_name }} <{{ task.member.emails.all.0.email }}>
-Subject: {% if task.excused %}Excused Workshift{% else %}You're Scheduled to Work{% endif %} {% if task.job.deadline or task.job.is_dancer %}by {{ task.time|date:"l, F jS, Y" }}{% else %}{{ task.time|date:"l, F jS, Y, g:ia" }}{% endif %}
+Subject: [Mariposa] {% if task.excused %}Excused Workshift{% else %}You're Scheduled to Work{% endif %} {% if task.job.deadline or task.job.is_dancer %}by {{ task.time|date:"l, F jS, Y" }}{% else %}{{ task.time|date:"l, F jS, Y, g:ia" }}{% endif %}
 
 Dear {{ task.member.user.first_name }},
 {% if task.excused %}

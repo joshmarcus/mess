@@ -227,11 +227,13 @@ class WorkExemption(models.Model):
 class AccountManager(models.Manager):
     'Custom manager to add extra methods'
     def active(self):
-        return self.filter(members__date_missing__isnull=True, 
+        return self.filter(members__isnull=False,
+                members__date_missing__isnull=True, 
                 members__date_departed__isnull=True).distinct()
 
     def inactive(self):
-        return self.exclude(members__date_missing__isnull=True, 
+        return self.exclude(members__isnull=False,
+                members__date_missing__isnull=True, 
                 members__date_departed__isnull=True)
 
 
