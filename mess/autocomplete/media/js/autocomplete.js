@@ -73,7 +73,7 @@ function yui_autocomplete(name, ac_url, force_selection) {
 
         // Set up get cashier info (picking account fetches info):
         if (typeof(window['GETCASHIERINFO']) != 'undefined' &&  
-                GETCASHIERINFO && (name == 'account')) {
+                GETCASHIERINFO ) { // && (name == 'account')) {
             autocomplete.itemSelectEvent.subscribe(function (type, args) {
                 var account_id = args[2].id;
                 getAccountInfo(account_id);

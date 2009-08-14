@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load messmoney %}
+
+{% block head %}
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/hours_balance.js"></script>
+{% endblock head %}
+
+{% block content %}
+  <div id="left-column" >
+   {% include "accounting/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+
+<form method="POST">
+      <table class="data cashsheet">
+        <tr>
+          <th>Account</th>
+          <th>Old<br>Hours<br>Balance</th>
+          <th>New<br>Hours<br>Balance</th>
+          <th><!-- submit --></th>
+        </tr>
+        <tr>
+          <td>{{ form.account }}</td>
+          <td><span id="old_hours_balance"> </span></td>
+          <td>{{ form.hours_balance }}</td>
+          <td><input type="submit" value="Submit"></td>
+        </tr>
+      </table>
+      {{ form.errors }}
+</form>
+
+    </div>
+  </div>
+{% endblock %}

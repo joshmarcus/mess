@@ -84,6 +84,22 @@ def cashsheet_input(request):
     return render_to_response('accounting/cashsheet_input.html', locals(),
             context_instance=RequestContext(request))
 
+@user_passes_test(lambda u: u.is_staff)
+def hours_balance(request):
+    if 'getcashierinfo' in request.GET:
+        account_id = request.GET['account']
+        account = m_models.Account.objects.get(id=account_id)
+        return HttpResponse(account.hours_balance)
+    if request.method == 'POST':
+        form = forms.HoursBalanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('hours_balance'))
+    else:
+        form = forms.HoursBalanceForm()
+    return render_to_response('accounting/hours_balance.html', locals(),
+            context_instance=RequestContext(request))
+
 # cashier permission is the first if
 @user_passes_test(lambda u: u.is_authenticated())
 def close_out(request, date=None):

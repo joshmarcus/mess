@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django import forms
 from django.utils.safestring import mark_safe
 from mess.autocomplete import AutoCompleteWidget
@@ -22,24 +24,45 @@ class TransactionForm(forms.ModelForm):
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=SelectAfterAjax(), required=False)
 
-class CashsheetForm(forms.Form):
+class HoursBalanceForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
+    hours_balance = forms.CharField(required=False,
+                widget=forms.TextInput(attrs={'size':'6'}))
+
+    def clean_hours_balance(self):
+        value = str(self.cleaned_data['hours_balance'])
+        if value[0] == '(' and value[-1] == ')':
+            value = '-'+value[1:-1]
+        try:
+            return Decimal(value)
+        except:
+            raise forms.ValidationError('invalid hours balance')
+
+    def save(self):
+        acct = self.cleaned_data['account']
+        acct.hours_balance = self.cleaned_data['hours_balance']
+        acct.save()
+
+class CashsheetForm(forms.Form):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+            widget=AutoCompleteWidget('account_spiffy',
+                view_name='membership-autocomplete', canroundtrip=True))
     misc_sales = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
     dues_deposits = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
     bulk_orders = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
     after_hours = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
     regular_sales = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
     credit_debit = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
     check_mo = forms.DecimalField(required=False,
-        widget=forms.TextInput(attrs={'size':'4'}))
+                widget=forms.TextInput(attrs={'size':'4'}))
 
     def save(self, entered_by=None):
         purchases = [(purchase_type, self.cleaned_data[fieldname])

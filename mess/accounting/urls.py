@@ -6,4 +6,5 @@ urlpatterns = patterns('mess.accounting.views',
     url(r'^billing$', 'billing', name='billing'),
     url(r'^cashsheet$', 'cashsheet', name='cashsheet'),
     url(r'^cashsheet_input$', 'cashsheet_input', name='cashsheet_input'),
+    url(r'^hours_balance$', 'hours_balance', name='hours_balance'),
 )
