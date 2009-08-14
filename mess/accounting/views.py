@@ -54,6 +54,18 @@ def transaction(request):
 
 # cashier permission is the first if
 @user_passes_test(lambda u: u.is_authenticated())
+def reverse_trans(request):
+    if not m_models.cashier_permission(request):
+        return HttpResponse('Sorry, you do not have cashier permission. %s' 
+                             % request.META['REMOTE_ADDR'])
+    assert request.method == 'POST', 'reverse must use POST'
+    form = forms.ReverseForm(request.POST)
+    assert form.is_valid(), repr(form.errors)
+    form.save(entered_by=request.user)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+# cashier permission is the first if
+@user_passes_test(lambda u: u.is_authenticated())
 def cashsheet_input(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 

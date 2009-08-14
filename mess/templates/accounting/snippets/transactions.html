@@ -1,5 +1,10 @@
 {% load messmoney %}
 
+<form action="{% url reverse_trans %}" method="POST" id="reverse_form">
+<input type="hidden" name="reverse_id" id="id_reverse_id">
+<input type="hidden" name="reverse_reason" id="id_reverse_reason">
+</form>
+
 <table class="data" >
   <tr>
     <th>ID</th>
@@ -27,7 +32,7 @@
     <td>{{ transaction.get_payment_type_display }}</td>
     <td>{% if transaction.payment_amount %}{{ transaction.payment_amount|messmoney:"payment" }}{% endif %}</td>
     <td>{{ transaction.account_balance|messmoney }}</td>
-    <td>{{ transaction.entered_by.username }}{% if can_reverse %}<input type="button" value="X" onclick="reverseit({{ transaction.id }}, {{ transaction.account.id }}, '{{ transaction.account }}', '{{ transaction.purchase_type }}', {{ transaction.purchase_amount }}, '{{ transaction.payment_type }}', {{ transaction.payment_amount }});">{% endif %}</td>
+    <td>{{ transaction.entered_by.username }}{% if can_reverse %}<input type="button" value="X" onclick="reverse_trans({{ transaction.id }});">{% endif %}</td>
   </tr>
     {% endfor %}
   {% endif %}

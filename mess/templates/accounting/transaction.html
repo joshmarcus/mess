@@ -15,7 +15,7 @@
    {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <div class="profile" id="acctinfo"><!-- filled by ajax --></div>
-      <form class="standard" id="transaction" method="post" onsubmit="return confirm('Please double-check the transaction, then click OK.');">
+      <form class="standard" id="transaction" method="post">
         <table>
           {{ form }}
           <tr>

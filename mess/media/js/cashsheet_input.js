@@ -73,6 +73,15 @@ function setup_autocalc() {
   document.getElementById('id_check_mo').onchange = autocalc;
 }
 
+// prompts you to reverse a previous transaction
+function reverse_trans(trans_id) {
+    reason = prompt('Please explain why you are reversing this transaction.  (Transactions should only be reversed when absolutely necessary, as it complicates accounting.)');
+    if (reason == undefined) return;
+    document.getElementById('id_reverse_id').value = trans_id;
+    document.getElementById('id_reverse_reason').value = reason;
+    document.getElementById('reverse_form').submit();
+}
+
 window.onload = function() {
   document.getElementById('id_account').focus();
   setup_autocalc();

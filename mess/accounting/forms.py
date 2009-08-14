@@ -45,6 +45,15 @@ class HoursBalanceForm(forms.Form):
         acct.hours_balance = self.cleaned_data['hours_balance']
         acct.save()
 
+class ReverseForm(forms.Form):
+    reverse_id = forms.ModelChoiceField(models.Transaction.objects.all(),
+            widget=forms.HiddenInput())
+    reverse_reason = forms.CharField(widget=forms.HiddenInput())
+
+    def save(self, entered_by):
+        trans = self.cleaned_data['reverse_id']
+        trans.reverse(entered_by, self.cleaned_data['reverse_reason'])
+
 class CashsheetForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
             widget=AutoCompleteWidget('account_spiffy',
