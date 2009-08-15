@@ -179,7 +179,7 @@ class Task(models.Model):
             trainingjobs = ['Orientation Attendee','Shadow Cashier',
                             'Cashier Training Attendee']
             oldshifts = self.member.task_set.filter(time__lte=self.time,
-                time__gt=datetime.date.today - datetime.timedelta(365),
+                time__gt=datetime.date.today() - datetime.timedelta(365),
                 hours_worked__gt=0).exclude(job__name__in=trainingjobs)
             if self.job.name == 'Cashier':
                 oldshifts = oldshifts.filter(job__name=self.job.name)
