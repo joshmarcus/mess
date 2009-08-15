@@ -9,13 +9,13 @@
 
     <div id="primary-content-wrapper">
       <h2>New {{ account.name }} Leave of Absence</h2>
-      <p>This new LOA will apply to all members on this account.
+      <p>This new LOA will apply to all active members on this account.
         To place just one member on leave, do so from the member page (linked
         from each name).</p>
 
       <p>Members going on leave:</p>
       <ul>
-        {% for mem in account.members.all %}
+        {% for mem in account.members.active %}
         <li><a href="{% url member mem.user.username %}">{{ mem.user.get_full_name }}</a> ({{ mem.user.username }})</li>
         {% endfor %}
       </ul>

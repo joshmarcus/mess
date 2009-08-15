@@ -427,7 +427,7 @@ def loa_account(request, id):
             return HttpResponseRedirect(account.get_absolute_url())
         form = forms.LoaForm(request.POST)
         if form.is_valid():            # save button,
-            for mem in account.members.all():
+            for mem in account.members.active():
                 s = form.cleaned_data['start']
                 e = form.cleaned_data['end']
                 new_loa = models.LeaveOfAbsence(member=mem, start=s, end=e)
