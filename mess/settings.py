@@ -109,6 +109,9 @@ LOGIN_REDIRECT_URL = PROJECT_URL
 
 CACHE_BACKEND = 'locmem:///'
 
+# Default to clearing everything at browser close.
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 ## mess project constants below ##
 
 try:
