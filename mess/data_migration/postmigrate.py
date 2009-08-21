@@ -515,7 +515,7 @@ def heuristic_get_account(account_name):
         return 'ACCOUNT NOT GOTTEN AS %s -- MULTIPLE' % account_name
     except models.Account.DoesNotExist:
         try:
-            acct = models.Account.objects.get(name__istartswith=account_name)
+            acct = models.Account.objects.get(name__istartswith=account_name+' ')
             print repr('WARNING NOT EXACT %s as %s' % (account_name, acct.name))
             return acct
         except models.Account.MultipleObjectsReturned:

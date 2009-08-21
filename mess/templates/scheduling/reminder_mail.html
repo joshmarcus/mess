@@ -1,9 +1,9 @@
 To: {{ task.member.user.first_name }} <{{ task.member.emails.all.0.email }}>
-{% if task.excused %}Subject: [Mariposa] Excused Workshift on {{ task.time|date:"l, F jS, Y" }}
+{% if task.excused %}Subject: [Mariposa] Excused Workshift on {{ task.time|date:"l, F j, Y" }}
 
 Dear {{ task.member.user.first_name }},
 
-You have asked to be excused from your member workshift on {{ task.time|date:"l, F jS, Y, g:ia" }}.
+You have asked to be excused from your member workshift on {{ task.time|date:"l, F j, Y, g:ia" }}.
 
 If you have banked hours they will automatically be put toward this missed shift. 
 If you do not have banked hours, please call the store (215-729-2121) to schedule a makeup shift. 
@@ -13,12 +13,12 @@ Thank you,
 Mariposa Food Co-op
 
 
-{% else %}{% if task.compostcheesecut %}Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F jS, Y" }}
+{% else %}{% if task.compostcheesecut %}Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F j, Y" }}
 
 Dear {{ task.member.user.first_name }},
 
 Your Mariposa Food Co-op member work shift is scheduled for:
-    Week of: {{ task.time_minus_six_days|date:"l, F jS, Y" }} until {{ task.time|date:"l, F jS, Y" }}
+    Week of: {{ task.time_minus_six_days|date:"l, F j" }} to {{ task.time|date:"l, F j, Y" }}
     Job: {{ task.job }}
     Account: {{ task.account }}
 
@@ -39,20 +39,20 @@ Otherwise, we'll see you by {{ task.time|date:"l" }}!
 Mariposa Food Co-op
 
 
-{% else %}{% if task.job.deadline or task.job.is_dancer %}Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F jS, Y" }}
+{% else %}{% if task.job.deadline or task.job.is_dancer %}Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F j, Y" }}
 
 Dear {{ task.member.user.first_name }},
 
 Your Mariposa Food Co-op member work shift is scheduled for:
-    Week of: {{ task.time_minus_six_days|date:"l, F jS, Y" }} until {{ task.time|date:"l, F jS, Y" }}
+    Week of: {{ task.time_minus_six_days|date:"l, F j" }} to {{ task.time|date:"l, F j, Y" }}
     Job: {{ task.job }}
     Account: {{ task.account }}
 
 The co-op depends on your work as a member, so please make every effort to attend as scheduled.
 
-If you cannot work at this time and are not a composter or cheese cutter, you may call the
-co-op at 215-729-2121 at least 48 hours before your Sunday deadline to ask to be marked excused
-and then you will need to scheduled and work a makeup.
+If you cannot work at this time, you may call the co-op at 215-729-2121 at least 48 hours
+before your Sunday deadline to ask to be marked excused and then you will need to schedule and
+work a makeup.
 
 If you have banked hours you want to use, call the coop at least 48 hours before your Sunday
 deadline to let us know you will not be coming.
@@ -62,12 +62,12 @@ Otherwise, we'll see you by {{ task.time|date:"l" }}!
 Mariposa Food Co-op
 
 
-{% else %}Subject: [Mariposa] You're Scheduled to Work {{ task.time|date:"l, F jS, Y, g:ia" }}
+{% else %}Subject: [Mariposa] You're Scheduled to Work {{ task.time|date:"l, F j, Y, g:ia" }}
 
 Dear {{ task.member.user.first_name }},
 
 Your Mariposa Food Co-op member work shift is scheduled for:
-    Date: {{ task.time|date:"l, F jS, Y" }}
+    Date: {{ task.time|date:"l, F j, Y" }}
     Time: {{ task.time|date:"g:ia" }}
     Job: {{ task.job }}
     Account: {{ task.account }}
