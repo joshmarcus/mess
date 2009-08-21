@@ -191,6 +191,12 @@ class Task(models.Model):
             if len(oldshifts) < 4:
                 return oldshifts[0].time
 
+    def time_minus_six_days(self):
+        return self.time - datetime.timedelta(6)
+
+    def compostcheesecut(self):
+        return 'Cheese Cutter' in self.job.name or 'Compost' in self.job.name
+
     def get_next_shift(self):
         if self.recur_rule:
             future_tasks = self.recur_rule.task_set.filter(time__gt=self.time)
