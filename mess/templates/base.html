@@ -38,7 +38,7 @@
     	<ul id="global-nav">
           {% if user.is_authenticated %}
           <li><a href="{% url welcome %}"{% active_class request '^$' %}>Dashboard</a></li>
-          <li><a href="{% url members %}"{% active_class request '^membership' %}>Membership</a></li>
+          <li><a href="{% url accounts %}"{% active_class request '^membership' %}>Membership</a></li>
           <li><a href="{% url scheduling-schedule-today %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
           {% endif %}
           {% if user.is_staff %}

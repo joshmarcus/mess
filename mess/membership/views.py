@@ -97,13 +97,14 @@ def member_form(request, username=None):
     if request.method == 'POST':
         if 'cancel' in request.POST:
             if username:
-                return HttpResponseRedirect(reverse('member', args=[username]))
+                # FIXME this is bad if member has more than one account
+                return HttpResponseRedirect(member.accounts.all()[0].get_absolute_url())
             else:
-                return HttpResponseRedirect(reverse('members'))
+                return HttpResponseRedirect(reverse('accounts'))
         if 'delete' in request.POST:
             member.delete()
             user.delete()
-            return HttpResponseRedirect(reverse('members'))
+            return HttpResponseRedirect(reverse('accounts'))
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)
@@ -128,7 +129,8 @@ def member_form(request, username=None):
             for formset in (related_account_formset, LOA_formset, 
                     address_formset, email_formset, phone_formset):
                 _setattr_formset_save(formset, 'member', member)
-            return HttpResponseRedirect(reverse('member', args=[user.username]))
+            # FIXME this is bad if member has more than one account
+            return HttpResponseRedirect(member.accounts.all()[0].get_absolute_url())
         else:
             is_errors = True
     else:
@@ -165,8 +167,9 @@ def accounts(request):
     '''
     context = RequestContext(request)
     if not request.user.is_staff:
-        member = models.Member.objects.get(user=request.user)
-        accounts = member.accounts.all()
+        accounts = user.get_profile().accounts.all()
+        if len(accounts) == 1:
+            return HttpResponseRedirect(accounts[0].get_absolute_url())
     else:
         accounts = models.Account.objects.all()
         if not 'sort_by' in request.GET:
@@ -209,68 +212,6 @@ def accounts(request):
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
-def daterange(start, end):
-    while start < end:
-        yield start
-        start += datetime.timedelta(1)
-
-def workhist(account):
-    '''
-    Generates the work history object used to produce the workhistory calendar on account page.
-    complex data structures here:
-    workhist[] is an array of weeks
-    each week is a {} dictionary of {'days':[array], 'tasks':[array], 
-       'newmonth' and 'newyear'} (newmonth and newyear flags show month 
-       alongside the calendar)
-    each day is a {} dictionary of {'week':(parent-pointer), 'date':(number),
-       'workflag':(flag for highlighting), 'task':last-task}
-    '''
-    workhist = []
-    dayindex = {}
-    today = datetime.date.today()
-    lastsunday = today - datetime.timedelta(days=today.weekday()+1)
-    try:
-        oldesttime = account.task_set.all().order_by('time')[0].time
-        oldestweeks = ((today - oldesttime.date()).days / 7) + 2
-        oldestweeks = max(oldestweeks, 16)
-    except IndexError:
-        oldestweeks = 16
-    for weeksaway in range(-oldestweeks,52):
-        week = {'tasks':[]}
-        if weeksaway == -12:
-            week['flagcurrent'] = True
-        elif weeksaway == 7:
-            week['flagfuture'] = True
-        firstday = lastsunday + datetime.timedelta(days=7*weeksaway)
-        week['days'] = [{'week':week} for i in range(7)]
-        for i in range(7):
-            week['days'][i]['date'] = firstday + datetime.timedelta(days=i)
-            dayindex[week['days'][i]['date']] = week['days'][i]
-        if 7 <= week['days'][6]['date'].day < 14:
-            week['newmonth'] = week['days'][6]['date']
-        elif 14 <= week['days'][6]['date'].day < 21:
-            week['newyear'] = week['days'][6]['date'].year
-        workhist.append(week)
-    for task in account.task_set.all():
-        if task.time.date() in dayindex:
-            day = dayindex[task.time.date()]
-            if 'workflag' in day:
-                day['workflag'] = 'complex-workflag'
-            else:
-                day['workflag'] = task.simple_workflag
-            day['task'] = task
-            day['week']['tasks'].append(task)
-    for leave in models.LeaveOfAbsence.objects.filter(
-                        member__accounts__id=account.id):
-        for dayofleave in daterange(leave.start, leave.end):
-            if dayofleave not in dayindex: 
-                continue
-            day = dayindex[dayofleave]
-            if 'workflag' not in day:
-                day['workflag'] = 'LOA'
-    dayindex[today]['istoday'] = True
-    return workhist        
-
 @user_passes_test(lambda u: u.is_authenticated())
 def account(request, id):
     '''
@@ -285,7 +226,6 @@ def account(request, id):
     context['account'] = account
     transactions = account.transaction_set.all()
     context['transactions'] = transactions
-    context['workhist'] = workhist(account)
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 

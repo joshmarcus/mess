@@ -33,7 +33,7 @@ function autoComp( inputId, containerId, searchType, onSelectFunction)
 
 function show_or_hide(id) {
     return function() {
-        elem = document.getElementById(id);
+        var elem = document.getElementById(id);
         if (elem.style.display == 'none') {
             elem.style.display = 'block';
         } else {
@@ -44,7 +44,7 @@ function show_or_hide(id) {
 
 function attach_hiders(prefix, n) {
     for (i=0; i<n; i++) {
-        hider = document.getElementById(prefix+i+'hider');
+        var hider = document.getElementById(prefix+i+'hider');
         hider.onclick = show_or_hide(prefix+i);
         hider.onclick();
     }

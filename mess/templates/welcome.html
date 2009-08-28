@@ -34,27 +34,10 @@
   </div>
 
   <div id ="right-column">
-    <h3>{{ user.first_name }}'s Accounts</h3>
-    <table>
-      {# should ever only be one member in member_set #}
-      {% for member in user.member_set.all %}
-      {% for account in member.accounts.all %}
-        <p><a href="{% url account account.id %}">{{ account }}</a><br>
-        <ul>
-          <li>balance: {{ account.balance|floatformat:2 }}</li>
-          <li>next workshift: 
-            {% if member.next_shift %} 
-            {{ member.next_shift }}
-            {% else %}
-            None scheduled
-          </li>
-          {% endif %}
-        </ul>
-        </p>
-      {% endfor %}
-      {% endfor %}
-    </table>
-  </div><!--end right-column-->
+    {% with user.get_profile.accounts.all|first as account %}
+    {% include "membership/snippets/acctinfo.html" %}
+    {% endwith %}
+  </div>
 
   {% endif %}
  {% endblock %}

@@ -1,4 +1,4 @@
-<h4>{{ account.name }}{% if request.user.is_staff %}<a href="{{ account.get_absolute_url }}">view</a>{% endif %}</h4>
+<h4>{% if request.user.is_staff %}<a href="{{ account.get_absolute_url }}">view</a>{% endif %}{{ account.name }}</h4>
 <ul class="quick-info">
   <li>{{ account.verbose_balance }}</li>
   <li>Hours balance: {{ account.hours_balance }}</li>

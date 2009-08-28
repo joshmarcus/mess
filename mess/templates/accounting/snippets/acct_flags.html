@@ -8,6 +8,6 @@
                 {{ account.frozen_flags|join:" ... " }}
               </div>
             {% endif %}
-            {% if account %}
+            {% if show_acct_link %}
               <a href="{{ account.get_absolute_url }}">view account</a>
             {% endif %}

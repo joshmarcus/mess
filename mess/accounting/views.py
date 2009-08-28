@@ -80,6 +80,7 @@ def cashsheet_input(request):
             return HttpResponse(account.hours_balance)
         else: # request.GET['getcashierinfo'] == 'acct_flags':
             template_file = 'accounting/snippets/acct_flags.html'
+            show_acct_link = True
             return render_to_response(template_file, locals())
 
     if request.method == 'POST':

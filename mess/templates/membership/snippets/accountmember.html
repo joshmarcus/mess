@@ -1,0 +1,54 @@
+{% if am.shopper and am.account_contact %}<div class="accountmemberalert">Proxy Shopper??!??</div>{% endif %}
+{% if not am.shopper and not am.account_contact %}<div class="accountmemberalert">Deposit Holder??!??</div>{% endif %}
+<h4>
+  {% if request.user.is_staff %}
+    <a href="{% url member-edit am.member.user.username %}">edit</a>
+  {% endif %}
+  {{ am.member }}
+</h4>
+<div class="accountmemberside">
+  <ul class="quick-info">
+    {% for email in am.member.emails.all %}
+      <li><b>Email:</b> {{ email }}</li>
+    {% endfor %}
+    {% for phone in am.member.phones.all %}
+      <li><b>Phone:</b> {{ phone }}</li>
+    {% endfor %}
+    {% for address in am.member.addresses.all %}
+      <li><b>Address:</b> <br>
+        {{ address.address1 }}<br>
+        {% if address.address2 %}{{ address.address2 }}<br>{% endif %}
+        {{ address.city }}, {{ address.state }} {{ address.postal_code }}
+        {% ifnotequal address.country "USA" %}
+          <br>{{ address.country }}
+        {% endifnotequal %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+<div class="accountmemberside">
+  <ul class="quick-info">
+    {% if am.member.date_departed %}
+      <li><b>Departed:</b> {{ am.member.date_departed|date:"n/j/Y" }}</li>
+    {% endif %}
+    {% if am.member.date_missing %}
+      <li><b>Missing:</b> {{ am.member.date_missing|date:"n/j/Y" }}</li>
+    {% endif %}
+    {% ifequal section "departed" %}
+      {% if am.shopper %}<li><b>Was Proxy</b></li>{% endif %}
+      {% if am.account_contact %}<li><b>Was Deposit Holder</b></li>{% endif %}
+    {% endifequal %}
+    {% if am.member.current_loa %}
+      <li>
+        <b>On Leave:</b> {{ am.member.current_loa.start|date:"n/j/Y" }} 
+        to {{ am.member.current_loa.end|date:"n/j/y" }}
+      </li>
+    {% endif %}
+    <li><b>Work Status:</b> {{ am.member.get_work_status_display }}</li>
+    <li><b>Key:</b> 
+      {% if am.member.has_key %}Has Key{% else %}No Key{% endif %}
+    </li>
+    <li><b>Joined:</b> {{ am.member.date_joined|date:"n/j/Y" }}</li>
+  </ul>
+</div>
+<hr class="endaccountmember">

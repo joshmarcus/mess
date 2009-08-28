@@ -266,6 +266,23 @@ class Account(models.Model):
             member__leaveofabsence__start__lte=datetime.datetime.now(),
             member__leaveofabsence__end__gte=datetime.datetime.now()).count()
 
+    def deposit_holders(self):
+        return self.accountmember_set.filter(
+            member__date_missing__isnull=True,
+            member__date_departed__isnull=True,
+            account_contact=True)   # account_contact flag used for depositors
+
+    def non_deposit_holders(self):
+        return self.accountmember_set.filter(
+            member__date_missing__isnull=True,
+            member__date_departed__isnull=True,
+            account_contact=False)   # account_contact flag used for depositors
+
+    def departed_members(self):
+        return self.accountmember_set.filter(
+            Q(member__date_missing__isnull=False) |
+            Q(member__date_departed__isnull=False))
+
     def autocomplete_label(self):
         if self.active_member_count:
             return self.name
@@ -275,6 +292,70 @@ class Account(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('account', [self.id])
+
+    def members_leaveofabsence_set(self):
+        return LeaveOfAbsence.objects.filter(member__accounts=self)
+
+    def workhist(self):
+        '''
+        Generates the work history object used to produce the workhistory calendar on account page.
+        complex data structures here:
+        workhist[] is an array of weeks
+        each week is a {} dictionary of {'days':[array], 'tasks':[array], 
+           'newmonth' and 'newyear'} (newmonth and newyear flags show month 
+           alongside the calendar)
+        each day is a {} dictionary of {'week':(parent-pointer), 'date':(number),
+           'workflag':(flag for highlighting), 'task':last-task}
+        '''
+        workhist = []
+        dayindex = {}
+        today = datetime.date.today()
+        lastsunday = today - datetime.timedelta(days=today.weekday()+1)
+        try:
+            oldesttime = self.task_set.all().order_by('time')[0].time
+            oldestweeks = ((today - oldesttime.date()).days / 7) + 2
+            oldestweeks = max(oldestweeks, 16)
+        except IndexError:
+            oldestweeks = 16
+        for weeksaway in range(-oldestweeks,52):
+            week = {'tasks':[]}
+            if weeksaway == -12:
+                week['flagcurrent'] = True
+            elif weeksaway == 7:
+                week['flagfuture'] = True
+            firstday = lastsunday + datetime.timedelta(days=7*weeksaway)
+            week['days'] = [{'week':week} for i in range(7)]
+            for i in range(7):
+                week['days'][i]['date'] = firstday + datetime.timedelta(days=i)
+                dayindex[week['days'][i]['date']] = week['days'][i]
+            if 7 <= week['days'][6]['date'].day < 14:
+                week['newmonth'] = week['days'][6]['date']
+            elif 14 <= week['days'][6]['date'].day < 21:
+                week['newyear'] = week['days'][6]['date'].year
+            workhist.append(week)
+        for task in self.task_set.all():
+            if task.time.date() in dayindex:
+                day = dayindex[task.time.date()]
+                if 'workflag' in day:
+                    day['workflag'] = 'complex-workflag'
+                else:
+                    day['workflag'] = task.simple_workflag
+                day['task'] = task
+                day['week']['tasks'].append(task)
+        for leave in self.members_leaveofabsence_set():
+            for dayofleave in daterange(leave.start, leave.end):
+                if dayofleave not in dayindex: 
+                    continue
+                day = dayindex[dayofleave]
+                if 'workflag' not in day:
+                    day['workflag'] = 'LOA'
+        dayindex[today]['istoday'] = True
+        return workhist        
+
+    def next_shift(self):
+        tasks = self.task_set.filter(time__gte=datetime.date.today())
+        if tasks.count():
+            return tasks[0]
 
     def verbose_balance(self):
         if self.balance > 0:
@@ -418,4 +499,9 @@ class Phone(models.Model):
 
     def __unicode__(self):
         return self.number
+
+def daterange(start, end):
+    while start < end:
+        yield start
+        start += datetime.timedelta(1)
 

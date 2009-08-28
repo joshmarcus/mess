@@ -2,170 +2,94 @@
 
 {% block content %}
   <div id="left-column">
+
     <ul id="local-nav">
       <li><a href="{% url members %}">Members</a></li>
       <li class="last-item"><a class="active" href="{% url accounts %}">Accounts</a></li>
     </ul>
     <div id="primary-content-wrapper">
-      <h2>Account Profile</h2>
-      <div class="profile {% if not account.active_member_count %}profile-inactive{% endif %}">
-        <div class="profile-links">
-          <h5>Members ({{ account.active_member_count }} active)</h5>
-          <ul>
-            {% for am in account.accountmember_set.all %}
-              <li{% if am.account_contact %} id="primary-acct"{% endif %}><a href="{% url member am.member.user.username %}">{{ am.member }}</a>{% if not am.member.is_active %} ({% if am.member.date_departed %}d{% else %}m{% endif %}){% endif %}{% if am.member.is_on_loa %} (L){% endif %}{% if am.shopper %} (S){% endif %}</li>
-            {% endfor %}
-          </ul>
-          {% if account.active_member_count %}
-          <ul>
-            <li><a href="{% url depart-account account.id %}">depart all members</a></li>
-            <li><a href="{% url loa-account account.id %}">loa all members</a></li>
-          {% endif %}
-        </div>
-        <h4>
-          {% if user.is_staff %}	
-          <a href="{% url account-edit account.id %}">edit</a>
-          {% endif %}
-          {{ account }}
-        </h4>
-        <ul class="quick-info">
-          <li>
-            <img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Can Shop"/> 
-            {{ account.can_shop }}{% if account.ebt_only %} (EBT Only){% endif %}
-          </li>
-          <li>
-            <img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Contact"/> 
-            {% for am in account.accountmember_set.all %}
-              {% if am.account_contact %}
-            <a href="{% url member am.member.user.username %}">{{ am.member }}</a>
-              {% endif %}
-            {% endfor %}
-          </li>
-          <li>
-            <img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Balance"/> 
-            {{ account.balance|floatformat:2 }}
-          </li>
-          <li>
-            Hours-Balance: {{ account.hours_balance|floatformat:2 }}
-          </li>
-          <li>
-            Deposit: {{ account.deposit }}
-          </li>
-        </ul>
+      <h2 class="accountname">
+        {% if user.is_staff %}
+          <span class="accountactionlinks">
+            <a href="{% url account-edit account.id %}">edit</a>
+            <a href="{% url loa-account account.id %}">loa</a>
+            <a href="{% url depart-account account.id %}">depart</a>
+          </span>
+        {% endif %}
+        {{ account }}
+      </h2>
+      {% if request.user.is_staff and account.note %}
         <div class="details">
-          <h5>Account Notes</h5>
+          <h5 class="accountnotes">Account Notes</h5>
           {{ account.note|linebreaks }}
         </div>
-        <div id="transactions">
-          <h2>Transaction Log</h2>
-          <table class="data" >
-            <tr>
-              <th>ID</th>
-              <th>Time</th>
-              <th>Member</th>
-              <th>Note</th>
-              <th>Purchase Type</th>
-              <th>Purchase Amount</th>
-              <th>Payment Type</th>
-              <th>Payment Amount</th>
-              <th>Account Balance</th>
-            </tr>
-            {% for transaction in transactions|dictsortreversed:"id" %}
-            <tr class="{% cycle 'odd' 'even' %}" >
-              <td>{{ transaction.id }}</td>
-              <td class="nowrap">{{ transaction.timestamp|date:"g:i:s A" }}</td>    
-              <td>{{ transaction.member.user.get_full_name }}</td>
-              <td>{{ transaction.note }}</td>
-              <td>{{ transaction.get_purchase_type_display }}</td>
-              <td>{{ transaction.purchase_amount|floatformat:2 }}</td>
-              <td>{{ transaction.get_payment_type_display }}</td>
-              <td>{{ transaction.payment_amount|floatformat:2 }}</td>
-              <td>{{ transaction.account.balance|floatformat:2 }}</td>
-            </tr>
-            {% endfor %}
-          </table>
+      {% endif %}
+      {% if account.deposit_holders %}
+        <h2 class="accountmembersection">
+          Deposit Holders ({{ account.active_member_count }})
+        </h2> 
+        <div class="profile profile-deposit_holder">
+          {% with "deposit_holder" as section %}
+          {% for am in account.deposit_holders %}
+            {% include "membership/snippets/accountmember.html" %}
+          {% endfor %}
+          {% endwith %}
         </div>
+      {% endif %}
+      {% if account.non_deposit_holders %}
+        <h2 class="accountmembersection">Proxy Shoppers</h2>
+        <div class="profile profile-proxy">
+          {% with "proxy" as section %}
+          {% for am in account.non_deposit_holders %}
+            {% include "membership/snippets/accountmember.html" %}
+          {% endfor %}
+          {% endwith %}
+        </div>
+      {% endif %}
+      {% if account.departed_members %}
+        <h2 class="accountmembersection">Departed Members</h2>
+        <div class="profile profile-inactive">
+          {% with "departed" as section %}
+          {% for am in account.departed_members %}
+            {% include "membership/snippets/accountmember.html" %}
+          {% endfor %}
+          {% endwith %}
+        </div>
+      {% endif %}
+
+      <div id="transactions">
+        <h2 class="accountmembersection">Transaction Log</h2>
+        <table class="data" >
+          <tr>
+            <th>ID</th>
+            <th>Time</th>
+            <th>Member</th>
+            <th>Note</th>
+            <th>Purchase Type</th>
+            <th>Purchase Amount</th>
+            <th>Payment Type</th>
+            <th>Payment Amount</th>
+            <th>Account Balance</th>
+          </tr>
+          {% for transaction in transactions|dictsortreversed:"id" %}
+          <tr class="{% cycle 'odd' 'even' %}" >
+            <td>{{ transaction.id }}</td>
+            <td class="nowrap">{{ transaction.timestamp|date:"g:i:s A" }}</td>    
+            <td>{{ transaction.member.user.get_full_name }}</td>
+            <td>{{ transaction.note }}</td>
+            <td>{{ transaction.get_purchase_type_display }}</td>
+            <td>{{ transaction.purchase_amount|floatformat:2 }}</td>
+            <td>{{ transaction.get_payment_type_display }}</td>
+            <td>{{ transaction.payment_amount|floatformat:2 }}</td>
+            <td>{{ transaction.account.balance|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
+        </table>
       </div>
     </div>
   </div>
   <div id="right-column">
-    <h3>Icon Key</h3>
-    <ul id="icon-key">
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif"/> Can shop</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif"/> Deposit holder</li>
-      <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif"/> Balance</li>
-      {# FIXME should hide statuses not in use on this page #}
-<!--      <li>(a) Active</li> -->
-      <li>(L) Leave of absence</li>
-      <li>(m) Missing</li>
-      <li>(d) Departed</li>
-      <li>(S) Proxy shopper</li>
-      <li id="primary-acct-key"><img src="{{ MEDIA_URL }}images/bg-icon-primary-acct.png"/>Deposit holder</li>
-    </ul>
-
-    <h3 id="workhist_title">Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h3>
-    
-    <table class="acctwork">
-      {% for member in account.members.all %}
-        {% ifequal member.work_status "e" %}
-          <tr><td class="task-exempt">{{ member }}: Exempt</td></tr>
-        {% endifequal %}
-        {% ifequal member.work_status "c" %}
-          <tr><td class="task-committee">{{ member }}: Committee or other Non-Shift work</td></tr>
-        {% endifequal %}
-        {% if member.current_loa %}
-          <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
-        {% endif %}
-      {% endfor %}
-    </table>
-
-    <table class="workhist" id="workhist_week0">
-      {% for week in workhist %}
-        {% if week.flagcurrent %}
-          </table><table class="workhist" id="workhist_current">
-        {% endif %}
-        {% if week.flagfuture %}
-          </table><table class="workhist" id="workhist_future0">
-        {% endif %}
-        <tr id="workhist_week{{ forloop.counter }}hider">
-          <td>{{ week.newmonth|date:"M" }}{{ week.newyear }}</td>
-          <td>&nbsp;</td>
-          {% for day in week.days %}
-            {% if day.workflag %}
-              <td class="task-{{ day.workflag }}{% if day.istoday %} workhist-today{% endif %}" title="{{ day.task.member }}. {{ day.task.job }}. {{ day.task.time|time:"g:ia" }}, {{ day.task.hours }} hours.  {{ day.workflag|capfirst }}"><b><u>{{ day.date|date:"j" }}</u></b></td>
-            {% else %}
-              <td {% if day.istoday %}class="workhist-today"{% endif %}>{{ day.date|date:"j" }}</td>
-            {% endif %}
-          {% endfor %}
-        </tr>
-        <tr class="task-hiding-spot">
-          <td colspan="9">
-            <div id="workhist_week{{ forloop.counter }}">
-            {% for task in week.tasks %}
-              <div class="task-{{ task.simple_workflag }}">
-                {{ task.member }} &mdash; {{ task.job }} <br>
-                <a href="{% url scheduling-task task.id %}">{{ task.time|date:"D n/j/y" }}</a>, {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
-                {% if task.hours_worked %}<b>Worked {{ task.hours_worked }} hours</b>{% endif %}
-                <b>{{ task.workflag }}</b>
-              </div>
-            {% endfor %}
-            </div>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-
-    <script> 
-        attach_hiders('workhist_future',1);
-        attach_hiders('workhist_week',{{ workhist|length }}); 
-    </script>
-
-    <h3>Leave of Absence History</h3>
-    {% for member in account.members.all %}
-      {% for leave in member.leaveofabsence_set.all %}
-        {{ member }}: LOA {{ leave.start }} until {{ leave.end }}<br>
-      {% endfor %}
-    {% endfor %}
+    {% include "membership/snippets/acctinfo.html" %}
 
   </div>
 {% endblock %}

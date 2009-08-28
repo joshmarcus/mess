@@ -52,12 +52,10 @@ body {
 		line-height:1.4em;
 		margin-bottom:1.2em;
 		}
-	h2 {
-		font-size: 1.6em; 
-		margin-top:1em;
-		color:#004175;
-		margin-bottom:.25em;
-		}
+h2 {font-size: 1.6em; 
+    padding: 0.2em 0em 0.25em 0em;
+    color:#004175;}
+h2.accountmembersection {margin-top:0.8em;}
 	h3 {
 		font-size: 1.4em;
 		color:#666;
@@ -91,9 +89,9 @@ body {
     text-decoration: none;
     }
 
-	ul {}
+	ul {margin-left:2em;}
 		ul li {
-			list-style-type:none;
+/*			list-style-type:none; */
 			font-size:1.2em;
 			}
 			
@@ -222,6 +220,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		float:left;
 		width:280px;
 		margin-top:15px;
+        margin-bottom:15px;
 		}
 	#double-column {
 		padding-bottom:50px;
@@ -369,15 +368,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 						}						
 					
 		/*primary-content-wrapper styles*/
-		#primary-content-wrapper ul {
-			margin-bottom:1.5em;
-			}
-			
-			#primary-content-wrapper ul li {
-				margin-bottom:.5em;
-				padding-left:9px;
-				background:url(../images/bg-bullet.gif) no-repeat 0 3px;
-				}
+ul {margin-bottom:1.5em;}
+ul li {margin-bottom:.5em;}
+/*     padding-left:9px;}
+       background:url(../images/bg-bullet.gif) no-repeat 0 3px;}*/
 				
 		#primary-content-wrapper a.remove, #primary-content-wrapper a.add, #primary-content-wrapper a.edit {
 				color:#888; 
@@ -483,13 +477,17 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				    
 				      
 						
+.accountname { background:#d18405; color:#fff; padding:.65em; font-weight:bold; }
+.accountactionlinks { float:right; font-size:70%; }
+.accountactionlinks a { color:#ebebed; }
+h5.accountnotes { margin-top:0.2em; margin-bottom:0em; }
+
 		#primary-content-wrapper div.profile {
 			border:1px solid #ddd;
 			padding:1em;
 			}
-        #primary-content-wrapper div.profile-inactive {
-            background: #88a;
-            }
+            div.profile-inactive { background:#88a; }
+            div.profile-proxy { background:beige; }
 			#primary-content-wrapper div.profile h4 {
 				font-size: 1.2em;
 				line-height:1.4em;
@@ -533,22 +531,21 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 								}
 			#primary-content-wrapper div.details {
 				border:1px solid #ddd;
-				padding:1em;
+				padding:0.3em 1em 0.3em 1em;
 				background:beige;
 				}	
-				
-				#primary-content-wrapper ul.quick-info {
-					width:200px;
-					margin-top:1.5em;
-					}
-					#primary-content-wrapper ul.quick-info li {
-						background-image:none;
-						padding:0 0 3px 0;
-						border-bottom:1px solid #eee;
-						}
-						#primary-content-wrapper ul.quick-info li img {
-							margin-right:1em;
-							}
+
+ul.quick-info {margin:1em 1.5em 2em 1.5em; list-style-type:none;}
+ul.quick-info li {background-image:none; 
+                  padding:0px 0px 3px 0px; 
+                  border-bottom:1px solid #eee;}
+ul.quick-info li img {margin-right:1em;}
+ul.quick-info li b {display:inline-block; padding-right:5px;}
+
+div.accountmemberside {width:50%; float:left;}
+hr.endaccountmember {clear:both; border:0px;}
+div.accountmemberalert {float:right; color:red; font-weight:bold; font-size:14pt;}
+
 
                 #primary-content-wrapper ul.errorlist {
                         position: absolute;
@@ -572,7 +569,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	#right-column {
 		color:#777;
 		}
-	
+#right-column h2 {background:#eff0f9; padding:0.6em 0em 0.4em 0.25em;}	
 		#right-column h3 {
 			font-size:1.2em;
 			background:#EFF0F9;
@@ -588,6 +585,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 		#right-column p {
 			line-height:1.3em;
 			}
+/*
 		#right-column ul {
 			margin-bottom:1.5em;
 			}
@@ -596,6 +594,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				padding-left:11px;
 				background:url(../images/bg-bullet.gif) no-repeat 0 2px;
 				}
+*/
 			#right-column ul#icon-key {
 				}	
 				#right-column ul#icon-key li {
@@ -699,6 +698,7 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 
 .workhist-today { border:1px solid black; }
 .workhist td { text-align:right; padding-left:5pt; }
+div.workhist { margin-bottom:2em; }
 
 .LOA {background: #fff; }
 
