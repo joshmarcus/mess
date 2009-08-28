@@ -1,21 +1,17 @@
 {% extends "base.html" %}
 
+{% block login %}{% endblock %}
+
 {% block content %}
   <div id="double-column">
     <div id="primary-content-wrapper">
       {% if not user.is_authenticated %}
       <form class="standard" id="login" method="post" action=".">
         <input type="hidden" name="next" value="{{ next }}" />
-          {% if form.has_errors %}
-          <tr>
-            <td></td>
-            <td>
-              <ul class="errorlist">
-                <li>Your username and password didn't match. Please try again.</li>
-              </ul>
-            </td>
-          </tr>
-          {% endif %}
+        {% if form.errors %}
+        <p class="error">Your username and password didn't match. If you can't remember your password, go ahead and <a href="{% url auth_password_reset %}">reset it</a>.</p>
+        {% endif %}
+        <table>
           <tr>
             <th>
               <label for="id_username">Username:</label>

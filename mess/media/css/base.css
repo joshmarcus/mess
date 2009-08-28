@@ -118,7 +118,7 @@ body {
 		margin:15px 0;
                 font-size:1.1em;
 		}
-		form.standard input[type="text"], form.standard select, form.standard textarea {
+		form.standard input[type="text"], form.standard input[type="password"], form.standard select, form.standard textarea {
 			width:225px;
 			padding:3px;
 			}

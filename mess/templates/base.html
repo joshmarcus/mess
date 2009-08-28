@@ -21,37 +21,23 @@
   <body>
     <div id="wrapper">	
       <div id="header">
-          {% if not user.is_authenticated %}
-        <ul class="login">
-          <form id="login" method="post" action=".">
-            <input type="hidden" name="next" value="{{ next }}" />
-              {# handle errors at login page #}
-            <li>
-              <label for="id_username">Username:</label>
-              {{form.username}}
-            </li>
-            <li>
-              <label for="id_password">Password:</label>
-              {{form.password}}
-            </li>
-            <li>
-              <input class="button" type="submit" value="Log in"/>
-            </li>
-          </form>
-        </ul>
-          {% else %}
+        {% block login %}
         <ul id="utility-nav">
+          {% if user.is_authenticated %}
           <li>Logged in as <a href="{% url member user.username %}" >{{ user.username }}</a></li>
           <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
           <li class="last-item"><a href="http://trac.breaksalot.org/mess/wiki/UserGuide">Help</a></li>
+          {% else %}
+          <li class="last-item"><a href="{% url login %}" >Log in</a></li>
           {% endif %}
         </ul>
+        {% endblock login %}
         <h1>
-          <a href="{% url login %}">The Mess</a>
+          <a href="{% url welcome %}">The Mess</a>
         </h1>	
     	<ul id="global-nav">
           {% if user.is_authenticated %}
-          <li><a href="{% url login %}"{% active_class request '^$' %}>Dashboard</a></li>
+          <li><a href="{% url welcome %}"{% active_class request '^$' %}>Dashboard</a></li>
           <li><a href="{% url members %}"{% active_class request '^membership' %}>Membership</a></li>
           <li><a href="{% url scheduling-schedule-today %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
           {% endif %}

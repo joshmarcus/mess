@@ -1,20 +1,20 @@
 from django.conf import settings 
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from django.contrib.auth.views import login, logout, logout_then_login
 from django.contrib.auth import views as auth_views
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^$', include('mess.core.urls')),
     (r'^accounting/', include('mess.accounting.urls')),        
     (r'^membership/', include('mess.membership.urls')),        
     #(r'^profiles/', include('mess.profiles.urls')),
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
-    
-    url(r'^$', login, {'template_name': 'welcome.html'}, 'login'),
-    url(r'^logout/$', logout_then_login, name='logout'),
+
+    url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^passwordchange/$', auth_views.password_change, name='auth_password_change'),
     url(r'^passwordchange/done/$', auth_views.password_change_done, name='auth_password_change_done'),
     url(r'^passwordreset/$', auth_views.password_reset, name='auth_password_reset'),
@@ -27,7 +27,6 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('django.views.generic.simple', 
     (r'^styleguide$', 'direct_to_template', {'template': 'styleguide.html'}),
-    (r'^login$', 'direct_to_template', {'template': 'login.html'}),
 )
 
 # We're going to use the Django server in development, so we'll serve
