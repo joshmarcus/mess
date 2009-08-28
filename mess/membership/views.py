@@ -167,7 +167,7 @@ def accounts(request):
     '''
     context = RequestContext(request)
     if not request.user.is_staff:
-        accounts = user.get_profile().accounts.all()
+        accounts = request.user.get_profile().accounts.all()
         if len(accounts) == 1:
             return HttpResponseRedirect(accounts[0].get_absolute_url())
     else:
