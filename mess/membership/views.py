@@ -130,7 +130,11 @@ def member_form(request, username=None):
                     address_formset, email_formset, phone_formset):
                 _setattr_formset_save(formset, 'member', member)
             # FIXME this is bad if member has more than one account
-            return HttpResponseRedirect(member.accounts.all()[0].get_absolute_url())
+            try:
+                redirect = member.accounts.all()[0].get_absolute_url()
+            except IndexError:
+                redirect = reverse('accounts')
+            return HttpResponseRedirect(redirect)
         else:
             is_errors = True
     else:
