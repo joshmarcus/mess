@@ -11,19 +11,21 @@
         </div>
       </form>
       <h2>Account List</h2>
-      <form class="sorter" method="GET">
-        <ul class="clearfix">
-          <li> 
+      <div class="sorter">
+        <form>
+          <div>
             <label for="id_search">Search:</label> {{ form.search }}
             <label for="id_sort_by">Sort by:</label> {{ form.sort_by }}
-          </li>
-          <li class="button"><input type="submit" value="Filter" class="button" /></li>
-          <li>
+          </div>
+          <div class="button">
+            <input type="submit" value="Filter" class="button" />
+          </div>
+          <div>
             {{ form.active }} <label for="id_active">active</label>
             {{ form.inactive }} <label for="id_inactive">inactive</label>
-          </li>
-        </ul>
-      </form>
+          </div>
+        </form>
+      </div>
       {% endif %}
       {% include "snippets/pagination.html" %}
       <table class="data">

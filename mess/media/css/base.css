@@ -155,14 +155,12 @@ h2.accountmembersection {margin-top:0.8em;}
                     }
                 form.standard div.section h3 {
                     }	
-		form.sorter {float:left;}
-		
-			form.sorter ul {background:#f2f2f2; border:1px solid #ccc;padding:1em 1em 0 1em;}
+			div.sorter {background:#f2f2f2; border:1px solid #ccc;padding:1em 1em 0 1em;float:left;}
 			
-				#primary-content-wrapper form.sorter ul li {margin: 0 4px 1em; background-image:none; padding:0;}
+				div.sorter div {margin: 0 4px 1em; background-image:none; padding:0;}
 				
-					form.sorter ul li label {font-size:.8em; }
-                    #primary-content-wrapper form.sorter li.button {float:right;}
+					div.sorter div label {font-size:1.1em; }
+                    div.sorter div.button {float:right;}
     form div.add-button {float: right;}
 				
 @media screen { .printonly { display:none; } }
