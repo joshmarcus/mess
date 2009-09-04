@@ -14,7 +14,7 @@
         <h3>Members and staff, please log in.</h3>
         <p>MESS is already in use behind-the-scenes for workshift scheduling and member account maintenance.  
           Soon all members will be able to use MESS to get and change their account information.
-          In the future, cashiers will use MESS to record purchase transactions.</p>
+          In the future, the MESS will provide a variety of services to members and staff.</p>
       </div>
       <div class="attention">
         <h3>Visitors and neighbors, for more info...</h3>
@@ -28,8 +28,11 @@
   <div id="left-column">
     <div id="primary-content-wrapper">
       <h2>Hello, {{ user.first_name }}!</h2>
-      <h3>Here are some announcements.</h3>
-      <p> </p>
+      <h3>Here are the most recent updates from <a href="http://www.mariposa.coop">mariposa.coop</a></h3>
+      {% for ent in rss_entries %}
+      <h4>{{ ent.title }}</h4>
+      <p>{{ ent.summary }} <a href="{{ end.link }}">read more</a></p>
+        {% endfor %}
     </div>
   </div>
 
