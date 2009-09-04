@@ -16,13 +16,18 @@
         <tr>
           <th>Account</th>
           <th>Old<br>Hours<br>Balance</th>
+          <th>Hours<br>Balance<br>Change</th>
           <th>New<br>Hours<br>Balance</th>
           <th><!-- submit --></th>
         </tr>
         <tr>
           <td>{{ form.account }}</td>
-          <td><span id="old_hours_balance"> </span></td>
-          <td>{{ form.hours_balance }}</td>
+          <td>
+            <input type="hidden" id="hours_balance_val" value="">
+            <span id="hours_balance_disp"> </span>
+          </td>
+          <td>{{ form.hours_balance_change }}</td>
+          <td><span id="new_hours_balance"> </span></td>
           <td><input type="submit" value="Submit"></td>
         </tr>
       </table>

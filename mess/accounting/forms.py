@@ -28,11 +28,11 @@ class HoursBalanceForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
-    hours_balance = forms.CharField(required=False,
+    hours_balance_change = forms.CharField(required=False,
                 widget=forms.TextInput(attrs={'size':'6'}))
 
-    def clean_hours_balance(self):
-        value = str(self.cleaned_data['hours_balance'])
+    def clean_hours_balance_change(self):
+        value = str(self.cleaned_data['hours_balance_change'])
         if value[0] == '(' and value[-1] == ')':
             value = '-'+value[1:-1]
         try:
@@ -42,7 +42,7 @@ class HoursBalanceForm(forms.Form):
 
     def save(self):
         acct = self.cleaned_data['account']
-        acct.hours_balance = self.cleaned_data['hours_balance']
+        acct.hours_balance += self.cleaned_data['hours_balance_change']
         acct.save()
 
 class ReverseForm(forms.Form):

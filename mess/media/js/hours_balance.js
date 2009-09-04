@@ -4,10 +4,10 @@ function getAccountInfo(account_id) {
   var sUrl = '?getcashierinfo=hours_balance&account=' + account_id;
   var callback = {
     success: function(o) {
-      var new_hours_balance = document.getElementById('id_hours_balance');
-      new_hours_balance.value = messmoney(o.responseText);
-      var old_hours_balance = document.getElementById('old_hours_balance');
-      old_hours_balance.innerHTML = messmoney(o.responseText);
+      var hours_balance_val = document.getElementById('hours_balance_val');
+      hours_balance_val.value = o.responseText;
+      var hours_balance_disp = document.getElementById('hours_balance_disp');
+      hours_balance_disp.innerHTML = messmoney(o.responseText);
       autocalc();
     },
     failure: function(o) {},
@@ -24,8 +24,21 @@ function messmoney(val) {
     return (-(-val)).toFixed(2);
 }
 
+function autocalc() {
+  var balance = document.getElementById('hours_balance_val').value;
+  // double-negative forces addition, not string concatenation
+  balance -= -document.getElementById('id_hours_balance_change').value;
+  newbalance = document.getElementById('new_hours_balance');
+  newbalance.innerHTML = messmoney(balance);
+}
+
+function setup_autocalc() {
+  document.getElementById('id_hours_balance_change').onchange = autocalc;
+}
+
 window.onload = function() {
   document.getElementById('id_account').focus();
+  setup_autocalc();
 }
 
 // Tell autocomplete.js to call us back
