@@ -40,7 +40,7 @@
               <a href="{% url account account.id %}">{{ account.name }}</a>
             </td>
             <td>
-              <ul>
+              <ul class="ceasefire">
                 {% for member in account.members.all %}
                 {% if member.is_active %}
                 <li>

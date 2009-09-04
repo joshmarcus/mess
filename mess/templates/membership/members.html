@@ -42,7 +42,7 @@
           <a href='{% url member member.user.username %}'>{{ member }}</a>
         </td>
         <td>
-           <ul>
+           <ul class="ceasefire">
              {% for account in member.accounts.all %}
                  <li><a href="{% url account account.id %}">{{ account }}</a></li>
              {% endfor %}
@@ -51,14 +51,14 @@
         <td>{{ member.date_joined }}</td>
         <td>{{ member.verbose_status }}</td>        
         <td>
-          <ul>
+          <ul class="ceasefire">
             {% for email in member.emails.all %}
             <li>{{ email.get_type_display }}: {{ email.email }}</li>
             {% endfor %}
           </ul>
         </td>
         <td>
-          <ul>
+          <ul class="ceasefire">
             {% for phone in member.phones.all %}
             <li>{{ phone.get_type_display }}: {{ phone.number }}</li>
             {% endfor %}
