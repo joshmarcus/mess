@@ -8,11 +8,12 @@ def welcome(request):
     context = RequestContext(request)
 
     # just passing the entries, so we don't have too many
-    feed = feedparser.parse("http://www.mariposa.coop/?feed=rss2")
-    if (len(feed.entries) > MAX_ENTRIES):
-        entries = feed.entries[:MAX_ENTRIES]
-    else: 
-        entries = feed.entries
+    #feed = feedparser.parse("http://www.mariposa.coop/?feed=rss2")
+    #if (len(feed.entries) > MAX_ENTRIES):
+    #    entries = feed.entries[:MAX_ENTRIES]
+    #else: 
+    #    entries = feed.entries
+    entries = []
     context['rss_entries'] = entries
 
     template = get_template('welcome.html')
