@@ -229,9 +229,11 @@ class Task(models.Model):
         self.save()
 
     def duplicate_recur_rule(self):
-        return RecurRule(frequency=self.recur_rule.frequency, 
+        new_rule = RecurRule(frequency=self.recur_rule.frequency, 
                              interval=self.recur_rule.interval,
                              until=self.recur_rule.until)
+        new_rule.save()
+        return new_rule
 
     def exclude_from_recur_rule(self):
         exclude_date = Exclusion(date=self.time, recur_rule=self.recur_rule)
