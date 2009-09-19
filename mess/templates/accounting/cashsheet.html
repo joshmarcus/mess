@@ -1,29 +1,24 @@
 {% extends "base.html" %}
 {% load messmoney %}
 
+{% block head %}
+<style>
+  #primary-content-wrapper table.data td { 
+    padding:{{ row_height }}mm .25em {{ row_height }}mm .5em; 
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
+    <span class="tiny noprint float-right">
+      <form method="GET">{{ form }}<input type="submit" value="Redraw"></form>
+    </span>
     <h2>Cash Sheet as of {% now "l, F jS, Y, g:ia" %}</h2>
     <table class="data pagebreakafter cashsheet">
-      <thead>
-        <tr>
-          <th>Account</th>
-          {% comment %}<th class="tiny">Active<br>Members</th>{% endcomment %}
-          <th class="tiny">Hours<br>Balance</th>
-          <th>Old<br>Balance</th>
-          <th>Misc.</th>
-          <th>Dues &amp;<br>Deposits</th>
-          <th>Bulk<br>Orders</th>
-          <th>After-<br>Hours</th>
-          <th>Regular<br>Sales</th>
-          <th>Credit/<br>Debit<br>Card</th>
-          <th>Check/<br>Money<br>Order</th>
-          <th>New<br>Balance</th>
-        </tr>
-      </thead>
       {% for account in accounts %}
-        {% if forloop.counter|divisibleby:"25" %}  <!-- 25 rows per page -->
+        {% if forloop.counter0|divisibleby:rows_per_page %}
           </table>
           <table class="data pagebreakafter cashsheet">
             <thead>

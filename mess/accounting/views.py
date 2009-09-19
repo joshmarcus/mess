@@ -158,7 +158,17 @@ def close_out(request, date=None):
 @user_passes_test(lambda u: u.is_staff)
 def cashsheet(request):
     ''' printable cash sheet for all active accounts '''
-    accounts = m_models.Account.objects.active()
+    if request.GET.has_key('row_height'):
+        form = forms.CashSheetFormatForm(request.GET)
+    else:
+        form = forms.CashSheetFormatForm()
+    if form.is_valid():
+        row_height = form.cleaned_data.get('row_height')
+        rows_per_page = form.cleaned_data.get('rows_per_page')
+    else:
+        row_height = 2.5
+        rows_per_page = 25
+    accounts = m_models.Account.objects.active_not_LOA()[:100]
     return render_to_response('accounting/cashsheet.html', locals(),
             context_instance=RequestContext(request))
 

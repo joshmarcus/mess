@@ -46,6 +46,7 @@ EMAIL_TYPES = (
     ('s','School'),
     ('o','Other'),
 )
+today = datetime.date.today()
 
 class MemberManager(models.Manager):
     'Custom manager to add extra methods'
@@ -57,6 +58,9 @@ class MemberManager(models.Manager):
         return self.filter(Q(date_missing__isnull=False)|
                 Q(date_departed__isnull=False))
 
+    def active_not_LOA(self):
+        return self.active().exclude(leaveofabsence__start__lte=today,
+                                     leaveofabsence__end__gt=today)
 
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, editable=False)
@@ -80,10 +84,8 @@ class Member(models.Model):
 
     @property
     def current_loa(self):
-        loa_set = self.leaveofabsence_set.filter(
-                start__lte=datetime.datetime.now(),
-                end__gte=datetime.datetime.now())
-        if loa_set:
+        loa_set = self.leaveofabsence_set.filter(start__lte=today,end__gt=today)
+        if loa_set.count():
             return loa_set[0]
         
     @property
@@ -236,6 +238,12 @@ class AccountManager(models.Manager):
                 members__date_missing__isnull=True, 
                 members__date_departed__isnull=True)
 
+    def active_not_LOA(self):  # will show up on cash sheets
+        am_active_not_LOA = AccountMember.objects.filter(
+                shopper=False, account_contact=True,
+                member__in=Member.objects.active_not_LOA())
+        return self.filter(accountmember__in=am_active_not_LOA).distinct()
+
 
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -263,8 +271,8 @@ class Account(models.Model):
         return self.accountmember_set.filter(shopper=False).filter(
             member__date_missing__isnull=True,
             member__date_departed__isnull=True).exclude(
-            member__leaveofabsence__start__lte=datetime.datetime.now(),
-            member__leaveofabsence__end__gte=datetime.datetime.now()).count()
+            member__leaveofabsence__start__lte=today,
+            member__leaveofabsence__end__gt=today).count()
 
     def deposit_holders(self):
         return self.accountmember_set.filter(
