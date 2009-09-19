@@ -155,14 +155,14 @@ def reports(request):
         ('Accounting',[
             ('Cash Sheets',reverse('cashsheet')),
 
+            ('Transaction Summary',reverse('trans_summary')),
+
             listrpt('Accounts','All Balances and Deposits',
                 '','balance\r\ndeposit\r\nactive_member_count',
                 include_inactive='on'),
 
             listrpt('Accounts','Active Balances and Deposits',
                 '','balance\r\ndeposit\r\nactive_member_count'),
-
-            ('Transaction Summary',reverse('trans_summary')),
 
             ('Dues and Deposits Billing',reverse('billing')),
         ]),
@@ -491,12 +491,21 @@ def transaction_report(request):
         start = form.cleaned_data.get('start')
         end = form.cleaned_data.get('end')
         list_each = form.cleaned_data.get('list_each')
+        type = form.cleaned_data.get('type')
+        note = form.cleaned_data.get('note')
     else:
         start = datetime.date.today()
         end = start + datetime.timedelta(1)
         list_each = False
+        type = ''
+        note = ''
     transactions = a_models.Transaction.objects.filter(
                    timestamp__range=(start, end))
+    if type:
+        transactions = transactions.filter(
+                       Q(purchase_type=type)|Q(payment_type=type))
+    if note:
+        transactions = transactions.filter(note__icontains=note)
 
     # add up the totals.  This should become a helper function to use elsewhere.
     purchases_by_type = []
