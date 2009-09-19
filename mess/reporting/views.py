@@ -508,6 +508,9 @@ def transaction_report(request):
         transactions = transactions.filter(note__icontains=note)
 
     # add up the totals.  This should become a helper function to use elsewhere.
+    starting_total = a_models.total_balances_on(start)
+    ending_total = a_models.total_balances_on(end)
+
     purchases_by_type = []
     grand_total = 0
     for (code, type) in a_models.PURCHASE_CHOICES:

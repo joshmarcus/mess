@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 from mess.settings import LOCATION
 from mess.membership.models import Account, Member
+from mess.membership import models as m_models
 
 PURCHASE_CHOICES = (
     ('P','Purchase'),
@@ -133,6 +134,21 @@ class Reconciliation(models.Model):
 
     def __unicode__(self):
         return str(self.date)
+
+def total_balances_on(time):
+    ''' I want to do something more like...
+        select sum(account_balance) from accounting_transaction t
+        where t.timestamp < %s
+        and not exists (
+            select 1 from accounting_transaction
+            where account_id=t.account_id and timestamp > t.timestamp
+            and timestamp < %s )
+        But I can't figure how to translate that kind of SQL into Django...
+    '''
+    total = 0
+    for account in m_models.Account.objects.all():
+        total += account.balance_on(time) or 0
+    return total
 
 @commit_on_success
 def commit_potential_bills(accounts, bill_type, entered_by):

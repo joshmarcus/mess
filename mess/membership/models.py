@@ -373,6 +373,12 @@ class Account(models.Model):
         else:
             return 'Zero balance'
 
+    def balance_on(self, time):
+        newest_trans = self.transaction_set.filter(
+                       timestamp__lt=time).order_by('-timestamp')
+        if newest_trans.count():
+            return newest_trans[0].account_balance
+
     def max_allowed_to_owe(self):
         if self.active_member_count == 0:
             return 0

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load messmoney %}
 {% block content %}
 <div id="double-column" >
   <div id="primary-content-wrapper" >
@@ -6,7 +7,15 @@
     <table class="data"><tr>
       <th>Purchases</th>
       <th>Payments</th>
-      <td></td>
+      <td rowspan="2">
+        <form class="sorter noprint" method="GET" style="float:right;">
+          <table>{{ form }}</table>
+          <input type="submit" value="Filter">
+        </form>
+        <br>
+        Starting<br> Total<br> Balance:<br> {{ starting_total|messmoney }}<br><br>
+        Ending<br> Total<br> Balance:<br> {{ ending_total|messmoney }}
+      </td>
     </tr><tr><td>
       <table>      
         {% for x in purchases_by_type %}
@@ -25,11 +34,6 @@
           </tr>
         {% endfor %}
       </table>
-    </td><td>
-      <form class="sorter noprint" method="GET" style="float:right;">
-        <table>{{ form }}</table>
-        <input type="submit" value="Filter">
-      </form>
     </td></tr></table>
     {% if list_each %}
       <div id="transactions">
