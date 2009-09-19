@@ -14,7 +14,7 @@ PURCHASE_CHOICES = (
     ('A','After-Hours Purchase'),
     ('U','Dues'),
     ('O','Deposit'),
-    ('S','Misc Sales'),   # what is Misc Sales?  it's on the cash sheets...
+    ('S','Misc'),   # Misc is used for transfers etc, positive or negative
 #   ('T','Trade'),    what is Trade?
 )
 

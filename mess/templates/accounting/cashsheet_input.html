@@ -43,7 +43,7 @@
             <!-- hidden field used for javascript only -->
             <input type="hidden" id="balance_val" value="{{ account.balance }}">
           </td>
-          <td>{{ form.misc_sales }}</td>
+          <td>{{ form.misc }}</td>
           <td>{{ form.dues_deposits }}</td>
           <td>{{ form.bulk_orders }}</td>
           <td>{{ form.after_hours }}</td>
@@ -54,7 +54,7 @@
           <td><input type="submit" value="Submit"></td>
         </tr>
       </table>
-      {{ form.errors }}
+      Note: {{ form.note }} {{ form.errors }}
 </form>
 
       <div id="transactions">

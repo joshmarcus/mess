@@ -58,7 +58,7 @@ class CashsheetForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
             widget=AutoCompleteWidget('account_spiffy',
                 view_name='membership-autocomplete', canroundtrip=True))
-    misc_sales = forms.DecimalField(required=False,
+    misc = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
     dues_deposits = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
@@ -72,11 +72,12 @@ class CashsheetForm(forms.Form):
                 widget=forms.TextInput(attrs={'size':'4'}))
     check_mo = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
+    note = forms.CharField(required=False)
 
     def save(self, entered_by=None):
         purchases = [(purchase_type, self.cleaned_data[fieldname])
             for purchase_type, fieldname in (
-                ('S', 'misc_sales'),
+                ('S', 'misc'),
                 ('U', 'dues_deposits'),
                 ('B', 'bulk_orders'),
                 ('A', 'after_hours'),
@@ -93,6 +94,7 @@ class CashsheetForm(forms.Form):
                                        payment_amount=payments[0][1],
                                        purchase_type=purchases[0][0],
                                        purchase_amount=purchases[0][1],
+                                       note=self.cleaned_data['note'],
                                        entered_by=entered_by)
             trans.save()
         else:
@@ -100,12 +102,14 @@ class CashsheetForm(forms.Form):
                 trans = models.Transaction(account=self.cleaned_data['account'],
                                        purchase_type=purchase[0],
                                        purchase_amount=purchase[1],
+                                       note=self.cleaned_data['note'],
                                        entered_by=entered_by)
                 trans.save()
             for payment in payments:
                 trans = models.Transaction(account=self.cleaned_data['account'],
                                        payment_type=payment[0],
                                        payment_amount=payment[1],
+                                       note=self.cleaned_data['note'],
                                        entered_by=entered_by)
                 trans.save()
 

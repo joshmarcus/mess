@@ -52,7 +52,7 @@ function messmoney(val) {
 function autocalc() {
   var balance = document.getElementById('balance_val').value;
   // double-negative forces addition, not string concatenation
-  balance -= -document.getElementById('id_misc_sales').value;
+  balance -= -document.getElementById('id_misc').value;
   balance -= -document.getElementById('id_dues_deposits').value;
   balance -= -document.getElementById('id_bulk_orders').value;
   balance -= -document.getElementById('id_after_hours').value;
@@ -64,7 +64,7 @@ function autocalc() {
 }
 
 function setup_autocalc() {
-  document.getElementById('id_misc_sales').onchange = autocalc;
+  document.getElementById('id_misc').onchange = autocalc;
   document.getElementById('id_dues_deposits').onchange = autocalc;
   document.getElementById('id_bulk_orders').onchange = autocalc;
   document.getElementById('id_after_hours').onchange = autocalc;
