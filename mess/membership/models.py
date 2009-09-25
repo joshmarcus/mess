@@ -76,6 +76,10 @@ class Member(models.Model):
     date_joined = models.DateField(default=date.today())
     date_missing = models.DateField(blank=True, null=True)
     date_departed = models.DateField(blank=True, null=True)
+    card_number = models.CharField(max_length=128, blank=True, null=True)
+    card_facility_code = models.CharField(max_length=128, blank=True, 
+            null=True)
+    card_type = models.CharField(max_length=128, blank=True, null=True)
 
     objects = MemberManager()
 
