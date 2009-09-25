@@ -24,6 +24,7 @@
             </th>
             <td>{{form.password}}</td>
           </tr>
+          <tr>
             <td></td>
             <td>
               <input class="button" type="submit" value="Log in"/>
@@ -42,4 +43,9 @@
       {% endif %}
     </div>
   </div>
+
+<script type="text/javascript">
+  document.getElementById('id_username').focus();
+</script>
+
 {% endblock %}
