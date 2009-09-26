@@ -13,6 +13,8 @@ from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
 from mess.membership import models as m_models
 
+today = datetime.date.today()
+
 # cashier permission is the first if
 @user_passes_test(lambda u: u.is_authenticated())
 def transaction(request):
@@ -37,9 +39,9 @@ def transaction(request):
     if request.method == 'POST':
         form = forms.TransactionForm(request.POST)
         if form.is_valid():
-            transaction = form.save(commit=False)
-            transaction.entered_by = request.user
-            transaction.save()
+            transaction = form.save(commit=False) # get info from form
+            transaction.entered_by = request.user # add entered_by
+            transaction.save()                    # save to database
             return HttpResponseRedirect(reverse('transaction'))
     else:
         form = forms.TransactionForm()
@@ -90,7 +92,6 @@ def cashsheet_input(request):
             return HttpResponseRedirect(reverse('cashsheet_input'))
     else:
         form = forms.CashsheetForm()
-    today = datetime.date.today()
     transactions = models.Transaction.objects.filter(
             timestamp__range=(today,today+datetime.timedelta(1)))
     can_reverse = True
@@ -106,10 +107,14 @@ def hours_balance(request):
     if request.method == 'POST':
         form = forms.HoursBalanceForm(request.POST)
         if form.is_valid():
-            form.save()
+            hourstransaction = form.save(commit=False) # get info from form
+            hourstransaction.entered_by = request.user # add entered_by
+            hourstransaction.save()                    # save to database
             return HttpResponseRedirect(reverse('hours_balance'))
     else:
         form = forms.HoursBalanceForm()
+    hours_transactions = models.HoursTransaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)))
     return render_to_response('accounting/hours_balance.html', locals(),
             context_instance=RequestContext(request))
 

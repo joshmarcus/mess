@@ -5,7 +5,10 @@
 <ul class="quick-info">
   <li><b>Balance:</b> {{ account.balance|messmoney }}</li>
   <li><b>Deposit:</b> {{ account.deposit|messmoney }}</li>
-  <li><b>Hours Balance:</b> {{ account.hours_balance|messmoney }}</li>
+  <li>
+    <b>Hours Balance:</b> {{ account.hours_balance|messmoney }} 
+    <a href="{{ account.get_hours_balance_history_url }}">history</a>
+  </li>
   <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j" }}{% else %}None{% endif %}</li>
 </ul>
 

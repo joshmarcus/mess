@@ -24,12 +24,15 @@ class TransactionForm(forms.ModelForm):
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=SelectAfterAjax(), required=False)
 
-class HoursBalanceForm(forms.Form):
+class HoursBalanceForm(forms.ModelForm):
+    class Meta:
+        model = models.HoursTransaction
+        exclude = ('hours_balance','entered_by','note')
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
-    hours_balance_change = forms.CharField(required=False,
-                widget=forms.TextInput(attrs={'size':'6'}))
+    hours_balance_change = forms.CharField(
+                widget=forms.TextInput(attrs={'size':'4'}))
 
     def clean_hours_balance_change(self):
         value = str(self.cleaned_data['hours_balance_change'])
@@ -39,11 +42,6 @@ class HoursBalanceForm(forms.Form):
             return Decimal(value)
         except:
             raise forms.ValidationError('invalid hours balance')
-
-    def save(self):
-        acct = self.cleaned_data['account']
-        acct.hours_balance += self.cleaned_data['hours_balance_change']
-        acct.save()
 
 class ReverseForm(forms.Form):
     reverse_id = forms.ModelChoiceField(models.Transaction.objects.all(),

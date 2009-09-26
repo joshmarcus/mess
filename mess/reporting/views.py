@@ -113,6 +113,8 @@ def reports(request):
             listrpt('Accounts','Owing 1 Hour or More',
                 'hours_balance__gte=1.00', 'hours_balance\r\nnote'),
 
+            ('Hours Balance Changes',reverse('hours_balance_changes')),            
+
         ]),
 
         ('Members',[
@@ -483,9 +485,36 @@ def transaction_list_report(request):
     c['transactions'] = trans
     return render_to_response('reporting/transactions_list.html', c)
 
+@user_passes_test(lambda u: u.is_staff)
+def hours_balance_changes(request, account=None, account_id=None):
+    """
+    View to summarize hours transactions in a given time period
+
+    Paul says, "This function is *so* f'ed up."
+    """
+    start = datetime.date.today() - datetime.timedelta(7)
+    end = start + datetime.timedelta(8)
+    if request.GET.has_key('account') and request.GET.get('account'): 
+        account = m_models.Account.objects.get(id=request.GET.get('account'))
+        account_id = account.id
+    if request.GET.has_key('start'):
+        start = datetime.datetime(*time.strptime(request.GET.get('start'), 
+                                  '%Y-%m-%d')[:3])
+    if request.GET.has_key('end'):
+        end = datetime.datetime(*time.strptime(request.GET.get('end'), 
+                                '%Y-%m-%d')[:3])
+    form = forms.HoursBalanceChangesFilterForm(data=
+        {'account':account_id,'start':start,'end':end})
+    hours_transactions = a_models.HoursTransaction.objects.filter(
+                         timestamp__range=(start,end))
+    if account:
+        hours_transactions = hours_transactions.filter(account=account)
+    return render_to_response('reporting/hours_balance_changes.html', locals(),
+            context_instance=RequestContext(request))
+
 
 @user_passes_test(lambda u: u.is_staff)
-def transaction_report(request):
+def trans_summary(request):
     """View to summarize transactions by type."""
     if request.GET.has_key('start'):
         form = forms.TransactionFilterForm(request.GET)

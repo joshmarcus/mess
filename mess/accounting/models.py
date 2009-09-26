@@ -28,6 +28,22 @@ PAYMENT_CHOICES = (
     ('W','Work Credit'),
 )
 
+class HoursTransaction(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    account = models.ForeignKey(Account)
+    hours_balance_change = models.DecimalField(max_digits=5, decimal_places=2,
+        default=0, blank=True)
+    note = models.CharField(max_length=256, blank=True)
+    hours_balance = models.DecimalField(max_digits=5, decimal_places=2)
+    entered_by = models.ForeignKey(User, blank=True, null=True)
+
+    def save(self, force_insert=False, force_update=False):
+        old_balance = self.account.hours_balance
+        new_balance = old_balance + self.hours_balance_change
+        self.account.hours_balance = self.hours_balance = new_balance
+        self.account.save()
+        super(HoursTransaction, self).save(force_insert, force_update)
+
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account)

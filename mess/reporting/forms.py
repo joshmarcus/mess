@@ -1,7 +1,9 @@
 import datetime
 
 from django import forms
+from mess.autocomplete import AutoCompleteWidget
 from mess.accounting import models as a_models
+from mess.membership import models as m_models
 
 LIST_OBJECT_CHOICES = (
     ('Accounts', 'Accounts'),
@@ -24,3 +26,13 @@ class TransactionFilterForm(forms.Form):
     type = forms.ChoiceField(required=False, choices=
            (('','All'),) + a_models.PURCHASE_CHOICES + a_models.PAYMENT_CHOICES)
     note = forms.CharField(required=False)
+
+class HoursBalanceChangesFilterForm(forms.Form):
+    start = forms.DateField(required=False, 
+        initial=datetime.date.today()-datetime.timedelta(7))
+    end = forms.DateField(required=False, 
+        initial=datetime.date.today()+datetime.timedelta(1))
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account_spiffy',
+            view_name='membership-autocomplete', canroundtrip=True),
+        required=False)

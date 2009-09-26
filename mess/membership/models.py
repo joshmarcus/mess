@@ -310,6 +310,9 @@ class Account(models.Model):
     def get_absolute_url(self):
         return ('account', [self.id])
 
+    def get_hours_balance_history_url(self):
+        return reverse('hours_balance_changes')+'?account='+str(self.id)
+
     def members_leaveofabsence_set(self):
         return LeaveOfAbsence.objects.filter(member__accounts=self)
 
