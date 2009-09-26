@@ -8,6 +8,7 @@
       <li class="last-item"><a class="active" href="{% url accounts %}">Accounts</a></li>
     </ul>
     <div id="primary-content-wrapper">
+
       <h2 class="accountname">
         {% if user.is_staff %}
           <span class="accountactionlinks">
@@ -18,16 +19,19 @@
         {% endif %}
         {{ account }}
       </h2>
+
       {% if request.user.is_staff and account.note %}
         <div class="details">
           <h5 class="accountnotes">Account Notes</h5>
           {{ account.note|linebreaks }}
         </div>
       {% endif %}
+
       {% if account.deposit_holders %}
         <h2 class="accountmembersection">
           Deposit Holders ({{ account.active_member_count }})
         </h2> 
+
         <div class="profile profile-deposit_holder">
           {% with "deposit_holder" as section %}
           {% for am in account.deposit_holders %}
@@ -36,6 +40,7 @@
           {% endwith %}
         </div>
       {% endif %}
+
       {% if account.non_deposit_holders %}
         <h2 class="accountmembersection">Proxy Shoppers</h2>
         <div class="profile profile-proxy">
@@ -46,6 +51,7 @@
           {% endwith %}
         </div>
       {% endif %}
+
       {% if account.departed_members %}
         <h2 class="accountmembersection">Departed Members</h2>
         <div class="profile profile-inactive">
