@@ -87,6 +87,11 @@ def prepare_columns(headers):
             ],
         'member_post': [
             Column(headers, 'Join Date', date_format, 'date_joined'),
+            Column(headers, 'Departure Date', date_format, 'date_departed'),
+            Column(headers, 'Has key?', is_yes, 'has_key'),
+            Column(headers, 'Card Number', i_to_a, 'card_number'), # be sure to turn number:21944.0 into 21944
+            Column(headers, 'Card Facility Code', i_to_a, 'card_facility_code'), 
+            Column(headers, 'Card Type', i_to_a, 'card_type'), 
             ] }
 
 class Cell:
@@ -199,6 +204,12 @@ def or_zero(a):
         return a
     except:
         return 0
+
+def i_to_a(i):
+    if type(i) is float:
+        return str(int(i))
+    else:
+        return str(i)
 
 def is_not_none(a):
     return len(a) > 0 and not a.isspace() and a.lower() != 'none'

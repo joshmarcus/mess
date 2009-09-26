@@ -195,6 +195,11 @@ class Member(models.Model):
                 return 'Active, but on leave until %s' % self.current_loa.end
             return 'Active'
 
+    def date_orientation(self):
+        orientations = self.task_set.filter(job__name='Orientation Attendee')
+        if orientations.count():
+            return orientations[0].time.date()
+
     class Meta:
         ordering = ['user__username']
 
@@ -384,19 +389,21 @@ class Account(models.Model):
             return newest_trans[0].account_balance
 
     def max_allowed_to_owe(self):
-        if self.active_member_count == 0:
+        active_members = self.active_member_count
+        if active_members == 0:
             return 0
         sixmonthsago = datetime.date.today() - datetime.timedelta(6*30)
         oldmembers = self.accountmember_set.filter(shopper=False,
-                        member__date_joined__lt=sixmonthsago)
+                        member__date_joined__lt=sixmonthsago).count()
         if oldmembers:
-            return self.active_member_count * Decimal('25.00')
+            return active_members * Decimal('25.00')
         else:
-            return self.active_member_count * Decimal('5.00')
+            return active_members * Decimal('5.00')
 
     def must_pay(self):
-        if self.balance > self.max_allowed_to_owe():
-            return self.balance - self.max_allowed_to_owe()
+        max_allowed_to_owe = self.max_allowed_to_owe()
+        if self.balance > max_allowed_to_owe:
+            return self.balance - max_allowed_to_owe
 
     def must_work(self):
         if self.hours_balance > Decimal('0.03'):
@@ -417,14 +424,15 @@ class Account(models.Model):
 
     def frozen_flags(self):
         flags = []
+        active_members = self.active_member_count
         # must pay?
         if self.balance > 0:
             sixmonthsago = datetime.date.today() - datetime.timedelta(6*30)
             oldmembers = self.members.filter(date_joined__lt=sixmonthsago)
             if oldmembers.count():
-                max_balance = self.active_member_count * Decimal('25.00')
+                max_balance = active_members * Decimal('25.00')
             else:
-                max_balance = self.active_member_count * Decimal('5.00')
+                max_balance = active_members * Decimal('5.00')
             if self.balance > max_balance:
                 flags.append('MUST PAY') # %s' % (self.balance - max_balance))
         # must work?
@@ -432,7 +440,7 @@ class Account(models.Model):
             flags.append('MUST WORK')
         if not self.can_shop:
             flags.append('CANNOT SHOP')
-        if not self.active_member_count:
+        if not active_members:
             flags.append('ACCOUNT CLOSED')
         return flags
 

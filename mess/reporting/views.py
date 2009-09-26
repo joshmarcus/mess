@@ -142,7 +142,7 @@ def reports(request):
 
             listrpt('Members','New',# since '+past90d.strftime('%B %e, %Y'),
                 'date_joined__gte='+str(past90d), 
-                'accounts\r\ndate_joined',
+                'accounts\r\ndate_joined\r\ndate_orientation',
                 order_by='-date_joined'),
 
             listrpt('Members','Recently Departed',# (since '+past90d.strftime('%B %e, %Y')+')',
@@ -150,6 +150,11 @@ def reports(request):
                 'accounts\r\ndate_joined\r\ndate_departed',
                 order_by='-date_departed',
                 include_inactive='on'),
+
+            listrpt('Members','Keycard Info',
+                'card_number__gt=',
+                'accounts\r\ncard_number\r\ncard_facility_code\r\ncard_type',
+                order_by='accounts'),
         ]),
 
         ('Accounting',[
