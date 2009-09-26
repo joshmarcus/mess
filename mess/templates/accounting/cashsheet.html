@@ -16,7 +16,7 @@
       <form method="GET">{{ form }}<input type="submit" value="Redraw"></form>
     </span>
     <h2>Cash Sheet as of {% now "l, F jS, Y, g:ia" %}</h2>
-    <table class="data pagebreakafter cashsheet">
+    <table class="data cashsheet">
       {% for account in accounts %}
         {% if forloop.counter0|divisibleby:rows_per_page %}
           </table>

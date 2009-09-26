@@ -166,9 +166,9 @@ def cashsheet(request):
         row_height = form.cleaned_data.get('row_height')
         rows_per_page = form.cleaned_data.get('rows_per_page')
     else:
-        row_height = 2.5
-        rows_per_page = 25
-    accounts = m_models.Account.objects.active_not_LOA()[:100]
+        row_height = 2.0
+        rows_per_page = 22
+    accounts = m_models.Account.objects.active_not_LOA()
     return render_to_response('accounting/cashsheet.html', locals(),
             context_instance=RequestContext(request))
 
