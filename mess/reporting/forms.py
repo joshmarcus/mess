@@ -28,11 +28,22 @@ class TransactionFilterForm(forms.Form):
     note = forms.CharField(required=False)
 
 class HoursBalanceChangesFilterForm(forms.Form):
-    start = forms.DateField(required=False, 
-        initial=datetime.date.today()-datetime.timedelta(7))
-    end = forms.DateField(required=False, 
-        initial=datetime.date.today()+datetime.timedelta(1))
+    start = forms.DateField(required=False) 
+    end = forms.DateField(required=False) 
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True),
         required=False)
+
+    def full_clean(self):
+        ''' set defaults for start and end '''
+        self.data = self.data.copy()      # make QueryDict mutable
+        today = datetime.date.today()
+        if 'start' not in self.data:
+            if 'account' in self.data:
+                self.data['start'] = datetime.date(1900,1,1)
+            else:
+                self.data['start'] = today - datetime.timedelta(7)
+        if 'end' not in self.data:
+            self.data['end'] = today + datetime.timedelta(1)
+        super(HoursBalanceChangesFilterForm,self).full_clean()

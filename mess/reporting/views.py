@@ -486,29 +486,22 @@ def transaction_list_report(request):
     return render_to_response('reporting/transactions_list.html', c)
 
 @user_passes_test(lambda u: u.is_staff)
-def hours_balance_changes(request, account=None, account_id=None):
+def hours_balance_changes(request):
     """
     View to summarize hours transactions in a given time period
 
-    Paul says, "This function is *so* f'ed up."
+    Paul says, "This function is better now."  See form.full_clean
+    It accepts any combo of provided fields, eg, account with no dates.
     """
-    start = datetime.date.today() - datetime.timedelta(7)
-    end = start + datetime.timedelta(8)
-    if request.GET.has_key('account') and request.GET.get('account'): 
-        account = m_models.Account.objects.get(id=request.GET.get('account'))
-        account_id = account.id
-    if request.GET.has_key('start'):
-        start = datetime.datetime(*time.strptime(request.GET.get('start'), 
-                                  '%Y-%m-%d')[:3])
-    if request.GET.has_key('end'):
-        end = datetime.datetime(*time.strptime(request.GET.get('end'), 
-                                '%Y-%m-%d')[:3])
-    form = forms.HoursBalanceChangesFilterForm(data=
-        {'account':account_id,'start':start,'end':end})
-    hours_transactions = a_models.HoursTransaction.objects.filter(
-                         timestamp__range=(start,end))
-    if account:
-        hours_transactions = hours_transactions.filter(account=account)
+    form = forms.HoursBalanceChangesFilterForm(request.GET)
+    if form.is_valid():    # empty form is valid, gets default dates
+        start = form.cleaned_data['start']
+        end = form.cleaned_data['end']        
+        account = form.cleaned_data['account']
+        hours_transactions = a_models.HoursTransaction.objects.filter(
+                             timestamp__range=(start,end))
+        if account:
+            hours_transactions = hours_transactions.filter(account=account)
     return render_to_response('reporting/hours_balance_changes.html', locals(),
             context_instance=RequestContext(request))
 
