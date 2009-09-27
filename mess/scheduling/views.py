@@ -13,7 +13,10 @@ from django.utils import simplejson
 #from django.views.generic.create_update import *
 
 from mess.scheduling import forms, models
+from mess.membership import forms as m_forms
+from mess.membership import models as m_models
 
+today = datetime.date.today()
 
 def unassigned_days(firstday, lastday):
     """
@@ -387,6 +390,58 @@ def reminder(request, date):
             send_mail(subject, message, None, [to])
     return render_to_response('scheduling/reminder.html', locals(),
                                 context_instance=RequestContext(request))
+
+@user_passes_test(lambda u: u.is_staff)
+def swap(request):
+    """ 
+    two members swap shifts (one-time), and tell a staff person 
+    uses member.remove_from_shifts to break recur_rules where needed
+    """
+    original = models.Task.objects.get(id=request.GET['original'])
+    if request.method == 'POST':
+        swap = models.Task.objects.get(id=request.POST['task'])
+        DO_IT_RIGHT = False
+        if DO_IT_RIGHT: 
+            duporiginal = original.excuse_and_duplicate()
+            duporiginal.account = swap.account
+            duporiginal.member = swap.member
+            duporiginal.save()
+            dupswap = swap.excuse_and_duplicate()
+            dupswap.account = original.account
+            dupswap.member = original.member
+            dupswap.save()
+        else: # Do it wrong, breaking the recur_rules into halves
+            original_account = original.account
+            original_member = original.member
+            original_member.remove_from_shifts(original.time.date(), 
+                            original.time.date()+datetime.timedelta(1))
+            swap_account = swap.account
+            swap_member = swap.member
+            swap_member.remove_from_shifts(swap.time.date(), 
+                        swap.time.date()+datetime.timedelta(1))
+            original.account = swap_account
+            original.member = swap_member
+            original.recur_rule = None
+            original.save()
+            swap.account = original_account
+            swap.member = original_member
+            swap.recur_rule = None
+            swap.save()
+        return HttpResponseRedirect(reverse('scheduling-schedule', 
+                                    args=[original.time.date()]))
+    if 'member' in request.GET:   # member to swap with
+        swap_member = m_models.Member.objects.get(id=request.GET['member'])
+        form = forms.PickTaskForm()
+        form.fields['task'].queryset = models.Task.objects.filter(
+                   member=swap_member, 
+                   time__range=(today - datetime.timedelta(7),
+                                today + datetime.timedelta(180)))
+        form.fields['task'].initial = form.fields['task'].queryset[0].id
+    else:
+        form = m_forms.PickMemberForm()
+    return render_to_response('scheduling/swap.html', locals(),
+                              context_instance=RequestContext(request))
+        
 
 # unused below
 

@@ -111,6 +111,9 @@
                   <input type="submit" name="duplicate" value="{% if task.assigned %}Excuse and Duplicate{% else %}One-Time Fill{% endif %}">
                 </form>
               {% endif %}
+              {% if task.assigned %}
+                <a href="{% url swap %}?original={{ task.id }}">swap</a>
+              {% endif %}
             {% endif %}
           </td>
         </tr>

@@ -5,6 +5,7 @@ from django.forms.models import inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 from mess.membership import models
+from mess.autocomplete import AutoCompleteWidget
 import datetime
 
 AddressFormSet = inlineformset_factory(models.Member, models.Address, 
@@ -94,6 +95,11 @@ class MemberListFilterForm(forms.Form):
 
 class DateForm(forms.Form):
     day = forms.DateField(initial = datetime.date.today)
+
+class PickMemberForm(forms.Form):
+    member = forms.ModelChoiceField(models.Member.objects.all(),
+        widget=AutoCompleteWidget('member_spiffy',
+            view_name='membership-autocomplete', canroundtrip=True))
 
 class LoaForm(forms.Form):
     ENDDEF = 365  # days from today for endtime default

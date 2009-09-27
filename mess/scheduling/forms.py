@@ -99,6 +99,14 @@ class RecurForm(forms.ModelForm):
 TimecardFormSet = modelformset_factory(models.Task, extra=0, 
     fields=('hours_worked', 'excused', 'makeup', 'banked'))
 
+class PickTaskForm(forms.Form):
+    ''' 
+    warning: don't render this form without setting the queryset
+    use form.fields['task'].queryset = models.Task.objects.filter(...)
+    '''
+    task = forms.ModelChoiceField(models.Task.objects.all(), 
+           empty_label=None, widget=forms.RadioSelect())
+
 #class WorkerForm(forms.ModelForm):
 #    class Meta:
 #        model = models.Worker

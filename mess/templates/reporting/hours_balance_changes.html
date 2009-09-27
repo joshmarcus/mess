@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load messmoney %}
+{% block content %}
+<div id="left-column">
+  <div id="primary-content-wrapper">
+    <h2>Hours Balance Changes</h2>
+    {% include 'accounting/snippets/hours_balance_changes.html' %}
+  </div>
+</div>
+<div id="right-column">
+  <form>
+    <table>{{ form }}</table>
+    <input type="submit" value="Filter">
+  </form>
+</div>
+{% endblock %}

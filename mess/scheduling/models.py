@@ -96,9 +96,15 @@ class Task(models.Model):
 
     def __unicode__(self):
         try:
-            return u'%s - %s %s' % (self.job, self.time, self.member.name)
+            return u'%s, %s %sh, %s (%s)' % (self.job, 
+                self.time.strftime('%Y-%m-%d %I:%M%P'), self.hours,
+                self.member.user.first_name, self.account)
         except AttributeError:
-            return u'%s - %s' % (self.job, self.time)
+            return u'%s, %s %sh' % (self.job, 
+                self.time.strftime('%Y-%m-%d %I:%M%P'), self.hours)
+
+    def get_absolute_url(self):
+        return '/scheduling/task/%s' % self.id
 
     @property
     def assigned(self):
@@ -270,6 +276,12 @@ class Task(models.Model):
     def duplicate(self):
         new_task = Task(job=self.job, time=self.time, hours=self.hours)
         new_task.save()
+        return new_task
+
+    def excuse_and_duplicate(self):
+        self.excused = True
+        self.save()
+        return self.duplicate()
         
     def get_recurrence_display(self):
         if self.recur_rule:

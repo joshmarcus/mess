@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Swap Shifts</h2>
+    <table class="data">
+      <tr>
+        <th>Original Shift</th>
+        <th>Swap Shift</th>
+      </tr>
+      <td>
+        {{ original.member.user.first_name }}
+        (<a href="{{ original.account.get_absolute_url }}">{{ original.account }}</a>)<br>
+        <a href="{{ original.get_absolute_url }}">{{ original }}</a><br>
+        {{ original.hours }} hours
+      </td>
+      <td>
+        {% if swap_member %}
+          {{ swap_member.user.first_name }}
+          (<a href="{{ swap_member.get_primary_account.get_absolute_url }}">{{ swap_member.get_primary_account }}</a>)<br>
+          <form method="POST"> <!-- pick task to swap -->
+            <table>{{ form }}</table>
+            <input type="submit" value="Swap">
+          </form>
+        {% else %}
+          <form method="GET"> <!-- search for member to swap with -->
+            <table>{{ form }}</table>
+            <input type="hidden" name="original" value="{{ original.id }}">
+            <input type="submit" value="Search">
+          </form>
+        {% endif %}
+      </td>
+    </table>
+  </div>
+</div>
+{% endblock %}

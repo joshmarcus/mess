@@ -1,0 +1,22 @@
+{% load messmoney %}
+
+<table class="data">
+  <tr>
+    <th>Time</th>
+    <th>Account</th>
+    <th>Hours<br>Balance<br>Change</th>
+    <th>Hours<br>Balance</th>
+    <th>Entered<br>By</th>
+  </tr>
+  {% if hours_transactions %}
+    {% for transaction in hours_transactions|dictsortreversed:"id" %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>{{ transaction.timestamp|date:"n/j g:i A" }}</td>
+        <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account }}</a></td>
+        <td>{{ transaction.hours_balance_change|messmoney }}</td>
+        <td>{{ transaction.hours_balance|messmoney }}</td>
+        <td>{{ transaction.entered_by.username }}</td>
+      </tr>
+    {% endfor %}
+  {% endif %}
+</table>
