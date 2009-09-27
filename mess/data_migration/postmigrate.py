@@ -25,6 +25,7 @@ import datetime
 import re
 import xlrd
 from random import choice
+from decimal import Decimal
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -33,6 +34,7 @@ from django.db.models import Q
 
 from mess.membership import models
 from mess.scheduling import models as s_models
+from mess.accounting import models as a_models
 
 
 def prepare_columns(headers):
@@ -80,7 +82,7 @@ def prepare_columns(headers):
             Column(headers, 0, porter=set_shopper_flag),
             ],
         'account_post': [
-            Column(headers, 'Old Balance', parser=or_zero, dest='balance'),
+            Column(headers, 'Old Balance', parser=or_zero, porter=set_balance),
             Column(headers, 'Hours Balance', parser=or_zero, dest='hours_balance'),
             Column(headers, 'Cumulative deposit', parser=or_zero, dest='deposit'),
             Column(headers, 'Active Members', porter=am_compare_and_warn),
@@ -206,10 +208,10 @@ def or_zero(a):
         return 0
 
 def i_to_a(i):
-    if type(i) is float:
-        return str(int(i))
-    else:
-        return str(i)
+    a = str(i)
+    if a[-2:] == '.0':
+        a = a[:-2]
+    return a
 
 def is_not_none(a):
     return len(a) > 0 and not a.isspace() and a.lower() != 'none'
@@ -340,6 +342,19 @@ def am_compare_and_warn(excel_active_members, mess_account):
     elif mam > 0:
         print 'NOT EQUAL: %s has %s active members in Excel, %s in MESS' % (
                 mess_account.name, xam, mam)
+
+def set_balance(data, new_account):
+    if new_account.balance != 0:
+        a_models.Transaction.objects.create(account=new_account,
+                                        purchase_type='S',
+                                        purchase_amount=-new_account.balance,
+                                        note='destroy prior balance')
+        print 'reset balance to 0'
+    a_models.Transaction.objects.create(account=new_account,
+                                        purchase_type='S',
+                                        purchase_amount=Decimal(data),
+                                        note='balance from Excel')
+    print 'set balance %s' % data
 
 def create_unique_user(slug, count=0, countstr=''):
     username = slug + countstr
