@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Switch One Shift</h2>
+    This experimental system lets you make a one-time switch to a different shift that is at least {{ SOONEST_SWITCH.days }} days in the future, and is before your scheduled shift.
+    <table class="data">
+      <tr>
+        <th>Original Shift</th>
+        <th>Switch To</th>
+      </tr>
+      <td>
+        {{ original.member.user.first_name }}
+        (<a href="{{ original.account.get_absolute_url }}">{{ original.account }}</a>)<br>
+        {{ original }}<br>
+      </td>
+      <td>
+        {% if possible_switches.count %}
+          Please pick a make-up shift that you're sure you can do.<br>
+          Some shifts require special training, such as Cashier.<br>
+          If you need a different make-up, contact co-op staff instead.<br>
+          <form method="POST">
+            <table>{{ form }}</table>
+            <input type="submit" value="Switch!">
+          </form>
+        {% else %}
+          Sorry, we don't seem to have any unassigned shifts between {{ earliest_switch|date:"n/j" }} and {{ original.time|date:"n/j" }}.  Please contact co-op staff if you really need to switch this shift.
+        {% endif %}
+      </td>
+    </table>
+  </div>
+</div>
+{% endblock %}

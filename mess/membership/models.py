@@ -385,6 +385,18 @@ class Account(models.Model):
         else:
             return 'Zero balance'
 
+    def owes_or_credit(self):
+        if self.balance > 0:
+            return 'Money Owed'
+        else:
+            return 'Credit'
+
+    def hours_owed_or_banked(self):
+        if self.hours_balance > 0:
+            return 'Owed'
+        else:
+            return 'Banked'
+
     def balance_on(self, time):
         newest_trans = self.transaction_set.filter(
                        timestamp__lt=time).order_by('-timestamp')

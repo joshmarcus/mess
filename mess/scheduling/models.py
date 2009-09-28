@@ -279,9 +279,15 @@ class Task(models.Model):
         return new_task
 
     def excuse_and_duplicate(self):
+        ''' 
+        Assigned shift: excuses member, duplicates shift for fill
+        Unassigned shift: marks "excused", duplicates for one-time fill
+        Dancer shift: excuses member ONLY
+        '''
         self.excused = True
         self.save()
-        return self.duplicate()
+        if 'Dancer' not in self.job.name:
+            return self.duplicate()
         
     def get_recurrence_display(self):
         if self.recur_rule:

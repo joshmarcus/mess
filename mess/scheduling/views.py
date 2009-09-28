@@ -391,6 +391,44 @@ def reminder(request, date):
     return render_to_response('scheduling/reminder.html', locals(),
                                 context_instance=RequestContext(request))
 
+@user_passes_test(lambda u: u.is_authenticated())
+def switch(request):
+    original = models.Task.objects.get(id=request.GET['original'])
+    if original.member is None or ((original.member.user != request.user)
+                                   and not request.user.is_staff):
+        return HttpResponse('Sorry.  You are not assigned to that task.')
+    if original.makeup:
+        return HttpResponse('Sorry.  Cannot switch a make-up shift.')
+    SOONEST_SWITCH = datetime.timedelta(11)
+    earliest_switch = datetime.datetime.now() + SOONEST_SWITCH
+    if original.time < earliest_switch:
+        return HttpResponse('Sorry.  Cannot switch shifts within %s' % SOONEST_SWITCH)
+    if request.method == 'POST':
+        switch = models.Task.objects.get(id=request.POST['task'])
+        if switch.member or switch.account:
+            return HttpResponse('Sorry.  Switch task is already assigned.')
+        if switch.recur_rule:
+            switch = switch.excuse_and_duplicate()  # one-time fill
+        original.excuse_and_duplicate()
+        switch.member = original.member
+        switch.account = original.account
+        switch.makeup = True
+        switch.save()
+        return HttpResponseRedirect(switch.account.get_absolute_url())
+    form = forms.PickTaskForm()
+    possible_switches = models.Task.objects.filter(
+                time__range=(earliest_switch, original.time),
+                hours=original.hours, job=original.job, excused=False,
+                account__isnull=True, member__isnull=True)
+    if possible_switches.count() == 0:
+        possible_switches = models.Task.objects.filter(
+                time__range=(earliest_switch, original.time),
+                hours=original.hours, excused=False,
+                account__isnull=True, member__isnull=True)
+    form.fields['task'].queryset = possible_switches[:10]
+    return render_to_response('scheduling/switch.html', locals(),
+                              context_instance=RequestContext(request))
+
 @user_passes_test(lambda u: u.is_staff)
 def swap(request):
     """ 

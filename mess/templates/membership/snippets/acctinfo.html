@@ -3,13 +3,15 @@
 <h2>Account Info</h2>
 {% include "accounting/snippets/acct_flags.html" %}
 <ul class="quick-info">
-  <li><b>Balance:</b> {{ account.balance|messmoney }}</li>
+  <li><b>{{ account.owes_or_credit }}:</b> 
+    {{ account.balance|messmoney }}</li>
   <li><b>Deposit:</b> {{ account.deposit|messmoney }}</li>
   <li>
-    <b>Hours Balance:</b> {{ account.hours_balance|messmoney }} 
+    <b>Hours {{ account.hours_owed_or_banked }}:</b> 
+      {{ account.hours_balance|messmoney }} 
     {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
   </li>
-  <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j" }}{% else %}None{% endif %}</li>
+  <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{% url switch %}?original={{ account.next_shift.id }}">need to switch?</a>{% else %}None{% endif %}</li>
 </ul>
 
 <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>
@@ -53,7 +55,8 @@
             {% for task in week.tasks %}
               <div class="task-{{ task.simple_workflag }}">
                 {{ task.member }} &mdash; {{ task.job }} <br>
-                <a href="{% url scheduling-task task.id %}">{{ task.time|date:"D n/j/y" }}</a>, {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
+                {% if request.user.is_staff %}<a href="{% url scheduling-task task.id %}">{{ task.time|date:"D n/j/y" }}</a>{% else %}{{ task.time|date:"D n/j/y" }}{% endif %}, 
+                {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
                 {% if task.hours_worked %}<b>Worked {{ task.hours_worked }} hours</b>{% endif %}
                 <b>{{ task.workflag }}</b>
               </div>
@@ -68,6 +71,7 @@
         attach_hiders('workhist_future',1);
         attach_hiders('workhist_week',{{ account.workhist|length }}); 
     </script>
+  click any highlighted day to show shift info
   </div>
 
     {% if account.members_leaveofabsence_set %}

@@ -71,10 +71,12 @@
       {% if am.member.has_key %}Has Key{% else %}No Key{% endif %}
     </li>
 
+    {% if request.user.is_staff %}
     {% if am.member.card_number or am.member.card_facility_code or am.member.card_type %}
     <li><b>Key #:</b>
       {{ am.member.card_number }} / {{ am.member.card_facility_code }} / {{ am.member.card_type }}
     </li>
+    {% endif %}
     {% endif %}
 
     <li><b>Joined:</b> {{ am.member.date_joined|date:"n/j/Y" }}</li>
