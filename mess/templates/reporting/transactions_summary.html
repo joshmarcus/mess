@@ -5,13 +5,13 @@
   <div id="primary-content-wrapper" >
     <h2>Transaction Totals</h2>
     <table class="data"><tr>
-      <th>Purchases</th>
-      <th>Payments</th>
-      <th>Balance Totals</th>
-      <th>Filters</th>
+      <th style="width:25%;">Purchases</th>
+      <th style="width:25%;">Payments</th>
+      <th style="width:25%;">Balance Totals</th>
+      <th style="width:25%; text-align:right;">Filters</th>
 
     </tr><tr><td>
-      <table>      
+      <table style="width:80%;">
         {% for x in purchases_by_type %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ x.type }}</td>
@@ -20,7 +20,7 @@
         {% endfor %}
       </table>
     </td><td>
-      <table>      
+      <table style="width:80%;">      
         {% for x in payments_by_type %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ x.type }}</td>
@@ -29,7 +29,7 @@
         {% endfor %}
       </table>
     </td><td>
-      <table>
+      <table style="width:80%;">
         <tr class="odd">
           <td>Start:</td><td>{{ starting_total|messmoney }}</td>
         </tr>
