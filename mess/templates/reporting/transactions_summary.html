@@ -7,15 +7,9 @@
     <table class="data"><tr>
       <th>Purchases</th>
       <th>Payments</th>
-      <td rowspan="2">
-        <form class="sorter noprint" method="GET" style="float:right;">
-          <table>{{ form }}</table>
-          <input type="submit" value="Filter">
-        </form>
-        <br>
-        Starting<br> Total<br> Balance:<br> {{ starting_total|messmoney }}<br><br>
-        Ending<br> Total<br> Balance:<br> {{ ending_total|messmoney }}
-      </td>
+      <th>Balance Totals</th>
+      <th>Filters</th>
+
     </tr><tr><td>
       <table>      
         {% for x in purchases_by_type %}
@@ -34,12 +28,31 @@
           </tr>
         {% endfor %}
       </table>
-    </td></tr></table>
+    </td><td>
+      <table>
+        <tr class="odd">
+          <td>Start:</td><td>{{ starting_total|messmoney }}</td>
+        </tr>
+        <tr class="even">
+          <td>End:</td><td>{{ ending_total|messmoney }}</td>
+        </tr>
+      </table>
+    </td><td>
+      <form class="sorter noprint" method="GET" style="float:right;">
+        <table>{{ form }}</table>
+        <input type="submit" value="Filter">
+      </form>
+      <br>
+    </td>
+    
+    </tr></table>
     {% if list_each %}
-      <div id="transactions">
-        {% include "accounting/snippets/transactions.html" %}
-      </div>
+    {% else %}
+      <h3>Transactions with Notes</h3><!-- pulled by default by view -->
     {% endif %}
+    <div id="transactions">
+      {% include "accounting/snippets/transactions.html" %}
+    </div>
   </div>
 </div>
 {% endblock %}

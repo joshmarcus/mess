@@ -563,7 +563,6 @@ def trans_summary(request):
 
     # by default, show the transactions that have notes
     if list_each == False and filter_type == '' and note == '':
-        list_each = True
         transactions = transactions.filter(note__gt='')
 
     return render_to_response('reporting/transactions_summary.html', locals(),
