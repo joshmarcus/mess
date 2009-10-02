@@ -523,19 +523,19 @@ def trans_summary(request):
         start = form.cleaned_data.get('start')
         end = form.cleaned_data.get('end')
         list_each = form.cleaned_data.get('list_each')
-        type = form.cleaned_data.get('type')
+        filter_type = form.cleaned_data.get('type')
         note = form.cleaned_data.get('note')
     else:
         start = datetime.date.today()
         end = start + datetime.timedelta(1)
         list_each = False
-        type = ''
+        filter_type = ''
         note = ''
     transactions = a_models.Transaction.objects.filter(
                    timestamp__range=(start, end))
-    if type:
-        transactions = transactions.filter(
-                       Q(purchase_type=type)|Q(payment_type=type))
+    if filter_type:
+        transactions = transactions.filter(Q(purchase_type=filter_type) | 
+                                           Q(payment_type=filter_type))
     if note:
         transactions = transactions.filter(note__icontains=note)
 
@@ -562,7 +562,7 @@ def trans_summary(request):
     payments_by_type.append({'type':'Total Payments', 'total':grand_total})
 
     # by default, show the transactions that have notes
-    if list_each = False and type == '' and note == '':
+    if list_each == False and filter_type == '' and note == '':
         list_each = True
         transactions = transactions.filter(note__gt='')
 
