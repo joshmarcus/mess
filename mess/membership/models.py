@@ -282,6 +282,7 @@ class Account(models.Model):
             member__date_departed__isnull=True).exclude(
             member__leaveofabsence__start__lte=today,
             member__leaveofabsence__end__gt=today).count()
+    active_no_loa = property(billable_member_count)
 
     def deposit_holders(self):
         return self.accountmember_set.filter(

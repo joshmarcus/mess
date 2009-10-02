@@ -173,7 +173,9 @@ def cashsheet(request):
     else:
         row_height = 2.0
         rows_per_page = 22
-    accounts = m_models.Account.objects.active_not_LOA()
+    # include ! accounts at top ("Mariposa" and "UNCLAIMED")
+    accounts = (list(m_models.Account.objects.filter(name__startswith='!')) +
+                list(m_models.Account.objects.active_not_LOA()))
     return render_to_response('accounting/cashsheet.html', locals(),
             context_instance=RequestContext(request))
 

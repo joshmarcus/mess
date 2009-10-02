@@ -111,7 +111,12 @@ def reports(request):
 #               'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'),
 
             listrpt('Accounts','Owing 1 Hour or More',
-                'hours_balance__gte=1.00', 'hours_balance\r\nnote'),
+                'hours_balance__gte=1.00', 
+                'hours_balance\r\nbalance\r\n'+
+                '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
+                '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
+                'active_no_loa\r\nnote',
+                order_by='-hours_balance'),
 
             ('Hours Balance Changes',reverse('hours_balance_changes')),            
 
@@ -555,6 +560,11 @@ def trans_summary(request):
         payments_by_type.append({'type':type, 'total':total_by_type})
         grand_total += total_by_type or 0
     payments_by_type.append({'type':'Total Payments', 'total':grand_total})
+
+    # by default, show the transactions that have notes
+    if list_each = False and type == '' and note == '':
+        list_each = True
+        transactions = transactions.filter(note__gt='')
 
     return render_to_response('reporting/transactions_summary.html', locals(),
             context_instance=RequestContext(request))

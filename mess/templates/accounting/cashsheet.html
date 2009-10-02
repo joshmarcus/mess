@@ -49,7 +49,8 @@
           {% comment %} <td class="tiny">{{ account.active_member_count }}</td> {% endcomment %}
           <td class="tiny">{{ account.hours_balance|messmoney }}</td>
           <td class="oldbalance">{{ account.balance|messmoney }}</td>
-          {% if account.frozen_flags %}
+          {# if no account.members, we must be a special account !Mariposa #}
+          {% if account.members.count and account.frozen_flags %}
             <td colspan="5" class="frozen">
               {{ account.frozen_flags|join:" ... " }}
             </td>
