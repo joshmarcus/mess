@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Forum</h2>
+    <p>"A place for members to share ideas with each other"</p>
+    {% for forum in forums %}
+      <h3><a href="{{ forum.get_absolute_url }}">{{ forum }}</a></h3>
+      <p>{{ forum.description }}</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

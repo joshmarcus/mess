@@ -89,6 +89,7 @@ INSTALLED_APPS = (
     'mess.autocomplete',
     'mess.accounting',
     'mess.core',
+    'mess.forum',
     'mess.membership',
     'mess.reporting',
     'mess.scheduling',

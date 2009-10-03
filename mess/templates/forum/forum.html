@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <ul id="local-nav">
+    <li><a href="{% url forum-menu %}">Forum Menu</a></li>
+    {% for eachforum in forums %}
+    <li><a {% ifequal eachforum forum %}class="active"{% endifequal %}
+        href="{{ eachforum.get_absolute_url }}">{{ eachforum }}</a></li>
+    {% endfor %}
+  </ul>
+  <div id="primary-content-wrapper">
+    <h2>{{ forum }} - {% if subject %}<a href="?">show newest {{ maxposts }} posts</a>{% else %}showing newest {{ maxposts }} posts{% endif %} - <a href="{{ forum.get_absolute_url }}addpost/">post</a></h2>
+    {% for thread in threads %}
+      <table class="data">
+        <tr>
+          <th colspan="2">
+            {{ thread.subject }} - {% ifequal thread.total_posts thread.posts|length %}showing all {{ thread.total_posts }} posts{% endifequal %}{% ifnotequal thread.total_posts thread.posts|length %}<a href="?subject={{ thread.subject|urlencode }}">show all {{ thread.total_posts }} posts</a>{% endifnotequal %} - <a href="{{ forum.get_absolute_url }}addpost/?subject={{ thread.subject|urlencode }}">reply</a> 
+          </th>
+        </tr>
+        {% for post in thread.posts %}
+        <tr>
+          <td>
+            <b>{{ post.get_alias }}</br>
+              {{ post.timestamp|date:"n/j/y g:iA" }}</b>
+            {% ifequal post.author request.user %}
+              <br><input type="button" value="delete" 
+                   onclick="deletepost({{ post.id }});">
+            {% endifequal %}
+          </td>
+          <td>
+            {% if post.deleted %}(deleted post)
+            {% else %}{{ post.body|linebreaksbr }}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endfor %}
+    <h2>All {{ forum.threads|length }} Subjects in {{ forum }}</h2>
+    <ul>
+      {% for thread in forum.threads %}
+        <li><a href="?subject={{ thread.subject|urlencode }}">{{ thread.subject }}</a> - {{ thread.total_posts }} posts - last post {{ thread.last_post|date:"n/j/y g:iA" }}</li>
+      {% endfor %}
+    </ul>
+
+  </div>
+</div>
+ <form action="{% url deletepost %}" method="POST" id="deletepost">
+  <input type="hidden" name="post_id" id="post_id">
+ </form>
+ <script language="javascript">
+    function deletepost(post_id) {
+        document.getElementById('post_id').value = post_id;
+        if (confirm('Are you sure you want to delete this post?  Note that deleted posts will still show up in the forum as (deleted post).  Delete?'))
+            document.getElementById('deletepost').submit();
+    }
+ </script>
+{% endblock %}

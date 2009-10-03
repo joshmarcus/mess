@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Post to Forum: <a href="{{ forum.get_absolute_url }}">{{ forum }}</a></h2>
+    <h2>Posting as: {{ request.user.first_name }} ({{ request.user.get_profile.get_primary_account }})</h2>
+    {% if subject %}
+      <h2>Subject: <a href="{{ forum.get_absolute_url }}?subject={{ subject|urlencode }}">{{ subject }}</a></h2>
+    {% endif %}
+    <form method="POST">
+      <table class="data">{{ form }}</table>
+      Anything you post could become publicly viewable.
+      <input type="submit" name="action" value="Preview">
+      <input type="submit" name="action" value="Post">
+    </form>
+    {% ifequal form.data.action "Preview" %}
+      <h2>Preview</h2>
+      <table class="data">
+        <tr><th colspan="2">{{ form.data.subject }}</th></tr>
+        <tr><td>
+            <b>{{ request.user.first_name }} 
+            ({{ request.user.get_profile.get_primary_account }})<br>
+            {% now "n/j/y g:iA" %}</b>
+          </td><td>
+            {{ form.data.body|linebreaksbr }}
+        </td></tr>
+      </table>
+    {% endifequal %}
+  </div>
+</div>
+{% endblock %}
