@@ -28,7 +28,7 @@
   <div id="left-column">
     <div id="primary-content-wrapper">
       <h2>Hello, {{ user.first_name }}!</h2>
-      <h3>Here are the most recent updates from <a href="http://www.mariposa.coop">mariposa.coop</a></h3>
+      <h3>Here are the most recent updates from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h3>
       {% for entry in rss_entries %}
       <h4>{{ entry.title }}</h4>
       <p>{{ entry.summary }} <a href="{{ entry.link }}">read more</a></p>
