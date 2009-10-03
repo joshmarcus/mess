@@ -1,0 +1,23 @@
+Dear {{ user.first_name }},
+
+Welcome to the Mariposa Co-op Electronic Storage System (MESS)!
+
+Your username to log in is: {{ user.username }}
+
+Please go to the following page and choose a new password:
+{% block reset_link %}
+{{ protocol }}://{{ domain }}{% url django.contrib.auth.views.password_reset_confirm uidb36=uid, token=token %}
+{% endblock %}
+
+Current features available to members:
+  * View your next workshift, and your workshift history
+  * View your account members
+  * View and edit your contact information
+  * Forum to share ideas with other members
+
+Features coming soon:
+  * View your account balance and recent transactions
+  * Switch a workshift to an earlier time
+
+Sincerely,
+The MESS Committee
