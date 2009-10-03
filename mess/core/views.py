@@ -2,19 +2,25 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import get_template
 import feedparser
+import socket
 
 def welcome(request):
     MAX_ENTRIES = 5    # maximum number of rss items to show on welcome page
+    TIMEOUT = 5  # timeout in seconds in case rss server is down
+    NORMAL_TIMEOUT = 30 # a sane value, I think
     context = RequestContext(request)
 
+    socket.setdefaulttimeout(TIMEOUT)
+    feed = feedparser.parse("http://www.mariposa.coop/?feed=rss2")
+    socket.setdefaulttimeout(NORMAL_TIMEOUT)
     # just passing the entries, so we don't have too many
     #entries = _parseUrl("http://www.mariposa.coop/?feed=rss2")
     #feed = feedparser.parse("http://www.mariposa.coop/?feed=rss2")
     #if (len(feed.entries) > MAX_ENTRIES):
-    #    entries = feed.entries[:MAX_ENTRIES]
+    entries = feed.entries[:MAX_ENTRIES]
     #else: 
     #    entries = feed.entries
-    entries = []
+    #entries = []
     context['rss_entries'] = entries
 
     template = get_template('welcome.html')
