@@ -102,9 +102,11 @@ class Member(models.Model):
 
     @property
     def is_cashier_today(self):
-        shifts = self.task_set.filter(job__name='Cashier', time__range=(
+        shifts_today = self.task_set.filter(time__range=(
             datetime.date.today(), datetime.date.today()+datetime.timedelta(1)))
-        return bool(shifts.count())
+        cashier_shifts_today = shifts_today.filter(job__name__in=[
+            'Cashier','After Hours Billing'])
+        return bool(cashier_shifts_today.count())
 
     @property
     def name(self):
@@ -532,6 +534,13 @@ class Email(models.Model):
 
     def __unicode__(self):
         return self.email
+
+    def save(self, *args, **kwargs):
+        ''' stick new email address onto the user also '''
+        user = self.member.user
+        user.email = self.email
+        user.save()
+        super(Email, self).save(*args, **kwargs)
 
 
 class Phone(models.Model):

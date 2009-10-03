@@ -3,9 +3,11 @@
 <h2>Account Info</h2>
 {% include "accounting/snippets/acct_flags.html" %}
 <ul class="quick-info">
+  {% if request.user.is_staff %} <!-- hide wrong balance from members -->
   <li><b>{{ account.owes_or_credit }}:</b> 
     {{ account.balance|messmoney }}</li>
   <li><b>Deposit:</b> {{ account.deposit|messmoney }}</li>
+  {% endif %}
   <li>
     <b>Hours {{ account.hours_owed_or_banked }}:</b> 
       {{ account.hours_balance|messmoney }} 
