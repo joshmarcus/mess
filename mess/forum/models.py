@@ -21,6 +21,10 @@ class Forum(models.Model):
     def get_absolute_url(self):
         return '/forum/%s/' % self.slug
 
+    def newest_post(self):
+        if self.post_set.count():
+            return self.post_set.order_by('-timestamp')[0]
+
     def threads(self):
         """
         A list of subjects, annotated with the last post in each subject

@@ -7,7 +7,7 @@
     <p>"A place for members to share ideas with each other"</p>
     {% for forum in forums %}
       <h3><a href="{{ forum.get_absolute_url }}">{{ forum }}</a></h3>
-      <p>{{ forum.description }}</p>
+      <p>{{ forum.description }} - Posts: {{ forum.post_set.count }} - Newest : {{ forum.newest_post.timestamp|date:"n/j/y g:iA" }}.</p>
     {% endfor %}
   </div>
 </div>
