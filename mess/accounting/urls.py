@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mess.accounting.views',
     url(r'^transaction$', 'transaction', name='transaction'),
+    url(r'^after_hours$', 'after_hours', name='after_hours'),
     url(r'^close_out$', 'close_out', name='close_out'),
     url(r'^billing$', 'billing', name='billing'),
     url(r'^cashsheet$', 'cashsheet', name='cashsheet'),

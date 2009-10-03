@@ -212,3 +212,57 @@ def billing(request):
     return render_to_response('accounting/billing.html', locals(),
             context_instance=RequestContext(request))
 
+# cashier permission is the first if
+# code copied from transactions and tweaked.  
+'''
+is there anything we can break out into helper functions?  :)
+like maybe this 'getcashierinfo' section?
+'''
+@user_passes_test(lambda u: u.is_authenticated())
+def after_hours(request):
+    if not m_models.cashier_permission(request):
+        return HttpResponse('Sorry, you do not have cashier permission. %s' 
+                             % request.META['REMOTE_ADDR'])
+
+    context = RequestContext(request)
+    
+    if 'getcashierinfo' in request.GET:
+        account_id = request.GET['account']
+        account = m_models.Account.objects.get(id=account_id)
+        context['account'] = account
+        if request.GET['getcashierinfo'] == 'members':
+            template = get_template('accounting/snippets/members.html')
+        elif request.GET['getcashierinfo'] == 'transactions':
+            context['transactions'] = models.Transaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)),
+            purchase_type='A')
+            template = get_template('accounting/snippets/transactions.html')
+        elif request.GET['getcashierinfo'] == 'acctinfo':
+            template = get_template('accounting/snippets/acctinfo.html')
+        return HttpResponse(template.render(context))
+
+    if request.method == 'POST':
+        form = forms.AfterHoursForm(request.POST)
+        if form.is_valid():
+            a = form.cleaned_data['account']
+            p = form.cleaned_data['purchases']
+            p_tot = form.cleaned_data['purchase_total']
+            ah_trans = models.Transaction(account=a, entered_by=request.user,
+                                          purchase_type='A',
+                                          purchase_amount=p_tot,
+                                          note=p)
+            ah_trans.save()
+            return HttpResponseRedirect(reverse('after_hours'))
+    else:
+        form = forms.AfterHoursForm()
+    context['form'] = form
+    today = datetime.date.today()
+    # change line below to just be after-hours transactions??
+    transactions = models.Transaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)),
+            purchase_type='A')
+    context['transactions'] = transactions
+    context['can_reverse'] = True
+    template = get_template('accounting/after_hours.html')
+    return HttpResponse(template.render(context))
+

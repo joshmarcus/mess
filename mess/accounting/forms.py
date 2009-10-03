@@ -1,4 +1,5 @@
 from decimal import Decimal
+from decimal import InvalidOperation
 
 from django import forms
 from django.utils.safestring import mark_safe
@@ -23,6 +24,30 @@ class TransactionForm(forms.ModelForm):
             view_name='membership-autocomplete', canroundtrip=True))
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
         widget=SelectAfterAjax(), required=False)
+
+class AfterHoursForm(forms.Form):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account_spiffy',
+            view_name='membership-autocomplete', canroundtrip=True))
+    purchases = forms.CharField(max_length=256, widget=forms.Textarea(attrs={'rows':3}),
+                               help_text='separate purchases with +') # max_length matches trans model notes field
+    purchase_total = forms.DecimalField(required=False, widget=forms.HiddenInput())
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        try:
+            purchases = cleaned_data.get("purchases").split('+')
+            total = Decimal(0)
+            for st in purchases:
+                d = Decimal(st.strip())
+                if (d._exp < -2):
+                    raise forms.ValidationError("no more than 2 #s after decimal, pls.")
+                total += d
+        except (InvalidOperation, AttributeError):
+            raise forms.ValidationError("Purchases field incorrect.")
+
+        cleaned_data["purchase_total"] = total
+        return cleaned_data
 
 class HoursBalanceForm(forms.ModelForm):
     class Meta:
