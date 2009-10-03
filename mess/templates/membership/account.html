@@ -87,7 +87,7 @@
             <td>{{ transaction.purchase_amount|floatformat:2 }}</td>
             <td>{{ transaction.get_payment_type_display }}</td>
             <td>{{ transaction.payment_amount|floatformat:2 }}</td>
-            <td>{{ transaction.account.balance|floatformat:2 }}</td>
+            <td>{{ transaction.account_balance|floatformat:2 }}</td>
           </tr>
           {% endfor %}
         </table>
