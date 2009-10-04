@@ -86,6 +86,7 @@ def prepare_columns(headers):
             Column(headers, 'Old Balance', parser=or_zero, porter=set_balance),
             Column(headers, 'Hours Balance', parser=or_zero, dest='hours_balance'),
             Column(headers, 'Active Members', porter=am_compare_and_warn),
+            Column(headers, 'Section', porter=section_compare_and_warn),
             ],
         'member_post': [
             Column(headers, 'Join Date', date_format, 'date_joined'),
@@ -342,6 +343,19 @@ def am_compare_and_warn(excel_active_members, mess_account):
     elif mam > 0:
         print 'NOT EQUAL: %s has %s active members in Excel, %s in MESS' % (
                 mess_account.name, xam, mam)
+
+def section_compare_and_warn(excel_section, mess_account):
+    active_members = mess_account.active_member_count
+    print 'excel section: %s ... mess active members: %s ' % (
+            excel_section, active_members)
+    if excel_section in ['1.0','3.0','3.5']:
+        if active_members == 0:
+            print 'Section %s DOES NOT MATCH mess inactive account %s' % (
+                excel_section, mess_account)
+    else:
+        if active_members != 0:
+            print 'Section %s DOES NOT MATCH mess active account %s' % (
+                excel_section, mess_account)
 
 def set_deposit(data, new_account):
     # neutralize the deposit's effect on the account balance
