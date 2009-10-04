@@ -304,6 +304,15 @@ class Account(models.Model):
             Q(member__date_missing__isnull=False) |
             Q(member__date_departed__isnull=False))
 
+    def active_or_missing(self):
+        return self.accountmember_set.filter(
+            member__date_departed__isnull=True,
+            account_contact=True)
+
+    @property
+    def active_or_missing_count(self):
+        return self.active_or_missing().count()
+
     def autocomplete_label(self):
         if self.active_member_count:
             return self.name

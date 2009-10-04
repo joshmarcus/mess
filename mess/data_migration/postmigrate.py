@@ -343,17 +343,20 @@ def am_compare_and_warn(excel_active_members, mess_account):
     elif mam > 0:
         print 'NOT EQUAL: %s has %s active members in Excel, %s in MESS' % (
                 mess_account.name, xam, mam)
+    if mam != mess_account.deposit_holders().count():
+        print 'NOT EQUAL IN MESS: %s has %s non-shoppers, %s depositors' % (
+                mess_account.name, mam, mess_account.deposit_holders().count())
 
 def section_compare_and_warn(excel_section, mess_account):
-    active_members = mess_account.active_member_count
-    print 'excel section: %s ... mess active members: %s ' % (
-            excel_section, active_members)
+    active_or_missing = mess_account.active_or_missing().count()
+    print 'excel section: %s ... mess active_or_missing: %s ' % (
+            excel_section, active_or_missing)
     if excel_section in ['1.0','3.0','3.5']:
-        if active_members == 0:
+        if active_or_missing == 0:
             print 'Section %s DOES NOT MATCH mess inactive account %s' % (
                 excel_section, mess_account)
     else:
-        if active_members != 0:
+        if active_or_missing != 0:
             print 'Section %s DOES NOT MATCH mess active account %s' % (
                 excel_section, mess_account)
 
