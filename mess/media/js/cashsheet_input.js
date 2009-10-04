@@ -53,7 +53,7 @@ function autocalc() {
   var balance = document.getElementById('balance_val').value;
   // double-negative forces addition, not string concatenation
   balance -= -document.getElementById('id_misc').value;
-  balance -= -document.getElementById('id_dues_deposits').value;
+  balance -= -document.getElementById('id_deposit').value;
   balance -= -document.getElementById('id_bulk_orders').value;
   balance -= -document.getElementById('id_after_hours').value;
   balance -= -document.getElementById('id_regular_sales').value;
@@ -65,7 +65,7 @@ function autocalc() {
 
 function setup_autocalc() {
   document.getElementById('id_misc').onchange = autocalc;
-  document.getElementById('id_dues_deposits').onchange = autocalc;
+  document.getElementById('id_deposit').onchange = autocalc;
   document.getElementById('id_bulk_orders').onchange = autocalc;
   document.getElementById('id_after_hours').onchange = autocalc;
   document.getElementById('id_regular_sales').onchange = autocalc;

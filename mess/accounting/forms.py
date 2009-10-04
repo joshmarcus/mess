@@ -83,7 +83,7 @@ class CashsheetForm(forms.Form):
                 view_name='membership-autocomplete', canroundtrip=True))
     misc = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
-    dues_deposits = forms.DecimalField(required=False,
+    deposit = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
     bulk_orders = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
@@ -101,7 +101,7 @@ class CashsheetForm(forms.Form):
         purchases = [(purchase_type, self.cleaned_data[fieldname])
             for purchase_type, fieldname in (
                 ('S', 'misc'),
-                ('U', 'dues_deposits'),
+                ('O', 'deposit'),
                 ('B', 'bulk_orders'),
                 ('A', 'after_hours'),
                 ('P', 'regular_sales'))

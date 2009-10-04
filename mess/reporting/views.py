@@ -106,10 +106,6 @@ def reports(request):
             listrpt('Accounts','With At Least $50 Deposit',
                 'deposit__gte=50.00', 'deposit'),
 
-#           listrpt('Accounts','Frozen',
-#               'can_shop=False', 
-#               'can_shop\r\ndeposit\r\nbalance\r\nhours_balance'),
-
             listrpt('Accounts','Owing 1 Hour or More',
                 'hours_balance__gte=1.00', 
                 'hours_balance\r\nbalance\r\n'+
@@ -119,6 +115,8 @@ def reports(request):
                 order_by='-hours_balance'),
 
             ('Hours Balance Changes',reverse('hours_balance_changes')),            
+
+            ('Keys to Shut Off',reverse('frozen')),
 
         ]),
 

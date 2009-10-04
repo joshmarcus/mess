@@ -82,9 +82,9 @@ def prepare_columns(headers):
             Column(headers, 0, porter=set_shopper_flag),
             ],
         'account_post': [
+            Column(headers, 'Cumulative deposit', parser=or_zero, porter=set_deposit),
             Column(headers, 'Old Balance', parser=or_zero, porter=set_balance),
             Column(headers, 'Hours Balance', parser=or_zero, dest='hours_balance'),
-            Column(headers, 'Cumulative deposit', parser=or_zero, dest='deposit'),
             Column(headers, 'Active Members', porter=am_compare_and_warn),
             ],
         'member_post': [
@@ -342,6 +342,16 @@ def am_compare_and_warn(excel_active_members, mess_account):
     elif mam > 0:
         print 'NOT EQUAL: %s has %s active members in Excel, %s in MESS' % (
                 mess_account.name, xam, mam)
+
+def set_deposit(data, new_account):
+    # neutralize the deposit's effect on the account balance
+    new_account.balance -= Decimal(data)
+    new_account.save()
+    a_models.Transaction.objects.create(account=new_account,
+                                        purchase_type='O',
+                                        purchase_amount=Decimal(data),
+                                        note='deposit from Excel')
+    print 'set deposit %s' % data
 
 def set_balance(data, new_account):
     if new_account.balance != 0:

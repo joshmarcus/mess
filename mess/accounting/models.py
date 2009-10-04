@@ -74,6 +74,8 @@ class Transaction(models.Model):
         if bool(self.payment_amount) is not bool(self.payment_type):
             self.payment_amount = 0
             self.payment_type = ''
+        if self.purchase_type == 'O':  # Deposit
+            self.account.deposit += self.purchase_amount
         balance = self.account.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance

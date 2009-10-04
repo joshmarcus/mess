@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -178,6 +179,15 @@ def cashsheet(request):
                 list(m_models.Account.objects.active_not_LOA()))
     return render_to_response('accounting/cashsheet.html', locals(),
             context_instance=RequestContext(request))
+
+@user_passes_test(lambda u: u.is_staff)
+def frozen(request):
+    # list of accounts that are frozen on the cash sheets
+    accounts = m_models.Account.objects.active()  # LOA may still be frozen
+    accounts = accounts.filter(Q(balance__gt=0) | Q(hours_balance__gt=0))
+    return render_to_response('accounting/frozen.html', locals(),
+            context_instance=RequestContext(request))
+    
 
 @user_passes_test(lambda u: u.is_staff)
 def billing(request):

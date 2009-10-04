@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.db.models.aggregates import Min
 
 MEMBER_STATUS = (
     ('a', 'Active'),
@@ -406,14 +407,15 @@ class Account(models.Model):
         if newest_trans.count():
             return newest_trans[0].account_balance
 
+    def months_old(self):
+        oldest = self.members.active().aggregate(Min('date_joined')).values()[0]
+        if oldest is None:  # in case of no members or other problem
+            return -1
+        return (datetime.date.today() - oldest).days / 30
+        
     def max_allowed_to_owe(self):
         active_members = self.active_member_count
-        if active_members == 0:
-            return 0
-        sixmonthsago = datetime.date.today() - datetime.timedelta(6*30)
-        oldmembers = self.accountmember_set.filter(shopper=False,
-                        member__date_joined__lt=sixmonthsago).count()
-        if oldmembers:
+        if self.months_old() >= 6:
             return active_members * Decimal('25.00')
         else:
             return active_members * Decimal('5.00')
@@ -422,6 +424,11 @@ class Account(models.Model):
         max_allowed_to_owe = self.max_allowed_to_owe()
         if self.balance > max_allowed_to_owe:
             return self.balance - max_allowed_to_owe
+
+    def way_over_limit(self):
+        way_limit = 2 * self.max_allowed_to_owe()
+        if self.balance > way_limit:
+            return self.balance - way_limit
 
     def must_work(self):
         if self.hours_balance > Decimal('0.03'):

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load messmoney %}
+
+{% block head %}
+<style>
+  #primary-content-wrapper table.data td { 
+    padding:{{ row_height }}mm .25em {{ row_height }}mm .5em; 
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Keys to Shut Off as of {% now "l, F jS, Y, g:ia" %}</h2>
+    <table class="data cashsheet">
+      <tr>
+        <th>Account<br>Key Info</th>
+        <th>Active<br>Members</th>
+        <th>Active<br>not LOA</th>
+        <th>Months<br>Old</th>
+        <th>Balance</th>
+        <th>Over<br>Limit</th>
+        <th>Way<br>Over<br>Limit</th>
+        <th>Hours<br>Balance</th>
+        <th>Over<br>Limit</th>
+      </tr>
+      {% for account in accounts %}
+      {% if account.way_over_limit or account.must_work %}
+        <tr>
+          <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a>
+            {% for member in account.members.all %}
+              {% if member.card_number or member.card_facility_code or member.card_type %}
+                <br>{{ member.card_number }} / {{ member.card_facility_code }} / {{ member.card_type }}
+              {% endif %}
+            {% endfor %}
+          </td>
+          <td>{{ account.active_member_count }}</td>
+          <td>{{ account.billable_member_count }}</td>
+          <td>{{ account.months_old }}</td>
+          <td>{{ account.balance|messmoney }}</td>
+          {% if account.must_pay %}
+            <td class="frozen">Must Pay {{ account.must_pay|messmoney }}</td>
+          {% else %}
+            <td></td>
+          {% endif %}
+          {% if account.way_over_limit %}
+            <td class="frozen">Way Over {{ account.way_over_limit|messmoney }}</td>
+          {% else %}
+            <td></td>
+          {% endif %}
+          <td>{{ account.hours_balance|messmoney }}</td>
+          {% if account.must_work %}
+            <td class="frozen">Must Work {{ account.must_work|messmoney }}</td>
+          {% else %}
+            <td></td>
+          {% endif %}
+        </tr>
+      {% endif %}
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
