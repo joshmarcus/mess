@@ -1,3 +1,4 @@
+from django.contrib.auth import forms as auth_forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import get_template
@@ -22,6 +23,8 @@ def welcome(request):
     #    entries = feed.entries
     #entries = []
     context['rss_entries'] = entries
+
+    context['form'] = auth_forms.AuthenticationForm()
 
     template = get_template('welcome.html')
     return HttpResponse(template.render(context))
