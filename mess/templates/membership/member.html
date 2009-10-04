@@ -9,26 +9,21 @@
     <div id="primary-content-wrapper">
       <h2>Member Profile</h2>
       <div class="profile {% if not member.is_active %}profile-inactive{% endif %}">
-        <div class="profile-links">
-          <h5>Accounts</h5>
-          <ul>
-            {% for am in member.accountmember_set.all %}
-              <li{% if am.account_contact %} id="primary-acct"{% endif %}><a href="{% url account am.account.id %}">{{ am.account }}</a>{% if am.shopper %} (S){% endif %}</li>
-            {% endfor %}
-          </ul>
-        </div>
+
         <h4>
           {% if user.is_staff %}	
           <a href="{% url member-edit member.user.username %}">edit</a>
           {% endif %}
           {{ member.user.get_full_name }} 
         </h4>
+        {% comment %}
         <ul class="quick-info">
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.verbose_status }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/>{{ member.get_work_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/>{{ member.has_key }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/>{{ member.date_joined }}</li>
         </ul>
+        {% endcomment %}
         <div class="details clearfix">
 		  <ul class="edit-contact-info">
 			{% for medium in contact_media %}
@@ -58,7 +53,7 @@
           </p>
         </div>
         {% if user.is_staff %}
-          <form method="POST" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('We are testing MESS member login.  Passwords should only be given to members who know they are testing the system.  Click OK if you really want to send the password reset email.');"><input type="submit" value="send email to reset password"></form>
+          <form method="POST" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('Click OK to send a password reset email to this user.');"><input type="submit" value="send email to reset password"></form>
         {% else %}
           <a href="{% url auth_password_change %}">Change Your Password</a>
         {% endif %}
@@ -66,6 +61,14 @@
     </div>
   </div>
   <div id="right-column">
+          <h3>Accounts</h3>
+          <ul>
+            {% for am in member.accountmember_set.all %}
+              <li><a href="{% url account am.account.id %}">{{ am.account }}</a>{% if am.shopper %} (proxy shopper){% endif %}</li>
+            {% endfor %}
+          </ul>
+
+    {% comment %}
     <h3>Icon Key</h3>
     <ul id="icon-key">
       <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif"/>Status</li>
@@ -75,5 +78,6 @@
       <li>(S) Proxy shopper on account</li>
       <li id="primary-acct-key"><img src="{{ MEDIA_URL }}images/bg-icon-primary-acct.png"/>Deposit holder for account</li>
      </ul>
+    {% endcomment %}
   </div>
 {% endblock %}

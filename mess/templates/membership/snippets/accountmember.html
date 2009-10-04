@@ -15,6 +15,11 @@
   <a href="{% url member-edit am.member.user.username %}">
     edit
   </a>
+  {% else %}
+    {% ifequal request.user am.member.user %}
+      <!-- link to member page for editing contact info -->
+      <a href="{{ am.member.get_absolute_url }}">edit</a>
+    {% endifequal %}
   {% endif %}
   {{ am.member }}
 </h4>
