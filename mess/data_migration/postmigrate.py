@@ -562,6 +562,10 @@ def heuristic_get_member(excel_row, columns, account):
         return 'MEMBER NOT GOTTEN %s %s %s -- MULTIPLE' % (slugname, firstname, lastname)
 
 def heuristic_get_account(account_name):
+    if account_name == 'Mariposa (supplies, etc)':
+        return models.Account.objects.get(name='!Mariposa (supplies, etc.)')
+    if account_name == 'UNCLAIMED after-hours shopping!':
+        return models.Account.objects.get(name='!UNCLAIMED After-Hours Shopping')
     try:
         return models.Account.objects.get(name__iexact=account_name)
     except models.Account.MultipleObjectsReturned:
@@ -579,7 +583,7 @@ def heuristic_get_account(account_name):
 def postmigrate(excel_row, columns, account_name, section, foundaccts):
     if account_name == '':
         return 'SKIPPED'
-    if section not in ['1.0','3.0','3.5','4.0','5.0','6.0']:
+    if section not in ['0.0','1.0','3.0','3.5','4.0','5.0','6.0']:
         return 'SKIPPED'
 
     account = heuristic_get_account(account_name)

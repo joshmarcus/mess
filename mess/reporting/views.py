@@ -172,6 +172,7 @@ def reports(request):
                 include_inactive='on'),
 
             listrpt('Accounts','Active+Missing Balances and Deposits',
+                'members__isnull=False\r\n'+
                 'members__date_departed__isnull=True',
                 'balance\r\ndeposit\r\nactive_member_count\r\n'+
                 'active_or_missing_count',
