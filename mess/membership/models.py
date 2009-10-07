@@ -491,6 +491,10 @@ class Account(models.Model):
             flags.append('Needs Shift')
         if self.ebt_only:
             flags.append('EBT Only')
+        if self.months_old() < 6:
+            date_joined = self.members.active().aggregate(Min('date_joined')
+                                                          ).values()[0]
+            flags.append('Joined %s' % date_joined)
         return flags
 
     def __unicode__(self):
