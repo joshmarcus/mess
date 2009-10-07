@@ -40,6 +40,7 @@
         {% endif %}
         <tr>
           <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a>
+            [{{ account.max_allowed_to_owe|floatformat:0 }}]
             {% if account.notice_flags %}
               <div class="notice">
                 {{ account.notice_flags|join:" ... " }}
