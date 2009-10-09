@@ -7,7 +7,7 @@
     <table class="data"><tr>
       <th style="width:25%;">Purchases</th>
       <th style="width:25%;">Payments</th>
-      <th style="width:25%;">Balance Totals</th>
+      <th style="width:25%;">Accounting</th>
       <th style="width:25%; text-align:right;">Filters</th>
 
     </tr><tr><td>
@@ -31,10 +31,23 @@
     </td><td>
       <table style="width:80%;">
         <tr class="odd">
-          <td>Start:</td><td>{{ starting_total|messmoney }}</td>
+          <td>Start Balance:</td><td>{{ starting_total|messmoney }}</td>
         </tr>
         <tr class="even">
-          <td>End:</td><td>{{ ending_total|messmoney }}</td>
+          <td>Purchases:</td><td>{{ purchases_total|messmoney }}</td>
+        </tr>
+        <tr class="odd">
+          <td>Start+Purchases:</td><td>{{ start_plus_purchases|messmoney }}</td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr class="even">
+          <td>End Balance:</td><td>{{ ending_total|messmoney }}</td>
+        </tr>
+        <tr class="odd">
+          <td>Payments:</td><td>{{ payments_total|messmoney }}</td>
+        </tr>
+        <tr class="odd">
+          <td>End+Payments:</td><td>{{ end_plus_payments|messmoney }}</td>
         </tr>
       </table>
     </td><td>

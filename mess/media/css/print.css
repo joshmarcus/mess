@@ -23,6 +23,7 @@ table.data td { line-height:12pt;
                 border-right:0.5pt solid #bbb; }
 table.data td.last { border-right:0.5pt solid #777; }
 table.data tr.timecard-extra td { padding-bottom:24pt; }
+.darkcolumnline {border-left: 2pt solid black;}
 
 .noprint { display:none; }
 .float-right { float:right; }

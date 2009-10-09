@@ -549,26 +549,29 @@ def trans_summary(request):
     ending_total = a_models.total_balances_on(end)
 
     purchases_by_type = []
-    grand_total = 0
+    purchases_total = 0
     for (code, type) in a_models.PURCHASE_CHOICES:
         total_by_type = transactions.filter(purchase_type=code).aggregate(
                         Sum('purchase_amount')).values()[0]
         purchases_by_type.append({'type':type, 'total':total_by_type})
-        grand_total += total_by_type or 0
-    purchases_by_type.append({'type':'Total Purchases', 'total':grand_total})
+        purchases_total += total_by_type or 0
 
     payments_by_type = []
-    grand_total = 0
+    payments_total = 0
     for (code, type) in a_models.PAYMENT_CHOICES:
         total_by_type = transactions.filter(payment_type=code).aggregate(
                         Sum('payment_amount')).values()[0]
         payments_by_type.append({'type':type, 'total':total_by_type})
-        grand_total += total_by_type or 0
-    payments_by_type.append({'type':'Total Payments', 'total':grand_total})
+        payments_total += total_by_type or 0
+
+    # accounting gibberish for Dan
+    start_plus_purchases = starting_total + purchases_total
+    end_plus_payments = ending_total + payments_total
 
     # by default, show the transactions that have notes
     if list_each == False and filter_type == '' and note == '':
         transactions = transactions.filter(note__gt='')
+
 
     return render_to_response('reporting/transactions_summary.html', locals(),
             context_instance=RequestContext(request))

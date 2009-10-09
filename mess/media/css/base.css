@@ -679,6 +679,7 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .frozen {background:red; font-weight:bold; color:#fff; text-align:center;}
 .notice {background:#d18405; font-weight:bold; color:#fff; text-align:center;}
 .oldbalance { text-align:center; }
+.darkcolumnline {border-left: 2pt solid black;}
 .tiny { font-size:7pt; }
 
 .task-scheduled {background: #ffa; }  /* yellow */
