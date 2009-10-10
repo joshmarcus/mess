@@ -79,6 +79,8 @@ def cashsheet_input(request):
         account = m_models.Account.objects.get(id=account_id)
         if request.GET['getcashierinfo'] == 'balance':
             return HttpResponse(account.balance)
+        elif request.GET['getcashierinfo'] == 'max_allowed_to_owe':
+            return HttpResponse(str(int(account.max_allowed_to_owe())))
         elif request.GET['getcashierinfo'] == 'hours_balance':
             return HttpResponse(account.hours_balance)
         else: # request.GET['getcashierinfo'] == 'acct_flags':

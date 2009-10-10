@@ -544,7 +544,8 @@ div.accountmemberside {width:50%; float:left;}
 hr.endaccountmember {clear:both; border:0px;}
 div.accountmemberalert {float:right; color:red; font-weight:bold; font-size:14pt;}
 
-
+.errorlist {color:red; font-weight:bold;}
+/*
                 #primary-content-wrapper ul.errorlist {
                         position: absolute;
                         margin: 5px 0 0 245px;
@@ -554,6 +555,7 @@ div.accountmemberalert {float:right; color:red; font-weight:bold; font-size:14pt
                         #primary-content-wrapper ul.errorlist li {
                                 background-image: none;
                         }
+*/
 
                 #primary-content-wrapper form.standard div.add {
                         text-align: right;

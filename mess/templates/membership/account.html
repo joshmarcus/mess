@@ -81,7 +81,7 @@
           {% for transaction in transactions|dictsortreversed:"id" %}
           <tr class="{% cycle 'odd' 'even' %}" >
             <td>{{ transaction.id }}</td>
-            <td>{{ transaction.timestamp|date:"n/j g:iA" }}</td>    
+            <td>{{ transaction.timestamp|date:"n/j/Y g:iA" }}</td>    
 <!--            <td>{{ transaction.member.user.get_full_name }}</td> -->
             <td>{{ transaction.note }}</td>
             <td>{{ transaction.get_purchase_type_display }}</td>

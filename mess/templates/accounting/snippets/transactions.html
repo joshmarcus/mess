@@ -23,7 +23,7 @@
     {% for transaction in transactions|dictsortreversed:"id" %}
   <tr class="{% cycle 'odd' 'even' %}" >
     <td>{{ transaction.id }}</td>
-    <td class="nowrap">{{ transaction.timestamp|date:"g:i A" }}</td>
+    <td class="nowrap">{{ transaction.timestamp|date:"n/j/Y g:iA" }}</td>
     <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account }}</a></td>
     <td>{% if transaction.member %}<a href="{{ transaction.member.get_absolute_url }}">{{ transaction.member }}</a>{% endif %}</td>
     <td>{{ transaction.note }}</td>

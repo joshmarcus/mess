@@ -15,12 +15,12 @@
       <table class="data cashsheet">
         <tr>
           <th>Account</th>
+          <th>Max<br>Allowed</th>
           <th>Hours<br>Balance</th>
           <th>Old<br>Balance</th>
           <th>Misc.</th>
           <th>Deposit</th>
           <th>Bulk<br>Orders</th>
-          <th>After-<br>Hours</th>
           <th>Regular<br>Sales</th>
           <th>Credit/<br>Debit<br>Card</th>
           <th>Check/<br>Money<br>Order</th>
@@ -32,6 +32,11 @@
             <div id="flags">
               {% include "accounting/snippets/acct_flags.html" %}
             </div>
+          </td>
+          <td>
+            <span id="max_allowed_to_owe">
+              {{ account.max_allowed_to_owe|floatformat:0 }}
+            </span>
           </td>
           <td>
             <span id="hours_balance">
@@ -46,7 +51,6 @@
           <td>{{ form.misc }}</td>
           <td>{{ form.deposit }}</td>
           <td>{{ form.bulk_orders }}</td>
-          <td>{{ form.after_hours }}</td>
           <td>{{ form.regular_sales }}</td>
           <td>({{ form.credit_debit }})</td>
           <td>({{ form.check_mo }})</td>
@@ -54,7 +58,7 @@
           <td><input type="submit" value="Submit"></td>
         </tr>
         <tr>
-          <td colspan="7">
+          <td colspan="6">
             Note: {{ form.note }}
           </td>
         </tr>

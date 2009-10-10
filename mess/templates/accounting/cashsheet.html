@@ -25,12 +25,12 @@
               <tr>
                 <th>Account</th>
                 {% comment %}<th class="tiny">Active<br>Members</th>{% endcomment %}
+                <th class="tiny">Max<br>Allowed</th>
                 <th class="tiny">Hours<br>Balance</th>
                 <th>Old<br>Balance</th>
                 <th>Misc.</th>
                 <th>Deposit</th>
                 <th>Bulk<br>Orders</th>
-                <th>After-<br>Hours</th>
                 <th>Regular<br>Sales</th>
                 <th class="darkcolumnline">Credit/<br>Debit<br>Card</th>
                 <th>Check/<br>Money<br>Order</th>
@@ -40,7 +40,6 @@
         {% endif %}
         <tr>
           <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a>
-            [{{ account.max_allowed_to_owe|floatformat:0 }}]
             {% if account.notice_flags %}
               <div class="notice">
                 {{ account.notice_flags|join:" ... " }}
@@ -48,15 +47,15 @@
             {% endif %}
           </td>
           {% comment %} <td class="tiny">{{ account.active_member_count }}</td> {% endcomment %}
+          <td class="tiny">{{ account.max_allowed_to_owe|floatformat:0 }}</td>
           <td class="tiny">{{ account.hours_balance|messmoney }}</td>
           <td class="oldbalance">{{ account.balance|messmoney }}</td>
           {# if no account.members, we must be a special account !Mariposa #}
           {% if account.members.count and account.frozen_flags %}
-            <td colspan="5" class="frozen">
+            <td colspan="4" class="frozen">
               {{ account.frozen_flags|join:" ... " }}
             </td>
           {% else %}
-            <td></td>
             <td></td>
             <td></td>
             <td></td>

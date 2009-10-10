@@ -16,6 +16,17 @@ function getAccountInfo(account_id) {
   };
   YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 
+  var sUrl = '?getcashierinfo=max_allowed_to_owe&account=' + account_id;
+  var callback = {
+    success: function(o) {
+      var max_allowed_to_owe = document.getElementById('max_allowed_to_owe');
+      max_allowed_to_owe.innerHTML = messmoney(o.responseText);
+    },
+    failure: function(o) {},
+    argument: [],
+  };
+  YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+
   var sUrl = '?getcashierinfo=hours_balance&account=' + account_id;
   var callback = {
     success: function(o) {
@@ -55,7 +66,6 @@ function autocalc() {
   balance -= -document.getElementById('id_misc').value;
   balance -= -document.getElementById('id_deposit').value;
   balance -= -document.getElementById('id_bulk_orders').value;
-  balance -= -document.getElementById('id_after_hours').value;
   balance -= -document.getElementById('id_regular_sales').value;
   balance -= document.getElementById('id_credit_debit').value;
   balance -= document.getElementById('id_check_mo').value;
@@ -67,7 +77,6 @@ function setup_autocalc() {
   document.getElementById('id_misc').onchange = autocalc;
   document.getElementById('id_deposit').onchange = autocalc;
   document.getElementById('id_bulk_orders').onchange = autocalc;
-  document.getElementById('id_after_hours').onchange = autocalc;
   document.getElementById('id_regular_sales').onchange = autocalc;
   document.getElementById('id_credit_debit').onchange = autocalc;
   document.getElementById('id_check_mo').onchange = autocalc;

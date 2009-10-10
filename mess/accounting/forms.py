@@ -39,7 +39,14 @@ class AfterHoursForm(forms.Form):
             purchases = cleaned_data.get("purchases").split('+')
             total = Decimal(0)
             for st in purchases:
-                d = Decimal(st.strip())
+                if '*' in st:
+                    multiplicands = st.split('*')
+                    if len(multiplicands) != 2:
+                        raise forms.ValidationError("too much multiplication")
+                    d = (Decimal(multiplicands[0].strip()) * 
+                         Decimal(multiplicands[1].strip()))
+                else:
+                    d = Decimal(st.strip())
                 if (d._exp < -2):
                     raise forms.ValidationError("no more than 2 #s after decimal, pls.")
                 total += d
@@ -87,8 +94,6 @@ class CashsheetForm(forms.Form):
                 widget=forms.TextInput(attrs={'size':'4'}))
     bulk_orders = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
-    after_hours = forms.DecimalField(required=False,
-                widget=forms.TextInput(attrs={'size':'4'}))
     regular_sales = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
     credit_debit = forms.DecimalField(required=False,
@@ -97,13 +102,22 @@ class CashsheetForm(forms.Form):
                 widget=forms.TextInput(attrs={'size':'4'}))
     note = forms.CharField(required=False)
 
+    def clean(self):
+        ''' Weird transactions need notes '''
+        note = self.cleaned_data['note']
+        for value in self.cleaned_data.values():
+            if type(value) is Decimal and value < 0 and not note:
+                raise forms.ValidationError('note required for negative entry')
+        if self.cleaned_data['misc'] and not note:
+            raise forms.ValidationError('note required for misc transaction')
+        return self.cleaned_data
+
     def save(self, entered_by=None):
         purchases = [(purchase_type, self.cleaned_data[fieldname])
             for purchase_type, fieldname in (
                 ('S', 'misc'),
                 ('O', 'deposit'),
                 ('B', 'bulk_orders'),
-                ('A', 'after_hours'),
                 ('P', 'regular_sales'))
             if self.cleaned_data[fieldname]]
         payments = [(payment_type, self.cleaned_data[fieldname])
