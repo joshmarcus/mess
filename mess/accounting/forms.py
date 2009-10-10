@@ -56,6 +56,20 @@ class AfterHoursForm(forms.Form):
         cleaned_data["purchase_total"] = total
         return cleaned_data
 
+class EBTForm(forms.Form):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(), 
+                                     widget=AutoCompleteWidget('account_spiffy', 
+                                                             view_name='membership-autocomplete',
+                                                             canroundtrip=True))
+    EBT_amount = forms.DecimalField()
+
+    def save(self, entered_by):
+        total = self.cleaned_data['EBT_amount']
+        new_ebt = models.Transaction.objects.create(account=self.cleaned_data['account'],
+                                     entered_by=entered_by, purchase_type='P',
+                                     payment_type='E', purchase_amount=total,
+                                     payment_amount=total)
+
 class HoursBalanceForm(forms.ModelForm):
     class Meta:
         model = models.HoursTransaction

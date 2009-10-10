@@ -278,3 +278,46 @@ def after_hours(request):
     template = get_template('accounting/after_hours.html')
     return HttpResponse(template.render(context))
 
+
+# cashier permission is the first if
+# initial code copied from after-hours...
+@user_passes_test(lambda u: u.is_authenticated())
+def EBT(request):
+    if not m_models.cashier_permission(request):
+        return HttpResponse('Sorry, you do not have cashier permission. %s' 
+                             % request.META['REMOTE_ADDR'])
+
+    context = RequestContext(request)
+    
+    if 'getcashierinfo' in request.GET:
+        account_id = request.GET['account']
+        account = m_models.Account.objects.get(id=account_id)
+        context['account'] = account
+        if request.GET['getcashierinfo'] == 'members':
+            template = get_template('accounting/snippets/members.html')
+        elif request.GET['getcashierinfo'] == 'transactions':
+            context['transactions'] = models.Transaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)),
+            payment_type='E')
+            template = get_template('accounting/snippets/transactions.html')
+        elif request.GET['getcashierinfo'] == 'acctinfo':
+            template = get_template('accounting/snippets/acctinfo.html')
+        return HttpResponse(template.render(context))
+
+    if request.method == 'POST':
+        form = forms.EBTForm(request.POST)
+        if form.is_valid():
+            form.save(entered_by=request.user)
+            return HttpResponseRedirect(reverse('EBT'))
+    else:
+        form = forms.EBTForm()
+    context['form'] = form
+    today = datetime.date.today()
+    transactions = models.Transaction.objects.filter(
+            timestamp__range=(today,today+datetime.timedelta(1)),
+            payment_type='E')
+    context['transactions'] = transactions
+    context['can_reverse'] = True
+    template = get_template('accounting/EBT.html')
+    return HttpResponse(template.render(context))
+

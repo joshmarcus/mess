@@ -45,7 +45,7 @@ class HoursTransaction(models.Model):
         super(HoursTransaction, self).save(force_insert, force_update)
 
 class Transaction(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True) #never have to deal w/ this in a form.
     account = models.ForeignKey(Account)
     member = models.ForeignKey(Member, blank=True, null=True)
     purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,

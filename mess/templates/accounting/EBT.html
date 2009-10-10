@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/cashier.js"></script>
+{% endblock head %}
+
+{% block content %}
+<div id="double-column" >
+  {% include "accounting/snippets/page_menu.html" %}
+  <div id="primary-content-wrapper">
+    <div class="profile" id="acctinfo"><!-- filled by ajax --></div>
+    <form class="standard" id="transaction" method="post">
+    <h2>EBT entry</h2>
+      <table>
+        {{ form }}
+        <tr>
+          <th></th>
+          <td><input class="button" type="submit" value="Submit" /></td>
+        </tr>
+      </table>
+    </form>
+    <div id="transactions">
+      <h2>Today's EBT Transactions</h2>
+      {% include "accounting/snippets/transactions.html" %}
+    </div>
+  </div>
+</div>
+{% endblock %}
