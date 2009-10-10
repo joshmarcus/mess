@@ -12,7 +12,7 @@ from mess.membership import models
 def main():
     activemems = models.Member.objects.active_not_LOA()
     # change the filter to send chunks at a time, organized by last name
-    targetmems = activemems.filter(user__last_name__gt='')
+    targetmems = activemems.filter(user__last_name__gt='M')
     targetusers = [mem.user for mem in targetmems]
     for u in targetusers:
         print u, u.first_name, u.last_name
@@ -25,11 +25,14 @@ def main():
             u.email = u.get_profile().emails.all()[0].email
             u.save()
             print '...saved email address %s' % u.email
-        phantomform = auth_forms.PasswordResetForm({'email':u.email})
-        assert phantomform.is_valid()
-        phantomform.save(use_https=True, 
-            email_template_name='membership/welcome_email.txt')
-        print '...sent reset email to %s' % u.email
+        try:
+            phantomform = auth_forms.PasswordResetForm({'email':u.email})
+            assert phantomform.is_valid()
+            phantomform.save(use_https=True, 
+                email_template_name='membership/welcome_email.txt')
+            print '...sent reset email to %s' % u.email
+        except:
+            print '...had SOME kind of bad error...'
 
 main()
 

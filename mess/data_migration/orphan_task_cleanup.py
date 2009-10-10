@@ -19,10 +19,13 @@ knownids={}
 
 for sentinel in sentinels:
     if sentinel.id in knownids:
-        contine
+        continue
     walkback = sentinel.id
-    while models.Task.objects.get(id=walkback).recur_rule is None:
-        walkback -= 1
+    try:
+        while models.Task.objects.get(id=walkback).recur_rule is None:
+            walkback -= 1
+    except:
+        walkback += 1
 
     walkforward = sentinel.id
     try:

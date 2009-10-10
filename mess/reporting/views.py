@@ -115,6 +115,13 @@ def reports(request):
                 order_by='-hours_balance'),
 
             ('Hours Balance Changes',reverse('hours_balance_changes')),            
+            listrpt('Accounts','Over Balance',
+                'balance__gte=25',
+                'balance\r\nhours_balance\r\n'+
+                '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
+                '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
+                'active_member_count\r\nnote',
+                order_by='-balance'),
 
             ('Keys to Shut Off',reverse('frozen')),
 
@@ -171,12 +178,12 @@ def reports(request):
                 '','balance\r\ndeposit\r\nactive_member_count',
                 include_inactive='on'),
 
-            listrpt('Accounts','Active+Missing Balances and Deposits',
-                'members__isnull=False\r\n'+
-                'members__date_departed__isnull=True',
-                'balance\r\ndeposit\r\nactive_member_count\r\n'+
-                'active_or_missing_count',
-                include_inactive='on'),
+#           listrpt('Accounts','Active+Missing Balances and Deposits',
+#               'members__isnull=False\r\n'+
+#               'members__date_departed__isnull=True',
+#               'balance\r\ndeposit\r\nactive_member_count\r\n'+
+#               'active_or_missing_count',
+#               include_inactive='on'),
 
             listrpt('Accounts','Active Balances and Deposits',
                 '','balance\r\ndeposit\r\nactive_member_count'),

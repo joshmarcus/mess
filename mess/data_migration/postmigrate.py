@@ -90,7 +90,7 @@ def prepare_columns(headers):
             ],
         'member_post': [
             Column(headers, 'Join Date', date_format, 'date_joined'),
-            Column(headers, 'Departure Date', date_format, 'date_departed'),
+#           Column(headers, 'Departure Date', date_format, 'date_departed'),
             Column(headers, 'Has key?', is_yes, 'has_key'),
             Column(headers, 'Card Number', i_to_a, 'card_number'), # be sure to turn number:21944.0 into 21944
             Column(headers, 'Card Facility Code', i_to_a, 'card_facility_code'), 
@@ -348,9 +348,18 @@ def am_compare_and_warn(excel_active_members, mess_account):
                 mess_account.name, mam, mess_account.deposit_holders().count())
 
 def section_compare_and_warn(excel_section, mess_account):
+    active_no_loa = mess_account.active_no_loa
     active_or_missing = mess_account.active_or_missing().count()
-    print 'excel section: %s ... mess active_or_missing: %s ' % (
-            excel_section, active_or_missing)
+    print 'excel section: %s ... mess active: %s, active_or_missing: %s ' % (
+            excel_section, active_no_loa, active_or_missing)
+    if excel_section == '1.0':
+        if active_no_loa == 0:
+            print 'Section %s DOES NOT MATCH mess inactive/loa account %s' % (
+                excel_section, mess_account)
+    else:
+        if active_no_loa != 0:
+            print 'Section %s DOES NOT MATCH mess active account %s' % (
+                excel_section, mess_account)
     if excel_section in ['1.0','3.0','3.5']:
         if active_or_missing == 0:
             print 'Section %s DOES NOT MATCH mess inactive account %s' % (
