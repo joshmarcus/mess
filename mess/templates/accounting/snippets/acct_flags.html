@@ -1,8 +1,3 @@
-            {% if account.notice_flags %}
-              <div class="notice">
-                {{ account.notice_flags|join:" ... " }}
-              </div>
-            {% endif %}
             {% if account.frozen_flags %}
               <div class="frozen">
                 {{ account.frozen_flags|join:" ... " }}

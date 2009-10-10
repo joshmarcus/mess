@@ -416,15 +416,18 @@ class Account(models.Model):
         if newest_trans.count():
             return newest_trans[0].account_balance
 
-    def months_old(self):
+    def days_old(self):
         oldest = self.members.active().aggregate(Min('date_joined')).values()[0]
         if oldest is None:  # in case of no members or other problem
             return -1
-        return (datetime.date.today() - oldest).days / 30
+        return (datetime.date.today() - oldest).days
+
+    def months_old(self):
+        return self.days_old() / 30
         
     def max_allowed_to_owe(self):
         active_members = self.active_member_count
-        if self.months_old() >= 6:
+        if self.days_old() >= 180:
             return active_members * Decimal('25.00')
         else:
             return active_members * Decimal('5.00')
@@ -458,36 +461,22 @@ class Account(models.Model):
 
     def frozen_flags(self):
         flags = []
-        active_members = self.active_member_count
-        # must pay?
-        if self.balance > 0:
-            sixmonthsago = datetime.date.today() - datetime.timedelta(6*30)
-            oldmembers = self.members.filter(date_joined__lt=sixmonthsago)
-            if oldmembers.count():
-                max_balance = active_members * Decimal('25.00')
-            else:
-                max_balance = active_members * Decimal('5.00')
-            if self.balance > max_balance:
-                flags.append('MUST PAY') # %s' % (self.balance - max_balance))
-        # must work?
+        if self.balance > self.max_allowed_to_owe():
+            flags.append('MUST PAY')
         if self.hours_balance > Decimal('0.03'):
             flags.append('MUST WORK')
         if not self.can_shop:
             flags.append('CANNOT SHOP')
-        if not active_members:
-            flags.append('ACCOUNT CLOSED')
-        return flags
-
-    def notice_flags(self):
-        flags = []
         obligations = self.billable_member_count()
-        if not obligations and self.active_member_count:
-            flags.append('On Leave')
+        if not obligations:
+            if self.active_member_count:
+                flags.append('On Leave')
+            else:
+                flags.append('ACCOUNT CLOSED')
         satisfactions = self.accountmember_set.filter(
             Q(member__work_status__in='ec', shopper=False) |
-            Q(member__task__time__gte=datetime.date.today(), 
-              member__task__recur_rule__isnull=False)).count()
-        if obligations > satisfactions:
+            Q(member__task__time__gte=datetime.date.today())).count()
+        if obligations > satisfactions and self.days_old() > 7:
             flags.append('Needs Shift')
         if self.ebt_only:
             flags.append('EBT Only')
