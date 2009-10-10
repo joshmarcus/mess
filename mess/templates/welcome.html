@@ -34,6 +34,13 @@
   <div id="left-column">
     <div id="primary-content-wrapper">
       <h2>Hello, {{ user.first_name }}!</h2>
+      <h3>Here are the most recent conversations on the <a href="/forum/menu">Forum</a></h3>
+      <ul>
+      {% for t in threads %}
+      <li><a href="/forum/{{ t.forum__slug }}/">{{ t.subject }}</a></li>
+      {% endfor %}
+      </ul>
+
       <h3>Here are the most recent updates from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h3>
       {% for entry in rss_entries %}
       <h4>{{ entry.title }}</h4>

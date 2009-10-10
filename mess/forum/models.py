@@ -34,6 +34,13 @@ class Forum(models.Model):
                total_posts=Count('timestamp'), last_post=Max('timestamp')
                ).order_by('-last_post')
 
+class PostManager(models.Manager):
+
+    def threads(self):
+        return self.values('subject', 
+                           'forum__name', 'forum__slug').annotate(last_post=Max(
+                'timestamp')).order_by('-last_post')
+
 class Post(models.Model):
     forum = models.ForeignKey(Forum)
     author = models.ForeignKey(auth_models.User)    
@@ -41,6 +48,7 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     body = models.TextField()
     deleted = models.BooleanField()
+    objects = PostManager()
 
     def get_absolute_url(self):   #for now, return the thread's url
         return '/forum/%s/?subject=%s' % (self.forum.slug, urlquote(self.subject, safe=''))
@@ -48,3 +56,6 @@ class Post(models.Model):
     def get_alias(self):
         return '%s (%s)' % (self.author.first_name, 
                             self.author.get_profile().get_primary_account())
+
+    
+
