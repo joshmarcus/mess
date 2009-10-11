@@ -28,36 +28,36 @@
         </div>
       {% endif %}
 
-      {% if account.deposit_holders %}
+      {% if account.accountmember_set.active_depositor %}
         <h2 class="accountmembersection">
           Deposit Holders ({{ account.active_member_count }})
         </h2> 
 
         <div class="profile profile-deposit_holder">
           {% with "deposit_holder" as section %}
-          {% for am in account.deposit_holders %}
+          {% for am in account.accountmember_set.active_depositor %}
             {% include "membership/snippets/accountmember.html" %}
           {% endfor %}
           {% endwith %}
         </div>
       {% endif %}
 
-      {% if account.non_deposit_holders %}
+      {% if account.accountmember_set.active_shopper %}
         <h2 class="accountmembersection">Proxy Shoppers</h2>
         <div class="profile profile-proxy">
           {% with "proxy" as section %}
-          {% for am in account.non_deposit_holders %}
+          {% for am in account.accountmember_set.active_shopper %}
             {% include "membership/snippets/accountmember.html" %}
           {% endfor %}
           {% endwith %}
         </div>
       {% endif %}
 
-      {% if account.departed_members %}
+      {% if account.accountmember_set.inactive %}
         <h2 class="accountmembersection">Departed Members</h2>
         <div class="profile profile-inactive">
           {% with "departed" as section %}
-          {% for am in account.departed_members %}
+          {% for am in account.accountmember_set.inactive %}
             {% include "membership/snippets/accountmember.html" %}
           {% endfor %}
           {% endwith %}

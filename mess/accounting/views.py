@@ -178,7 +178,7 @@ def cashsheet(request):
         rows_per_page = 24
     # include ! accounts at top ("Mariposa" and "UNCLAIMED")
     accounts = (list(m_models.Account.objects.filter(name__startswith='!')) +
-                list(m_models.Account.objects.active_not_LOA()))
+                list(m_models.Account.objects.present()))
     return render_to_response('accounting/cashsheet.html', locals(),
             context_instance=RequestContext(request))
 
@@ -202,7 +202,7 @@ def billing(request):
         total_potential_bills = 0
         accounts = m_models.Account.objects.active()
         for account in accounts:
-            billable_members = account.billable_member_count()
+            billable_members = account.billable_member_count
             total_billable_members += billable_members
             total_deposits += account.deposit
             potential_bill = (form.cleaned_data['amount_per_member'] * 

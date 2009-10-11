@@ -111,7 +111,7 @@ def reports(request):
                 'hours_balance\r\nbalance\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
-                'active_no_loa\r\nnote',
+                'billable_member_count\r\nnote',
                 order_by='-hours_balance'),
 
             ('Hours Balance Changes',reverse('hours_balance_changes')),            
@@ -427,13 +427,9 @@ def memberwork(request):
 
 def prepmemberwork(member, weekbreaks):
     # return this very member object, but just add things onto it.
-    shift = member.task_set.filter(time__gte=datetime.date.today(), 
-            recur_rule__isnull=False).order_by('time')
-    if shift.count():
-        shift = shift[0]
+    shift = member.regular_shift()
+    if shift:
         shift.rotletter = old_rotations(shift.time, shift.recur_rule.interval)
-    else:
-        shift = None
     if shift and shift.recur_rule.interval == 6:
         freq = 6
     else:

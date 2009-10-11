@@ -53,15 +53,15 @@ class MemberManager(models.Manager):
     'Custom manager to add extra methods'
     def active(self):
         return self.filter(date_missing__isnull=True, 
-                date_departed__isnull=True)
+                           date_departed__isnull=True)
 
     def inactive(self):
         return self.filter(Q(date_missing__isnull=False)|
-                Q(date_departed__isnull=False))
+                           Q(date_departed__isnull=False))
 
-    def active_not_LOA(self):
-        return self.active().exclude(leaveofabsence__start__lte=today,
-                                     leaveofabsence__end__gt=today)
+    def present(self):
+        return self.active().exclude(leaveofabsence__in=
+                                     LeaveOfAbsence.objects.current())
 
 class Member(models.Model):
     user = models.ForeignKey(User, unique=True, editable=False)
@@ -89,7 +89,7 @@ class Member(models.Model):
 
     @property
     def current_loa(self):
-        loa_set = self.leaveofabsence_set.filter(start__lte=today,end__gt=today)
+        loa_set = self.leaveofabsence_set.current()
         if loa_set.count():
             return loa_set[0]
         
@@ -221,12 +221,16 @@ def cashier_permission(request):
         return {'can_cashier_now':True}
     return {}     # no permission, bool({}) = False
 
+class LeaveOfAbsenceManager(models.Manager):
+    def current(self):
+        return self.filter(start__lte=today, end__gt=today)
 
 class LeaveOfAbsence(models.Model):
     """ Leave of absence periods for members. """
     member = models.ForeignKey(Member)
     start = models.DateField()
     end = models.DateField(help_text="Remember!: Editing a Leave of absense directly does not affect member's workshifts.  Please remove them manually from any workshifts that fall within the leave.")
+    objects = LeaveOfAbsenceManager()
     
 
 
@@ -241,21 +245,16 @@ class WorkExemption(models.Model):
 class AccountManager(models.Manager):
     'Custom manager to add extra methods'
     def active(self):
-        return self.filter(members__isnull=False,
-                members__date_missing__isnull=True, 
-                members__date_departed__isnull=True).distinct()
+        return self.filter(accountmember__in=
+                           AccountMember.objects.active_depositor()).distinct()
 
     def inactive(self):
-        return self.exclude(members__isnull=False,
-                members__date_missing__isnull=True, 
-                members__date_departed__isnull=True)
+        return self.exclude(accountmember__in=
+                            AccountMember.objects.active_depositor())
 
-    def active_not_LOA(self):  # will show up on cash sheets
-        am_active_not_LOA = AccountMember.objects.filter(
-                shopper=False, account_contact=True,
-                member__in=Member.objects.active_not_LOA())
-        return self.filter(accountmember__in=am_active_not_LOA).distinct()
-
+    def present(self):   # will show up on cash sheets
+        return self.filter(accountmember__in=
+                           AccountMember.objects.present_depositor()).distinct()
 
 class Account(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -272,46 +271,22 @@ class Account(models.Model):
 
     objects = AccountManager()
 
+    def active_members(self):
+        return Member.objects.filter(accountmember__in=
+                self.accountmember_set.active_depositor())
+
     @property
     def active_member_count(self):
-        return self.accountmember_set.filter(shopper=False).filter(
-            member__date_missing__isnull=True, 
-            member__date_departed__isnull=True).count()
+        return self.active_members().count()
 
-    def billable_member_count(self):
-        ''' active members MINUS anyone on leave of absence '''
-        return self.accountmember_set.filter(shopper=False).filter(
-            member__date_missing__isnull=True,
-            member__date_departed__isnull=True).exclude(
-            member__leaveofabsence__start__lte=today,
-            member__leaveofabsence__end__gt=today).count()
-    active_no_loa = property(billable_member_count)
-
-    def deposit_holders(self):
-        return self.accountmember_set.filter(
-            member__date_missing__isnull=True,
-            member__date_departed__isnull=True,
-            account_contact=True)   # account_contact flag used for depositors
-
-    def non_deposit_holders(self):
-        return self.accountmember_set.filter(
-            member__date_missing__isnull=True,
-            member__date_departed__isnull=True,
-            account_contact=False)   # account_contact flag used for depositors
-
-    def departed_members(self):
-        return self.accountmember_set.filter(
-            Q(member__date_missing__isnull=False) |
-            Q(member__date_departed__isnull=False))
-
-    def active_or_missing(self):
-        return self.accountmember_set.filter(
-            member__date_departed__isnull=True,
-            account_contact=True)
+    def billable_members(self):
+        ''' active depositors MINUS anyone on leave of absence '''
+        return Member.objects.filter(accountmember__in=
+                self.accountmember_set.present_depositor())
 
     @property
-    def active_or_missing_count(self):
-        return self.active_or_missing().count()
+    def billable_member_count(self):
+        return self.billable_members().count()
 
     def autocomplete_label(self):
         if self.active_member_count:
@@ -426,11 +401,10 @@ class Account(models.Model):
         return self.days_old() / 30
         
     def max_allowed_to_owe(self):
-        active_members = self.active_member_count
         if self.days_old() >= 180:
-            return active_members * Decimal('25.00')
+            return self.active_member_count * Decimal('25.00')
         else:
-            return active_members * Decimal('5.00')
+            return self.active_member_count * Decimal('5.00')
 
     def must_pay(self):
         max_allowed_to_owe = self.max_allowed_to_owe()
@@ -447,7 +421,7 @@ class Account(models.Model):
             return self.hours_balance
 
     def obligations(self):
-        obligations = self.billable_member_count()
+        obligations = self.billable_member_count
         if not obligations:
             if self.active_member_count:
                 return 'On Leave'
@@ -467,7 +441,7 @@ class Account(models.Model):
             flags.append('MUST WORK')
         if not self.can_shop:
             flags.append('CANNOT SHOP')
-        obligations = self.billable_member_count()
+        obligations = self.billable_member_count
         if not obligations:
             if self.active_member_count:
                 flags.append('On Leave')
@@ -488,18 +462,37 @@ class Account(models.Model):
     class Meta:
         ordering = ['name']
 
+class AccountMemberManager(models.Manager):
+    def active_depositor(self):
+        return self.filter(shopper=False, member__in=Member.objects.active())
+
+    def present_depositor(self):
+        return self.filter(shopper=False, member__in=Member.objects.present())
+
+    def active_shopper(self):
+        return self.filter(shopper=True, member__in=Member.objects.active())
+
+    def inactive(self):
+        return self.exclude(member__in=Member.objects.active())
 
 class AccountMember(models.Model):
     account = models.ForeignKey(Account)
     member = models.ForeignKey(Member)
     # account_contact displayed as "deposit holder" per shinara's request
     # -- gsf 2009-05-03
+
+    # In retrospect, I think we should assume deposit_holder = not shopper.
+    # After we enabled both, we started getting broken cases where 
+    # account_contact != not shopper.  --Paul 2009-10-10
+
     account_contact = models.BooleanField(default=True, verbose_name="deposit holder")
     # primary_account isn't being displayed for now.  not needed according
     # to shinara -- gsf 2009-05-03
     primary_account = models.BooleanField(default=True)
     # is this member just a shopper on the account?
     shopper = models.BooleanField(default=False)
+
+    objects = AccountMemberManager()
     
     def __unicode__(self):
         return u'%s: %s' % (self.account, self.member)
