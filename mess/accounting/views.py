@@ -237,6 +237,7 @@ def after_hours(request):
                              % request.META['REMOTE_ADDR'])
 
     context = RequestContext(request)
+    today = datetime.date.today()
     
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
@@ -268,7 +269,6 @@ def after_hours(request):
     else:
         form = forms.AfterHoursForm()
     context['form'] = form
-    today = datetime.date.today()
     # change line below to just be after-hours transactions??
     transactions = models.Transaction.objects.filter(
             timestamp__range=(today,today+datetime.timedelta(1)),
