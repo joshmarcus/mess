@@ -62,14 +62,14 @@
 
     {% if am.member.current_loa %}
       <li>
-        <b>On Leave:</b> {{ am.member.current_loa.start|date:"n/j/Y" }} 
+        <b>On leave:</b> {{ am.member.current_loa.start|date:"n/j/Y" }} 
         to {{ am.member.current_loa.end|date:"n/j/Y" }}
       </li>
     {% endif %}
 
     {% if am.account_contact %}
       <!-- work status is only for member equity holders -->
-      <li><b>Work Status:</b> {{ am.member.get_work_status_display }}</li>
+      <li><b>Work status:</b> {{ am.member.get_work_status_display }}</li>
     {% endif %}
 
     <li><b>Key:</b> 

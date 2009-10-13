@@ -3,11 +3,11 @@
 <h2><a href="{{ account.get_absolute_url }}">{{ account }}</a></h2>
 {% include "accounting/snippets/acct_flags.html" %}
 <ul class="quick-info">
-  <li><b>{{ account.owes_or_credit }}:</b> 
+  <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> 
     {{ account.balance|messmoney }}</li>
-  <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{% url switch %}?original={{ account.next_shift.id }}">need to switch?</a>{% else %}None{% endif %}</li>
+  <li><b>Next workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{% url switch %}?original={{ account.next_shift.id }}">need to switch?</a>{% else %}None{% endif %}</li>
   <li>
-    <b>Hours {{ account.hours_owed_or_banked }}:</b> 
+  <b>Hours {% if account.hours_owed %}owed{% else %}banked{% endif %}:</b> 
       {{ account.hours_balance|messmoney }} 
     {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
   </li>

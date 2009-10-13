@@ -373,17 +373,13 @@ class Account(models.Model):
         else:
             return 'Zero balance'
 
-    def owes_or_credit(self):
+    def owes_money(self):
         if self.balance > 0:
-            return 'Money Owed'
-        else:
-            return 'Credit'
+            return True
 
-    def hours_owed_or_banked(self):
+    def hours_owed(self):
         if self.hours_balance > 0:
-            return 'Owed'
-        else:
-            return 'Banked'
+            return True
 
     def balance_on(self, time):
         newest_trans = self.transaction_set.filter(
