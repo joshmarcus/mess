@@ -207,7 +207,7 @@ def billing(request):
             total_deposits += account.deposit
             potential_bill = (form.cleaned_data['amount_per_member'] * 
                                       billable_members)
-            if form.cleaned_data['bill_type'] == 'O':   # O = Deposit
+            if form.cleaned_data['bill_type'] == 'O':   # O = Member Equity
                 max_deposit = (form.cleaned_data['max_deposit_per_member'] *
                                       billable_members)
                 if account.deposit + potential_bill > max_deposit:

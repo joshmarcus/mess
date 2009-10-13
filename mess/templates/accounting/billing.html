@@ -3,7 +3,7 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
-    <h2>Dues and Deposit Billing</h2>
+    <h2>Dues and Member Equity Billing</h2>
     <form method="POST">
       <table>{{ form }}</table>
       <input type="submit" name="action" value="Prepare">
@@ -13,7 +13,7 @@
       <tr>
         <th>Account</th>
         <th>Billable Members</th>
-        <th>Current Deposit</th>
+        <th>Current Member Equity</th>
         <th>AMOUNT TO BILL</th>
       </tr>
       {% for account in accounts %}

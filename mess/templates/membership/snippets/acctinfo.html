@@ -11,7 +11,7 @@
       {{ account.hours_balance|messmoney }} 
     {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
   </li>
-  <li><b>Deposit:</b> {{ account.deposit|messmoney }}</li>
+  <li><b>Member equity:</b> {{ account.deposit|messmoney }}</li>
 </ul>
 
 <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>

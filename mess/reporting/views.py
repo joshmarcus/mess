@@ -85,7 +85,7 @@ def reports(request):
         ('Accounts',[
             listrpt('Accounts','Active Contacts',
                 '',
-                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Deposit, (s)=Shopper\r\n'+
+                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails\r\ndeposit'),
                 
@@ -103,7 +103,7 @@ def reports(request):
             listrpt('Accounts','With No Proxy Shoppers',
                 'accountmember__shopper!=True', 'members\r\nactive_member_count'),
 
-            listrpt('Accounts','With At Least $50 Deposit',
+            listrpt('Accounts','With At Least $50 Member Equity',
                 'deposit__gte=50.00', 'deposit'),
 
             listrpt('Accounts','Owing 1 Hour or More',
@@ -137,7 +137,7 @@ def reports(request):
                 'emails__isnull=True\r\naccountmember__shopper=False',
                 'accounts\r\nphones', order_by='accounts'),
 
-            listrpt('Members','Depositors on LOA',
+            listrpt('Members','Member Equity Holders on LOA',
                 'leaveofabsence__start__lte='+str(datetime.date.today())+'\r\nleaveofabsence__end__gte='+str(datetime.date.today())+'\r\naccountmember__shopper=False',
                 'current_loa.start\r\ncurrent_loa.end\r\naccounts\r\nphones\r\n{% for a in x.accounts.all %}{{ a.note }}{% endfor %}\Notes',
                 order_by='leaveofabsence__end'),
@@ -174,21 +174,21 @@ def reports(request):
 
             ('Transaction Summary',reverse('trans_summary')),
 
-            listrpt('Accounts','All Balances and Deposits',
+            listrpt('Accounts','All Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count',
                 include_inactive='on'),
 
-#           listrpt('Accounts','Active+Missing Balances and Deposits',
+#           listrpt('Accounts','Active+Missing Balances and Member Equities',
 #               'members__isnull=False\r\n'+
 #               'members__date_departed__isnull=True',
 #               'balance\r\ndeposit\r\nactive_member_count\r\n'+
 #               'active_or_missing_count',
 #               include_inactive='on'),
 
-            listrpt('Accounts','Active Balances and Deposits',
+            listrpt('Accounts','Active Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count'),
 
-            ('Dues and Deposits Billing',reverse('billing')),
+            ('Dues and Member Equities Billing',reverse('billing')),
         ]),
 
         ('Tasks',[
@@ -218,7 +218,7 @@ def reports(request):
         ]),
 
         ('Anomalies',[
-            ('Page For Fixing "Deposit Holder" and "Shopper"',
+            ('Page For Fixing "Member Equity Holder" and "Shopper"',
                 reverse('accountmemberflags')),
             ('Database Anomalies',reverse('anomalies')),
         ]),

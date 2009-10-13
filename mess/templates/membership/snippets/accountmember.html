@@ -6,7 +6,7 @@
 
 {% if not am.shopper and not am.account_contact %}
 <div class="accountmemberalert">
-  Deposit Holder??!??
+  Member Equity Holder??!??
 </div>
 {% endif %}
 
@@ -57,7 +57,7 @@
 
     {% ifequal section "departed" %}
       {% if am.shopper %}<li><b>Was Proxy</b></li>{% endif %}
-      {% if am.account_contact %}<li><b>Was Deposit Holder</b></li>{% endif %}
+      {% if am.account_contact %}<li><b>Was Member Equity Holder</b></li>{% endif %}
     {% endifequal %}
 
     {% if am.member.current_loa %}
@@ -68,7 +68,7 @@
     {% endif %}
 
     {% if am.account_contact %}
-      <!-- work status is only for depositholders -->
+      <!-- work status is only for member equity holders -->
       <li><b>Work Status:</b> {{ am.member.get_work_status_display }}</li>
     {% endif %}
 

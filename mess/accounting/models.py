@@ -14,7 +14,7 @@ PURCHASE_CHOICES = (
     ('B','Bulk Purchase'),
     ('A','After-Hours Purchase'),
     ('U','Dues'),
-    ('O','Deposit'),
+    ('O','Member Equity'),
     ('S','Misc'),   # Misc is used for transfers etc, positive or negative
 #   ('T','Trade'),    what is Trade?
 )
@@ -74,7 +74,7 @@ class Transaction(models.Model):
         if bool(self.payment_amount) is not bool(self.payment_type):
             self.payment_amount = 0
             self.payment_type = ''
-        if self.purchase_type == 'O':  # Deposit
+        if self.purchase_type == 'O':  # Member Equity
             self.account.deposit += self.purchase_amount
         balance = self.account.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
