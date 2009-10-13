@@ -30,7 +30,7 @@ class AfterHoursForm(forms.Form):
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
     purchases = forms.CharField(max_length=256, widget=forms.Textarea(attrs={'rows':3}),
-                               help_text='separate purchases with +') # max_length matches trans model notes field
+                               help_text='e.g: 2.25 + .95*3 + 4.9') # max_length matches trans model notes field
     purchase_total = forms.DecimalField(required=False, widget=forms.HiddenInput())
     
     def clean(self):
