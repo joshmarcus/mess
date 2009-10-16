@@ -84,7 +84,9 @@
     {% endif %}
     {% endif %}
 
+    {% if am.member.date_joined_is_realistic or request.user.is_staff %}
     <li><b>Joined:</b> {{ am.member.date_joined|date:"n/j/Y" }}</li>
+    {% endif %}
   </ul>
 </div>
 <hr class="endaccountmember">

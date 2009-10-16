@@ -187,6 +187,8 @@ def frozen(request):
     # list of accounts that are frozen on the cash sheets
     accounts = m_models.Account.objects.active()  # LOA may still be frozen
     accounts = accounts.filter(Q(balance__gt=0) | Q(hours_balance__gt=0))
+    if request.GET.get('has_key'):
+        accounts = accounts.filter(members__card_number__gt='')
     return render_to_response('accounting/frozen.html', locals(),
             context_instance=RequestContext(request))
     

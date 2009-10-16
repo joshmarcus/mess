@@ -198,6 +198,10 @@ class Member(models.Model):
                 return 'Active, but on leave until %s' % self.current_loa.end
             return 'Active'
 
+    def date_joined_is_realistic(self):
+        if self.date_joined > datetime.date(1970,1,1):
+            return self.date_joined
+
     def date_orientation(self):
         orientations = self.task_set.filter(job__name='Orientation Attendee')
         if orientations.count():

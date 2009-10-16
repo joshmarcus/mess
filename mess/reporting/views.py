@@ -123,7 +123,7 @@ def reports(request):
                 'active_member_count\r\nnote',
                 order_by='-balance'),
 
-            ('Keys to Shut Off',reverse('frozen')),
+            ('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
 
         ]),
 
