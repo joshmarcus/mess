@@ -10,11 +10,16 @@ LIST_OBJECT_CHOICES = (
     ('Members', 'Members'),
     ('Tasks', 'Tasks'),
 )
+LIST_INCLUDE_CHOICES = (
+    ('Active', 'Active'),
+    ('All', 'All (Active + Inactive)'),
+    ('Present', 'Present Only (no LOA)'),
+)
 
 class ListFilterForm(forms.Form):
     # this really is required, but not if the form wasn't submitted...
     object = forms.ChoiceField(required=False, choices=LIST_OBJECT_CHOICES)
-    include_inactive = forms.BooleanField(required=False)
+    include = forms.ChoiceField(required=False, choices=LIST_INCLUDE_CHOICES)
     filter = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':4, 'wrap':'off'}))
     order_by = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':2, 'wrap':'off'}))
     output = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows':6, 'wrap':'off'}))

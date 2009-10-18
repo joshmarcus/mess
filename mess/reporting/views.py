@@ -106,22 +106,25 @@ def reports(request):
             listrpt('Accounts','With At Least $50 Member Equity',
                 'deposit__gte=50.00', 'deposit'),
 
+            ('Hours Balance Changes',reverse('hours_balance_changes')),            
+
             listrpt('Accounts','Owing 1 Hour or More',
                 'hours_balance__gte=1.00', 
                 'hours_balance\r\nbalance\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
                 'billable_member_count\r\nnote',
-                order_by='-hours_balance'),
+                order_by='-hours_balance',
+                include='Present'),
 
-            ('Hours Balance Changes',reverse('hours_balance_changes')),            
             listrpt('Accounts','Over Balance',
                 'balance__gte=25',
                 'balance\r\nhours_balance\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
                 'active_member_count\r\nnote',
-                order_by='-balance'),
+                order_by='-balance',
+                include='Present'),
 
             ('Keys to Shut Off',reverse('frozen')+'?has_key=on'),
 
@@ -161,7 +164,7 @@ def reports(request):
                 'date_departed__gte='+str(past90d), 
                 'accounts\r\ndate_joined\r\ndate_departed',
                 order_by='-date_departed',
-                include_inactive='on'),
+                include='All'),
 
             listrpt('Members','Keycard Info',
                 'card_number__gt=',
@@ -176,7 +179,7 @@ def reports(request):
 
             listrpt('Accounts','All Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count',
-                include_inactive='on'),
+                include='All'),
 
 #           listrpt('Accounts','Active+Missing Balances and Member Equities',
 #               'members__isnull=False\r\n'+
@@ -247,7 +250,7 @@ def reports(request):
     return render_to_response('reporting/reports.html', locals(),
             context_instance=RequestContext(request))
 
-def listrpt(object, desc, filter, output, include_inactive='', order_by=''):
+def listrpt(object, desc, filter, output, include='Active', order_by=''):
     return (desc, reverse('list')+'?'+urlencode(locals()))
 
 @user_passes_test(lambda u: u.is_staff)
@@ -259,29 +262,33 @@ def list(request):
     if request.GET.has_key('desc'):
         context['desc'] = request.GET['desc']
 
-    for requestfield in ['object','include_inactive','filter','order_by','output']:
+    for requestfield in ['object','include','filter','order_by','output']:
         if request.GET.has_key('object') and context['form'].is_valid():
             context[requestfield] = context['form'].cleaned_data[requestfield]
         else:
             context[requestfield] = ''
     
     if context['object'] == 'Accounts':
-        if context['include_inactive']:
+        if context['include'] == 'All':
             objects = m_models.Account.objects.all()
-        else:
+        elif context['include'] == 'Present':
+            objects = m_models.Account.objects.present()
+        else:  # default Active
             objects = m_models.Account.objects.active()
         blank_object = m_models.Account()
         outputters = [ListOutputter('', blank_object, 'Account')]
     elif context['object'] == 'Members':
-        if context['include_inactive']:
+        if context['include'] == 'All':
             objects = m_models.Member.objects.all()
-        else:
+        elif context['include'] == 'Present':
+            objects = m_models.Member.objects.present()
+        else:  # default Active
             objects = m_models.Member.objects.active()
         blank_object = m_models.Member()
         outputters = [ListOutputter('', blank_object, 'Member')]
     elif context['object'] == 'Tasks':
         objects = s_models.Task.objects.all()
-        if not context['include_inactive']:
+        if context['include'] != 'All':
             # show only tasks in the next 6 weeks...
             objects = objects.filter(time__range=(datetime.date.today(),datetime.date.today()+datetime.timedelta(weeks=6)))
             # ...or in the next 4 weeks if we're sure it's a 4-week rotation
