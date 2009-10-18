@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load messmoney %}
+
+{% block content %}
+<div id="left-column">
+  {% include "scheduling/snippets/page_menu.html" %}
+  <div id="primary-content-wrapper">
+    <h2>My Schedule</h2>
+    <h3 class="accountname">Next Six Months</h3>
+    <ul>
+      {% for shift in account_shifts %}
+        <li>{{ shift.html_display }} {% if not shift.excused and not shift.makeup %}<a href="{{ shift.get_switch_url }}">switch</a>{% endif %}</li>
+      {% endfor %}
+    </ul>
+
+    {% if my_shift %}
+      <h3 class="accountname">Regular Shift</h3>
+      <ul><li>{{ my_shift.html_display }}</li></ul>
+
+      <h3 class="accountname">Members You Might Swap Shifts With</h3>
+      <ul class="quick-info">
+        {% for shift in similar_assigned %}
+          <li>{{ shift.html_display }}
+            {% comment %}
+            {% with shift.member.phones|first as phone %}
+              {{ phone.number }}
+            {% endwith %}
+            {% endcomment %}
+            {% for phone in shift.member.phones.all %}
+              , {{ phone.number }}
+            {% endfor %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <h3 class="accountname">No Regular Shift Scheduled For {{ request.user.first_name }}</h3>
+    {% endif %}
+  </div>
+</div>
+
+<div id="right-column">
+  
+  <h2><a href="{{ account.get_absolute_url }}">{{ account }}</a></h2>
+  {% include "accounting/snippets/acct_flags.html" %}
+  <ul class="quick-info">
+    <li>
+      <b>Hours {% if account.hours_owed %}Owed{% else %}Banked{% endif %}:</b> 
+        {{ account.hours_balance|messmoney }} 
+    </li>
+  </ul>
+
+  <h2>Help Wanted For These Shifts</h2>
+  <ul>
+    {% for shift in unassigned %}
+      <li>{{ shift.html_display }}{% if shift.after_printing_horizon %}<br><form method="POST" onsubmit="return confirm('Can you commit to working this shift? {{ shift }}');"><input type="hidden" name="task" value="{{ shift.id }}"><input type="submit" name="action" value="Sign me up!"></form>{% endif %}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

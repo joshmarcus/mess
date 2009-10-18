@@ -1,0 +1,10 @@
+<b>{{ self.job }}</b>, 
+{% ifequal datehorizon "thisweek" %}{{ self.time|date:"D P" }}{% endifequal %}
+{% ifequal datehorizon "shortterm" %}{{ self.time|date:"M j, P" }}{% endifequal %}
+{% ifequal datehorizon "other" %}{{ self.time|date:"n/j/Y P" }}{% endifequal %}
+ - {{ self.get_end|date:"P" }}
+{% if self.member %}
+  <br>{{ self.member.user.first_name }} ({{ self.account }})
+{% endif %}
+{% if self.hours_worked %}worked {{ self.hours_worked }} hours{% endif %}
+{% if self.workflag %}<br><b>{{ self.workflag }}</b>{% endif %}
