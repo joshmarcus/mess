@@ -182,6 +182,6 @@ class BillingForm(forms.Form):
 class CashSheetFormatForm(forms.Form):
     row_height = forms.DecimalField(initial=2.5,
                 widget=forms.TextInput(attrs={'size':'4'}))
-    rows_per_page = forms.IntegerField(initial=24,
+    rows_per_page = forms.IntegerField(initial=25,
                 widget=forms.TextInput(attrs={'size':'4'}))
 

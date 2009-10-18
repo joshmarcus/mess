@@ -11,12 +11,14 @@
       <table class="rotation">
         <tr>
           {% if tablex.ideals %}<td>
-            <a class="noprint" href="{% url scheduling-schedule tablex.idealdate %}">set ideal schedule</a>
+            {% if request.user.is_staff %}
+              <a class="noprint" href="{% url scheduling-schedule tablex.idealdate %}">set ideal schedule</a>
+            {% endif %}
           </td>{% endif %}
           {% for cyclex in tablex.cycles %}
             <th>Week {{ cyclex.letter }}:
               {% for datex in cyclex.dates %}
-                <a href="{% url scheduling-schedule datex|date:"Y-m-d" %}">{{ datex|date:"n/j" }}</a>,
+                {% if request.user.is_staff %}<a href="{% url scheduling-schedule datex|date:"Y-m-d" %}">{{ datex|date:"n/j" }}</a>{% else %}{{ datex|date:"n/j" }}{% endif %},
               {% endfor %}
             </th>
           {% endfor %}
@@ -38,8 +40,12 @@
                 {% endif %}
                 {% endif %}
                 {% if task.assigned %}
-                  <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a><br />
-                  (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                  {% if request.user.is_staff %}
+                    <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a><br />
+                    (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                  {% else %}
+                    {{ task.member.user.first_name }} ({{ task.account }})<br />
+                  {% endif %}
                   {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
                 {% endif %}
               </td>
@@ -62,8 +68,12 @@
                   {% endif %}
                   <hr />
                   {% if task.assigned %}
-                    <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
-                    (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                    {% if request.user.is_staff %}
+                      <a href="{% url member task.member.user.username %}">{{ task.member.user.first_name }}</a>
+                      (<a href="{% url account task.account.id %}">{{ task.account }}</a>)<br />
+                    {% else %}
+                      {{ task.member.user.first_name }} ({{ task.account }})
+                    {% endif %}
                     {% for phone in task.member.phones.all %} {{ phone }} <br/> {% endfor %}
                   {% endif %}
                 </div>

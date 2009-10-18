@@ -2,7 +2,12 @@ import datetime
 from dateutil import rrule
 
 from django.db import models
+from django.template import loader, Context
+from django.utils.safestring import mark_safe
 from mess.membership.models import Account, Member
+
+today = datetime.date.today()
+todaytime = datetime.datetime(today.year, today.month, today.day)
 
 JOB_TYPES = (
     ('s','Staff'),
@@ -105,6 +110,45 @@ class Task(models.Model):
 
     def get_absolute_url(self):
         return '/scheduling/task/%s' % self.id
+
+    def get_switch_url(self):
+        return '/scheduling/switch/?original=%s' % self.id
+
+    def after_printing_horizon(self):
+        return bool(self.time > todaytime + datetime.timedelta(11))
+
+    def html_display(self):
+        template = loader.get_template('scheduling/snippets/task.html')
+        if self.time < todaytime:
+            datehorizon = 'other'
+        #elif self.time < todaytime + datetime.timedelta(4):
+        #    datehorizon = 'thisweek'
+        elif self.time < todaytime + datetime.timedelta(180):
+            datehorizon = 'shortterm'
+        else:
+            datehorizon = 'other'
+        task = self
+        return template.render(Context(locals()))
+#       job = unicode(self.job)
+#       if self.time < todaytime:
+#           date = self.time.strftime('%Y-%m-%d %I:%M%P')
+#       elif self.time < todaytime + datetime.timedelta(4):
+#           date = self.time.strftime('%a %I:%M%P') # Sat 05:30PM
+#       elif self.time < todaytime + datetime.timedelta(90):
+#           date = self.time.strftime('%b %d, %I:%M%P') # Oct 10, 05:30PM
+#       else:
+#           date = self.time.strftime('%Y-%m-%d %I:%M%P')
+#       date = date.replace(' 0',' ').replace('-0','-')
+#       ret = '<b>%s</b>, %s %sh' % (job, date, self.hours)
+#       if self.member:
+#           mem = '%s (%s)' % (self.member.user.first_name, self.account)
+#           ret += '<br>%s' % mem
+#           if self.workflag:
+#               ret += '<br><b>%s</b>' % self.workflag
+#       else:
+#           if self.excused:
+#               ret += '<br><b>One-Time Filled</b>'
+#       return mark_safe(ret)
 
     @property
     def assigned(self):

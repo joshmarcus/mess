@@ -40,6 +40,9 @@
           <li><a href="{% url welcome %}"{% active_class request '^$' %}>Dashboard</a></li>
           <li><a href="{% url accounts %}"{% active_class request '^membership' %}>Membership</a></li>
           {% endif %}
+          {% if not user.is_staff %}
+          <li><a href="{% url myschedule %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
+          {% endif %}
           {% if user.is_staff %}
           <li><a href="{% url scheduling-schedule-today %}"{% active_class request '^scheduling' %}>Scheduling</a></li>
           <li><a href="{% url reports %}"{% active_class request '^reporting' %}>Reports</a></li>

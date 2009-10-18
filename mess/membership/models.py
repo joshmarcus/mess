@@ -424,14 +424,14 @@ class Account(models.Model):
         obligations = self.billable_member_count
         if not obligations:
             if self.active_member_count:
-                return 'On Leave'
+                return 'ON LEAVE'
             return
         for am in self.accountmember_set.all():
             if (am.member.regular_shift()
                     or (am.member.work_status in 'ec' and not am.shopper)):
                 obligations -= 1
         if obligations:
-            return 'Needs Shift'
+            return 'NEEDS SHIFT'
 
     def frozen_flags(self):
         flags = []
@@ -444,14 +444,14 @@ class Account(models.Model):
         obligations = self.billable_member_count
         if not obligations:
             if self.active_member_count:
-                flags.append('On Leave')
+                flags.append('ON LEAVE')
             else:
                 flags.append('ACCOUNT CLOSED')
         satisfactions = self.accountmember_set.filter(
             Q(member__work_status__in='ec', shopper=False) |
             Q(member__task__time__gte=datetime.date.today())).count()
         if obligations > satisfactions and self.days_old() > 7:
-            flags.append('Needs Shift')
+            flags.append('NEEDS SHIFT')
         if self.ebt_only:
             flags.append('EBT Only')
         return flags

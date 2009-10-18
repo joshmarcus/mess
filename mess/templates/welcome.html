@@ -15,6 +15,7 @@
         <p>
           <form action="/login/" method="POST">
             <table>{{ form }}</table>
+            <a href="{% url auth_password_reset %}">need a new password?</a>&nbsp; &nbsp; &nbsp; &nbsp;
             <input type="submit" value="Log In">
           </form>
         </p>

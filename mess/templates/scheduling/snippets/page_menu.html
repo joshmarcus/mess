@@ -1,10 +1,14 @@
 {% block page_menu %}
 {% load active %}
   <ul id="local-nav">
+    {% if request.user.is_staff %}
     <li><a href="{% if date %}{% url scheduling-schedule date|date:"Y-m-d" %}{% else %}{% url scheduling-schedule-today %}{% endif %}"{% active_class request 'scheduling/schedule' %}>Schedule</a></li>
     {# <li><a href="{% url scheduling-assign %}">Assign</a></li> #}
     <li><a href="{% if date %}{% url scheduling-timecard date|date:"Y-m-d" %}{% else %}{% url scheduling-timecard-today %}{% endif %}"{% active_class request 'scheduling/timecard' %}>Timecard</a></li>
     {% if date %}<li><a href="{% url scheduling-reminder date|date:"Y-m-d" %}"{% active_class request 'scheduling/reminder' %}>Reminder Email</a></li>{% endif %}
-    <li class="last-item"><a href="{% url scheduling-jobs %}"{% active_class request 'scheduling/jobs' %}>Jobs</a></li>
+    <li><a href="{% url scheduling-jobs %}"{% active_class request 'scheduling/jobs' %}>Jobs</a></li>
+    {% endif %}
+    <li><a href="{% url scheduling-rotation %}"{% active_class request 'scheduling/rotation' %}>Wall Calendar</a></li>
+    <li class="last-item"><a href="{% url myschedule %}"{% active_class request 'scheduling/myschedule' %}>My Schedule</a></li>
   </ul>
 {% endblock %}

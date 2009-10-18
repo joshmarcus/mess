@@ -17,6 +17,37 @@ from mess.membership import forms as m_forms
 from mess.membership import models as m_models
 
 today = datetime.date.today()
+todaytime = datetime.datetime(today.year,today.month,today.day)
+
+@user_passes_test(lambda u: u.is_authenticated())
+def myschedule(request):
+    member = request.user.get_profile()
+    account = member.get_primary_account()
+    if request.method == 'POST' and request.POST.get('action') == 'Sign me up!':
+        shift = get_object_or_404(models.Task, id=request.POST.get('task'))
+        assert shift.member is None and shift.account is None
+        if shift.time < todaytime + datetime.timedelta(11):
+            return HttpResponse('Sorry, online signup is only available at least 11 days in advance.  You may still be able to sign up for this shift by going to the co-op.')
+        if shift.recur_rule:
+            shift = shift.excuse_and_duplicate()  # one-time fill
+        shift.member = member
+        shift.account = account
+        shift.makeup = True
+        shift.save()
+    account_shifts = account.task_set.filter(
+                     time__range=(today,today+datetime.timedelta(180)))
+    my_shift = member.regular_shift()
+    if my_shift:
+        similar_assigned = models.Task.objects.filter(job=my_shift.job,
+                           recur_rule__isnull=False,
+                           time__range=(today,today+datetime.timedelta(42)),
+                           hours=my_shift.hours,
+                           member__isnull=False)
+    unassigned = models.Task.objects.filter(member__isnull=True,
+                 excused=False,
+                 time__range=(today,today+datetime.timedelta(20)))
+    return render_to_response('scheduling/myschedule.html', locals(),
+                              context_instance=RequestContext(request))
 
 def unassigned_days(firstday, lastday):
     """
@@ -200,7 +231,7 @@ def old_rotations(date, interval=None):
     else:
         return ', '.join([fourweek, sixweek, eightweek])
 
-@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_authenticated())
 def rotation(request):
     """
     Print listings of shifts according to rotation cycles.
@@ -254,7 +285,7 @@ def rotation(request):
     return HttpResponse(template.render(context))
 
 def cyclecolumn(freq, weekday, cycle, getdancers=False, cashieronly=False):
-    horizon = 10
+    horizon = 7
     cycle_begin = datetime.datetime(2009,1,26)
     today = datetime.date.today()
     first = cycle_begin + datetime.timedelta(days=weekday+7*cycle)
@@ -414,15 +445,28 @@ def switch(request):
         switch.account = original.account
         switch.makeup = True
         switch.save()
-        return HttpResponseRedirect(switch.account.get_absolute_url())
+        return HttpResponseRedirect(reverse('myschedule'))
     form = forms.PickTaskForm()
+    # require switched task to be sooner than original.
+    # try to switch to one-time task of same job.
     possible_switches = models.Task.objects.filter(
                 time__range=(earliest_switch, original.time),
                 hours=original.hours, job=original.job, excused=False,
-                account__isnull=True, member__isnull=True)
+                account__isnull=True, member__isnull=True, 
+                recur_rule__isnull=True)
+    # else try to switch to one-time task of any job.
     if possible_switches.count() == 0:
         possible_switches = models.Task.objects.filter(
                 time__range=(earliest_switch, original.time),
+                hours=original.hours, excused=False,
+                account__isnull=True, member__isnull=True,
+                recur_rule__isnull=True)
+    # else try to create one-time fill within next 4 weeks
+    if possible_switches.count() == 0:
+        final_time_for_onetimefill = min(original.time, 
+                todaytime + datetime.timedelta(28))
+        possible_switches = models.Task.objects.filter(
+                time__range=(earliest_switch, final_time_for_onetimefill),
                 hours=original.hours, excused=False,
                 account__isnull=True, member__isnull=True)
     form.fields['task'].queryset = possible_switches[:10]

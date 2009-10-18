@@ -175,7 +175,7 @@ def cashsheet(request):
         rows_per_page = form.cleaned_data.get('rows_per_page')
     else:
         row_height = 2.5
-        rows_per_page = 24
+        rows_per_page = 25
     # include ! accounts at top ("Mariposa" and "UNCLAIMED")
     accounts = (list(m_models.Account.objects.filter(name__startswith='!')) +
                 list(m_models.Account.objects.present()))
