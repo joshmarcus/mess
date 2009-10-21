@@ -4,13 +4,12 @@ from dateutil.relativedelta import relativedelta
 #from django.conf import settings
 #from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, RequestContext, Context
 from django.utils import simplejson
-#from django.views.generic.create_update import *
+import django.views.decorators.vary as vary
 
 from mess.scheduling import forms, models
 from mess.membership import forms as m_forms
@@ -19,7 +18,7 @@ from mess.membership import models as m_models
 today = datetime.date.today()
 todaytime = datetime.datetime(today.year,today.month,today.day)
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def myschedule(request):
     member = request.user.get_profile()
     account = member.get_primary_account()
@@ -81,14 +80,12 @@ def unassigned_for_month(request, month):
     days = unassigned_days(firstday, lastday)
     return HttpResponse(simplejson.dumps(days))
 
-@user_passes_test(lambda u: u.is_staff)
 def task(request, task_id):
     task = get_object_or_404(models.Task, id=task_id)
 #   date = str(task.time.date())
     return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[task.time.date()])+'?jump_to_task_id='+str(task_id))
 
-@user_passes_test(lambda u: u.is_staff)
 def schedule(request, date=None):
     context = RequestContext(request)
     if date:
@@ -178,7 +175,6 @@ def schedule(request, date=None):
     return HttpResponse(template.render(context))
 
 # filter for date
-@user_passes_test(lambda u: u.is_staff)
 def timecard(request, date=None):
     context = RequestContext(request)
     if date:
@@ -231,7 +227,7 @@ def old_rotations(date, interval=None):
     else:
         return ', '.join([fourweek, sixweek, eightweek])
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def rotation(request):
     """
     Print listings of shifts according to rotation cycles.
@@ -350,7 +346,6 @@ def idealize(actualshifts, idealshifts):
                     actual.timediff = timediff.seconds
                     break
 
-@user_passes_test(lambda u: u.is_staff)
 def jobs(request):
     context = {
         'jobs': models.Job.objects.all()
@@ -358,7 +353,6 @@ def jobs(request):
     return render_to_response('scheduling/jobs.html', context,
                                 context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def job(request, job_id):
     context = {
         'jobs': models.Job.objects.filter(id=job_id)
@@ -366,7 +360,6 @@ def job(request, job_id):
     return render_to_response('scheduling/jobs.html', context,
                                 context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def job_edit(request, job_id=None):
     if job_id:
         job = get_object_or_404(models.Job, id=job_id)
@@ -397,7 +390,6 @@ def job_edit(request, job_id=None):
     return render_to_response('scheduling/job_form.html', context,
                                 context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def reminder(request, date):
     " send email reminder to all scheduled workers for this date "
     from django.core.mail import send_mail
@@ -422,7 +414,7 @@ def reminder(request, date):
     return render_to_response('scheduling/reminder.html', locals(),
                                 context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def switch(request):
     original = models.Task.objects.get(id=request.GET['original'])
     if original.member is None or ((original.member.user != request.user)
@@ -473,7 +465,6 @@ def switch(request):
     return render_to_response('scheduling/switch.html', locals(),
                               context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def swap(request):
     """ 
     two members swap shifts (one-time), and tell a staff person 

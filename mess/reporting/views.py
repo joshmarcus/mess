@@ -2,7 +2,6 @@ from datetime import date, timedelta
 import datetime
 import time
 
-from django.contrib.auth.decorators import user_passes_test
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
@@ -40,7 +39,6 @@ def find_dups(mems):
             uniqs[fullname] = member
     return dups
 
-@user_passes_test(lambda u: u.is_staff)
 def anomalies(request):
     blips = 0
     report = ''
@@ -64,7 +62,6 @@ def anomalies(request):
     report = '<h1>Anomalies Report (%d blips)</h1>\n' % blips + report
     return HttpResponse(report)
 
-@user_passes_test(lambda u: u.is_staff)
 def contact(request):
     context = RequestContext(request)
     members = m_models.Member.objects.active().filter(accountmember__shopper=False)
@@ -74,7 +71,6 @@ def contact(request):
     return HttpResponse(template.render(context))
 
 
-@user_passes_test(lambda u: u.is_staff)
 def reports(request):
     # each named category can have various reports, each with a name and url
     past90d = datetime.date.today() - datetime.timedelta(90)
@@ -253,7 +249,6 @@ def reports(request):
 def listrpt(object, desc, filter, output, include='Active', order_by=''):
     return (desc, reverse('list')+'?'+urlencode(locals()))
 
-@user_passes_test(lambda u: u.is_staff)
 def list(request):
     template = get_template('reporting/list.html')
     context = RequestContext(request)
@@ -387,7 +382,6 @@ class ListOutputter:
     def __unicode__(self):
         return self.name
 
-@user_passes_test(lambda u: u.is_staff)
 def memberwork(request):
     '''
     list of members, summarizing work status, grouped by work status
@@ -466,7 +460,6 @@ def prepmemberwork(member, weekbreaks):
     return member
 
 
-@user_passes_test(lambda u: u.is_staff)
 def transaction_list_report(request):
     # c is the context to be passed to the template
     c = RequestContext(request)
@@ -505,7 +498,6 @@ def transaction_list_report(request):
     c['transactions'] = trans
     return render_to_response('reporting/transactions_list.html', c)
 
-@user_passes_test(lambda u: u.is_staff)
 def hours_balance_changes(request):
     """
     View to summarize hours transactions in a given time period
@@ -526,7 +518,6 @@ def hours_balance_changes(request):
             context_instance=RequestContext(request))
 
 
-@user_passes_test(lambda u: u.is_staff)
 def trans_summary(request):
     """View to summarize transactions by type."""
     if request.GET.has_key('start'):

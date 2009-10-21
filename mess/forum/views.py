@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -9,14 +9,14 @@ from mess.forum import forms
 
 import datetime
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def menu(request):
     """ The menu gives a list of forums """
     forums = models.Forum.objects.all().order_by('order')
     return render_to_response('forum/menu.html', locals(),
             context_instance=RequestContext(request))
     
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def forum(request, forum_slug):
     """ A forum gives a list of its threads """
     DEFAULT_MAXPOSTS = 20
@@ -49,7 +49,7 @@ def _organize_as_threads(posts):
     threads.sort(None, lambda t: t['newest'], True) # sort newest to oldest
     return threads
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def addpost(request, forum_slug):
     """ Add a post to a given forum (optional: in a given thread) """
     forum = get_object_or_404(models.Forum, slug=forum_slug)
@@ -65,7 +65,7 @@ def addpost(request, forum_slug):
     return render_to_response('forum/addpost.html', locals(),
             context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def deletepost(request):
     """ Mark post 'deleted' so it won't show up anymore """
     post_id = request.POST.get('post_id')

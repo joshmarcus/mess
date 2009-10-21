@@ -69,6 +69,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
+    'mess.core.middleware.UserPassesTestMiddleware',
 )
 
 ROOT_URLCONF = 'mess.urls'
@@ -113,9 +114,24 @@ CACHE_BACKEND = 'locmem:///'
 # Default to clearing everything at browser close.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
+# Settings for UserPassesTestMiddleware
+
+# UserPassesTestMiddleware setting.  This means the whole site is locked down 
+# to staff only.  Put an auth decorator such as login_required on a view 
+# function to allow non-staff access.
+USER_PASSES_TEST_URLS = (
+    (r'^/$', None), 
+    (r'^/login/$', None),
+    (r'^/logout/$', None),
+    (r'^/media/', None),
+    (r'^/passwordreset/', None),
+    (r'', lambda u: u.is_staff),
+)
+
 ## mess project constants below ##
 
 try:
     from settings_local import *
 except ImportError:
     pass
+

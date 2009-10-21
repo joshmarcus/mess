@@ -6,11 +6,10 @@ from django.contrib.auth import views as auth_views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^$', include('mess.core.urls')),
+    (r'', include('mess.core.urls')),
     (r'^accounting/', include('mess.accounting.urls')),        
     (r'^membership/', include('mess.membership.urls')),        
     (r'^forum/', include('mess.forum.urls')),
-    #(r'^profiles/', include('mess.profiles.urls')),
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
 

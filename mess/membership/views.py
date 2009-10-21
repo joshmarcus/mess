@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import forms as auth_forms
 from django.core.urlresolvers import reverse
@@ -17,7 +17,7 @@ import datetime
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 50
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def members(request):
     '''
     list of all members (active by default)
@@ -63,7 +63,7 @@ def members(request):
     template = get_template('membership/members.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def member(request, username):
     '''
     individual member page
@@ -82,7 +82,6 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_staff)
 def member_form(request, username=None):
     '''
     edit member info
@@ -164,7 +163,7 @@ def member_form(request, username=None):
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def accounts(request):
     '''
     list of accounts
@@ -216,7 +215,7 @@ def accounts(request):
     template = get_template('membership/accounts.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def account(request, id):
     '''
     individual account page
@@ -233,7 +232,6 @@ def account(request, id):
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_staff)
 def account_form(request, id=None):
     '''
     edit account info
@@ -272,7 +270,7 @@ def account_form(request, id=None):
     template = get_template('membership/account_form.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def contact_form(request, username=None, medium=None, id=0):
     '''
     sub-page of member edit page.  ?
@@ -310,7 +308,7 @@ def contact_form(request, username=None, medium=None, id=0):
     context['this_user'] = user
     return render_to_response('membership/contact_form.html', context)
 
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def remove_contact(request, username=None, medium=None, id=None):
     '''
     delete a piece of contact info.
@@ -330,7 +328,6 @@ def remove_contact(request, username=None, medium=None, id=None):
     template = get_template('membership/remove_contact.html')
     return HttpResponse(template.render(context))
 
-@user_passes_test(lambda u: u.is_staff)
 def depart_account(request, id):
     '''
     confirms departure of all members on account.  prompts today's date but editable.
@@ -357,7 +354,6 @@ def depart_account(request, id):
     return render_to_response('membership/depart.html', context)
 
 ####anna bookmark.
-@user_passes_test(lambda u: u.is_staff)
 def loa_account(request, id):
     '''
     confirms new leave of absence for all members on account.  
@@ -400,7 +396,6 @@ def formset_form(request, medium):
     return HttpResponse(template.render(context))
 
 
-@user_passes_test(lambda u: u.is_staff)
 def accountmemberflags(request):
     ''' show and allow editing of accountmember flags 
         (contact aka deposit holder; shopper).  
@@ -426,7 +421,6 @@ def accountmemberflags(request):
     return render_to_response('membership/accountmemberflags.html', locals(),
             context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def admin_reset_password(request, username):
     ''' Send a password reset link to the member.  This function makes
     auth_forms think a passwordresetform was submitted for the user.email '''
@@ -464,7 +458,6 @@ def _get_current_page(pager, page_number):
     return current_page
 
 # merged with member_edit into member_form
-#@user_passes_test(lambda u: u.is_staff)
 #def member_add(request):
 #    if not request.user.is_staff:
 #        return HttpResponseRedirect(reverse('login'))

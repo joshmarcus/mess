@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -17,7 +17,7 @@ from mess.membership import models as m_models
 today = datetime.date.today()
 
 # cashier permission is the first if
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def transaction(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
@@ -56,7 +56,7 @@ def transaction(request):
     return HttpResponse(template.render(context))
 
 # cashier permission is the first if
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def reverse_trans(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
@@ -68,7 +68,7 @@ def reverse_trans(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     
 # cashier permission is the first if
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def cashsheet_input(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
@@ -101,7 +101,6 @@ def cashsheet_input(request):
     return render_to_response('accounting/cashsheet_input.html', locals(),
             context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def hours_balance(request):
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
@@ -122,7 +121,7 @@ def hours_balance(request):
             context_instance=RequestContext(request))
 
 # cashier permission is the first if
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def close_out(request, date=None):
     '''Page to double-check payment amounts'''
     if not m_models.cashier_permission(request):
@@ -163,7 +162,6 @@ def close_out(request, date=None):
     return render_to_response('accounting/close_out.html', locals(),
             context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def cashsheet(request):
     ''' printable cash sheet for all active accounts '''
     if request.GET.has_key('row_height'):
@@ -182,7 +180,6 @@ def cashsheet(request):
     return render_to_response('accounting/cashsheet.html', locals(),
             context_instance=RequestContext(request))
 
-@user_passes_test(lambda u: u.is_staff)
 def frozen(request):
     # list of accounts that are frozen on the cash sheets
     accounts = m_models.Account.objects.active()  # LOA may still be frozen
@@ -193,7 +190,6 @@ def frozen(request):
             context_instance=RequestContext(request))
     
 
-@user_passes_test(lambda u: u.is_staff)
 def billing(request):
     ''' view to bill dues and deposits for all active accounts '''
     if request.method=='POST':
@@ -232,7 +228,7 @@ def billing(request):
 is there anything we can break out into helper functions?  :)
 like maybe this 'getcashierinfo' section?
 '''
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def after_hours(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
@@ -283,7 +279,7 @@ def after_hours(request):
 
 # cashier permission is the first if
 # initial code copied from after-hours...
-@user_passes_test(lambda u: u.is_authenticated())
+@login_required
 def EBT(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
