@@ -5,6 +5,8 @@ from django.utils.encoding import smart_unicode
 
 
 class AutoComplete(object):
+    # decorator so UserPassesTestMiddleware doesn't touch it
+    decorator = True
 
     def __init__(self):
         self.settings = dict()
