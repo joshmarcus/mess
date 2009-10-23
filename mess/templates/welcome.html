@@ -11,11 +11,12 @@
     <div id="primary-content-wrapper">
       <h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
       <div class="attention">
-        <h3>Members and staff, please log in.</h3>
+        <h3>Members and staff, please log in.
+          <a href="{% url auth_password_reset %}">Need a new password?</a>
+        </h3>
         <p>
           <form action="/login/" method="POST">
             <table>{{ form }}</table>
-            <a href="{% url auth_password_reset %}">need a new password?</a>&nbsp; &nbsp; &nbsp; &nbsp;
             <input type="submit" value="Log In">
           </form>
         </p>

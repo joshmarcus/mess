@@ -683,6 +683,7 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .oldbalance { text-align:center; }
 .darkcolumnline {border-left: 2pt solid black;}
 .tiny { font-size:7pt; }
+.recent_cashier_account { font-weight:bold; }
 
 .task-scheduled {background: #ffa; }  /* yellow */
 .task-worked {background: #beb; }   /* green */

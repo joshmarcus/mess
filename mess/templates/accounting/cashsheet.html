@@ -39,7 +39,7 @@
             </thead>
         {% endif %}
         <tr>
-          <td><a href="{{ account.get_absolute_url }}">{{ account.name }}</a></td>
+          <td><a href="{{ account.get_absolute_url }}"{% if account.recent_cashier %} class="recent_cashier_account"{% endif %}>{{ account.name }}</a></td>
           {% comment %} <td class="tiny">{{ account.active_member_count }}</td> {% endcomment %}
           <td class="tiny">{{ account.max_allowed_to_owe|floatformat:0 }}</td>
           <td class="tiny">{{ account.hours_balance|messmoney }}</td>

@@ -308,6 +308,10 @@ class Account(models.Model):
     def members_leaveofabsence_set(self):
         return LeaveOfAbsence.objects.filter(member__accounts=self)
 
+    def recent_cashier(self):
+        return self.task_set.filter(job__name='Cashier', time__range=(
+            today - datetime.timedelta(120), today))
+    
     def workhist(self):
         '''
         Generates the work history object used to produce the workhistory calendar on account page.

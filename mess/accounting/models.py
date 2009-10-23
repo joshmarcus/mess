@@ -137,6 +137,9 @@ class Transaction(models.Model):
                           note='@%s fixed payment' % self.id,
                           entered_by=entered_by)
         fix.save()
+
+    def note_plus_spaces(self):
+        return self.note.replace('+',' + ')
         
 
 class Reconciliation(models.Model):

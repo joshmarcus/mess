@@ -26,7 +26,7 @@
     <td class="nowrap">{{ transaction.timestamp|date:"n/j/Y g:iA" }}</td>
     <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account }}</a></td>
     <td>{% if transaction.member %}<a href="{{ transaction.member.get_absolute_url }}">{{ transaction.member }}</a>{% endif %}</td>
-    <td>{{ transaction.note }}</td>
+    <td>{{ transaction.note_plus_spaces }}</td>
     <td>{{ transaction.get_purchase_type_display }}</td>
     <td>{% if transaction.purchase_amount %}{{ transaction.purchase_amount|messmoney }}{% endif %}</td>
     <td>{{ transaction.get_payment_type_display }}</td>

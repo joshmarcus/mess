@@ -323,7 +323,8 @@ def list(request):
             pass
         elif outfield[:4] == 'Box:':
             y = ListOutputter(outfield[4:], blank_object)
-            context['textarea'] = [y.render(x) for x in objects]
+            context['textarea'] = [y.render(x).replace('<br>',',\r\n') 
+                                   for x in objects]
         else:
             outputters.append(ListOutputter(outfield, blank_object))
 
