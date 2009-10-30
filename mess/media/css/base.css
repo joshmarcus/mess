@@ -498,6 +498,9 @@ h5.accountnotes { margin-top:0.2em; margin-bottom:0em; }
 			#primary-content-wrapper div.profile h4 a {
 				display:block; float:right; color:#ebebed; font-size:90%;
 				}
+			#primary-content-wrapper div.profile h4 a.nofloat {
+                                float:none;
+                                }
 			#primary-content-wrapper div.profile p {
 				line-height:1.3em;
 				}

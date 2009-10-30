@@ -21,7 +21,12 @@
       <a href="{{ am.member.get_absolute_url }}">edit</a>
     {% endifequal %}
   {% endif %}
-  {{ am.member }}
+
+  {% if request.user.is_staff %}
+      <a class="nofloat" href="{% url member am.member.user.username %}">{{ am.member }}</a>
+  {% else %}
+      {{ am.member }}
+  {% endif %}
 </h4>
 
 <div class="accountmemberside">
@@ -29,6 +34,7 @@
     {% for email in am.member.emails.all %}
       <li><b>Email:</b> {{ email }}</li>
     {% endfor %}
+
 
     {% for phone in am.member.phones.all %}
       <li><b>Phone:</b> {{ phone }}</li>
