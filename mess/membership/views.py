@@ -86,7 +86,8 @@ def member_form(request, username=None):
     '''
     edit member info
     '''
-    if username:
+    edit = bool(username)
+    if edit:
         user = get_object_or_404(User, username=username)
         member = user.get_profile()
     else:
@@ -95,7 +96,7 @@ def member_form(request, username=None):
     is_errors = False
     if request.method == 'POST':
         if 'cancel' in request.POST:
-            if username:
+            if edit:
                 # FIXME this is bad if member has more than one account
                 return HttpResponseRedirect(member.accounts.all()[0].get_absolute_url())
             else:
@@ -159,7 +160,7 @@ def member_form(request, username=None):
         (phone_formset, 'Phones'),
     ]
     context['is_errors'] = is_errors
-    context['edit'] = bool(username)
+    context['edit'] = edit
     template = get_template('membership/member_form.html')
     return HttpResponse(template.render(context))
 
