@@ -73,7 +73,7 @@ class TaskForm(forms.ModelForm):
 
     # must set both account and member.  if only one is set, clear it.
     def clean(self):
-        if not self.cleaned_data['account'] or not self.cleaned_data['member']:
+        if not self.cleaned_data.get('account') or not self.cleaned_data.get('member'):
             self.cleaned_data['account'] = self.cleaned_data['member'] = None
         return self.cleaned_data
 
