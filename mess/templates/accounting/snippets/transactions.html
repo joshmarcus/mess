@@ -1,8 +1,9 @@
 {% load messmoney %}
 
-<form action="{% url reverse_trans %}" method="POST" id="reverse_form">
+<form action="{% url cashsheet_input %}" method="POST" id="reverse_form">
 <input type="hidden" name="reverse_id" id="id_reverse_id">
 <input type="hidden" name="reverse_reason" id="id_reverse_reason">
+<input type="hidden" name="action" value="Reverse">
 </form>
 
 <table class="data" >
@@ -32,7 +33,7 @@
     <td>{{ transaction.get_payment_type_display }}</td>
     <td>{% if transaction.payment_amount %}{{ transaction.payment_amount|messmoney:"payment" }}{% endif %}</td>
     <td>{{ transaction.account_balance|messmoney }}</td>
-    <td>{{ transaction.entered_by.username }}{% if can_reverse %}<input type="button" value="X" onclick="reverse_trans({{ transaction.id }});">{% endif %}</td>
+    <td>{{ transaction.entered_by.username }}{% if can_reverse %} <input type="button" value="X" onclick="reverse_trans({{ transaction.id }}, '{{ transaction.account|addslashes }}');">{% endif %}</td>
   </tr>
     {% endfor %}
   {% endif %}

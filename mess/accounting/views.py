@@ -57,23 +57,11 @@ def transaction(request):
 
 # cashier permission is the first if
 @login_required
-def reverse_trans(request):
-    if not m_models.cashier_permission(request):
-        return HttpResponse('Sorry, you do not have cashier permission. %s' 
-                             % request.META['REMOTE_ADDR'])
-    assert request.method == 'POST', 'reverse must use POST'
-    form = forms.ReverseForm(request.POST)
-    assert form.is_valid(), repr(form.errors)
-    form.save(entered_by=request.user)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    
-# cashier permission is the first if
-@login_required
 def cashsheet_input(request):
     if not m_models.cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
-    
+
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
         account = m_models.Account.objects.get(id=account_id)
@@ -89,10 +77,17 @@ def cashsheet_input(request):
             return render_to_response(template_file, locals())
 
     if request.method == 'POST':
-        form = forms.CashsheetForm(request.POST)
-        if form.is_valid():
-            form.save(entered_by=request.user)
-            return HttpResponseRedirect(reverse('cashsheet_input'))
+        if request.POST.get('action') == 'Reverse':
+            reverseform = forms.ReverseForm(request.POST)
+            if not reverseform.is_valid():
+                return HttpResponse(repr(reverseform.errors))
+            rev = reverseform.save(entered_by=request.user) 
+            form = forms.CashsheetForm(tofix=rev)
+        else:
+            form = forms.CashsheetForm(request.POST)
+            if form.is_valid():
+                form.save(entered_by=request.user)
+                return HttpResponseRedirect(reverse('cashsheet_input'))
     else:
         form = forms.CashsheetForm()
     transactions = models.Transaction.objects.filter(
@@ -128,13 +123,6 @@ def close_out(request, date=None):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
 
-    if request.method=="POST":
-        fixform = forms.CloseOutFixForm(request.POST)
-        # hidden form shouldn't have errors, unless amount is bogus
-        assert fixform.is_valid(), repr(fixform.errors)
-        badtrans = fixform.cleaned_data['transaction']
-        badtrans.fix_payment(fix_payment=fixform.cleaned_data['fix_payment'], 
-                             entered_by=request.user)
     if date:
         try:
             date = datetime.date(*time.strptime(date, "%Y-%m-%d")[0:3])
@@ -156,8 +144,6 @@ def close_out(request, date=None):
         for trans in column['transactions']:
             if not trans.fixes_target():
                 column['total'] += trans.fixed_payment_amount()
-
-    closeoutfixform = forms.CloseOutFixForm()
 
     return render_to_response('accounting/close_out.html', locals(),
             context_instance=RequestContext(request))

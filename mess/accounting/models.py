@@ -125,19 +125,6 @@ class Transaction(models.Model):
                           entered_by=entered_by)        
         rev.save()
 
-    def fix_payment(self, entered_by, fix_payment):
-        keep_purchase_amount = self.fixed_purchase_amount()
-        self.reverse(entered_by=entered_by, reason='to fix payment')
-        fix = Transaction(account=self.account,
-                          member=self.member,
-                          purchase_type=self.purchase_type,
-                          purchase_amount=keep_purchase_amount,
-                          payment_type=self.payment_type,
-                          payment_amount=fix_payment,
-                          note='@%s fixed payment' % self.id,
-                          entered_by=entered_by)
-        fix.save()
-
     def note_plus_spaces(self):
         return self.note.replace('+',' + ')
         

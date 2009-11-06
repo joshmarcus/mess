@@ -19,7 +19,7 @@
           <th>Hours<br>Balance</th>
           <th>Old<br>Balance</th>
           <th>Misc.</th>
-          <th>Member equity</th>
+          <th>Member<br>Equity</th>
           <th>Bulk<br>Orders</th>
           <th>Regular<br>Sales</th>
           <th>Credit/<br>Debit<br>Card</th>
@@ -27,6 +27,13 @@
           <th>New Balance</th>
           <th><!-- submit --></th>
         </tr>
+        {% if rev %}
+        <tr>
+          <td class="reverse-trans-warning" colspan="10">
+            PLEASE CORRECT THE TRANSACTION THEN CLICK SUBMIT
+          </td>
+        </tr>
+        {% endif %}
         <tr>
           <td>{{ form.account }}
             <div id="flags">
@@ -55,7 +62,7 @@
           <td>({{ form.credit_debit }})</td>
           <td>({{ form.check_mo }})</td>
           <td><span id="newbalance"></span></td>
-          <td><input type="submit" value="Submit"></td>
+          <td><input name="action" type="submit" value="Submit"></td>
         </tr>
         <tr>
           <td colspan="6">

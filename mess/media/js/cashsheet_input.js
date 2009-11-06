@@ -83,8 +83,8 @@ function setup_autocalc() {
 }
 
 // prompts you to reverse a previous transaction
-function reverse_trans(trans_id) {
-    reason = prompt('Please explain why you are reversing this transaction.  (Transactions should only be reversed when absolutely necessary, as it complicates accounting.)');
+function reverse_trans(trans_id, account_name) {
+    reason = prompt(account_name + ' Transaction ' + trans_id + '\n\nAre you sure it\'s wrong?\nExplain why you\'re changing it.\nThen you can fix it.');
     if (reason == undefined) return;
     document.getElementById('id_reverse_id').value = trans_id;
     document.getElementById('id_reverse_reason').value = reason;

@@ -97,6 +97,7 @@ class ReverseForm(forms.Form):
     def save(self, entered_by):
         trans = self.cleaned_data['reverse_id']
         trans.reverse(entered_by, self.cleaned_data['reverse_reason'])
+        return trans
 
 class CashsheetForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
@@ -115,6 +116,26 @@ class CashsheetForm(forms.Form):
     check_mo = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
     note = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        if kwargs.has_key('tofix'):
+            tofix = kwargs.pop('tofix')
+            data = {'account':tofix.account.id}
+            if tofix.purchase_type == 'S':
+                data['misc'] = tofix.purchase_amount
+            elif tofix.purchase_type == 'O':
+                data['deposit'] = tofix.purchase_amount
+            elif tofix.purchase_type == 'B':
+                data['bulk_orders'] = tofix.purchase_amount
+            elif tofix.purchase_type == 'P':
+                data['regular_sales'] = tofix.purchase_amount
+            if tofix.payment_type == 'C':
+                data['credit_debit'] = tofix.payment_amount
+            elif tofix.payment_type == 'K':
+                data['check_mo'] = tofix.payment_amount
+            super(CashsheetForm, self).__init__(data, *args, **kwargs)
+        else:
+            super(CashsheetForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         ''' Weird transactions need notes '''
@@ -167,11 +188,6 @@ class CashsheetForm(forms.Form):
 class CloseOutForm(forms.ModelForm):
     class Meta:
         model = models.Reconciliation
-
-class CloseOutFixForm(forms.Form):
-    transaction = forms.ModelChoiceField(models.Transaction.objects.all(),
-        widget=forms.HiddenInput)
-    fix_payment = forms.DecimalField(widget=forms.HiddenInput)
 
 class BillingForm(forms.Form):
     bill_type = forms.ChoiceField(

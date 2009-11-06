@@ -10,10 +10,12 @@
       <h2>Close Out for {{ date|date:"l, F j, Y" }}</h2>
 
       <!-- hidden form used by js -->
-      <form id="closeoutfixform" method="POST">
-        {{ closeoutfixform }}
+      <form action="{% url cashsheet_input %}" method="POST" id="reverse_form">
+      <input type="hidden" name="reverse_id" id="id_reverse_id">
+      <input type="hidden" name="reverse_reason" id="id_reverse_reason">
+      <input type="hidden" name="action" value="Reverse">
       </form>
-
+      
       <table class="data">
         <tr>
           {% for column in columns %}
@@ -31,7 +33,13 @@
                     <td>{{ trans.timestamp|time:"g:i" }}</td>
                     <td><a href="{{ trans.account.get_absolute.url }}">{{ trans.account }}</a></td>
                     <td>{{ trans.fixed_payment_amount|floatformat:"2" }}{% if trans.note %}<span title="{{ trans.note }}">*</span>{% endif %}</td>
-                    <td><input type="button" value="fix{% if trans.fixers %}ed{% endif %}" onclick="fixit({{ trans.id }}, '{{ trans.fixed_payment_amount|floatformat:"2" }}', '{{ trans.account }}');"></td>
+                    <td>
+                      {% if trans.fixers %}
+                        fixed
+                      {% else %}
+                        <input type="button" value="fix" onclick="reverse_trans({{ trans.id }}, '{{ trans.account|addslashes }}');">
+                      {% endif %}
+                    </td>
                   </tr>
                   {% endif %}
                 {% endfor %}

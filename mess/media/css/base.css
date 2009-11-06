@@ -687,6 +687,7 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .darkcolumnline {border-left: 2pt solid black;}
 .tiny { font-size:7pt; }
 .recent_cashier_account { font-weight:bold; }
+.reverse-trans-warning { text-align:center; font-weight:bold; color:red; }
 
 .task-scheduled {background: #ffa; }  /* yellow */
 .task-worked {background: #beb; }   /* green */
