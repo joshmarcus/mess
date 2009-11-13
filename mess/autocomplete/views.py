@@ -59,10 +59,14 @@ class AutoComplete(object):
           and should depend on key
         """
         qs, fields, limit, key, label, auth = self.settings[ac_name]
+        try:
+            obj = qs.filter(id=value)[0]
+        except IndexError:
+            return ''
         if isinstance(label,basestring):
-            return getattr(qs.filter(id=value)[0],label)
+            return getattr(obj,label)
         else:
-            return label(qs.filter(id=value)[0])
+            return label(obj)
         
 
 autocomplete = AutoComplete()
