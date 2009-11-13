@@ -416,7 +416,11 @@ def reminder(request, date):
 
 @login_required
 def switch(request):
-    original = get_object_or_404(models.Task, id=request.GET.get('original'))
+    id = request.GET.get('original')
+    try:
+        original = get_object_or_404(models.Task, id=id)
+    except ValueError:
+        raise Http404
     if original.member is None or ((original.member.user != request.user)
                                    and not request.user.is_staff):
         return HttpResponse('Sorry.  You are not assigned to that task.')
