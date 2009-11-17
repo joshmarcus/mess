@@ -55,7 +55,7 @@ class RelatedMemberForm(forms.ModelForm):
 class MemberForm(forms.ModelForm):
     class Meta:
         model = models.Member
-        exclude = ('status')
+        exclude = ('status', 'user')
 
 class UserForm(forms.ModelForm):
     class Meta:

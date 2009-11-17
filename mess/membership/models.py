@@ -64,7 +64,7 @@ class MemberManager(models.Manager):
                                      LeaveOfAbsence.objects.current())
 
 class Member(models.Model):
-    user = models.ForeignKey(User, unique=True, editable=False)
+    user = models.ForeignKey(User, unique=True)
     status = models.CharField(max_length=1, choices=MEMBER_STATUS,
                             default='a')
     work_status = models.CharField(max_length=1, choices=WORK_STATUS,
