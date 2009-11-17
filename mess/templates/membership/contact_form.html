@@ -11,6 +11,7 @@
       <h2>{% if add %}Add{% else %}Edit{% endif %} {{ medium }} for {{ this_user.get_full_name }} 
         ({{ this_user.username }})</h2>
       <form class="standard" method="post">
+        {% csrf_token %}
         <input type="hidden" name="referer" value="{{ referer }}" />
         <table class="form-table">
           {{ form }}

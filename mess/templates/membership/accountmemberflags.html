@@ -5,7 +5,8 @@
     <div id="primary-content-wrapper">
     <h2>Page For Fixing "Member Equity Holder" And "Shopper" Flags</h2>
 
-    <form method="POST">
+    <form method="post">
+      {% csrf_token %}
       {{ amformset.management_form }}
       <table class="data">
         <tr>

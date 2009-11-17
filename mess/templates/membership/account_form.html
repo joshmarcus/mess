@@ -23,6 +23,7 @@
         {% endif %}
       </h2>
       <form class="standard" method="post">
+        {% csrf_token %}
         <div class="section">
           <h3>Main</h3>
           <table class="form-table">

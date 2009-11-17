@@ -24,6 +24,7 @@
         {% endif %}
       </h2>
       <form class="standard" method="post">
+        {% csrf_token %}
         {% if is_errors %}
           <div class="error-message">
             <h3>You have problems.</h3>

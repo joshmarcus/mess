@@ -16,7 +16,8 @@
   <div id="primary-content-wrapper">
     <div class="profile" id="acctinfo"><!-- filled by ajax --></div>
     <form class="standard" id="transaction" method="post">
-    <h2>After-hours entry</h2>
+      {% csrf_token %}
+      <h2>After-hours entry</h2>
       <table>
         {{ form }}
         <tr>

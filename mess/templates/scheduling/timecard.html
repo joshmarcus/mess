@@ -19,6 +19,7 @@
       <p class="printonly scrunch-top"><b>Instructions:</b> If they worked, mark a check by the hours.<br/>  <b>Excused:</b> Change hours worked to "0" and check "excused." <b>Unexcused:</b> Change hours worked to "0".</p>
       <p class="noprint">Instructions: If they worked, just keep the hours worked.<br/>   Excused: Change hours worked to "0" and check "excused."<br/>  Unexcused: Change hours worked to "0".</p>
       <form method="post">
+        {% csrf_token %}
         {{ formset.management_form }}
         <table class="data" id="daily-view">
           <thead id="timecard-thead">

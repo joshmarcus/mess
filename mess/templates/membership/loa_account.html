@@ -20,7 +20,8 @@
         {% endfor %}
       </ul>
       <p>LOA date range:</p>
-      <form method="POST">
+      <form method="post">
+        {% csrf_token %}
         <table>{{ form }}</table>
         <div>
           <input type="submit" value="On Leave" name="on leave">

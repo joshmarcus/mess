@@ -15,7 +15,8 @@
           <a href="{% url auth_password_reset %}">Need a new password?</a>
         </h3>
         <p>
-          <form action="/login/" method="POST">
+          <form action="/login/" method="post">
+            {% csrf_token %}
             <table>{{ form }}</table>
             <input type="submit" value="Log In">
           </form>

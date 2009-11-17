@@ -51,9 +51,19 @@
 
   <h2>Help Wanted For These Shifts</h2>
   <ul>
-    {% for shift in unassigned %}
-      <li>{{ shift.html_display }}{% if shift.after_printing_horizon %}<br><form method="POST" onsubmit="return confirm('Can you commit to working this shift? {{ shift }}');"><input type="hidden" name="task" value="{{ shift.id }}"><input type="submit" name="action" value="Sign me up!"></form>{% endif %}</li>
-    {% endfor %}
+  {% for shift in unassigned %}
+    <li>
+      {{ shift.html_display }}
+      {% if shift.after_printing_horizon %}
+      <br />
+      <form method="post" onsubmit="return confirm('Can you commit to working this shift? {{ shift }}');">
+        {% csrf_token %}
+        <input type="hidden" name="task" value="{{ shift.id }}">
+        <input type="submit" name="action" value="Sign me up!">
+      </form>
+      {% endif %}
+    </li>
+  {% endfor %}
   </ul>
 </div>
 {% endblock %}

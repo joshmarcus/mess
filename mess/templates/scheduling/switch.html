@@ -20,7 +20,8 @@
           Please pick a make-up shift that you're sure you can do.<br>
           Some shifts require special training, such as Cashier.<br>
           If you need a different make-up, contact co-op staff instead.<br>
-          <form method="POST">
+          <form method="post">
+            {% csrf_token %}
             <table>{{ form }}</table>
             <input type="submit" value="Switch!">
           </form>

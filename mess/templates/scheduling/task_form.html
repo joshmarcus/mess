@@ -37,6 +37,7 @@
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
         <form class="standard" method="post" >
+          {% csrf_token %}
           <table>
             <tr>
                 <th>

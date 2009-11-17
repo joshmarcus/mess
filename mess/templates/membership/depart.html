@@ -19,7 +19,8 @@
         {% endfor %}
       </ul>
       <p>Departure date:</p>
-      <form method="POST">
+      <form method="post">
+        {% csrf_token %}
         {{ form }}
         <div>
           <input type="submit" value="Depart" name="depart">

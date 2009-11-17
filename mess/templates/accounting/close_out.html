@@ -10,10 +10,11 @@
       <h2>Close Out for {{ date|date:"l, F j, Y" }}</h2>
 
       <!-- hidden form used by js -->
-      <form action="{% url cashsheet_input %}" method="POST" id="reverse_form">
-      <input type="hidden" name="reverse_id" id="id_reverse_id">
-      <input type="hidden" name="reverse_reason" id="id_reverse_reason">
-      <input type="hidden" name="action" value="Reverse">
+      <form action="{% url cashsheet_input %}" method="post" id="reverse_form">
+        {% csrf_token %}
+        <input type="hidden" name="reverse_id" id="id_reverse_id">
+        <input type="hidden" name="reverse_reason" id="id_reverse_reason">
+        <input type="hidden" name="action" value="Reverse">
       </form>
       
       <table class="data">

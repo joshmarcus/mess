@@ -53,7 +53,10 @@
           </p>
         </div>
         {% if user.is_staff %}
-          <form method="POST" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('Click OK to send a password reset email to this user.');"><input type="submit" value="send email to reset password"></form>
+          <form method="post" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('Click OK to send a password reset email to this user.');">
+            {% csrf_token %}
+            <input type="submit" value="send email to reset password">
+          </form>
         {% else %}
           <a href="{% url auth_password_change %}">Change Your Password</a>
         {% endif %}

@@ -14,7 +14,10 @@
       <h3> Reminders were sent. </h3>
     {% endifequal %}
     {% ifnotequal request.method "POST" %}
-      <form method="POST"><input type="submit" value="Send Emails Now!"></form>
+      <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Send Emails Now!">
+      </form>
     {% endifnotequal %}
 
     {% if noemail %}

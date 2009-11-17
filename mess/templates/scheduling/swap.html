@@ -19,7 +19,8 @@
         {% if swap_member %}
           {{ swap_member.user.first_name }}
           (<a href="{{ swap_member.get_primary_account.get_absolute_url }}">{{ swap_member.get_primary_account }}</a>)<br>
-          <form method="POST"> <!-- pick task to swap -->
+          <form method="post"> <!-- pick task to swap -->
+            {% csrf_token %}
             <table>{{ form }}</table>
             <input type="submit" value="Swap">
           </form>

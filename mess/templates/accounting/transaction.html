@@ -16,6 +16,7 @@
     <div id="primary-content-wrapper">
       <div class="profile" id="acctinfo"><!-- filled by ajax --></div>
       <form class="standard" id="transaction" method="post">
+        {% csrf_token %}
         <table>
           {{ form }}
           <tr>

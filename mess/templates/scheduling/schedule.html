@@ -61,6 +61,7 @@
       </h2>
       <div id="task-add" class="task-form task-add-form{% if not add_task_form.errors %} hidden{% endif %}">
         <form class="add-form" method="post" name="add">
+          {% csrf_token %}
           {% with add_task_form as form %}
           {% with add_recur_form as recur_form %}
           {% with add_worker_formset as worker_formset %}
@@ -107,6 +108,7 @@
             {% else %}
               {% if task.recur_rule or task.assigned %}
                 <form method="post">
+                  {% csrf_token %}
                   <input type="hidden" name="task-index" value="{{ task.form.prefix }}">
                   <input type="submit" name="duplicate" value="{% if task.assigned %}Excuse and Duplicate{% else %}One-Time Fill{% endif %}">
                 </form>
@@ -121,6 +123,7 @@
           <td colspan="4" style="padding:0">
             <div class="task-form task-edit-form">
               <form method="post" name="edit{{ task.form.prefix }}">
+                {% csrf_token %}
                 <input type="hidden" name="task-index" value="{{ task.form.prefix }}" />
                 {% with task.form as form %}
                 {% with task.recur_form as recur_form %}
