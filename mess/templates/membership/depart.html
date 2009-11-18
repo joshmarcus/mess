@@ -2,11 +2,7 @@
 
 {% block content %}
   <div id="left-column">
-    <ul id="local-nav">
-      <li><a class="active" href="{% url members %}">Members</a></li>
-      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
-    </ul>
-
+    {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <h2>Confirm {{ account.name }} departures</h2>
       <p>Pressing 'depart' will mark all members on this account as departed, 

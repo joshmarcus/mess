@@ -10,10 +10,7 @@
 
 {% block content %}
   <div id="double-column">
-    <ul id="local-nav">
-      <li><a class="active" href="{% url members %}">Members</a></li>
-      <li class="last-item"><a href="{% url accounts %}">Accounts</a></li>
-    </ul>
+    {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <h2>
         {% if edit %}
