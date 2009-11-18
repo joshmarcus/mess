@@ -82,6 +82,10 @@ TEMPLATE_DIRS = (
     PROJECT_ROOT + '/templates',
 )
 
+FIXTURE_DIRS = (
+    PROJECT_ROOT + '/fixtures',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
