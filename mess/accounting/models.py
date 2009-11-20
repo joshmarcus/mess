@@ -95,11 +95,11 @@ class Transaction(models.Model):
                     return None  # disregard recursive fixers
                 return target
         except:
-            return None
+            return [] # transaction was not a correction.
 
     def fixers(self):
         if self.note and self.note[0] == '@':
-            return None  # disregard recursive fixers
+            return []  # disregard recursive fixers
         return Transaction.objects.filter(note__startswith='@%s ' % self.id)
         
     def fixed_payment_amount(self):
