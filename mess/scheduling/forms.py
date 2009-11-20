@@ -54,7 +54,9 @@ class AccountTangleWidget(AutoCompleteWidget):
         try:
             return int(raw_data)
         except ValueError:
-            return m_models.Account.objects.get(name=raw_data).id
+            # media/js/autocomplete.js protects numeric account name with 'Z'
+            # assert raw_data[0] == 'Z'
+            return m_models.Account.objects.get(name=raw_data[1:]).id
 
 class TaskForm(forms.ModelForm):
     class Meta:

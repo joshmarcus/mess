@@ -66,8 +66,10 @@ function yui_autocomplete(name, ac_url, force_selection) {
             autocomplete.itemSelectEvent.subscribe(function (type, args) {
                 label = args[2].label;
                 account = label.substring(label.indexOf('(')+1, label.length-1);
-                accountfield.value = account
-                accounthidden.value = account
+                accountfield.value = account;
+                // coerce value to string, so it's not confused with account.id
+                // the Z will be stripped off in scheduling/forms
+                accounthidden.value = 'Z' + account;
             });
         }
 
