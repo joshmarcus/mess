@@ -176,37 +176,35 @@ def accounts(request):
             return HttpResponseRedirect(accounts[0].get_absolute_url())
     else:
         accounts = models.Account.objects.all()
-        if not 'sort_by' in request.GET:
-            form = forms.AccountListFilterForm()
-            accounts = accounts.filter(members__date_missing__isnull=True, 
-                    members__date_departed__isnull=True).distinct()
-        else: 
+        if 'sort_by' in request.GET:
             form = forms.AccountListFilterForm(request.GET)
-            if form.is_valid():
-                search = form.cleaned_data.get('search')
-                if search:
-                    accounts = accounts.filter(
-                            Q(name__icontains=search) |
-                            Q(note__icontains=search))
-                sort = form.cleaned_data['sort_by']
-                if sort == 'alpha':
-                    accounts = accounts.order_by('name')
-                elif sort == 'recent':
-                    accounts = accounts.order_by('-id')
-                elif sort == 'hours':
-                    accounts = accounts.order_by('-hours_balance')
-                elif sort == 'balance':
-                    accounts = accounts.order_by('-balance')
-                if not form.cleaned_data['active']:
-                    accounts = accounts.exclude(
-                            members__date_missing__isnull=True, 
-                            members__date_departed__isnull=True)
-                if form.cleaned_data['inactive']:
-                    context['inactive'] = True
-                else:
-                    accounts = accounts.filter(
-                            members__date_missing__isnull=True, 
-                            members__date_departed__isnull=True).distinct()
+        else:
+            form = forms.AccountListFilterForm()
+        if 'sort_by' in request.GET and form.is_valid():
+            if form.cleaned_data['inactive'] and form.cleaned_data['active']:
+                accounts = models.Account.objects.all()
+            elif form.cleaned_data['inactive']:
+                accounts = models.Account.objects.inactive()
+            elif form.cleaned_data['active']:
+                accounts = models.Account.objects.active()
+            else:
+                accounts = models.Account.objects.none()
+            search = form.cleaned_data.get('search')
+            if search:
+                accounts = accounts.filter(
+                        Q(name__icontains=search) |
+                        Q(note__icontains=search))
+            sort = form.cleaned_data['sort_by']
+            if sort == 'alpha':
+                accounts = accounts.order_by('name')
+            elif sort == 'recent':
+                accounts = accounts.order_by('-id')
+            elif sort == 'hours':
+                accounts = accounts.order_by('-hours_balance')
+            elif sort == 'balance':
+                accounts = accounts.order_by('-balance')
+        else:
+            accounts = models.Account.objects.active()
         context['form'] = form
     pager = p.Paginator(accounts, PER_PAGE)
     context['pager'] = pager
