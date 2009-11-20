@@ -15,8 +15,7 @@ def member_spiffy_filter(query):
                 Q(user__last_name__istartswith=plain_query) |
                 Q(accounts__name__istartswith=plain_query))
     else:
-        return (Q(date_departed__isnull=True) & 
-                Q(date_missing__isnull=True) &
+        return (Q(id__in=models.Member.objects.active()) &
                    (Q(user__first_name__istartswith=query) |
                     Q(user__last_name__istartswith=query) |
                     Q(accounts__name__istartswith=query)))
@@ -28,8 +27,7 @@ def account_spiffy_filter(query):
         plain_query = query.strip('* ')
         return Q(name__istartswith=plain_query)
     else:
-        return (Q(members__date_missing__isnull=True) &
-                Q(members__date_departed__isnull=True) &
+        return (Q(id__in=models.Account.objects.active()) &
                 Q(name__istartswith=query))
 
 autocomplete.register('account_spiffy', models.Account.objects.all(), account_spiffy_filter, limit=10, label=lambda a: a.autocomplete_label() )
