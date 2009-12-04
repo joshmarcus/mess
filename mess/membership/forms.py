@@ -69,7 +69,7 @@ class UserForm(forms.ModelForm):
 class AccountForm(forms.ModelForm):
     class Meta:
         model = models.Account
-        exclude = ('balance', 'deposit', 'members')
+        exclude = ('balance', 'deposit', 'members', 'can_shop')
 
 MEMBER_SORT_CHOICES = (
     ('alpha', 'Alphabetical'),
