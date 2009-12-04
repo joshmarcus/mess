@@ -27,7 +27,8 @@ def account_spiffy_filter(query):
         plain_query = query.strip('* ')
         return Q(name__istartswith=plain_query)
     else:
-        return (Q(id__in=models.Account.objects.active()) &
+        return ((Q(id__in=models.Account.objects.active()) |
+                Q(name='One-Time Shopper')) &
                 Q(name__istartswith=query))
 
 autocomplete.register('account_spiffy', models.Account.objects.all(), account_spiffy_filter, limit=10, label=lambda a: a.autocomplete_label() )

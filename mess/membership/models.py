@@ -438,6 +438,8 @@ class Account(models.Model):
             return 'NEEDS SHIFT'
 
     def frozen_flags(self):
+        if self.name == 'One-Time Shopper':
+            return
         flags = []
         if self.balance > self.max_allowed_to_owe():
             flags.append('MUST PAY')
