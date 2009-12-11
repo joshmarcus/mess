@@ -82,6 +82,20 @@ function setup_autocalc() {
   document.getElementById('id_check_mo').onchange = autocalc;
 }
 
+// if form is basically ok, return true, else return confirm.
+function confirm_if_weird(cashform) {
+  var purchases = document.getElementById('id_misc').value ||
+                  document.getElementById('id_deposit').value ||
+                  document.getElementById('id_bulk_orders').value ||
+                  document.getElementById('id_regular_sales').value
+  var payments = document.getElementById('id_credit_debit').value ||
+                 document.getElementById('id_check_mo').value
+  if (payments && (! purchases)) {
+    return confirm('Are you sure it\'s right?\nYou\'re saying they paid without\nbuying anything.');
+  }
+  return true;
+}
+
 // prompts you to reverse a previous transaction
 function reverse_trans(trans_id, account_name) {
     reason = prompt(account_name + ' Transaction ' + trans_id + '\n\nAre you sure it\'s wrong?\nExplain why you\'re changing it.\nThen you can fix it.');
