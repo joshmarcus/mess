@@ -381,6 +381,34 @@ def loa_account(request, id):
     context['form'] = form
     return render_to_response('membership/loa_account.html', context)
 
+def templimit(request, id):
+    ' view temporary balance limit history, and set a different limit '
+    account = get_object_or_404(models.Account, id=id)
+    currentlimit = account.temporarybalancelimit_set.current()
+    form = forms.TemporaryBalanceLimitForm()
+    if len(currentlimit) > 1:
+        return HttpResponse('Severe Error: Two current temporary balance limits')
+    elif len(currentlimit) == 1:
+        currentlimit = currentlimit[0]
+    if request.method == 'POST':
+        if currentlimit:  # clear out currentlimit in any event
+            currentlimit.until = datetime.date.today() - datetime.timedelta(1)
+            currentlimit.save()
+        if request.POST.get('action') == 'set limit':
+            form = forms.TemporaryBalanceLimitForm(request.POST)
+            if form.is_valid():
+                newlimit = form.save(commit=False)
+                newlimit.account = account
+                newlimit.save()
+                form = forms.TemporaryBalanceLimitForm()
+    currentlimit = account.temporarybalancelimit_set.current()
+    if len(currentlimit) == 1:
+        currentlimit = currentlimit[0]
+    history = account.temporarybalancelimit_set.all()
+    return render_to_response('membership/templimit.html', locals(),
+            context_instance=RequestContext(request))
+                        
+
 def formset_form(request, medium):
     context = RequestContext(request)
     form_name = ''.join([x.capitalize() for x in medium.split('_')]) + 'Form'

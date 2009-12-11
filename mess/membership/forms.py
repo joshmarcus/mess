@@ -101,6 +101,11 @@ class PickMemberForm(forms.Form):
         widget=AutoCompleteWidget('member_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
 
+class TemporaryBalanceLimitForm(forms.ModelForm):
+    class Meta:
+        model = models.TemporaryBalanceLimit
+        fields = ['limit','until']
+
 class LoaForm(forms.Form):
     ENDDEF = 365  # days from today for endtime default
     start = forms.DateField(initial=datetime.date.today)

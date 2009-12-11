@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="left-column">
+    {% include "membership/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <h2>Account: <a href="{{ account.get_absolute_url }}">{{ account }}</a></h2>
+      <p><b>Active Members:</b> {{ account.active_member_count }}</p>
+      {% if currentlimit %}
+        <form method="POST">
+          {% csrf_token %}
+          <p><b>{{ currentlimit }}</b>
+          <input type="submit" name="action" value="restore default limit"></p>
+        </form>
+      {% else %}
+        <p><b>Default Limit:</b> {{ account.max_allowed_to_owe }}</p>
+      {% endif %}
+
+      <br><br>
+      <h2>Create New Temporary Balance Limit</h2>
+      <form method="POST">
+        {% csrf_token %}
+        <table class="data">
+          {{ form }}
+        <tr>
+          <td></td>
+          <td><input type="submit" name="action" value="set limit"></td>
+        </tr>
+        </table>
+      </form>
+
+      {% if history %}
+        <br><br>
+        <h2>Temporary Balance Limit History</h2>
+        <table class="data">
+          <tr>
+            <th>Limit</th>
+            <th>Start Date</th>
+            <th>Until Date</th>
+          </tr>
+          {% for histlimit in history %}
+            <tr>
+              <td>{{ histlimit.limit }}</td>
+              <td>{{ histlimit.start|date:"n/j/Y" }}</td>
+              <td>{{ histlimit.until|date:"n/j/Y" }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% endif %}
+        
+    </div>
+  </div>
+{% endblock %}
+

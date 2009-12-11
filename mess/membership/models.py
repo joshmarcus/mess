@@ -305,6 +305,10 @@ class Account(models.Model):
     def get_hours_balance_history_url(self):
         return reverse('hours_balance_changes')+'?account='+str(self.id)
 
+    @models.permalink
+    def get_templimit_url(self):
+        return ('templimit', [self.id])
+
     def members_leaveofabsence_set(self):
         return LeaveOfAbsence.objects.filter(member__accounts=self)
 
@@ -405,10 +409,13 @@ class Account(models.Model):
         return self.days_old() / 30
         
     def max_allowed_to_owe(self):
+        if self.temporarybalancelimit_set.current():
+            return self.temporarybalancelimit_set.current()[0].limit
         if self.days_old() >= 180:
             return self.active_member_count * Decimal('25.00')
         else:
             return self.active_member_count * Decimal('5.00')
+    max_allowed_balance = property(max_allowed_to_owe)
 
     def must_pay(self):
         max_allowed_to_owe = self.max_allowed_to_owe()
@@ -506,6 +513,25 @@ class AccountMember(models.Model):
     class Meta:
         ordering = ['account', 'id']
     
+
+
+class TemporaryBalanceLimitManager(models.Manager):
+    def current(self):
+        return self.filter(start__lte=today, until__gte=today)
+
+class TemporaryBalanceLimit(models.Model):
+    'start and end may not overlap, otherwise result is unpredictable'
+    account = models.ForeignKey(Account)
+    limit = models.DecimalField(max_digits=5, decimal_places=2)
+    start = models.DateField(auto_now_add=True)
+    until = models.DateField()
+
+    objects = TemporaryBalanceLimitManager()
+
+    def __unicode__(self):
+        return u'%s may owe %s until %s/%s/%s' % (self.account, self.limit, 
+            self.until.month, self.until.day, self.until.year)
+
 
 # possibly include IM and URL classes at some point
 

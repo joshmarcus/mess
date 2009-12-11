@@ -115,7 +115,7 @@ def reports(request):
 
             listrpt('Accounts','Over Balance',
                 'balance__gte=25',
-                'balance\r\nhours_balance\r\n'+
+                'balance\r\nmax_allowed_balance\r\nhours_balance\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
                 'active_member_count\r\nnote',
