@@ -2,6 +2,7 @@ from decimal import Decimal
 from decimal import InvalidOperation
 
 from django import forms
+from django.forms.models import modelformset_factory
 from django.utils.safestring import mark_safe
 from mess.autocomplete import AutoCompleteWidget
 
@@ -201,3 +202,7 @@ class CashSheetFormatForm(forms.Form):
     rows_per_page = forms.IntegerField(initial=25,
                 widget=forms.TextInput(attrs={'size':'4'}))
 
+StoreDayFormSet = modelformset_factory(models.StoreDay, extra=1, can_delete=True)
+class StoreDayForm(forms.ModelForm):
+    class Meta:
+        model = models.StoreDay

@@ -521,25 +521,28 @@ def hours_balance_changes(request):
 
 def trans_summary(request):
     """View to summarize transactions by type."""
+    storedays = a_models.StoreDay.objects.all().order_by('-start')
+
     if request.GET.has_key('start'):
         form = forms.TransactionFilterForm(request.GET)
     else:
-        form = forms.TransactionFilterForm()
-    if form.is_valid():
-#    if request.GET.has_key('start') and form.is_valid():
-        start = form.cleaned_data.get('start')
-        end = form.cleaned_data.get('end')
-        list_each = form.cleaned_data.get('list_each')
-        filter_type = form.cleaned_data.get('type')
-        note = form.cleaned_data.get('note')
-    else:
-        start = datetime.date.today()
-        end = start + datetime.timedelta(1)
-        list_each = False
-        filter_type = ''
-        note = ''
+        form = forms.TransactionFilterForm(data={'start':storedays[0].start,
+                               'end':datetime.datetime(2099,12,31,23,59,59)})
+
+    if not form.is_valid():
+        transactions = []
+        return render_to_response('reporting/transactions_summary.html', 
+            locals(), context_instance=RequestContext(request))
+
+#   else form.is_valid():
+    start = form.cleaned_data.get('start')
+    end = form.cleaned_data.get('end')
+    list_each = form.cleaned_data.get('list_each')
+    filter_type = form.cleaned_data.get('type')
+    note = form.cleaned_data.get('note')
     transactions = a_models.Transaction.objects.filter(
                    timestamp__range=(start, end))
+
     if filter_type:
         transactions = transactions.filter(Q(purchase_type=filter_type) | 
                                            Q(payment_type=filter_type))
@@ -573,7 +576,6 @@ def trans_summary(request):
     # by default, show the transactions that have notes
     if list_each == False and filter_type == '' and note == '':
         transactions = transactions.filter(note__gt='')
-
 
     return render_to_response('reporting/transactions_summary.html', locals(),
             context_instance=RequestContext(request))

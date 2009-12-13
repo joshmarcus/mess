@@ -303,3 +303,22 @@ def EBT(request):
     template = get_template('accounting/EBT.html')
     return HttpResponse(template.render(context))
 
+def storeday(request):
+    ''' set the current time as a storeday breakpoint.  or, manage storedays '''
+    if request.method == 'POST':
+        if 'begin_new_storeday_now' in request.POST:
+            newday = models.StoreDay(start=datetime.datetime.today())
+            newday.save()
+            referer = request.META['HTTP_REFERER']
+            if referer:
+                return HttpResponseRedirect(referer)
+        else:
+            formset = forms.StoreDayFormSet(request.POST)
+            if formset.is_valid():
+                formset.save()
+                return HttpResponseRedirect(reverse('storeday'))
+    else:
+        formset = forms.StoreDayFormSet()
+    title = 'Store Day Management'
+    return render_to_response('accounting/storeday.html', locals(),
+            context_instance=RequestContext(request))

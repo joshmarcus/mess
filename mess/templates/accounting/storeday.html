@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>{{ title }}</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ formset.management_form }}
+      {% for form in formset.forms %}
+        <p>{{ form }}</p>
+      {% endfor %}
+      (to add a new storeday, fill in the last blank)<br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+{% endblock %}

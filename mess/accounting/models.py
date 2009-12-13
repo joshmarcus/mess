@@ -129,6 +129,22 @@ class Transaction(models.Model):
         return self.note.replace('+',' + ')
         
 
+class StoreDay(models.Model):
+    # timepoints when the store is 'opened' for the next day's business.
+    # transactions naturally divide into days, according to these breakpoints.
+    # so for example, Friday early-morning corrections count as part of 
+    # Thursday's store day
+    start = models.DateTimeField()
+
+    def get_end(self):
+        later = StoreDay.objects.filter(start__gt=self.start)
+        if later:
+            return later[0].start
+    #end = property(get_end)
+
+    class Meta:
+        ordering = ['start']
+
 class Reconciliation(models.Model):
     # reconciled_by provides a record of who did the reconciling, and could 
     # relate to Member or User, and overlaps with 
