@@ -526,8 +526,14 @@ def trans_summary(request):
     if request.GET.has_key('start'):
         form = forms.TransactionFilterForm(request.GET)
     else:
-        form = forms.TransactionFilterForm(data={'start':storedays[0].start,
-                               'end':datetime.datetime(2099,12,31,23,59,59)})
+        if storedays:
+            form = forms.TransactionFilterForm(data=
+                {'start':storedays[0].start,
+                 'end':datetime.datetime(2099,12,31,23,59,59)})
+        else:
+            form = forms.TransactionFilterForm(data=
+                {'start':datetime.datetime(1900,1,1),
+                 'end':datetime.datetime(2099,12,31,23,59,59)})
 
     if not form.is_valid():
         transactions = []
