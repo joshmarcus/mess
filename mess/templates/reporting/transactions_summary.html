@@ -56,7 +56,7 @@
             <select id="select_storeday" onchange="pick_storeday(this);">
               <option value=""></option>
               {% for storeday in storedays %}
-                <option value="{{ storeday.start|date:"Y-m-d H:i:s" }}~{% if storeday.get_end %}{{ storeday.get_end|date:"Y-m-d H:i:s" }}{% else %}2099-12-31 23:59:59{% endif %}">{{ storeday.start|date:"n/j/y h:m A" }}</option>
+                <option value="{{ storeday.start|date:"Y-m-d H:i:s" }}~{% if storeday.get_end %}{{ storeday.get_end|date:"Y-m-d H:i:s" }}{% else %}2099-12-31 23:59:59{% endif %}">{{ storeday.start|date:"n/j/y h:i A" }}</option>
               {% endfor %}
             </select><br>
             <form action="{% url storeday %}" method="POST" 
