@@ -45,26 +45,28 @@
         </tr>
       </table>
     </td><td>
-      <form class="sorter noprint" method="GET" style="float:right;">
-        <table>
+      <table>
+        <form class="sorter noprint" method="GET" style="float:right;">
           {{ form }}
           <tr><td></td><td><input type="submit" value="Filter"></td></tr>
-          <tr>
-            <th>Store Day:</th>
-            <td><select id="select_storeday" onchange="pick_storeday(this);">
-              <option value=""> </option>
-              <option value="begin new storeday now">Begin new storeday now</option>
+        </form>
+        <tr>
+          <th>Store Day:<br><a href="{% url storeday %}">manage</a></th>
+          <td>
+            <select id="select_storeday" onchange="pick_storeday(this);">
+              <option value=""></option>
               {% for storeday in storedays %}
                 <option value="{{ storeday.start|date:"Y-m-d H:i:s" }}~{% if storeday.get_end %}{{ storeday.get_end|date:"Y-m-d H:i:s" }}{% else %}2099-12-31 23:59:59{% endif %}">{{ storeday.start|date:"n/j/y h:m A" }}</option>
               {% endfor %}
-            </select></td>
-          </tr>
-        </table>
-      </form>
-      <form action="{% url storeday %}" method="POST" id="begin_storeday">
-        {% csrf_token %}
-        <input type="hidden" name="begin_new_storeday_now" value="true">
-      </form>
+            </select><br>
+            <form action="{% url storeday %}" method="POST" 
+              onsubmit="return confirm('Are you sure you want to begin a new Store Day now?');">
+              {% csrf_token %}
+              <input type="submit" name="begin_new_storeday_now" value="Begin new Store Day now">
+            </form>
+          </td>
+        </tr>
+      </table>
       <br>
     </td>
     
