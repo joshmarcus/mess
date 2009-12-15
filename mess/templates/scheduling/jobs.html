@@ -18,8 +18,8 @@
         <th>Type</th>
         <th>Freeze Days</th>
         <th>Hours Multiplier</th>
-        <th>Skill Required</th>
-        <th>Skill Trained</th>
+        <th>Skills Required</th>
+        <th>Skills Trained</th>
       </tr>    
       {% for job in jobs %}
       <tr class="{% cycle 'odd' 'even' %}">
@@ -30,8 +30,8 @@
         <td>{{ job.get_type_display }}</td>        
         <td>{{ job.freeze_days }}</td>
         <td>{{ job.hours_multiplier }}</td>
-        <td>{{ job.skill_required }}</td>     
-        <td>{{ job.skill_trained }}</td>     
+        <td><ul class=ceasefire>{% for sk in job.skills_required.iterator %}<li>{{ sk }}</li>{% endfor %}</ul></td>     
+        <td><ul class=ceasefire>{% for sk in job.skills_trained.iterator %}<li>{{ sk }}</li>{% endfor %}</ul></td>     
       </tr>
       {% endfor %}
     </table>
