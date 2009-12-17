@@ -30,8 +30,8 @@
         <td>{{ job.get_type_display }}</td>        
         <td>{{ job.freeze_days }}</td>
         <td>{{ job.hours_multiplier }}</td>
-        <td><ul class=ceasefire>{% for sk in job.skills_required.iterator %}<li>{{ sk }}</li>{% endfor %}</ul></td>     
-        <td><ul class=ceasefire>{% for sk in job.skills_trained.iterator %}<li>{{ sk }}</li>{% endfor %}</ul></td>     
+        <td><ul class=ceasefire>{% for sk in job.skills_required.all %}<li>{{ sk }}</li>{% endfor %}</ul></td>     
+        <td><ul class=ceasefire>{% for sk in job.skills_trained.all %}<li>{{ sk }}</li>{% endfor %}</ul></td>     
       </tr>
       {% endfor %}
     </table>
