@@ -1,7 +1,4 @@
-To: {{ task.member.user.first_name }} <{{ task.member.emails.all.0.email }}>
-
-
-{% if task.excused %}
+To: {{ task.member.user.first_name }} <{{ task.member.emails.all.0.email }}>{% if task.excused %}
 Subject: [Mariposa] Excused Workshift on {{ task.time|date:"l, F j, Y" }}
 
 Dear {{ task.member.user.first_name }},
@@ -48,7 +45,7 @@ Mariposa Food Co-op
 
 
 
-{% else %}{% if task.compostcheesecut or task.job.deadline or task.job.is_dancer %}
+{% else %}{% if task.job.is_dancer %}
 Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F j, Y" }}
 
 Dear {{ task.member.user.first_name }},
