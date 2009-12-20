@@ -84,8 +84,21 @@ class JobForm(forms.ModelForm):
         model = models.Job
 
 class SkillForm(forms.ModelForm):
+    required_by = forms.MultipleChoiceField(
+            choices=models.Job.objects.all())
+    trained_by = forms.MultipleChoiceField(
+            choices=models.Job.objects.all())
+
+    def save(self):
+        super(SkillForm, self).save()
+        self.instance.required_by.clear()
+        self.instance.required_by.add(self.cleaned_data['required_by'])
+        self.instance.trained_by.clear()
+        self.instance.trained_by.add(self.cleaned_data['trained_by'])
+        
     class Meta:
         model = models.Skill
+
 
 class TimecardForm(forms.ModelForm):
     class Meta:
