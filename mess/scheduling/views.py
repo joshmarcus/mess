@@ -407,6 +407,7 @@ def reminder(request, date):
         message = message_template.render(Context({'task':task}))
         messages.append(unicode(message))
         if request.method == 'POST':
+            # now have to split to: and subject: off of those lines to send them to mail
             (to, subject, message) = message.split('\n', 2)
             to = to.split(' ', 1)[1]
             subject = subject.split(' ', 1)[1]
@@ -519,6 +520,13 @@ def swap(request):
     return render_to_response('scheduling/swap.html', locals(),
                               context_instance=RequestContext(request))
         
+def skills(request):
+    context = RequestContext(request)
+
+    context['skills'] = models.Skill.objects.all()
+    template = loader.get_template('scheduling/skills.html')
+    return HttpResponse(template.render(context))
+
 
 # unused below
 

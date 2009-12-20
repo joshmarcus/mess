@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div id="left-column">
+  {% include "scheduling/snippets/page_menu.html" %}
+  <div id="primary-content-wrapper">
+    <h2>Skills List:</h2>
+    <table class="data">
+      <tr>
+        <th>Name</th>
+        <th>Id</th>
+        <th>Required By</th>
+        <th>Trained By</th>
+        <th>Possessed By</th>
+      </tr>
+      {% for sk in skills %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>{{ sk.name }}</td>
+        <td>{{ sk.id }}</td>
+        <td><ul class="ceasefire">{% for job in sk.required_by.iterator %}<li>{{ job }}</li>{% endfor %} </ul></td>
+        <td><ul class="ceasefire">{% for job in sk.trained_by.iterator %}<li>{{ job }}</li>{% endfor %}</ul></td>
+        <td>Members possessing this skill <br>(link here to a modified report?)</td> 
+      </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+</div>
+
+<div id="right-column">
+  <h2>Make a new skill</h2>
+</div>
+
+
+{% endblock %}  
+

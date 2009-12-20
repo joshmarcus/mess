@@ -40,9 +40,9 @@ class Job(models.Model):
     freeze_days = models.IntegerField(default=7)
     hours_multiplier = models.IntegerField(default=1)
     skills_required = models.ManyToManyField(Skill, blank=True, 
-            related_name='required by')
+            related_name='required_by')
     skills_trained = models.ManyToManyField(Skill, blank=True, 
-            related_name='trained by')
+            related_name='trained_by')
 
     def __unicode__(self):
         return self.name
@@ -243,9 +243,6 @@ class Task(models.Model):
 
     def time_minus_six_days(self):
         return self.time - datetime.timedelta(6)
-
-    def compostcheesecut(self):
-        return 'Cheese Cutter' in self.job.name or 'Compost' in self.job.name
 
     def get_next_shift(self):
         if self.recur_rule:
