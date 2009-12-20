@@ -344,6 +344,7 @@ def calc_turnout(date):
             'yes': tasks.filter(hours_worked__gt=0).count(),
             'excused': tasks.filter(hours_worked=0, excused=True).count(),
             'unexcused': tasks.filter(hours_worked=0, excused=False).count(),
+            'unfilled': tasks.filter(hours_worked__isnull=True, member__isnull=True).count(),
             'makeup': tasks.filter(makeup=True).count(),
             'banked': tasks.filter(banked=True).count(),
             'total': tasks.count()}

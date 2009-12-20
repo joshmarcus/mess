@@ -4,28 +4,32 @@
     <th>Yes</th>
     <th>Excused</th>
     <th>Unexcused</th>
+    <th>Unfilled</th>
     <th class="darkcolumnline">Makeup</th>
     <th>Banked</th>
     <th class="darkcolumnline">Total</th>
   </tr>
  {% for day in turnout.days %}
   <tr>
-    <td>{{ day.date|date:"D n/j/y" }}</td>
+    <td><a href="{% url scheduling-timecard day.date %}">{{ day.date|date:"D n/j/y" }}</a></td>
     <td>{{ day.yes }}</td>
     <td>{{ day.excused }}</td>
     <td>{{ day.unexcused }}</td>
+    <td>{{ day.unfilled }}</td>
     <td class="darkcolumnline">{{ day.makeup }}</td>
     <td>{{ day.banked }}</td>
     <td class="darkcolumnline">{{ day.total }}</td>
   </tr>
  {% endfor %}
   <tr>
-    <th>Total</th>
+    <th><a href="{% url turnout %}">Total</a></th>
     <td>{{ turnout.totals.yes }}</td>
     <td>{{ turnout.totals.excused }}</td>
     <td>{{ turnout.totals.unexcused }}</td>
+    <td>{{ turnout.totals.unfilled }}</td>
     <td class="darkcolumnline">{{ turnout.totals.makeup }}</td>
     <td>{{ turnout.totals.banked }}</td>
     <td class="darkcolumnline">{{ turnout.totals.total }}</td>
   </tr>
 </table>
+Note: 9am tasks are usually non-shift work like meeting attendance, etc., and are not included in the turnout tally.
