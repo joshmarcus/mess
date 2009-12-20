@@ -32,6 +32,10 @@ class TransactionFilterForm(forms.Form):
            (('','All'),) + a_models.PURCHASE_CHOICES + a_models.PAYMENT_CHOICES)
     note = forms.CharField(required=False)
 
+class DateRangeForm(forms.Form):
+    start = forms.DateField()
+    end = forms.DateField()
+
 class HoursBalanceChangesFilterForm(forms.Form):
     start = forms.DateField(required=False) 
     end = forms.DateField(required=False) 

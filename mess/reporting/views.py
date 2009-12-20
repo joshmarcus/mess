@@ -24,6 +24,8 @@ from mess.reporting import forms
 
 from mess.utils.search import list_usernames_from_fullname
 
+today = datetime.date.today()
+
 def find_dups(mems):
     uniqs = {}
     dups = []
@@ -206,6 +208,7 @@ def reports(request):
                     str(datetime.date.today()+datetime.timedelta(days=7)),
                 'job'),
 
+            ('Workshift Turnout', reverse('turnout')),
         ]),
 
         ('Member Work',[
@@ -586,3 +589,16 @@ def trans_summary(request):
     return render_to_response('reporting/transactions_summary.html', locals(),
             context_instance=RequestContext(request))
 
+
+def turnout(request):
+    ''' shift turnout, using begin and end dates from the daterange form '''
+    if request.method == 'POST':
+        form = forms.DateRangeForm(request.POST)
+        if form.is_valid():
+            turnout = s_models.turnout(form.cleaned_data['start'], 
+                                       form.cleaned_data['end'])
+    else:
+        form = forms.DateRangeForm()
+        turnout = s_models.turnout(today - datetime.timedelta(30), today)
+    return render_to_response('reporting/turnout.html', locals(),
+            context_instance=RequestContext(request))

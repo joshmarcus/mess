@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Workshift Turnout</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Display">
+    </form>
+    {% if turnout %}
+      {% include 'scheduling/snippets/turnout.html' %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

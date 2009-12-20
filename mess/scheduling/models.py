@@ -5,6 +5,7 @@ from django.db import models
 from django.template import loader, Context
 from django.utils.safestring import mark_safe
 from mess.membership.models import Account, Member
+from mess.membership import models as m_models
 
 today = datetime.date.today()
 todaytime = datetime.datetime(today.year, today.month, today.day)
@@ -121,34 +122,12 @@ class Task(models.Model):
         template = loader.get_template('scheduling/snippets/task.html')
         if self.time < todaytime:
             datehorizon = 'other'
-        #elif self.time < todaytime + datetime.timedelta(4):
-        #    datehorizon = 'thisweek'
         elif self.time < todaytime + datetime.timedelta(180):
             datehorizon = 'shortterm'
         else:
             datehorizon = 'other'
         task = self
         return template.render(Context(locals()))
-#       job = unicode(self.job)
-#       if self.time < todaytime:
-#           date = self.time.strftime('%Y-%m-%d %I:%M%P')
-#       elif self.time < todaytime + datetime.timedelta(4):
-#           date = self.time.strftime('%a %I:%M%P') # Sat 05:30PM
-#       elif self.time < todaytime + datetime.timedelta(90):
-#           date = self.time.strftime('%b %d, %I:%M%P') # Oct 10, 05:30PM
-#       else:
-#           date = self.time.strftime('%Y-%m-%d %I:%M%P')
-#       date = date.replace(' 0',' ').replace('-0','-')
-#       ret = '<b>%s</b>, %s %sh' % (job, date, self.hours)
-#       if self.member:
-#           mem = '%s (%s)' % (self.member.user.first_name, self.account)
-#           ret += '<br>%s' % mem
-#           if self.workflag:
-#               ret += '<br><b>%s</b>' % self.workflag
-#       else:
-#           if self.excused:
-#               ret += '<br><b>One-Time Filled</b>'
-#       return mark_safe(ret)
 
     @property
     def assigned(self):
@@ -347,6 +326,30 @@ class Task(models.Model):
                 return '%s months' % self.recur_rule.interval
 
 
+def turnout(start, end=None):
+    ''' #189: break down shifts based on yes/excused/unexcused, etc. '''
+    if end is None:
+        end = start + datetime.timedelta(1)
+    days = [calc_turnout(date) for date in m_models.daterange(start, end)]
+    # I hereby apologize to whoever has to read the following line of code
+    totals = dict( [ (desc, sum([ x[desc] for x in days])) 
+             for desc in days[0].keys() if desc != 'date' ] )
+    return {'days':days, 'totals':totals}
+
+def calc_turnout(date):
+    tasks = Task.objects.filter(time__range=(date, date+datetime.timedelta(1)))
+    # exclude 9:00am tasks, which are usually non-shift meeting attendance, etc.
+    tasks = tasks.exclude(time=datetime.datetime.combine(date, datetime.time(9)))
+    return {'date': date,
+            'yes': tasks.filter(hours_worked__gt=0).count(),
+            'excused': tasks.filter(hours_worked=0, excused=True).count(),
+            'unexcused': tasks.filter(hours_worked=0, excused=False).count(),
+            'makeup': tasks.filter(makeup=True).count(),
+            'banked': tasks.filter(banked=True).count(),
+            'total': tasks.count()}
+
+# unused below
+
 class Timecard(models.Model):
     """
     Keep track of the time worked on a task (through assignment)
@@ -358,9 +361,6 @@ class Timecard(models.Model):
     def __unicode__(self):
         work = self.end - self.start
         return u"%s hrs of %s" % (work.seconds / 3600, self.task.job)
-
-
-# unused below
 
 #class RecurringShift(models.Model):
 #    """

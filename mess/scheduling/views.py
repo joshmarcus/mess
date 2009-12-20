@@ -211,6 +211,7 @@ def timecard(request, date=None):
     context['previous_date'] = date - a_day
     context['next_date'] = date + a_day
     context['old_rotations'] = old_rotations(date)
+    context['turnout'] = models.turnout(date)
     template = loader.get_template('scheduling/timecard.html')
     return HttpResponse(template.render(context))
 

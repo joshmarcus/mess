@@ -1,0 +1,31 @@
+<table class="data">
+  <tr>
+    <th>Date</th>
+    <th>Yes</th>
+    <th>Excused</th>
+    <th>Unexcused</th>
+    <th class="darkcolumnline">Makeup</th>
+    <th>Banked</th>
+    <th class="darkcolumnline">Total</th>
+  </tr>
+ {% for day in turnout.days %}
+  <tr>
+    <td>{{ day.date|date:"D n/j/y" }}</td>
+    <td>{{ day.yes }}</td>
+    <td>{{ day.excused }}</td>
+    <td>{{ day.unexcused }}</td>
+    <td class="darkcolumnline">{{ day.makeup }}</td>
+    <td>{{ day.banked }}</td>
+    <td class="darkcolumnline">{{ day.total }}</td>
+  </tr>
+ {% endfor %}
+  <tr>
+    <th>Total</th>
+    <td>{{ turnout.totals.yes }}</td>
+    <td>{{ turnout.totals.excused }}</td>
+    <td>{{ turnout.totals.unexcused }}</td>
+    <td class="darkcolumnline">{{ turnout.totals.makeup }}</td>
+    <td>{{ turnout.totals.banked }}</td>
+    <td class="darkcolumnline">{{ turnout.totals.total }}</td>
+  </tr>
+</table>
