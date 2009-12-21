@@ -1,6 +1,11 @@
 <table class="data">
   <tr>
+   {% ifequal turnout.days|length 1 %}
+    <th><a href="{% url turnout %}">Turnout</a></th>
+   {% endifequal %}
+   {% ifnotequal turnout.days|length 1 %}
     <th>Date</th>
+   {% endifnotequal %}
     <th>Yes</th>
     <th>Excused</th>
     <th>Unexcused</th>
@@ -21,8 +26,9 @@
     <td class="darkcolumnline">{{ day.total }}</td>
   </tr>
  {% endfor %}
+ {% ifnotequal turnout.days|length 1 %}
   <tr>
-    <th><a href="{% url turnout %}">Total</a></th>
+    <th>Total</th>
     <td>{{ turnout.totals.yes }}</td>
     <td>{{ turnout.totals.excused }}</td>
     <td>{{ turnout.totals.unexcused }}</td>
@@ -31,5 +37,6 @@
     <td>{{ turnout.totals.banked }}</td>
     <td class="darkcolumnline">{{ turnout.totals.total }}</td>
   </tr>
+ {% endifnotequal %}
 </table>
-Note: 9am tasks are usually non-shift work like meeting attendance, etc., and are not included in the turnout tally.
+Note: 9am tasks are usually non-shift work like meeting attendance, etc., and are not included in workshift turnout.

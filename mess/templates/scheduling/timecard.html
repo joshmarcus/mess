@@ -93,6 +93,11 @@
             </tr>
           </tbody>
         </table>
+
+        {% ifequal date|date:"D" "Mon" %} <!-- ticket #268 -->
+          <b>Were Dancers for this week called?</b>
+        {% endifequal %}
+        
         <div class="noprint"><input type="submit" value="Submit" /></div>
         <div class="printonly">Mariposa Co-op phone is 215-729-2121. <!-- Membership Office  is 215-729-0303. --></div>
       </form>

@@ -53,16 +53,6 @@
           </tr>
         {% endfor %}{% endif %}
 
-        <!-- Print reminder on Monday, ticket #268 -->
-        {% ifequal tablex.dayname "Monday" %}
-          <tr>
-            <td></td>
-            {% for cyclex in tablex.cycles %}
-              <td><b>Were Dancers for this week called?</b></td>
-            {% endfor %}
-          </tr>
-        {% endifequal %}
-
         <!-- Print other (non-idealized) shifts -->
         <tr class="rotation-main">
           {% if tablex.ideals %}<th class="rotation-ideal">Other Shifts</th>{% endif %}
