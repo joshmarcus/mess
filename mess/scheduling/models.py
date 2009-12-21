@@ -341,13 +341,13 @@ def calc_turnout(date):
     # exclude 9:00am tasks, which are usually non-shift meeting attendance, etc.
     tasks = tasks.exclude(time=datetime.datetime.combine(date, datetime.time(9)))
     return {'date': date,
-            'yes': tasks.filter(hours_worked__gt=0).count(),
-            'excused': tasks.filter(hours_worked=0, excused=True).count(),
-            'unexcused': tasks.filter(hours_worked=0, excused=False).count(),
-            'unfilled': tasks.filter(hours_worked__isnull=True, member__isnull=True).count(),
+            'slots': tasks.filter(excused=False).count(),
+            'yes': tasks.filter(excused=False, hours_worked__gt=0).count(),
+            'unexcused': tasks.filter(excused=False, hours_worked=0).count(),
+            'unfilled': tasks.filter(excused=False, hours_worked__isnull=True, member__isnull=True).count(),
+            'excused': tasks.filter(excused=True, member__isnull=False).count(),
             'makeup': tasks.filter(makeup=True).count(),
-            'banked': tasks.filter(banked=True).count(),
-            'total': tasks.count()}
+            'banked': tasks.filter(banked=True).count()}
 
 # unused below
 

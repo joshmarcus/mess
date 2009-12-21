@@ -6,36 +6,36 @@
    {% ifnotequal turnout.days|length 1 %}
     <th>Date</th>
    {% endifnotequal %}
-    <th>Yes</th>
-    <th>Excused</th>
+    <th>Slots</th>
+    <th class="darkcolumnline">Yes</th>
     <th>Unexcused</th>
     <th>Unfilled</th>
-    <th class="darkcolumnline">Makeup</th>
+    <th class="darkcolumnline">Excused</th>
+    <th>Makeup</th>
     <th>Banked</th>
-    <th class="darkcolumnline">Total</th>
   </tr>
  {% for day in turnout.days %}
   <tr>
     <td><a href="{% url scheduling-timecard day.date %}">{{ day.date|date:"D n/j/y" }}</a></td>
-    <td>{{ day.yes }}</td>
-    <td>{{ day.excused }}</td>
+    <td>{{ day.slots }}</td>
+    <td class="darkcolumnline">{{ day.yes }}</td>
     <td>{{ day.unexcused }}</td>
     <td>{{ day.unfilled }}</td>
-    <td class="darkcolumnline">{{ day.makeup }}</td>
+    <td class="darkcolumnline">{{ day.excused }}</td>
+    <td>{{ day.makeup }}</td>
     <td>{{ day.banked }}</td>
-    <td class="darkcolumnline">{{ day.total }}</td>
   </tr>
  {% endfor %}
  {% ifnotequal turnout.days|length 1 %}
   <tr>
     <th>Total</th>
-    <td>{{ turnout.totals.yes }}</td>
-    <td>{{ turnout.totals.excused }}</td>
+    <td>{{ turnout.totals.slots }}</td>
+    <td class="darkcolumnline">{{ turnout.totals.yes }}</td>
     <td>{{ turnout.totals.unexcused }}</td>
     <td>{{ turnout.totals.unfilled }}</td>
-    <td class="darkcolumnline">{{ turnout.totals.makeup }}</td>
+    <td class="darkcolumnline">{{ turnout.totals.excused }}</td>
+    <td>{{ turnout.totals.makeup }}</td>
     <td>{{ turnout.totals.banked }}</td>
-    <td class="darkcolumnline">{{ turnout.totals.total }}</td>
   </tr>
  {% endifnotequal %}
 </table>
