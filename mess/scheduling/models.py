@@ -342,9 +342,9 @@ def calc_turnout(date):
     tasks = tasks.exclude(time=datetime.datetime.combine(date, datetime.time(9)))
     return {'date': date,
             'slots': tasks.filter(excused=False).count(),
-            'yes': tasks.filter(excused=False, hours_worked__gt=0).count(),
-            'unexcused': tasks.filter(excused=False, hours_worked=0).count(),
-            'unfilled': tasks.filter(excused=False, hours_worked__isnull=True, member__isnull=True).count(),
+            'yes': tasks.filter(excused=False, member__isnull=False, hours_worked__gt=0).count(),
+            'unexcused': tasks.filter(excused=False, member__isnull=False, hours_worked=0).count(),
+            'unfilled': tasks.filter(excused=False, member__isnull=True).count(),
             'excused': tasks.filter(excused=True, member__isnull=False).count(),
             'makeup': tasks.filter(makeup=True).count(),
             'banked': tasks.filter(banked=True).count()}
