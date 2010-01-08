@@ -15,11 +15,14 @@ from django.template import loader, Context
 from django.core.mail import send_mail
 
 def reminder_emails():
-
     '''
     there is no later, paul, there is only now.
     here is some code to send REMINDER EMAILS!
     '''
+    print "***********************************"
+    print "sending email reminders on %s" % datetime.date.today()
+    print "***********************************"
+
     today = datetime.date.today()
     targetDay = today + datetime.timedelta(3)
     dancerTargetDay = today + datetime.timedelta(10)

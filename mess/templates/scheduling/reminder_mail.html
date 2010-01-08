@@ -14,8 +14,6 @@ Thank you,
 
 Mariposa Food Co-op
 
-
-
 {% else %}{% if task.job.is_dancer %}
 Subject: [Mariposa] You're Scheduled to Work the week of {{ task.time_minus_six_days|date:"l, F j" }}
 
@@ -44,10 +42,6 @@ attend as scheduled.
 We'll see you soon!
 
 Mariposa Food Co-op
-
-
-
-
 
 {% else %}
 Subject: [Mariposa] You're Scheduled to Work {{ task.time|date:"l, F j, Y, g:ia" }}
