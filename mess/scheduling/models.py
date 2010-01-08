@@ -73,6 +73,12 @@ class TaskManager(models.Manager):
     def unassigned(self):
         return self.filter(models.Q(member=None) | models.Q(account=None))
 
+    def dancer(self):
+        return self.filter(job__name__istartswith='danc')
+
+    def not_dancer(self):
+        return self.exclude(job__name__istartswith='danc')
+   
 class Task(models.Model):
     """
     A task is a scheduled occurrence of a job.  The time is a start time 
