@@ -13,12 +13,16 @@
     {% ifequal request.method "POST" %}
       <h3> Reminders were sent. </h3>
     {% endifequal %}
+
+{% comment %} 
+DISABLE SENDING EMAILS FROM THIS INTERFACE NOW, SINCE IT'S AUTOMATED
     {% ifnotequal request.method "POST" %}
       <form method="post">
         {% csrf_token %}
         <input type="submit" value="Send Emails Now!">
       </form>
     {% endifnotequal %}
+{% endcomment %}
 
     {% if noemail %}
       <hr>
