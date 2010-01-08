@@ -3,10 +3,12 @@ Subject: [Mariposa] Excused Workshift on {{ task.time|date:"l, F j, Y" }}
 
 Dear {{ task.member.user.first_name }},
 
-You have asked to be excused from your member workshift on {{ task.time|date:"l, F j, Y, g:ia" }}.
+You have been excused from your member workshift on 
+{{ task.time|date:"l, F j, Y, g:ia" }}.
 
-If you have banked hours they will automatically be put toward this missed shift. 
-If you do not have banked hours, please call the store (215-729-2121) to schedule a makeup shift. 
+If you have banked hours they will automatically be put toward this
+missed shift.  If you do not have banked hours, please call the store
+(215-729-2121) to schedule a makeup shift. 
 
 Thank you,
 
@@ -14,39 +16,8 @@ Mariposa Food Co-op
 
 
 
-{% comment %}
-
-{% else %}{% if task.compostcheesecut %}
-Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F j, Y" }}
-
-Dear {{ task.member.user.first_name }},
-
-Your Mariposa Food Co-op member work shift is scheduled for:
-    Week of: {{ task.time_minus_six_days|date:"l, F j" }} to {{ task.time|date:"l, F j, Y" }}
-    Job: {{ task.job }}
-    Account: {{ task.account }}
-
-The co-op depends on your work as a member, so please make every effort to attend as scheduled.
-
-If you cannot work at this time, please try to find another member who does the same type of
-shift and can do a one time shift trade with you.  Member shifts, names, and numbers are listed
-behind the cashier station on the wall calendars.  Be sure you know one another's account
-names, as you will both be signing in for one another's accounts on the swap weeks, and know
-the weeks you are trading.  Let the store know about the switch so we know who to
-expect both weeks.
-
-If you have banked hours you want to use, call the coop at least 48 hours before your Sunday
-deadline to let us know you will not be coming.
-
-Otherwise, we'll see you by {{ task.time|date:"l" }}!
-
-Mariposa Food Co-op
-{% endcomment %}
-
-
-
 {% else %}{% if task.job.is_dancer %}
-Subject: [Mariposa] You're Scheduled to Work by {{ task.time|date:"l, F j, Y" }}
+Subject: [Mariposa] You're Scheduled to Work the week of {{ task.time_minus_six_days|date:"l, F j" }}
 
 Dear {{ task.member.user.first_name }},
 
@@ -55,19 +26,22 @@ Your Mariposa Food Co-op member work shift is scheduled for:
     Job: {{ task.job }}
     Account: {{ task.account }}
 
-Please call the store (215-729-2121) at the beginning of your week to be scheduled (unless 
-you have a compost shift).
+Please call the store (215-729-2121) at the beginning of your week to
+be scheduled (unless you have a compost shift).
 
-If you cannot work during your assigned week or if you have banked hours you want to use, 
-you may call the co-op at 215-729-2121 no later than Friday of your assigned week. If you 
-do not have banked hours, you will then need to scheduled and work a makeup.
+If you cannot work during your assigned week or if you have banked
+hours you want to use, you may call the co-op at 215-729-2121 no later
+than Friday of your assigned week. If you do not have banked hours,
+you will then need to scheduled and work a makeup.
 
-Please be aware a missed shift without timely notice (with the exceptions of emergencies/sickness) 
-will freeze your account: no one will be able to shop on the account until all owed hours are made-up. 
-Make-ups can be scheduled through the store. Remember, the co-op depends on your work as a member, so 
-please make every effort to attend as scheduled. 
+Please be aware a missed shift without timely notice (with the
+exceptions of emergencies/sickness) will freeze your account: no one
+will be able to shop on the account until all owed hours are made-up.
+Make-ups can be scheduled through the store. Remember, the co-op
+depends on your work as a member, so please make every effort to
+attend as scheduled. 
 
-We'll see you by {{ task.time|date:"l" }}!
+We'll see you soon!
 
 Mariposa Food Co-op
 
@@ -86,21 +60,26 @@ Your Mariposa Food Co-op member work shift is scheduled for:
     Job: {{ task.job }}
     Account: {{ task.account }}
 
-If you cannot work at this time, it is your responsibility to contact members who work the same 
-shift (same day of the week and time, different week of the rotation) and attempt to arrange a 
-one-time shift swap. Visit the store to collect names, phone numbers, and shift dates of potential 
-other work shifters. If you find a match, be sure you know one another's account names and the 
-dates/times you are trading. You must let a staff member know about the swap so we know who to 
-expect both days.
+If you cannot work at this time, it is your responsibility to contact
+members who work the same shift (same day of the week and time,
+different week of the rotation) and attempt to arrange a one-time
+shift swap. Visit the store to collect names, phone numbers, and shift
+dates of potential other work shifters. If you find a match, be sure
+you know one another's account names and the dates/times you are
+trading. You must let a staff member know about the swap so we know
+who to expect both days.
 
-As a last resort or if you have banked hours you want to use, you may call the co-op at 215-729-2121 
-at least 48 hours before your shift. If you do not have banked hours, you will then need to schedule 
-and work a makeup.
+As a last resort or if you have banked hours you want to use, you may
+call the co-op at 215-729-2121 at least 48 hours before your shift. If
+you do not have banked hours, you will then need to schedule and work
+a makeup.
 
-Please be aware a missed shift without timely notice (with the exceptions of emergencies/sickness) 
-will freeze your account: no one will be able to shop on the account until all owed hours are made-up. 
-Make-ups can be scheduled through the store. Remember, the co-op depends on your work as a member, 
-so please make every effort to attend as scheduled. 
+Please be aware a missed shift without timely notice (with the
+exceptions of emergencies/sickness) will freeze your account: no one
+will be able to shop on the account until all owed hours are made-up.
+Make-ups can be scheduled through the store. Remember, the co-op
+depends on your work as a member, so please make every effort to
+attend as scheduled. 
 
 We'll see you on {{ task.time|date:"l" }}!
 
