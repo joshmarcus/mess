@@ -102,6 +102,14 @@ class Member(models.Model):
         return bool(self.current_loa)
 
     @property
+    def is_cashier_recently(self):
+        shifts_recently = self.task_set.filter(time__range=(
+            datetime.date.today()-datetime.timedelta(180), datetime.date.today()))
+        cashier_shifts_recently = shifts_recently.filter(job__name__in=[
+            'Cashier','After Hours Billing'], hours_worked__gt=0)
+        return bool(cashier_shifts_recently.count())
+
+    @property
     def is_cashier_today(self):
         shifts_today = self.task_set.filter(time__range=(
             datetime.date.today(), datetime.date.today()+datetime.timedelta(1)))
@@ -220,8 +228,9 @@ def cashier_permission(request):
         return {}     # no permission, bool({}) = False
     if request.user.is_staff:
         return {'can_cashier_now':True}
-    if (request.user.get_profile().is_cashier_today
-        and request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP):
+    if (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP
+        and (request.user.get_profile().is_cashier_today
+            or request.user.get_profile().is_cashier_recently)):
         return {'can_cashier_now':True}
     return {}     # no permission, bool({}) = False
 
