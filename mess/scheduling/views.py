@@ -524,40 +524,22 @@ def swap(request):
 def skills(request):
     context = RequestContext(request)
 
-    context['skills'] = models.Skill.objects.all()
-    template = loader.get_template('scheduling/skills.html')
-    return HttpResponse(template.render(context))
-
-def skill_edit(request, skill_id=None):
-    if skill_id:
-        skill = get_object_or_404(models.Skill, id=skill_id)
-    else:
-        skill = models.Skill()
-    is_errors = False
+    # allow new skill to be added, i.e. include little form
     ret_resp = HttpResponseRedirect(reverse('skills'))
-    
-    if request.method == 'POST':
+    if request.method == 'POST':    #form was submitted
         if 'cancel' in request.POST:
             return ret_resp
-
-        skill_form = forms.SkillForm(request.POST, instance=skill)
+        skill_form = forms.SkillForm(request.POST)
         if skill_form.is_valid():
             skill_form.save()
             return ret_resp
-        else:
-            is_errors = True
     else:
-        skill_form = forms.SkillForm(instance=skill)
+        skill_form = forms.SkillForm()
 
-    context = {
-        'skill': skill,
-        'is_errors': is_errors,
-        'skill_form': skill_form,
-        'add': skill_id==None,
-    }
-    return render_to_response('scheduling/skill_form.html', context,
-                                context_instance=RequestContext(request))
-
+    context['skills'] = models.Skill.objects.all()
+    context['skill_form'] = skill_form
+    template = loader.get_template('scheduling/skills.html')
+    return HttpResponse(template.render(context))
 
 # unused below
 

@@ -80,30 +80,19 @@ class TaskForm(forms.ModelForm):
         return self.cleaned_data
 
 class JobForm(forms.ModelForm):
+    skills_required = forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple,
+            queryset=models.Skill.objects.all(),
+            required=False)
+    skills_trained = forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple,
+            queryset=models.Skill.objects.all(),
+            required=False)
+
     class Meta:
         model = models.Job
 
 class SkillForm(forms.ModelForm):
-    required_by = forms.ModelMultipleChoiceField(
-            widget=forms.CheckboxSelectMultiple,
-            queryset=models.Job.objects.all(), 
-            required=False)
-    trained_by = forms.ModelMultipleChoiceField(
-            widget=forms.CheckboxSelectMultiple,
-            queryset=models.Job.objects.all(), 
-            required=False)
-
-    def save(self):
-        super(SkillForm, self).save()
-        self.instance.required_by.clear()
-        #self.instance.required_by.add(self.cleaned_data['required_by'])
-        for req in self.cleaned_data['required_by']:
-            self.instance.required_by.add(req)
-        self.instance.trained_by.clear()
-        #self.instance.trained_by.add(self.cleaned_data['trained_by'])
-        for train in self.cleaned_data['trained_by']:
-            self.instance.trained_by.add(train)
-        
     class Meta:
         model = models.Skill
 
