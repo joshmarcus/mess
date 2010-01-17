@@ -84,21 +84,28 @@ class JobForm(forms.ModelForm):
         model = models.Job
 
 class SkillForm(forms.ModelForm):
-    required_by = forms.MultipleChoiceField(
-            choices=models.Job.objects.all())
-    trained_by = forms.MultipleChoiceField(
-            choices=models.Job.objects.all())
+    required_by = forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple,
+            queryset=models.Job.objects.all(), 
+            required=False)
+    trained_by = forms.ModelMultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple,
+            queryset=models.Job.objects.all(), 
+            required=False)
 
     def save(self):
         super(SkillForm, self).save()
         self.instance.required_by.clear()
-        self.instance.required_by.add(self.cleaned_data['required_by'])
+        #self.instance.required_by.add(self.cleaned_data['required_by'])
+        for req in self.cleaned_data['required_by']:
+            self.instance.required_by.add(req)
         self.instance.trained_by.clear()
-        self.instance.trained_by.add(self.cleaned_data['trained_by'])
+        #self.instance.trained_by.add(self.cleaned_data['trained_by'])
+        for train in self.cleaned_data['trained_by']:
+            self.instance.trained_by.add(train)
         
     class Meta:
         model = models.Skill
-
 
 class TimecardForm(forms.ModelForm):
     class Meta:

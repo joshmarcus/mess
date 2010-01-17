@@ -896,7 +896,7 @@ td {
 }
 */
 
-ul.ceasefire {
+ul.ceasefire, table.ceasefire ul {
   list-style: none;
 }
 
