@@ -127,6 +127,9 @@ class Transaction(models.Model):
 
     def note_plus_spaces(self):
         return self.note.replace('+',' + ')
+
+    class Meta:
+        ordering = ['timestamp']
         
 
 class StoreDay(models.Model):
