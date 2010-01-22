@@ -27,11 +27,23 @@ class Skill(models.Model):
     """
     name = models.CharField(max_length=100, unique=True)
     
+    def members(self):
+        ''' members that have the skill '''
+        return m_models.Member.objects.present().filter(
+                task__in=self.trainedbytasks()).distinct()
+
+    def trainedbytasks(self):
+        ''' tasks this skill was trained by.  used in members fn. '''
+        return Task.objects.all().filter(
+                hours_worked__gt=0).filter(
+                job__in=self.trained_by.all())
+
     def __unicode__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+
 
 class Job(models.Model):
     """
