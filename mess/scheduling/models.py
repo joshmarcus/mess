@@ -30,6 +30,9 @@ class Skill(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 class Job(models.Model):
     """
     Job description / title
