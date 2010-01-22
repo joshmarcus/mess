@@ -27,6 +27,10 @@
           {% for column in columns %}
             <td>
               <p>Total: {{ column.total|floatformat:"2" }}</p>
+              {% if forloop.first %}
+                {% ifnotequal order_by "account" %}<a href="?order_by=account">click to sort by account</a>{% endifnotequal %}
+                {% ifequal order_by "account" %}<a href="?order_by=timestamp">click to sort by time</a>{% endifequal %}
+              {% endif %}
               <table class="closeout">
                 {% for trans in column.transactions %}
                   {% if not trans.fixes_target %}

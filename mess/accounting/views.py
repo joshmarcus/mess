@@ -141,6 +141,9 @@ def close_out(request, date=None):
                {'type': 'EBT', 'total': 0,
                 'transactions': trans.filter(payment_type='E')}]
     for column in columns:
+        if 'order_by' in request.GET:
+            order_by = request.GET['order_by']
+            column['transactions'] = column['transactions'].order_by(order_by)
         for trans in column['transactions']:
             if not trans.fixes_target():
                 column['total'] += trans.fixed_payment_amount()
