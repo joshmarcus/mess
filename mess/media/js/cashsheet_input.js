@@ -49,6 +49,17 @@ function getAccountInfo(account_id) {
   };
   YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
 
+  sUrl = '?getcashierinfo=transactions&account=' + account_id;
+  transax_callback = {
+    success: function(o) {
+      var transax = document.getElementById('transactions');
+      transax.innerHTML = o.responseText;
+    },
+    failure: function(o) {},
+    argument: [],
+  };
+  YAHOO.util.Connect.asyncRequest('GET', sUrl, transax_callback, null);
+
   // jump cursor to regular sales field
   setTimeout("document.getElementById('id_regular_sales').focus();",20);
 }

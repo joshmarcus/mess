@@ -71,6 +71,11 @@ def cashsheet_input(request):
             return HttpResponse(str(int(account.max_allowed_to_owe())))
         elif request.GET['getcashierinfo'] == 'hours_balance':
             return HttpResponse(account.hours_balance)
+        elif request.GET['getcashierinfo'] == 'transactions':
+            context = RequestContext(request)
+            context['transactions'] = account.transaction_set.all().order_by('-timestamp')[:25]
+            template = get_template('accounting/snippets/transactions.html')
+            return HttpResponse(template.render(context))
         else: # request.GET['getcashierinfo'] == 'acct_flags':
             template_file = 'accounting/snippets/acct_flags.html'
             show_acct_link = True
