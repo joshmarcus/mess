@@ -25,7 +25,7 @@ def reminder_emails():
 
     today = datetime.date.today()
     targetDay = today + datetime.timedelta(3)
-    dancerTargetDay = today + datetime.timedelta(10)
+    dancerTargetDay = today + datetime.timedelta(9)
     normalTasks = models.Task.objects.not_dancer().filter(
         time__range=(targetDay, targetDay+datetime.timedelta(1)),
         member__isnull=False,
