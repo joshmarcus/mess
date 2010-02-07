@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Min
 
+# import scheduling models to figure what tasks a member has
+from mess.scheduling import models as s_models
+
 MEMBER_STATUS = (
     ('a', 'Active'),
     ('L', 'Leave of Absence'),
@@ -87,6 +90,19 @@ class Member(models.Model):
     def __unicode__(self):
         return self.user.get_full_name()
 
+    def skills(self):
+        return s_models.Skill.objects.filter(
+            trained_by__task__in=self.task_set.worked()).distinct()
+
+    def untrained(self):
+        return s_models.Skill.objects.exclude(
+            trained_by__task__in=self.task_set.worked()).distinct()
+
+    def qualified_tasks(self, possible=None):
+        if possible is None:
+            possible = s_models.Task.objects.unassigned_future()
+        return possible.exclude(job__skills_required__in=self.untrained())
+        
     @property
     def current_loa(self):
         loa_set = self.leaveofabsence_set.current()
@@ -600,9 +616,15 @@ class Phone(models.Model):
     def __unicode__(self):
         return self.number
 
-# this is deplicated in scheduling/models.  duplicated to avoid circular imports.
+# this is duplicated in scheduling/models.  duplicated to avoid circular imports.
 def daterange(start, end):
     while start < end:
         yield start
         start += datetime.timedelta(1)
+
+# this should be a method on Skill, but it can't be due to circular imports
+def members_with_skill(skill):
+    return Member.objects.present().filter(
+        task__in=skill.trainedbytasks()).distinct()
+
 

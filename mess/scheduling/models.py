@@ -25,15 +25,15 @@ class Skill(models.Model):
     """
     name = models.CharField(max_length=100, unique=True)
     
-    def members(self):
-        ''' members that have the skill '''
-        return m_models.Member.objects.present().filter(
-                task__in=self.trainedbytasks()).distinct()
+#   not a good idea here due to circular import problem
+#   def members(self):
+#       ''' members that have the skill '''
+#       return m_models.Member.objects.present().filter(
+#               task__in=self.trainedbytasks()).distinct()
 
     def trainedbytasks(self):
         ''' tasks this skill was trained by.  used in members fn. '''
-        return Task.objects.all().filter(
-                hours_worked__gt=0).filter(
+        return Task.objects.worked().filter(
                 job__in=self.trained_by.all())
 
     def __unicode__(self):
@@ -86,11 +86,17 @@ class TaskManager(models.Manager):
     def unassigned(self):
         return self.filter(models.Q(member=None) | models.Q(account=None))
 
+    def unassigned_future(self):
+        return self.unassigned().filter(time__gte=today)
+
     def dancer(self):
         return self.filter(job__name__istartswith='danc')
 
     def not_dancer(self):
         return self.exclude(job__name__istartswith='danc')
+
+    def worked(self):
+        return self.filter(hours_worked__gt=0)
    
 class Task(models.Model):
     """
