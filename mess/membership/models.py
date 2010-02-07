@@ -562,6 +562,16 @@ class Address(models.Model):
         else:
             return self.address1
 
+    def fullmailing(self):
+        ''' return full mailing address, including name and country if not USA '''
+        ret = '%s\n%s' % (self.member, self.address1)
+        if self.address2:
+            ret += '\n%s' % self.address2
+        ret += '\n%s, %s %s' % (self.city, self.state, self.postal_code)
+        if self.country != 'USA':
+            ret += '\n%s' % self.country
+        return ret
+
     class Meta:
         verbose_name_plural = 'Addresses'
 

@@ -86,6 +86,11 @@ def reports(request):
                 '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails\r\ndeposit'),
+
+            listrpt('Accounts','Active Addresses',
+                '',
+                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
+                '{% for y in x.members.active %}{% for z in y.addresses.all %}{% if not forloop.parentloop.first %}<br><br>{% endif %}{{ z.fullmailing|linebreaksbr }}<br>{% endfor %}{% endfor %}\Addresses'),
                 
 # broken :(
 #           listrpt('Accounts','Needing Shifts? Incomplete List',
