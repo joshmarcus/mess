@@ -541,6 +541,38 @@ def skills(request):
     template = loader.get_template('scheduling/skills.html')
     return HttpResponse(template.render(context))
 
+def skill_edit(request, skill_id=None):
+    ret_resp = HttpResponseRedirect(reverse('skills'))
+    is_errors = False
+    if skill_id:
+        skill = get_object_or_404(models.Skill, id=skill_id)
+    else:
+        skill = models.Skill()
+
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return ret_resp
+        skill_form = forms.SkillForm(request.POST, instance=skill)
+        if skill_form.is_valid():
+            skill_form.save()
+            return ret_resp
+        else:
+            is_errors = True
+
+    else:
+        skill_form = forms.SkillForm(instance=skill)
+
+    context = {
+        'skill': skill,
+        'is_errors': is_errors,
+        'skill_form': skill_form,
+        'add': skill_id==None,
+        }
+
+    return render_to_response('scheduling/skill_form.html', context,
+                                context_instance=RequestContext(request))
+
+
 # unused below
 
 #def _task_template_save(proto_form, worker_formset):
