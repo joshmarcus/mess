@@ -600,6 +600,7 @@ class Phone(models.Model):
     def __unicode__(self):
         return self.number
 
+# this is deplicated in scheduling/models.  duplicated to avoid circular imports.
 def daterange(start, end):
     while start < end:
         yield start

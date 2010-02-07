@@ -4,8 +4,6 @@ from dateutil import rrule
 from django.db import models
 from django.template import loader, Context
 from django.utils.safestring import mark_safe
-from mess.membership.models import Account, Member
-from mess.membership import models as m_models
 
 today = datetime.date.today()
 todaytime = datetime.datetime(today.year, today.month, today.day)
@@ -104,8 +102,8 @@ class Task(models.Model):
     hours = models.DecimalField(max_digits=4, decimal_places=2)
     note = models.TextField(blank=True)
 
-    member = models.ForeignKey(Member, null=True, blank=True)
-    account = models.ForeignKey(Account, null=True, blank=True)
+    member = models.ForeignKey('membership.Member', null=True, blank=True)
+    account = models.ForeignKey('membership.Account', null=True, blank=True)
 
     # hours_worked:  None = not entered   0 = did not work
     hours_worked = models.DecimalField(max_digits=4, decimal_places=2, 
@@ -351,7 +349,7 @@ def turnout(start, end=None):
     ''' #189: break down shifts based on yes/excused/unexcused, etc. '''
     if end is None:
         end = start + datetime.timedelta(1)
-    days = [calc_turnout(date) for date in m_models.daterange(start, end)]
+    days = [calc_turnout(date) for date in daterange(start, end)]
     # I hereby apologize to whoever has to read the following line of code
     totals = dict( [ (desc, sum([ x[desc] for x in days])) 
              for desc in days[0].keys() if desc != 'date' ] )
@@ -369,6 +367,12 @@ def calc_turnout(date):
             'excused': tasks.filter(excused=True, member__isnull=False).count(),
             'makeup': tasks.filter(makeup=True).count(),
             'banked': tasks.filter(banked=True).count()}
+
+# this is duplicated in membership/models.  duplicated to avoid circular imports.
+def daterange(start, end):
+    while start < end:
+        yield start
+        start += datetime.timedelta(1)
 
 # unused below
 
