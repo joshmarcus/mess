@@ -87,10 +87,10 @@ def reports(request):
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
                 '{% for y in x.members.active %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails\r\ndeposit'),
 
-            listrpt('Accounts','Active Addresses',
-                '',
-                '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
-                '{% for y in x.members.active %}{% for z in y.addresses.all %}{% if not forloop.parentloop.first %}<br><br>{% endif %}{{ z.fullmailing|linebreaksbr }}<br>{% endfor %}{% endfor %}\Addresses'),
+#           listrpt('Accounts','Active Addresses',
+#               '',
+#               '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
+#               '{% for y in x.members.active %}{% for z in y.addresses.all %}{% if not forloop.parentloop.first %}<br><br>{% endif %}{{ z.fullmailing|linebreaksbr }}<br>{% endfor %}{% endfor %}\Addresses'),
                 
 # broken :(
 #           listrpt('Accounts','Needing Shifts? Incomplete List',
@@ -134,6 +134,18 @@ def reports(request):
         ]),
 
         ('Members',[
+
+            listrpt('Members','Active Addresses',
+                'accountmember__shopper=False',
+                'accounts\r\n'+
+                '{% with x.addresses.all|first as z %}{{ z.address1 }}{% endwith %}\Street1\r\n'+ 
+                '{% with x.addresses.all|first as z %}{{ z.address2 }}{% endwith %}\Street2\r\n'+ 
+                '{% with x.addresses.all|first as z %}{{ z.city }}{% endwith %}\City\r\n'+
+                '{% with x.addresses.all|first as z %}{{ z.state }}{% endwith %}\State\r\n'+
+                '{% with x.addresses.all|first as z %}{{ z.postal_code }}{% endwith %}\ZIP\r\n'+
+                '{% with x.addresses.all|first as z %}{{ z.country }}{% endwith %}\Country\r\n'+
+                '{% ifnotequal x.addresses.count 0 %}{% ifnotequal x.addresses.count 1 %}*another address on record*{% endifnotequal %}{% endifnotequal %}\Other Addresses',
+                order_by='accounts'),
 
             listrpt('Members','with Email',
                 'emails__isnull=False', 'accounts\r\nemails\r\nBox:emails',
@@ -258,7 +270,6 @@ def listrpt(object, desc, filter, output, include='Active', order_by=''):
     return (desc, reverse('list')+'?'+urlencode(locals()))
 
 def list(request):
-    template = get_template('reporting/list.html')
     context = RequestContext(request)
     context['form'] = forms.ListFilterForm(request.GET)
     context['errors'] = []
@@ -336,10 +347,22 @@ def list(request):
         else:
             outputters.append(ListOutputter(outfield, blank_object))
 
-    context['result'] = [[y.render(x) for y in outputters] for x in objects]
-    context['totals'] = [y.total for y in outputters[1:]]
     context['outputfieldnames'] = outputters
-    return HttpResponse(template.render(context))
+    if request.GET.has_key('export'):
+        context['uri'] = request.build_absolute_uri()
+        context['result'] = [[y.render(x, export=True) 
+                              for y in outputters] for x in objects]
+        template = get_template('reporting/listexport.tsv')
+        context['totals'] = [y.total for y in outputters[1:]]
+        resp = HttpResponse(template.render(context), mimetype='application/vnd.ms-excel')
+        resp['Content-Disposition'] = 'attachment; filename=mess.tsv'
+        return resp
+    else:
+        context['result'] = [[y.render(x) 
+                              for y in outputters] for x in objects]
+        template = get_template('reporting/list.html')
+        context['totals'] = [y.total for y in outputters[1:]]
+        return HttpResponse(template.render(context))
 
 class ListOutputter:
     def __init__(self, field, blank_object, name=None):
@@ -358,26 +381,30 @@ class ListOutputter:
                 self.fieldpath = []
             self.render = self.render_by_getattr
 
-    def render_as_template(self, object):
+    def render_as_template(self, object, export=False):
         object_context = Context({'x':object})
         try:
             return self.template.render(object_context)
         except:
             return 'error: '+self.field
         
-    def render_by_getattr(self, object):
+    def render_by_getattr(self, object, export=False):
         for pathpiece in self.fieldpath:
             if not hasattr(object, pathpiece):
                 return 'error: '+self.field
             object = getattr(object, pathpiece)
         if hasattr(object, 'all'):
-            return mark_safe(u'<br>'.join([self._render_obj(relobj) 
+            if export:
+                return u'; '.join([self._render_obj(relobj, export=True)
+                                   for relobj in object.all()])
+            else:
+                return mark_safe(u'<br>'.join([self._render_obj(relobj) 
                                            for relobj in object.all()]))
         else:
-            return self._render_obj(object)
+            return self._render_obj(object, export=export)
 
-    def _render_obj(self, object):
-        if hasattr(object, 'get_absolute_url'):
+    def _render_obj(self, object, export=False):
+        if hasattr(object, 'get_absolute_url') and not export:
             # mark_safe  tells the template not to escape the <html tags>
             return mark_safe(u'<a href="%s">%s</a>' %(
                              object.get_absolute_url(), object))

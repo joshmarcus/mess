@@ -1,0 +1,9 @@
+{% autoescape off %}{% now "F j, Y, P" %}
+
+{% for fieldname in outputfieldnames %}{{ fieldname }}	{% endfor %}
+
+{% for object in result %}{% for field in object %}{{ field }}	{% endfor %}
+{% endfor %}
+Totals:	{% for total in totals %}{% if total %}{{ total }}{% endif %}	{% endfor %}
+
+{{ uri }}{% endautoescape %}
