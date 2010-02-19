@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'mess.membership',
     'mess.reporting',
     'mess.scheduling',
+    'mess.telethon',
     'mess.template_library',
 )
 
@@ -130,6 +131,7 @@ USER_PASSES_TEST_URLS = (
     (r'^/logout/$', None),
     (r'^/media/', None),
     (r'^/passwordreset/', None),
+    (r'^/fundraising/', lambda u: u.has_perm('telethon.can_fundraise')),
     (r'', lambda u: u.is_staff),
 )
 
