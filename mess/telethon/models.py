@@ -1,5 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 from mess.accounting.models import Transaction
+from mess.membership.models import Member
 
 class Call(models.Model):
     caller = models.ForeignKey(User)
