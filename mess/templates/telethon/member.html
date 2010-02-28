@@ -1,1 +1,45 @@
-Fundraising from {{ member }}
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Fundraising from {{ member }}, {{ account }}</h2>
+
+    {% if donotcall %}
+      <div class="attention">
+        <p class="action">Do not call</p>
+      </div>
+    {% endif %}
+
+    <p>
+        {% for ph in member.phones.all %}
+      {{ ph.type }}: 
+            {% if donotcall %}<span class="donotcall">{{ ph.number }}</span>
+            {% else %}{{ ph.number }}{% endif %}
+            {% if not forloop.last %}<br>{% endif %} 
+        {% endfor %}
+    </p>
+
+      <form class="standard" method="post">
+        <table>
+        {{ form }}
+      </table>
+      </form>
+
+  <h3>Loans made</h3>
+    {% for loan in member.loans %} 
+    <p>{{ loan.transaction.timestamp|date:"n/j" }}: {{ loan.transaction.purchase_amount }} 
+    {{ loan.term }}
+    </p>{% endfor %} 
+
+  <h3>Previous calls</h3>
+    {% for call in member.call_set.all %} 
+      <p>{{ timestamp|date:"n/j" }}<br>
+      {% if call.pledge_amount %}pledged {{ call.pledge_amount }}{% endif %}
+      {% if call.note %}{{ call.note }}{% endif %}
+      </p>{% endfor %} 
+
+  </div>
+</div>
+{% endblock %}
+

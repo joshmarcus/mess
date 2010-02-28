@@ -391,6 +391,8 @@ def job_edit(request, job_id=None):
     return render_to_response('scheduling/job_form.html', context,
                                 context_instance=RequestContext(request))
 
+# need to break out logic from cron_nightly, host it here, use it to 
+# sent reminder emails and display what was sent + phone numbers.
 def reminder(request, date):
     " send email reminder to all scheduled workers for this date "
     from django.core.mail import send_mail
