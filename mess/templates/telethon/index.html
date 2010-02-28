@@ -6,20 +6,26 @@
   <h2>Search for Members</h2>
   
   <form method="POST">
-  {{ form }}
-  <input type="submit" value="Search">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Search">
   </form>
 
   <table class="data">
     <tr>
       <th>Name</th>
+      <th>Accounts</th>
       <th>Phone</th>
-      <th>Calls / Pledges</th>
-      <th>Loans</th>
+      <th>Fundraising History</th>
     </tr>
    {% for member in results %}
     <tr>
-      <td><a href="{% url call member.user.username %}">{{ member }}</a></th>
+      <td><a href="{% url telethon-member member.user.username %}">{{ member }}</a></th>
+      <td>
+       {% for accountmember in member.accountmember_set.all %}
+         {{ accountmember.account }}{% if accountmember.shopper %} (proxy){% endif %}{% if not forloop.last %}; {% endif %}
+       {% endfor %}
+      </td>
       <td>
        {% for phone in member.phones.all %}
          {{ phone }}{% if not forloop.last %}<br>{% endif %}
@@ -27,12 +33,7 @@
       </td>
       <td>
        {% for call in member.call_set.all %}
-         {{ timestamp|date:"n/j" }}{% if call.pledge_amount %}: pledged {{ call.pledge_amount }}{% if not forloop.last %},{% endif %}
-       {% endfor %}
-      </td>
-      <td>
-       {% for loan in member.loans %}
-         {{ loan.transaction.timestamp|date:"n/j" }}: {{ loan.transaction.purchase_amount }} {{ loan.term_abbr }}{% if not forloop.last %}<br>{% endif %}
+         {{ timestamp|date:"n/j" }}{% if call.loan %}: {{ call.loan_term_brief }} {{ call.transaction.purchase_amount }}{% else %}{% if call.pledge_amount %}: pledged {{ call.pledge_amount }}{% endif %}{% endif %}{% if not forloop.last %},{% endif %}
        {% endfor %}
       </td>
     </tr>
