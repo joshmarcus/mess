@@ -13,13 +13,14 @@ from django.utils import simplejson
 from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
 from mess.membership import models as m_models
+from mess.core.context_processors import cashier_permission
 
 today = datetime.date.today()
 
 # cashier permission is the first if
 @login_required
 def transaction(request):
-    if not m_models.cashier_permission(request):
+    if not cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
 
@@ -58,7 +59,7 @@ def transaction(request):
 # cashier permission is the first if
 @login_required
 def cashsheet_input(request):
-    if not m_models.cashier_permission(request):
+    if not cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
 
@@ -124,7 +125,7 @@ def hours_balance(request):
 @login_required
 def close_out(request, date=None):
     '''Page to double-check payment amounts'''
-    if not m_models.cashier_permission(request):
+    if not cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
 
@@ -225,7 +226,7 @@ like maybe this 'getcashierinfo' section?
 '''
 @login_required
 def after_hours(request):
-    if not m_models.cashier_permission(request):
+    if not cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
 
@@ -276,7 +277,7 @@ def after_hours(request):
 # initial code copied from after-hours...
 @login_required
 def EBT(request):
-    if not m_models.cashier_permission(request):
+    if not cashier_permission(request):
         return HttpResponse('Sorry, you do not have cashier permission. %s' 
                              % request.META['REMOTE_ADDR'])
     context = RequestContext(request)

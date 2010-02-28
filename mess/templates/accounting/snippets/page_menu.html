@@ -1,11 +1,11 @@
 {% block page_menu %}
-{% load active %}
+{% load core_tags %}
   <ul id="local-nav">
-    <li><a href="{% url hours_balance %}"{% active_class request 'accounting/hours_balance' %}>Hours Balance</a></li>
-    <li><a href="{% url transaction %}"{% active_class request 'accounting/transaction' %}>Transaction</a></li>
-    <li><a href="{% url after_hours %}"{% active_class request 'accounting/after_hours' %}>After-hours</a></li>
-    <li><a href="{% url EBT %}"{% active_class request 'accounting/EBT' %}>EBT</a></li>
-    <li><a href="{% url cashsheet_input %}"{% active_class request 'accounting/cashsheet_input' %}>Cashsheet Input</a></li>
-    <li class="last-item"><a href="{% url close_out %}"{% active_class request 'accounting/close_out' %}>Close Out</a></li>
+    <li><a href="{% url hours_balance %}"{% if location.path|match:'/accounting/hours_balance' %} class="active"{% endif %}>Hours Balance</a></li>
+    <li><a href="{% url transaction %}"{% if location.path|match:'/accounting/transaction' %} class="active"{% endif %}>Transaction</a></li>
+    <li><a href="{% url after_hours %}"{% if location.path|match:'/accounting/after_hours' %} class="active"{% endif %}>After-hours</a></li>
+    <li><a href="{% url EBT %}"{% if location.path|match:'/accounting/EBT' %} class="active"{% endif %}>EBT</a></li>
+    <li><a href="{% url cashsheet_input %}"{% if location.path|match:'/accounting/cashsheet_input' %} class="active"{% endif %}>Cashsheet Input</a></li>
+    <li class="last-item"><a href="{% url close_out %}"{% if location.path|match:'/accounting/close_out' %} class="active"{% endif %}>Close Out</a></li>
   </ul>
 {% endblock %}

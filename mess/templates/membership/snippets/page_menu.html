@@ -1,7 +1,7 @@
 {% block page_menu %}
-{% load active %}
+{% load core_tags %}
   <ul id="local-nav">
-    <li><a href="{% url accounts %}"{% active_class request 'membership/accounts' %}>Accounts</a></li>
-    <li class="last-item"><a  href="{% url members %}"{% active_class request 'membership/members' %}>Members</a></li>
+    <li><a href="{% url accounts %}"{% if location.path|match:'/membership/accounts' %} class="active"{% endif %}>Accounts</a></li>
+    <li class="last-item"><a href="{% url members %}"{% if location.path|match:'/membership/members' %} class="active"{% endif %}>Members</a></li>
   </ul>
 {% endblock %}

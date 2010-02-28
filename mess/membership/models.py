@@ -234,22 +234,6 @@ class Member(models.Model):
     class Meta:
         ordering = ['user__username']
 
-def cashier_permission(request):
-    ''' 
-    used as a template context processor before showing 'cashier' tab 
-    bool(returnvalue['can_cashier_now']) is trusted by template
-    bool(returnvalue) is trusted by accounting/views
-    '''
-    if not request.user.is_authenticated():
-        return {}     # no permission, bool({}) = False
-    if request.user.is_staff:
-        return {'can_cashier_now':True}
-    if (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP
-        and (request.user.get_profile().is_cashier_today
-            or request.user.get_profile().is_cashier_recently)):
-        return {'can_cashier_now':True}
-    return {}     # no permission, bool({}) = False
-
 class LeaveOfAbsenceManager(models.Manager):
     def current(self):
         return self.filter(start__lte=today, end__gt=today)

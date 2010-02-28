@@ -100,7 +100,6 @@ INSTALLED_APPS = (
     'mess.reporting',
     'mess.scheduling',
     'mess.telethon',
-    'mess.template_library',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -109,7 +108,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'mess.membership.models.cashier_permission',
+    'mess.core.context_processors.cashier_permission',
+    'mess.core.context_processors.location',
 )
 
 LOGIN_URL = PROJECT_URL
