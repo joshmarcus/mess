@@ -6,7 +6,7 @@ from django.template.loader import get_template
 
 def index(request):
     context = RequestContext(request)
-    template = get_template('fundraising/index.html')
+    template = get_template('telethon/index.html')
     return HttpResponse(template.render(context))
 
 def member(request, username):
@@ -14,6 +14,6 @@ def member(request, username):
     member = user.get_profile()
     context = RequestContext(request)
     context['member'] = member
-    template = get_template('fundraising/member.html')
+    template = get_template('telethon/member.html')
     return HttpResponse(template.render(context))
 
