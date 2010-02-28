@@ -4,9 +4,11 @@ from mess.accounting.models import Transaction
 from mess.membership.models import Member
 
 LOAN_TERMS = (
-    ('a', 'Loan Term A'),
-    ('b', 'Loan Term B'),
-    ('c', 'Loan Term C'),
+    ('D', 'donation'),
+    ('F', '5 year loan with no interest'),
+    ('G', '5 year loan at 3% simple interest'),
+    ('T', '10 year loan with no interest'),
+    ('U', '10 year loan at 3% simple interest'),
 )
 
 class Call(models.Model):
@@ -18,7 +20,7 @@ class Call(models.Model):
     pledge_amount = models.DecimalField(max_digits=8, decimal_places=2,
         default=0, blank=True)
     # XXX: other pledge stuff?
-    loan_term = models.CharField(max_length=1, choices=LOAN_TERMS, default='a', 
+    loan_term = models.CharField(max_length=1, choices=LOAN_TERMS, default='D', 
         blank=True)
     loan = models.ForeignKey(Transaction, null=True, blank=True)
 
@@ -26,4 +28,3 @@ class Call(models.Model):
         permissions = (
             ('can_fundraise', 'Can fundraise'),
         )
-

@@ -1,1 +1,44 @@
-Fundraising index
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+  <h2>Search for Members</h2>
+  
+  <form method="POST">
+  {{ form }}
+  <input type="submit" value="Search">
+  </form>
+
+  <table class="data">
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Calls / Pledges</th>
+      <th>Loans</th>
+    </tr>
+   {% for member in results %}
+    <tr>
+      <td><a href="{% url call member.user.username %}">{{ member }}</a></th>
+      <td>
+       {% for phone in member.phones.all %}
+         {{ phone }}{% if not forloop.last %}<br>{% endif %}
+       {% endfor %}
+      </td>
+      <td>
+       {% for call in member.call_set.all %}
+         {{ timestamp|date:"n/j" }}{% if call.pledge_amount %}: pledged {{ call.pledge_amount }}{% if not forloop.last %},{% endif %}
+       {% endfor %}
+      </td>
+      <td>
+       {% for loan in member.loans %}
+         {{ loan.transaction.timestamp|date:"n/j" }}: {{ loan.transaction.purchase_amount }} {{ loan.term_abbr }}{% if not forloop.last %}<br>{% endif %}
+       {% endfor %}
+      </td>
+    </tr>
+   {% endfor %}
+  </table>
+
+  </div>
+</div>
+{% endblock %}
