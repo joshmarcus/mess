@@ -53,6 +53,9 @@
           {% if user.is_authenticated %}
           <li><a href="{% url forum-menu %}"{% active_class request '^forum' %}>Forum</a></li>
           {% endif %}
+          {% if perms.telethon.can_fundraise %}
+          <li><a href="{% url telethon-index %}"{% active_class request '^fundraising' %}>Fundraising</a></li>
+          {% endif %}
         </ul>
       </div>
       <div id="content-wrapper" class="clearfix">
