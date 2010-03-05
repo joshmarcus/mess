@@ -4,13 +4,10 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
   <h2>Search for Members</h2>
-  
-  <form method="POST">
-    {% csrf_token %}
+  <form method="GET">
     {{ form }}
     <input type="submit" value="Search">
   </form>
-
   <table class="data">
     <tr>
       <th>Name</th>

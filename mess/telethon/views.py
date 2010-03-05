@@ -7,19 +7,19 @@ from mess.telethon import forms
 from mess.membership import models as m_models
 
 def index(request):
-    if request.method == "POST":
-        form = forms.SearchForm(request.POST)
-        if form.is_valid():
-            if form.cleaned_data['member']:
-                results = [form.cleaned_data['member']]
+    #if request.GET.get(''):
+    form = forms.SearchForm(request.GET)
+    if form.is_valid():
+        if form.cleaned_data['member']:
+            results = [form.cleaned_data['member']]
+        else:
+            results = m_models.Member.objects.all()
+            if form.cleaned_data['criteria'] == 'pledges':
+                results = results.filter(call__pledge_amount__isnull=False).order_by('accounts')
+            elif form.cleaned_data['criteria'] == 'loans / donations':
+                results = results.filter(call__loan__isnull=False).order_by('accounts')
             else:
-                results = m_models.Member.objects.all()
-                if form.cleaned_data['criteria'] == 'pledges':
-                    results = results.filter(call__pledge_amount__isnull=False).order_by('accounts')
-                elif form.cleaned_data['criteria'] == 'loans / donations':
-                    results = results.filter(call__loan__isnull=False).order_by('accounts')
-                else:
-                    results = m_models.Member.objects.active().order_by('accounts')
+                results = m_models.Member.objects.active().order_by('accounts')
     else:
         results = m_models.Member.objects.active().order_by('accounts')
         form = forms.SearchForm()
