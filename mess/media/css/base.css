@@ -300,11 +300,12 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 	ul#global-nav {
 		width:100%;
 		position:relative;
-		top:59px;
+		top:20px;
 		height:25px;
 		font-size:11px;
 		padding:11px 0 0 0;
 		margin-left:15px;
+    clear:both;
 		}
 		ul#global-nav li {
 			display:block;
