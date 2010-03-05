@@ -131,7 +131,8 @@ USER_PASSES_TEST_URLS = (
     (r'^/logout/$', None),
     (r'^/media/', None),
     (r'^/passwordreset/', None),
-    (r'^/fundraising/', lambda u: u.has_perm('telethon.can_fundraise')),
+    (r'^/fundraising/', lambda u: u.has_perm('telethon.can_fundraise') or 
+        u.is_staff),
     (r'', lambda u: u.is_staff),
 )
 
