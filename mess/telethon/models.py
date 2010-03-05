@@ -11,13 +11,13 @@ LOAN_TERMS = (
     ('U', '10 year loan at 3% simple interest'),
 )
 
-LOAN_TERMS_BRIEF = (
-    ('D', 'donation'),
-    ('F', '5y loan'),
-    ('G', '5y3% loan'),
-    ('T', '10y loan'),
-    ('U', '10y3% loan'),
-)
+LOAN_TERMS_BRIEF = {
+    'D': 'donation',
+    'F': '5y loan',
+    'G': '5y3% loan',
+    'T': '10y loan',
+    'U': '10y3% loan',
+}
 
 class Call(models.Model):
     caller = models.ForeignKey(User)
@@ -26,15 +26,15 @@ class Call(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     do_not_call = models.BooleanField()
     pledge_amount = models.DecimalField(max_digits=8, decimal_places=2,
-        default=0, blank=True)
-    # XXX: other pledge stuff?
-    loan_term = models.CharField(max_length=1, choices=LOAN_TERMS, default='D', 
         blank=True)
+    # XXX: other pledge stuff?
+    loan_term = models.CharField(max_length=1, choices=LOAN_TERMS, blank=True, 
+        help_text='By selecting a donation or loan term, the pledge amount will be immediately deducted from the member\'s Mariposa account.')
     loan = models.ForeignKey(Transaction, null=True, blank=True)
 
     def loan_term_brief(self):
         if self.loan_term:
-            return LOAN_TERM_BRIEF[self.loan_term]
+            return LOAN_TERMS_BRIEF[self.loan_term]
 
     class Meta:
         permissions = (

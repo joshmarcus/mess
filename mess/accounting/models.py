@@ -15,6 +15,7 @@ PURCHASE_CHOICES = (
     ('A','After-Hours Purchase'),
     ('U','Dues'),
     ('O','Member Equity'),
+    ('G','Gift or Loan'),
     ('S','Misc'),   # Misc is used for transfers etc, positive or negative
 #   ('T','Trade'),    what is Trade?
 )

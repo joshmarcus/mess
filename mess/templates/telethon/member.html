@@ -20,24 +20,38 @@
         {% endfor %}
     </p>
 
-      <form class="standard" method="post">
-        <table>
-        {{ form }}
-      </table>
-      </form>
-
-  <h3>Loans made</h3>
-    {% for loan in member.loans %} 
-    <p>{{ loan.transaction.timestamp|date:"n/j" }}: {{ loan.transaction.purchase_amount }} 
-    {{ loan.term }}
-    </p>{% endfor %} 
-
-  <h3>Previous calls</h3>
+  <h3>Fundraising History</h3>
+  <table class="data">
+    <tr>
+      <th>Date</th>
+      <th>Caller</th>
+      <th>Notes</th>
+      <th>Pledge</th>
+      <th>Loan</th>
+    </tr>
     {% for call in member.call_set.all %} 
-      <p>{{ timestamp|date:"n/j" }}<br>
-      {% if call.pledge_amount %}pledged {{ call.pledge_amount }}{% endif %}
-      {% if call.note %}{{ call.note }}{% endif %}
-      </p>{% endfor %} 
+    <tr>
+      <td>{{ call.timestamp|date:"n/j" }}</td>
+      <td>{{ call.caller }}</td>
+      <td>{{ call.note|linebreaksbr }}</td>
+      <td>${{ call.pledge_amount }}</td>
+      <td>
+        {% if call.loan_term %}
+        {{ call.loan_term_brief }} ${{ call.loan.purchase_amount }}
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %} 
+  </table>
+
+  <h3>New Fundraising Event</h3>
+    <form class="standard" method="post">
+      <table>
+        {{ form }}
+        {% csrf_token %}
+      </table>
+      <input type="submit" value="Save">
+    </form>
 
   </div>
 </div>

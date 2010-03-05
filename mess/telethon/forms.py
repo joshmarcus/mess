@@ -18,4 +18,8 @@ class SearchForm(forms.Form):
         required=False, help_text='* = include inactive')
     criteria = forms.ChoiceField(choices=CRITERIA_CHOICES)
 
+class CallForm(forms.ModelForm):
+    class Meta:
+        model = models.Call
+        exclude = ('callee','caller','loan')
 
