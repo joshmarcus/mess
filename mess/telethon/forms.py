@@ -8,7 +8,7 @@ from mess.membership import models as m_models
 CRITERIA_CHOICES = (
     ('active', 'all active members'),
     ('pledges', 'pledges'),
-    ('loans', 'loans')
+    ('loans', 'loans / donations')
 )
 
 class SearchForm(forms.Form):

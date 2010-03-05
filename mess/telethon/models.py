@@ -29,7 +29,7 @@ class Call(models.Model):
         blank=True)
     # XXX: other pledge stuff?
     loan_term = models.CharField(max_length=1, choices=LOAN_TERMS, blank=True, 
-        help_text='By selecting a donation or loan term, the pledge amount will be immediately deducted from the member\'s Mariposa account.')
+        help_text='By selecting a donation or loan term, the pledge amount will be immediately deducted from the member\'s Mariposa account.  For a pledge to be paid in the future, just leave this blank.')
     loan = models.ForeignKey(Transaction, null=True, blank=True)
 
     def loan_term_brief(self):

@@ -13,7 +13,9 @@ def index(request):
     form = forms.SearchForm(request.GET)
     if form.is_valid():
         if form.cleaned_data['member']:
-            results = [form.cleaned_data['member']]
+            return HttpResponseRedirect(reverse('telethon-member',
+                    args=[form.cleaned_data['member']]))
+            #results = [form.cleaned_data['member']]
         else:
             results = m_models.Member.objects.all()
             if form.cleaned_data['criteria'] == 'pledges':
@@ -25,6 +27,12 @@ def index(request):
     else:
         results = m_models.Member.objects.active().order_by('accounts')
         form = forms.SearchForm()
+    results = [x for x in results.distinct()]
+    for result in results:
+        result.do_not_call = False
+        for call in result.call_set.all():
+            if call.do_not_call:
+                result.do_not_call = True
     return render_to_response('telethon/index.html', locals(),
             context_instance=RequestContext(request))
 
@@ -48,10 +56,15 @@ def member(request, username):
             return HttpResponseRedirect(reverse('telethon-member',args=[username]))
     else:
         form = forms.CallForm()
+    do_not_call = False
+    for call in member.call_set.all():
+        if call.do_not_call:
+            do_not_call = True
     context = RequestContext(request)
     context['member'] = member
     context['form'] = form
     context['account'] = account
+    context['do_not_call'] = do_not_call
     template = get_template('telethon/member.html')
     return HttpResponse(template.render(context))
 

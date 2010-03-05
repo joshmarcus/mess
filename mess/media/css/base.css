@@ -703,6 +703,8 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .task-hiding-spot td { padding:0px; line-height:0px; }
 .task-hiding-spot td div { line-height:10pt; }
 
+.donotcall {text-decoration:line-through; color:red;}
+
 .workhist-today { border:1px solid black; }
 .workhist td { text-align:right; padding-left:5pt; }
 div.workhist { margin-bottom:2em; }

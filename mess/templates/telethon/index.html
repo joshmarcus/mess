@@ -24,13 +24,15 @@
        {% endfor %}
       </td>
       <td>
-       {% for phone in member.phones.all %}
-         {{ phone }}{% if not forloop.last %}<br>{% endif %}
-       {% endfor %}
+       <span {% if member.do_not_call %}class="donotcall"{% endif %}>
+         {% for phone in member.phones.all %}
+           {{ phone }}{% if not forloop.last %}<br>{% endif %}
+         {% endfor %}
+       </span>
       </td>
       <td>
        {% for call in member.call_set.all %}
-         {{ timestamp|date:"n/j" }}{% if call.loan %}: {{ call.loan_term_brief }} {{ call.transaction.purchase_amount }}{% else %}{% if call.pledge_amount %}: pledged {{ call.pledge_amount }}{% endif %}{% endif %}{% if not forloop.last %},{% endif %}
+         {{ call.timestamp|date:"n/j" }}{% if call.loan %}: {{ call.loan_term_brief }} ${{ call.loan.purchase_amount }}{% else %}{% if call.pledge_amount %}: pledged ${{ call.pledge_amount }}{% endif %}{% endif %}{% if not forloop.last %},{% endif %}
        {% endfor %}
       </td>
     </tr>
