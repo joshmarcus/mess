@@ -53,7 +53,7 @@
           {% if user.is_authenticated %}
           <li><a href="{% url forum-menu %}"{% if location.path|match:'/forum' %} class="active"{% endif %}>Forum</a></li>
           {% endif %}
-          {% if perms.telethon.can_fundraise %}
+          {% if perms.telethon.can_fundraise or user.is_staff %}
           <li><a href="{% url telethon-index %}"{% if location.path|match:'/fundraising' %} class="active"{% endif %}>Fundraising</a></li>
           {% endif %}
         </ul>
