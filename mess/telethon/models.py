@@ -26,7 +26,7 @@ class Call(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     do_not_call = models.BooleanField()
     pledge_amount = models.DecimalField(max_digits=8, decimal_places=2,
-        blank=True)
+        blank=True, null=True)
     # XXX: other pledge stuff?
     loan_term = models.CharField(max_length=1, choices=LOAN_TERMS, blank=True, 
         help_text='By selecting a donation or loan term, the pledge amount will be immediately deducted from the member\'s Mariposa account.  For a pledge to be paid in the future, just leave this blank.')

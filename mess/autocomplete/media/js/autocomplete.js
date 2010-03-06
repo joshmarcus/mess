@@ -82,6 +82,14 @@ function yui_autocomplete(name, ac_url, force_selection) {
             });
         }
 
+        // Set up jump (picking member submits form, ie for searching):
+        if (typeof(window['SUBMITONSELECT']) != 'undefined' &&
+                SUBMITONSELECT ) {
+            autocomplete.itemSelectEvent.subscribe(function (type, args) {
+                SUBMITONSELECTFORM.submit();
+            });
+        }
+
     });
 }
 

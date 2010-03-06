@@ -195,7 +195,7 @@ class Member(models.Model):
     def get_primary_account(self):
         try:
             primary = self.accounts.filter(
-                    accountmember__primary_account=True)[0]
+                    accountmember__shopper=False)[0]
         except IndexError:
             try:
                 primary = self.accounts.all()[0]

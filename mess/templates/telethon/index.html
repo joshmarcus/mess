@@ -4,10 +4,7 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
   <h2>Search for Members</h2>
-  <form method="GET">
-    {{ form }}
-    <input type="submit" value="Search">
-  </form>
+  {% include "telethon/snippets/search.html" %}
   <table class="data">
     <tr>
       <th>Name</th>
@@ -32,7 +29,7 @@
       </td>
       <td>
        {% for call in member.call_set.all %}
-         {{ call.timestamp|date:"n/j" }}{% if call.loan %}: {{ call.loan_term_brief }} ${{ call.loan.purchase_amount }}{% else %}{% if call.pledge_amount %}: pledged ${{ call.pledge_amount }}{% endif %}{% endif %}{% if not forloop.last %},{% endif %}
+         {{ call.timestamp|date:"n/j" }}: {% if call.loan %}{{ call.loan_term_brief }} ${{ call.loan.purchase_amount }}{% else %}{% if call.pledge_amount %}pledged ${{ call.pledge_amount }}{% endif %}{% endif %} - {{ call.note }} ({{ call.caller }}){% if not forloop.last %}<br>{% endif %}
        {% endfor %}
       </td>
     </tr>

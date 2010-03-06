@@ -2,6 +2,7 @@
 
 {% block content %}
 <div id="left-column">
+  {% include "telethon/snippets/search.html" %}
   <div id="primary-content-wrapper">
     <h2>Fundraising from {{ member }}</h2>
 
@@ -21,7 +22,7 @@
   <table class="data">
     <tr>
       <th>Date</th>
-      <th>Caller</th>
+      <th>Entered By</th>
       <th>Notes</th>
       <th>Pledge</th>
       <th>Loan</th>
@@ -30,8 +31,10 @@
     <tr>
       <td>{{ call.timestamp|date:"n/j" }}</td>
       <td>{{ call.caller }}</td>
-      <td>{{ call.note|linebreaksbr }}</td>
-      <td>${{ call.pledge_amount }}</td>
+      <td>{{ call.note|linebreaksbr }}
+        {% if call.do_not_call %}<b>[do not call]</b>{% endif %}
+      </td>
+      <td>{% if call.pledge_amount %}${{ call.pledge_amount }}{% endif %}</td>
       <td>
         {% if call.loan_term %}
         {{ call.loan_term_brief }} ${{ call.loan.purchase_amount }}
@@ -44,7 +47,7 @@
   <h3>New Fundraising Event</h3>
     <form class="standard" method="post">
       <table>
-        {{ form }}
+        {{ callform }}
         {% csrf_token %}
       </table>
       <input type="submit" value="Save">

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -9,25 +10,32 @@ from mess.membership import models as m_models
 from mess.accounting import models as a_models
 
 def index(request):
-    #if request.GET.get(''):
-    form = forms.SearchForm(request.GET)
-    if form.is_valid():
-        if form.cleaned_data['member']:
-            return HttpResponseRedirect(reverse('telethon-member',
-                    args=[form.cleaned_data['member']]))
-            #results = [form.cleaned_data['member']]
-        else:
-            results = m_models.Member.objects.all()
-            if form.cleaned_data['criteria'] == 'pledges':
-                results = results.filter(call__pledge_amount__isnull=False).order_by('accounts')
-            elif form.cleaned_data['criteria'] == 'loans / donations':
-                results = results.filter(call__loan__isnull=False).order_by('accounts')
-            else:
-                results = m_models.Member.objects.active().order_by('accounts')
+    # jump to member
+    if request.GET.has_key('member'):
+        member = get_object_or_404(m_models.Member, id=request.GET['member'])
+        return HttpResponseRedirect(reverse('telethon-member', 
+                args=[member.user.username]))
+    # or search
+    form = forms.JumpToMemberForm()
+    if request.GET.has_key('search'):
+        searchform = forms.SearchForm(request.GET)
+        if searchform.is_valid():
+            results = m_models.Member.objects.active()
+            if searchform.cleaned_data['search'] != '':
+                q = searchform.cleaned_data['search']
+                results = results.filter(Q(user__first_name__icontains=q)
+                                       | Q(user__last_name__icontains=q)
+                                       | Q(accounts__name__icontains=q)
+                                       | Q(call__note__icontains=q)
+                                       | Q(call__caller__username=q))
+            if searchform.cleaned_data['criteria'] == 'pledges':
+                results = results.filter(call__pledge_amount__isnull=False)
+            elif searchform.cleaned_data['criteria'] == 'loans / donations':
+                results = results.filter(call__loan__isnull=False)
     else:
-        results = m_models.Member.objects.active().order_by('accounts')
-        form = forms.SearchForm()
-    results = [x for x in results.distinct()]
+        results = m_models.Member.objects.active()
+        searchform = forms.SearchForm()
+    results = [x for x in results.order_by('accounts').distinct()]
     for result in results:
         result.do_not_call = False
         for call in result.call_set.all():
@@ -41,9 +49,9 @@ def member(request, username):
     member = user.get_profile()
     account = member.get_primary_account()
     if request.method == 'POST':
-        form = forms.CallForm(request.POST)
-        if form.is_valid():
-            newcall = form.save(commit=False)
+        callform = forms.CallForm(request.POST)
+        if callform.is_valid():
+            newcall = callform.save(commit=False)
             newcall.callee = member
             newcall.caller = request.user
             if newcall.loan_term:
@@ -55,14 +63,17 @@ def member(request, username):
             newcall.save()
             return HttpResponseRedirect(reverse('telethon-member',args=[username]))
     else:
-        form = forms.CallForm()
+        callform = forms.CallForm()
     do_not_call = False
     for call in member.call_set.all():
         if call.do_not_call:
             do_not_call = True
     context = RequestContext(request)
+    # sorry, this has to be called form for the autocomplete js to be included
+    context['form'] = forms.JumpToMemberForm()  
+    context['searchform'] = forms.SearchForm()
     context['member'] = member
-    context['form'] = form
+    context['callform'] = callform
     context['account'] = account
     context['do_not_call'] = do_not_call
     template = get_template('telethon/member.html')

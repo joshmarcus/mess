@@ -11,11 +11,14 @@ CRITERIA_CHOICES = (
     ('loans', 'loans / donations')
 )
 
-class SearchForm(forms.Form):
+class JumpToMemberForm(forms.Form):
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
-        widget=AutoCompleteWidget('member_spiffy',
-            view_name='membership-autocomplete', canroundtrip=True),
-        required=False, help_text='* = include inactive')
+        widget=AutoCompleteWidget('member_spiffy', attrs={'size':8}
+            ,view_name='membership-autocomplete', canroundtrip=True),
+        required=False, label='')
+    
+class SearchForm(forms.Form):
+    search = forms.CharField(required=False)
     criteria = forms.ChoiceField(choices=CRITERIA_CHOICES)
 
 class CallForm(forms.ModelForm):
