@@ -9,13 +9,20 @@
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-reminder next_date|date:"Y-m-d" %}" id="next-day">&rarr;</a>
       </h2>
+      <p>
+        Workers receive an email reminder 3 days before their scheduled shift.<br />
+        Dancers receive an email reminder 9 days before the last day of the week in which they work.<br /> 
+        MESS sends these emails automatically at 8am.  The emails sent on a given day are summarized here.<br />
+        However, any member without an email address in MESS does not receive 
+        an email reminder.
+      </p>
 
+{% comment %} 
+DISABLE SENDING EMAILS FROM THIS INTERFACE NOW, SINCE IT'S AUTOMATED
     {% ifequal request.method "POST" %}
       <h3> Reminders were sent. </h3>
     {% endifequal %}
 
-{% comment %} 
-DISABLE SENDING EMAILS FROM THIS INTERFACE NOW, SINCE IT'S AUTOMATED
     {% ifnotequal request.method "POST" %}
       <form method="post">
         {% csrf_token %}
@@ -25,24 +32,40 @@ DISABLE SENDING EMAILS FROM THIS INTERFACE NOW, SINCE IT'S AUTOMATED
 {% endcomment %}
 
     {% if noemail %}
-      <hr>
       <h2>Workers Without Email</h2>
-      <tt>
+      <table class="data">
+        <tr> 
+          <th>Worker</th>
+          <th>Phone</th>
+          <th>Job</th>
+        </tr>
         {% for task in noemail %}
+        <tr class="{% cycle "odd" "even" %}"><td>
           <a href="{{ task.member.get_absolute_url }}">{{ task.member }}</a>
-          (<a href="{{ task.account.get_absolute_url }}">{{ task.account }}</a>), 
-          {{ task.member.phones.all|join:", " }},
-          {{ task.job }}, {{ task.time|date:"g:ia" }}<br />
+          (<a href="{{ task.account.get_absolute_url }}">{{ task.account }}</a>)
+          </td><td> 
+          {{ task.member.phones.all|join:", " }}</td>
+        <td>
+          {{ task.job }}, {{ task.time|date:"l F jS, g:ia" }}</td></tr>
         {% endfor %}
-      </tt>
+      </table>
     {% endif %}
 
-    <hr>
-    <h2>Email Messages</h2>
-    {% for message in messages %}
-      <hr>
-      <pre>{{ message|escape }}</pre>
-    {% endfor %}
+    <h2>Workers Emailed</h2>
+    <table class="data">
+      <tr>
+        <th>Worker</th>
+        <th>Job</th>
+      </tr>
+        {% for task in tasks %}
+        <tr class="{% cycle "odd" "even" %}"><td>
+          <a href="{{ task.member.get_absolute_url }}">{{ task.member }}</a>
+          (<a href="{{ task.account.get_absolute_url }}">{{ task.account }}</a>)
+          </td><td> 
+          {{ task.job }}, {{ task.time|date:"l F jS, g:ia" }}</td></tr>
+      {% endfor %}
+    </table>
+
   </div>
 </div>
 {% endblock %}

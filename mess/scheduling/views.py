@@ -391,10 +391,41 @@ def job_edit(request, job_id=None):
     return render_to_response('scheduling/job_form.html', context,
                                 context_instance=RequestContext(request))
 
-# need to break out logic from cron_nightly, host it here, use it to 
-# sent reminder emails and display what was sent + phone numbers.
+def generate_reminder(day):
+    '''generates tasks that receive reminder on a given day.
+    used by the reminder email cron as well as the function below.'''
+
+    TD_NORMAL = 3
+    TD_DANCER = 9
+    targetDay = day + datetime.timedelta(TD_NORMAL)
+    dancerTargetDay = day + datetime.timedelta(TD_DANCER)
+
+    normalTasks = models.Task.objects.not_dancer().filter(
+        time__range=(targetDay, targetDay+datetime.timedelta(1)),
+        member__isnull=False)
+    dancerTasks = models.Task.objects.dancer().filter(
+        time__range=(dancerTargetDay, dancerTargetDay+datetime.timedelta(1)),
+        member__isnull=False)
+    return (normalTasks | dancerTasks)
+
 def reminder(request, date):
-    " send email reminder to all scheduled workers for this date "
+    '''
+    displays the reminder emails sent on the given date.
+    '''
+    date = datetime.date(*time.strptime(date, "%Y-%m-%d")[:3])
+    previous_date = date - datetime.timedelta(1)
+    next_date = date + datetime.timedelta(1)
+
+    tasks = generate_reminder(date)
+    noemail = tasks.filter(member__emails__isnull=True)
+    tasks = tasks.filter(member__emails__isnull=False).distinct()
+
+    return render_to_response('scheduling/reminder.html', locals(),
+                                context_instance=RequestContext(request))
+
+    '''
+    #code below is from previous version and should be deleted after testing.
+
     from django.core.mail import send_mail
     date = datetime.date(*time.strptime(date, "%Y-%m-%d")[:3])
     previous_date = date - datetime.timedelta(1)
@@ -417,6 +448,7 @@ def reminder(request, date):
             send_mail(subject, message, None, [to])
     return render_to_response('scheduling/reminder.html', locals(),
                                 context_instance=RequestContext(request))
+    '''
 
 @login_required
 def switch(request):

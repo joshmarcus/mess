@@ -11,6 +11,7 @@ setup_environ(settings)
 # these imports raise errors if placed before setup_environ(settings)
 import datetime
 from mess.scheduling import models
+from mess.scheduling.views import generate_reminder
 from django.template import loader, Context
 from django.core.mail import send_mail
 
@@ -23,23 +24,11 @@ def reminder_emails():
     print "sending email reminders on %s" % datetime.date.today()
     print "***********************************"
 
-    TD_NORMAL = 3
-    TD_DANCER = 9
-
-    today = datetime.date.today()
-    targetDay = today + datetime.timedelta(TD_NORMAL)
-    dancerTargetDay = today + datetime.timedelta(TD_DANCER)
-    normalTasks = models.Task.objects.not_dancer().filter(
-        time__range=(targetDay, targetDay+datetime.timedelta(1)),
-        member__isnull=False,
-        ).filter(member__emails__isnull=False).distinct()
-    dancerTasks = models.Task.objects.dancer().filter(
-        time__range=(dancerTargetDay, dancerTargetDay+datetime.timedelta(1)),
-        member__isnull=False,
-        ).filter(member__emails__isnull=False).distinct()
+    reminder_tasks = generate_reminder(datetime.date.today()).filter(
+            member__emails__isnull=False).distinct()
 
     message_template = loader.get_template('scheduling/reminder_mail.html')
-    for task in (normalTasks | dancerTasks):
+    for task in (reminder_tasks):
         message = message_template.render(Context({'task':task}))
         # now have to split to: and subject: off of those lines to send them to mail
         print message #piped to /var/log/mess.log
