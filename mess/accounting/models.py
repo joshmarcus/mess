@@ -51,14 +51,14 @@ class Transaction(models.Model):
     member = models.ForeignKey(Member, blank=True, null=True)
     purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,
         blank=True, default='P')
-    purchase_amount = models.DecimalField(max_digits=5, decimal_places=2, 
+    purchase_amount = models.DecimalField(max_digits=8, decimal_places=2, 
         default=0, blank=True)
     payment_type = models.CharField(max_length=1, choices=PAYMENT_CHOICES,
         blank=True)
-    payment_amount = models.DecimalField(max_digits=5, decimal_places=2, 
+    payment_amount = models.DecimalField(max_digits=8, decimal_places=2, 
         default=0, blank=True)
     note = models.CharField(max_length=256, blank=True)
-    account_balance = models.DecimalField(max_digits=5, decimal_places=2)
+    account_balance = models.DecimalField(max_digits=8, decimal_places=2)
     entered_by = models.ForeignKey(User, blank=True, null=True)
     # reference is for check numbers, etc.  will uncomment when necessary
     #reference = models.PositiveIntegerField(blank=True, null=True)
