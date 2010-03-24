@@ -10,7 +10,7 @@
   <div id="double-column" >
     {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <form method="post" onsubmit="return confirm_if_weird(this);">
+      <form method="post" onsubmit="return confirm_if_weird(this{% if user.is_staff %}, true{% endif %});">
         {% csrf_token %}
         <table class="data cashsheet">
           <tr>

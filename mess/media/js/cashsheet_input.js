@@ -94,15 +94,20 @@ function setup_autocalc() {
 }
 
 // if form is basically ok, return true, else return confirm.
-function confirm_if_weird(cashform) {
+function confirm_if_weird(cashform, isStaff) {
   var purchases = document.getElementById('id_misc').value ||
                   document.getElementById('id_deposit').value ||
                   document.getElementById('id_bulk_orders').value ||
-                  document.getElementById('id_regular_sales').value
+                  document.getElementById('id_regular_sales').value;
   var payments = document.getElementById('id_credit_debit').value ||
-                 document.getElementById('id_check_mo').value
-  if (payments && (! purchases)) {
-    return confirm('Are you sure it\'s right?\nYou\'re saying they paid without\nbuying anything.');
+                 document.getElementById('id_check_mo').value;
+  if (payments && (!purchases)) {
+    return confirm("Account paid without buying anything?");
+  }
+  var memberEquity = document.getElementById('id_deposit').value;
+  if ((!isStaff) && (parseInt(memberEquity) < 0)) {
+    alert("Only staff can decrease member equity.");
+    return false;
   }
   return true;
 }

@@ -140,11 +140,11 @@ class CashsheetForm(forms.Form):
 
     def clean(self):
         ''' Weird transactions need notes '''
-        note = self.cleaned_data['note']
+        note = self.cleaned_data.get('note')
         for value in self.cleaned_data.values():
             if type(value) is Decimal and value < 0 and not note:
                 raise forms.ValidationError('note required for negative entry')
-        if self.cleaned_data['misc'] and not note:
+        if self.cleaned_data.get('misc') and not note:
             raise forms.ValidationError('note required for misc transaction')
         return self.cleaned_data
 
