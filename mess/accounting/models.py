@@ -45,24 +45,6 @@ class HoursTransaction(models.Model):
         self.account.save()
         super(HoursTransaction, self).save(force_insert, force_update)
 
-class EBTBulkOrderManager(models.Manager):
-    def unpaid(self):
-        return self.filter(paid_by_transaction__isnull=True)
-
-class EBTBulkOrder(models.Model):
-    order_date = models.DateTimeField(auto_now_add=True)
-    account = models.ForeignKey(Account)
-    amount = models.DecimalField(max_digits=8, decimal_places=2,
-        default=0, blank=True)
-    paid_by_transaction = models.ForeignKey(Transaction, null=True)
-    note = models.CharField(max_length=256, blank=True)
-
-    objects = EBTBulkOrderManager()
-
-    def __unicode__(self):
-        return '%s EBT bulk ordered %s on %s' % (account, amount, order_date)
-
-
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True) #never have to deal w/ this in a form.
     account = models.ForeignKey(Account)
@@ -150,6 +132,25 @@ class Transaction(models.Model):
     class Meta:
         ordering = ['timestamp']
         
+
+class EBTBulkOrderManager(models.Manager):
+    def unpaid(self):
+        return self.filter(paid_by_transaction__isnull=True)
+
+class EBTBulkOrder(models.Model):
+    order_date = models.DateTimeField(auto_now_add=True)
+    account = models.ForeignKey(Account)
+    amount = models.DecimalField(max_digits=8, decimal_places=2,
+        default=0, blank=True)
+    paid_by_transaction = models.ForeignKey(Transaction, null=True)
+    note = models.CharField(max_length=256, blank=True)
+
+    objects = EBTBulkOrderManager()
+
+    def __unicode__(self):
+        return '%s EBT bulk ordered %s on %s' % (account, amount, order_date)
+
+
 
 class StoreDay(models.Model):
     # timepoints when the store is 'opened' for the next day's business.
