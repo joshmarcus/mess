@@ -5,7 +5,7 @@
     <li><a href="{% if date %}{% url scheduling-schedule date|date:"Y-m-d" %}{% else %}{% url scheduling-schedule-today %}{% endif %}"{% if location.path|match:'/scheduling/schedule' %} class="active"{% endif %}>Schedule</a></li>
     {# <li><a href="{% url scheduling-assign %}">Assign</a></li> #}
     <li><a href="{% if date %}{% url scheduling-timecard date|date:"Y-m-d" %}{% else %}{% url scheduling-timecard-today %}{% endif %}"{% if location.path|match:'/scheduling/timecard' %} class="active"{% endif %}>Timecard</a></li>
-    {% if date %}<li><a href="{% url scheduling-reminder date|date:"Y-m-d" %}"{% if location.path|match:'/scheduling/reminder' %} class="active"{% endif %}>Reminder Email</a></li>{% endif %}
+    <li><a href="{% if date %}{% url scheduling-reminder date|date:"Y-m-d" %}{% else %}{% url scheduling-reminder-today %}{% endif %}"{% if location.path|match:'/scheduling/reminder' %} class="active"{% endif %}>Reminder Email</a></li>
     <li><a href="{% url scheduling-jobs %}"{% if location.path|match:'/scheduling/jobs' %} class="active"{% endif %}>Jobs</a></li>
     {% endif %}
     <li><a href="{% url scheduling-rotation %}"{% if location.path|match:'/scheduling/rotation' %} class="active"{% endif %}>Wall Calendar</a></li>

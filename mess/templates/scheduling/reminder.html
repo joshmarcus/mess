@@ -2,8 +2,8 @@
 
 {% block content %}
 <div id="double-column">
-  <div id="primary-content-wrapper">
-    {% include "scheduling/snippets/page_menu.html" %}
+  {% include "scheduling/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
       <h2>
         <a href="{% url scheduling-reminder previous_date|date:"Y-m-d" %}" id="previous-day">&larr;</a> 
         {{ date|date:"l, F jS, Y" }} 

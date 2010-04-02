@@ -408,11 +408,15 @@ def generate_reminder(day):
         member__isnull=False)
     return (normalTasks | dancerTasks)
 
-def reminder(request, date):
+def reminder(request, date=None):
     '''
     displays the reminder emails sent on the given date.
     '''
-    date = datetime.date(*time.strptime(date, "%Y-%m-%d")[:3])
+    
+    if date:
+        date = datetime.date(*time.strptime(date, "%Y-%m-%d")[:3])
+    else:
+        date = datetime.date.today()
     previous_date = date - datetime.timedelta(1)
     next_date = date + datetime.timedelta(1)
 
@@ -422,33 +426,6 @@ def reminder(request, date):
 
     return render_to_response('scheduling/reminder.html', locals(),
                                 context_instance=RequestContext(request))
-
-    '''
-    #code below is from previous version and should be deleted after testing.
-
-    from django.core.mail import send_mail
-    date = datetime.date(*time.strptime(date, "%Y-%m-%d")[:3])
-    previous_date = date - datetime.timedelta(1)
-    next_date = date + datetime.timedelta(1)
-    tasks = models.Task.objects.filter(
-            time__range=(date, date+datetime.timedelta(1)),
-            member__isnull=False)
-    noemail = tasks.filter(member__emails__isnull=True)
-    tasks = tasks.filter(member__emails__isnull=False).distinct()
-    message_template = loader.get_template('scheduling/reminder_mail.html')
-    messages = []
-    for task in tasks:
-        message = message_template.render(Context({'task':task}))
-        messages.append(unicode(message))
-        if request.method == 'POST':
-            # now have to split to: and subject: off of those lines to send them to mail
-            (to, subject, message) = message.split('\n', 2)
-            to = to.split(' ', 1)[1]
-            subject = subject.split(' ', 1)[1]
-            send_mail(subject, message, None, [to])
-    return render_to_response('scheduling/reminder.html', locals(),
-                                context_instance=RequestContext(request))
-    '''
 
 @login_required
 def switch(request):
