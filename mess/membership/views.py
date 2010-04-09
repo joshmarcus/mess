@@ -11,7 +11,9 @@ from django.template import RequestContext
 from django.template.loader import get_template
 
 #from mess.accounting import models as a_models
+from mess.utils.logging import log
 from mess.membership import forms, models
+import copy
 import datetime
 
 # number of members or accounts to show per page in respective lists
@@ -128,7 +130,7 @@ def member_form(request, username=None):
             member.save()
             for formset in (related_account_formset, LOA_formset, 
                     address_formset, email_formset, phone_formset):
-                _setattr_formset_save(formset, 'member', member)
+                _setattr_formset_save(request, formset, 'member', member)
             # FIXME this is bad if member has more than one account
             try:
                 redirect = member.accounts.all()[0].get_absolute_url()
@@ -239,6 +241,7 @@ def account_form(request, id=None):
     if id:
         account = get_object_or_404(models.Account, id=id)
         context['edit'] = True
+        old_values = copy.deepcopy(account.__dict__)
     else:
         account = models.Account()
     if request.method == 'POST':
@@ -248,14 +251,20 @@ def account_form(request, id=None):
             else:
                 return HttpResponseRedirect(reverse('accounts'))
         if 'delete' in request.POST:
+            log(request, account, 'delete')
             account.delete()
             return HttpResponseRedirect(reverse('accounts'))
         form = forms.AccountForm(request.POST, instance=account)
         related_member_formset = forms.RelatedMemberFormSet(request.POST, 
                 instance=account, prefix='related_member')
         if form.is_valid() and related_member_formset.is_valid():
-            account = form.save()
-            _setattr_formset_save(related_member_formset, 'account', account)
+            if context.get('edit'):
+                account = form.save()
+                log(request, account, 'edit', old_values=old_values)
+            else:
+                account = form.save()
+                log(request, account, 'add')
+            _setattr_formset_save(request, related_member_formset, 'account', account)
             return HttpResponseRedirect(reverse('account', args=[account.id]))
     else:
         form = forms.AccountForm(instance=account)
@@ -471,11 +480,12 @@ def admin_reset_password(request, username):
 
 # helper functions below
 
-def _setattr_formset_save(formset, name, value):
+def _setattr_formset_save(request, formset, name, value):
     instances = formset.save(commit=False)
     for instance in instances:
         setattr(instance, name, value)
         instance.save()
+        log(request, instance, 'add')
 
 def _get_current_page(pager, page_number):
     try:
