@@ -11,13 +11,13 @@ from mess.accounting import models as a_models
 
 def index(request):
     # jump to member
-    if request.GET.has_key('member'):
+    if type(request.GET.get('member')) == type(1):
         member = get_object_or_404(m_models.Member, id=request.GET['member'])
         return HttpResponseRedirect(reverse('telethon-member', 
                 args=[member.user.username]))
     # or search
     form = forms.JumpToMemberForm()
-    if request.GET.has_key('search'):
+    if request.GET.get('search'):
         searchform = forms.SearchForm(request.GET)
         if searchform.is_valid():
             results = m_models.Member.objects.active()
