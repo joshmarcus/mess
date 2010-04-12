@@ -11,9 +11,13 @@ from mess.accounting import models as a_models
 
 def index(request):
     # jump to member
-    if type(request.GET.get('member')) == type(1):
-        member = get_object_or_404(m_models.Member, id=request.GET['member'])
-        return HttpResponseRedirect(reverse('telethon-member', 
+    if request.GET.get('member'):
+        try:
+            member = m_models.Member.objects.get(id=request.GET['member'])
+        except (ValueError, m_models.Member.DoesNotExist):
+            pass
+        else:
+            return HttpResponseRedirect(reverse('telethon-member', 
                 args=[member.user.username]))
     # or search
     form = forms.JumpToMemberForm()
