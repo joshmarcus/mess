@@ -6,6 +6,9 @@
 {% endblock head %}
 
 {% block content %}
+<script>
+  EBTBULKORDERS = true;   // tell cashier.js that we're the EBT page
+</script>
 <div id="double-column" >
   {% include "accounting/snippets/page_menu.html" %}
   <div id="primary-content-wrapper">
@@ -14,12 +17,29 @@
       {% csrf_token %}
       <h2>EBT entry</h2>
       <table>
-        {{ form }}
         <tr>
-          <th></th>
-          <td><input class="button" type="submit" value="Submit" /></td>
+          <th>Account:</th>
+          <td>{{ form.account }}</td>
+        </tr>
+        <tr>
+          <th>Regular Sales:</th>
+          <td>{{ form.regular_sales }}</td>
+        </tr>
+        <tr id="ebtbulkordersrow">
+          <th>EBT Bulk Orders:</th>
+          <td>{{ form.ebtbulkamount }}</td>
+        </tr>
+        <tr id="totalrow">
+          <th>Total Charged to EBT:</th>
+          <td><input id="ebttotalamount" disabled="true" value=""></td>
+        </tr>
+        <tr>
+          <th>{{ form.ebtbulkorders }}<!-- hidden field --></th>
+          <td>{% if not form.errors %}<input class="button" type="submit" value="Submit" />{% endif %}</td>
         </tr>
       </table>
+      {% if form.errors %}You cannot re-submit this form.  To try again, click 'EBT' at the top and start over.  Sorry.{% endif %}
+      {{ form.errors }}
     </form>
     <div id="transactions">
       <h2>Today's EBT Transactions</h2>

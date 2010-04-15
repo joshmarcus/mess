@@ -58,18 +58,82 @@ class AfterHoursForm(forms.Form):
         return cleaned_data
 
 class EBTForm(forms.Form):
+    """  Okay, so here come some big comments, says Paul.
+    So, you display this form on the page, but it's got a couple weird
+    fields.  The ebtbulkamount is just for informational purposes, so the
+    cashier and the user know what's going on.  It's marked 'disabled'
+    so the user can't edit it, but it seems like on my browser (Opera)
+    that also means it doesn't get sent back to the server.  Anyway,
+    the server doesn't need the field, but if there's a form error that
+    could be a bug where your ebtbulkamount disappears.  Nevermind.
+
+    The template sets the magic js varible EBTBULKORDERS, which triggers
+    ebtautocalc features of cashier.js.  That is, whenever you edit the
+    purchases amount, cashier.js runs autocalc and recomputes your EBT total.
+
+    The EBT total, by the way, is also just for informational purpose.
+
+    Okay, first things first, when you enter the account name and choose
+    from the autocomplete, its callback does an eval() of whatever came from
+    templates/accounting/snippets/ebtbulkorders.js
+    This template-js should make it prompt you Yes/No for each EBT bulk order
+    you have.  Each time you hit OK/Yes, it adds that amount to ebtbulkamount
+    informational field, and appends the FK of the EBTBO onto the field that
+    does the real work, ebtbulkorders.  Then you make your transaction, and 
+    the cashier knows how much to charge the EBT card because it's shown
+    in the ebttotalamount informational line.
+
+    When you hit 'submit', the form takes the regular_sales amount and
+    charges it as an EBT transaction (if non-zero).  Then it adds up
+    all the EBT bulk orders based on the FKs in the ebtbulkorders hidden field
+    and charges them as a big EBT transaction.  When these are charged,
+    their paid_by_transaction is set to the current transaction, so
+    they will no longer show up in the ebtbulkorders_set.unpaid manager.
+
+    So there.
+    
+    """
     account = forms.ModelChoiceField(m_models.Account.objects.all(), 
-                                     widget=AutoCompleteWidget('account_spiffy', 
-                                                             view_name='membership-autocomplete',
-                                                             canroundtrip=True))
-    EBT_amount = forms.DecimalField()
+                 widget=AutoCompleteWidget('account_spiffy', 
+                     view_name='membership-autocomplete',canroundtrip=True))
+    regular_sales = forms.DecimalField(required=False)
+    # the EBT bulk orders field will be filled by javascript, with the
+    # FKs of any EBT bulk orders to be paid for as part of this purchase.
+    # It's a comma-delimited list of FKs, like "23,478,1573"
+    ebtbulkorders = forms.CharField(widget=forms.HiddenInput(),required=False)
+    ebtbulkamount = forms.CharField(initial='None', required=False,
+                widget=forms.TextInput(attrs={'disabled':'true'}))
+
+    def clean_ebtbulkorders(self):
+        if self.cleaned_data['ebtbulkorders'] == '':
+            return []
+        ebtbos = []
+        for fk in self.cleaned_data['ebtbulkorders'].split(','):
+            try:
+                ebtbo = models.EBTBulkOrder.objects.get(id=int(fk))
+            except:
+                raise forms.ValidationError('invalid EBT bulk fk %s' % fk)
+            if ebtbo.account != self.cleaned_data['account']:
+                raise forms.ValidationError('wrong account EBT bulk fk %s' % fk)
+            ebtbos.append(ebtbo)
+        return ebtbos
 
     def save(self, entered_by):
-        total = self.cleaned_data['EBT_amount']
-        new_ebt = models.Transaction.objects.create(account=self.cleaned_data['account'],
-                                     entered_by=entered_by, purchase_type='P',
-                                     payment_type='E', purchase_amount=total,
-                                     payment_amount=total)
+        regular_sales = self.cleaned_data['regular_sales']
+        ebtbulkorders = self.cleaned_data['ebtbulkorders']
+        bulktotal = sum([order.amount for order in ebtbulkorders])
+        if regular_sales:
+            new_ebt = models.Transaction.objects.create(
+                        account=self.cleaned_data['account'],
+                        entered_by=entered_by, purchase_type='P',
+                        payment_type='E', purchase_amount=regular_sales,
+                        payment_amount=regular_sales)
+        if bulktotal:
+            new_ebt = models.Transaction.objects.create(
+                        account=self.cleaned_data['account'],
+                        entered_by=entered_by, purchase_type='B',
+                        payment_type='E', purchase_amount=bulktotal,
+                        payment_amount=bulktotal)
 
 class HoursBalanceForm(forms.ModelForm):
     class Meta:

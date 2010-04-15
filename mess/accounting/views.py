@@ -295,6 +295,8 @@ def EBT(request):
             template = get_template('accounting/snippets/transactions.html')
         elif request.GET['getcashierinfo'] == 'acctinfo':
             template = get_template('accounting/snippets/acctinfo.html')
+        elif request.GET['getcashierinfo'] == 'ebtbulkorders':
+            template = get_template('accounting/snippets/ebtbulkorders.js')
         return HttpResponse(template.render(context))
     if request.method == 'POST':
         form = forms.EBTForm(request.POST)
