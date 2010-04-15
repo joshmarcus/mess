@@ -148,7 +148,8 @@ class EBTBulkOrder(models.Model):
     objects = EBTBulkOrderManager()
 
     def __unicode__(self):
-        return '%s EBT bulk ordered %s on %s' % (account, amount, order_date)
+        return '%s EBT bulk ordered %s on %s' % (self.account, 
+                self.amount, self.order_date)
 
 
 
