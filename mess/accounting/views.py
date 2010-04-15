@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.utils import simplejson
@@ -331,3 +331,37 @@ def storeday(request):
     title = 'Store Day Management'
     return render_to_response('accounting/storeday.html', locals(),
             context_instance=RequestContext(request))
+
+def EBT_bulk_orders(request, EBTBulkOrder_id=None):
+    # probably want to switch this to only list unpaid
+
+    if EBTBulkOrder_id:
+        ebt_bo = get_object_or_404(models.EBTBulkOrder, id=EBTBulkOrder_id)
+    else:
+        ebt_bo = models.EBTBulkOrder()
+    is_errors = False
+
+    ret_resp = HttpResponseRedirect(reverse('EBT-bulk-orders'))
+    if request.method == 'POST':
+        if 'cancel' in request.POST:
+            return ret_resp
+
+        ebt_bo_form = forms.EBTBulkOrderForm(request.POST, instance=ebt_bo)
+        if ebt_bo_form.is_valid():
+            ebt_bo_form.save()
+            return ret_resp
+        else:
+            is_errors = True
+    else:
+        ebt_bo_form = forms.EBTBulkOrderForm(instance=ebt_bo)
+
+    context = {
+        'ebt_bos': models.EBTBulkOrder.objects.all(),
+        'ebt_bo': ebt_bo,
+        'is_errors': is_errors,
+        'ebt_bo_form': ebt_bo_form,
+        'add': EBTBulkOrder_id==None, #this bool determines template behavior
+    }
+    return render_to_response('accounting/EBT_bulk_orders.html', context,
+                                context_instance=RequestContext(request))
+

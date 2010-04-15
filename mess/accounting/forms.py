@@ -206,3 +206,9 @@ StoreDayFormSet = modelformset_factory(models.StoreDay, extra=1, can_delete=True
 class StoreDayForm(forms.ModelForm):
     class Meta:
         model = models.StoreDay
+
+class EBTBulkOrderForm(forms.ModelForm):
+    class Meta:
+        model = models.EBTBulkOrder
+        exclude = ("paid_by_transaction",)
+

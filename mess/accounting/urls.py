@@ -11,5 +11,8 @@ urlpatterns = patterns('mess.accounting.views',
     url(r'^cashsheet_input$', 'cashsheet_input', name='cashsheet_input'),
     url(r'^hours_balance$', 'hours_balance', name='hours_balance'),
     url(r'^storeday$', 'storeday', name='storeday'),
+    url(r'^EBT_bulk_orders$', 'EBT_bulk_orders', name='EBT-bulk-orders'),
+    url(r'^EBT_bulk_orders/(?P<EBTBulkOrder_id>\d+)$', 
+        'EBT_bulk_orders', name="EBT-bulk-orders"),
 #   url(r'^reverse_trans$', 'reverse_trans', name='reverse_trans'),
 )
