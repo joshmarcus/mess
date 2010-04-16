@@ -358,7 +358,8 @@ def EBT_bulk_orders(request, EBTBulkOrder_id=None):
         ebt_bo_form = forms.EBTBulkOrderForm(instance=ebt_bo)
 
     context = {
-        'ebt_bos': models.EBTBulkOrder.objects.all(),
+        'unpaid': models.EBTBulkOrder.objects.unpaid(),
+        'paid': models.EBTBulkOrder.objects.paid(),
         'ebt_bo': ebt_bo,
         'is_errors': is_errors,
         'form': ebt_bo_form,
