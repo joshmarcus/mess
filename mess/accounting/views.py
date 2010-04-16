@@ -361,7 +361,7 @@ def EBT_bulk_orders(request, EBTBulkOrder_id=None):
         'ebt_bos': models.EBTBulkOrder.objects.all(),
         'ebt_bo': ebt_bo,
         'is_errors': is_errors,
-        'ebt_bo_form': ebt_bo_form,
+        'form': ebt_bo_form,
         'add': EBTBulkOrder_id==None, #this bool determines template behavior
     }
     return render_to_response('accounting/EBT_bulk_orders.html', context,

@@ -275,6 +275,10 @@ class StoreDayForm(forms.ModelForm):
         model = models.StoreDay
 
 class EBTBulkOrderForm(forms.ModelForm):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(),
+        widget=AutoCompleteWidget('account_spiffy',
+            view_name='membership-autocomplete', canroundtrip=True))
+
     class Meta:
         model = models.EBTBulkOrder
         exclude = ("paid_by_transaction",)

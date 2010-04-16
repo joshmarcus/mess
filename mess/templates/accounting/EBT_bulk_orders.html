@@ -19,11 +19,14 @@
         {% endif %}
       <form class="standard" method="post">
         {% csrf_token %}
-       <table class="data ceasefire">
-            {{ ebt_bo_form }}
+       <table>
+         {{ form }}
+         <th></th>
+           <td>
+             <input type="submit" class="button" value="Save" /> 
+             <input type="submit" class="button" name="cancel" value="Cancel" />
+           </td>
         </table>
-        <input type="submit" class="button" value="Save" /> 
-        <input type="submit" class="button" name="cancel" value="Cancel" />
       </form>
     <h2>EBT bulk orders</h2>
     <table class="data">
@@ -33,19 +36,19 @@
         <th>Amount</th>
         <th>Paid-by Transaction</th>
         <th>Note</th>
+        <th>Edit</th>
       </tr>    
       {% for order in ebt_bos %}
       <tr class="{% cycle 'odd' 'even' %}">
-        <td>
-          {% comment %}
-          <a href='{% url job-edit job_id=job.id %}'>{{ job }}</a>
-          {% endcomment %}
-          {{ order.order_date }}
-        </td>
+        <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
         <td>{{ order.account }} </td>
         <td>{{ order.amount }}</td>        
         <td>{{ order.paid_by_transaction }}</td>
         <td>{{ order.note }}</td>
+        {% if not order.paid_by_transaction %}
+        <td><a href='{% url EBT-bulk-orders-edit order.id %}'>
+            edit</a></td>
+        {% endif %}
       </tr>
       {% endfor %}
     </table>
