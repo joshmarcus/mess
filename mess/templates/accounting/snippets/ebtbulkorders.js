@@ -1,6 +1,6 @@
 {% for order in account.ebtbulkorder_set.unpaid %}
 
-var pay = confirm('Would you like to pay for your EBT bulk order for ${{ order.amount }}?  OK=Yes, Cancel=No.');
+var pay = confirm('Would you like to pay for your EBT bulk order for ${{ order.amount }}?  {% if order.note %}(Note: {{ order.note }}){% endif %}  OK=Yes, Cancel=No.');
 if (pay) {
   if (document.getElementById('id_ebtbulkamount').value == 'None') {
     document.getElementById('id_ebtbulkamount').value = {{ order.amount }};
