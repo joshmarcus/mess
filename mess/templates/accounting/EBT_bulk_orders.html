@@ -38,7 +38,7 @@
         <th>Note</th>
         <th>Edit</th>
       </tr>    
-      {% for order in ebt_bos %}
+      {% for order in ebt_bos|dictsortreversed:"id" %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
         <td>{{ order.account }} </td>
