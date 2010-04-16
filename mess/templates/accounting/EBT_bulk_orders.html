@@ -38,18 +38,33 @@
         <th>Note</th>
         <th>Edit</th>
       </tr>    
-      {% for order in ebt_bos|dictsortreversed:"id" %}
+      {% for order in unpaid|dictsortreversed:"id" %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
         <td>{{ order.account }} </td>
         <td>{{ order.amount }}</td>        
         <td>{{ order.paid_by_transaction }}</td>
         <td>{{ order.note }}</td>
-        {% if not order.paid_by_transaction %}
-        <td><a href='{% url EBT-bulk-orders-edit order.id %}'>
-            edit</a></td>
-        {% endif %}
+        <td>{% if not order.paid_by_transaction %}
+        <a href='{% url EBT-bulk-orders-edit order.id %}'>
+            edit</a>
+          {% endif %}
+        </td>
       </tr>
+       {% for order in paid|dictsortreversed:"id" %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
+        <td>{{ order.account }} </td>
+        <td>{{ order.amount }}</td>        
+        <td>{{ order.paid_by_transaction }}</td>
+        <td>{{ order.note }}</td>
+        <td>{% if not order.paid_by_transaction %}
+        <a href='{% url EBT-bulk-orders-edit order.id %}'>
+            edit</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
       {% endfor %}
     </table>
     </div>
