@@ -116,11 +116,10 @@ class Transaction(models.Model):
         return purchase
 
     def reverse(self, entered_by, reason=''):
-        ebtbo = self.EBTBulkOrder_set.all()
+        ebtbo = self.ebtbulkorder_set.all()
         if ebtbo:
             for order in ebtbo:
-                order.paid_by_transaction = None
-                order.save()
+                order.duplicate_after_reversed()
         rev = Transaction(account=self.account,
                           member=self.member,
                           purchase_type=self.purchase_type,
@@ -155,6 +154,16 @@ class EBTBulkOrder(models.Model):
     def __unicode__(self):
         return '%s EBT bulk ordered %s on %s' % (self.account, 
                 self.amount, self.order_date)
+
+    def duplicate_after_reversed(self):
+        """ this is called when the order was already paid, but then
+        the transaction was reversed.  we create a duplicate of the original
+        EBT bulk order. """
+        duplicate = EBTBulkOrder(order_date=self.order_date,
+                account=self.account,
+                amount=self.amount,
+                note='(reversed) '+self.note)
+        duplicate.save()
 
     def save(self, force_insert=False, force_update=False):
         if self.id:
