@@ -134,6 +134,9 @@ class EBTForm(forms.Form):
                         entered_by=entered_by, purchase_type='B',
                         payment_type='E', purchase_amount=bulktotal,
                         payment_amount=bulktotal)
+        for order in ebtbulkorders:
+            order.paid_by_transaction = new_ebt
+            order.save()
 
 class HoursBalanceForm(forms.ModelForm):
     class Meta:

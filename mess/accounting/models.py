@@ -116,6 +116,11 @@ class Transaction(models.Model):
         return purchase
 
     def reverse(self, entered_by, reason=''):
+        ebtbo = self.EBTBulkOrder_set.all()
+        if ebtbo:
+            for order in ebtbo:
+                order.paid_by_transaction = None
+                order.save()
         rev = Transaction(account=self.account,
                           member=self.member,
                           purchase_type=self.purchase_type,
@@ -151,6 +156,12 @@ class EBTBulkOrder(models.Model):
         return '%s EBT bulk ordered %s on %s' % (self.account, 
                 self.amount, self.order_date)
 
+    def save(self, force_insert=False, force_update=False):
+        if self.id:
+            oldself = EBTBulkOrder.objects.get(id=self.id)
+            if oldself.paid_by_transaction:
+                raise AssertionError, "cannot edit EBT bulk order already paid"
+        super(EBTBulkOrder, self).save(force_insert, force_update)
 
 
 class StoreDay(models.Model):
