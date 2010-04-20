@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.db.models.aggregates import Sum
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -359,6 +360,7 @@ def EBT_bulk_orders(request, EBTBulkOrder_id=None):
 
     context = {
         'unpaid': models.EBTBulkOrder.objects.unpaid(),
+        'total_unpaid': models.EBTBulkOrder.objects.unpaid().aggregate(Sum('amount')).values()[0]
         'paid': models.EBTBulkOrder.objects.paid(),
         'ebt_bo': ebt_bo,
         'is_errors': is_errors,

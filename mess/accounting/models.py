@@ -119,7 +119,9 @@ class Transaction(models.Model):
         ebtbo = self.ebtbulkorder_set.all()
         if ebtbo:
             for order in ebtbo:
-                order.duplicate_after_reversed()
+                # do nothing.  trying to reduplicate the reversed EBT b.o.s
+                # just creates more confusion.
+                #order.duplicate_after_reversed()
         rev = Transaction(account=self.account,
                           member=self.member,
                           purchase_type=self.purchase_type,

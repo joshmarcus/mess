@@ -28,7 +28,7 @@
            </td>
         </table>
       </form>
-    <h2>EBT bulk orders</h2>
+    <h2>EBT bulk orders (total unpaid: {{ total_unpaid }})</h2>
     <table class="data">
       <tr>
         <th>Order Date</th>
@@ -41,9 +41,9 @@
       {% for order in unpaid|dictsortreversed:"id" %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
-        <td>{{ order.account }} </td>
+        <td><a href="{{ order.account.get_absolute_url }}">{{ order.account }}</a></td>
         <td>{{ order.amount }}</td>        
-        <td>{{ order.paid_by_transaction }}</td>
+        <td>{{ order.paid_by_transaction }}{% if order.paid_by_transaction.fixers %}*{% endif %}</td>
         <td>{{ order.note }}</td>
         <td>{% if not order.paid_by_transaction %}
         <a href='{% url EBT-bulk-orders-edit order.id %}'>
@@ -55,9 +55,9 @@
        {% for order in paid|dictsortreversed:"id" %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
-        <td>{{ order.account }} </td>
+        <td><a href="{{ order.account.get_absolute_url }}">{{ order.account }}</a></td>
         <td>{{ order.amount }}</td>        
-        <td>{{ order.paid_by_transaction }}</td>
+        <td>{{ order.paid_by_transaction }}{% if order.paid_by_transaction.fixers %}*{% endif %}</td>
         <td>{{ order.note }}</td>
         <td>{% if not order.paid_by_transaction %}
         <a href='{% url EBT-bulk-orders-edit order.id %}'>
@@ -67,6 +67,7 @@
       </tr>
       {% endfor %}
     </table>
+     * Indicates that the transaction was later reversed.  Refer to notes on the transactions.
     </div>
   </div>
 {% endblock %}
