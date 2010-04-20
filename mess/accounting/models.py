@@ -122,6 +122,7 @@ class Transaction(models.Model):
                 # do nothing.  trying to reduplicate the reversed EBT b.o.s
                 # just creates more confusion.
                 #order.duplicate_after_reversed()
+                pass
         rev = Transaction(account=self.account,
                           member=self.member,
                           purchase_type=self.purchase_type,
