@@ -142,9 +142,9 @@ class Transaction(models.Model):
 
 class EBTBulkOrderManager(models.Manager):
     def unpaid(self):
-        return self.filter(paid_by_transaction__isnull=True)
+        return self.filter(paid_by_transaction__isnull=True, amount__gt=0)
     def paid(self):
-        return self.filter(paid_by_transaction__isnull=False)
+        return self.exclude(paid_by_transaction__isnull=True, amount__gt=0)
 
 class EBTBulkOrder(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
