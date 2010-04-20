@@ -51,6 +51,7 @@
           {% endif %}
         </td>
       </tr>
+      {% endfor %}
        {% for order in paid|dictsortreversed:"id" %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
@@ -64,7 +65,6 @@
           {% endif %}
         </td>
       </tr>
-      {% endfor %}
       {% endfor %}
     </table>
     </div>
