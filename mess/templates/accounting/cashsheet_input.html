@@ -18,12 +18,13 @@
             <th>Max<br>Allowed</th>
             <th>Hours<br>Balance</th>
             <th>Old<br>Balance</th>
-            <th>Misc.</th>
+            <th{% if not show_advanced_fields %} style="display:none;"{% endif %}>Misc.</th>
             <th>Member<br>Equity</th>
-            <th>Bulk<br>Orders</th>
+            <th{% if not show_advanced_fields %} style="display:none;"{% endif %}>Bulk<br>Orders</th>
             <th>Regular<br>Sales</th>
             <th>Credit/<br>Debit<br>Card</th>
             <th>Check/<br>Money<br>Order</th>
+            <th{% if not show_advanced_fields %} style="display:none;"{% endif %}>EBT</th>
             <th>New Balance</th>
             <th><!-- submit --></th>
           </tr>
@@ -55,12 +56,13 @@
               <!-- hidden field used for javascript only -->
               <input type="hidden" id="balance_val" value="{{ account.balance }}">
             </td>
-            <td>{{ form.misc }}</td>
+            <td{% if not show_advanced_fields %} style="display:none;"{% endif %}>{{ form.misc }}</td>
             <td>{{ form.deposit }}</td>
-            <td>{{ form.bulk_orders }}</td>
+            <td{% if not show_advanced_fields %} style="display:none;"{% endif %}>{{ form.bulk_orders }}</td>
             <td>{{ form.regular_sales }}</td>
             <td>({{ form.credit_debit }})</td>
             <td>({{ form.check_mo }})</td>
+            <td{% if not show_advanced_fields %} style="display:none;"{% endif %}>({{ form.ebt }})</td>
             <td><span id="newbalance"></span></td>
             <td><input name="action" type="submit" value="Submit"></td>
           </tr>

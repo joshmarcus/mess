@@ -90,16 +90,20 @@ def cashsheet_input(request):
                 return HttpResponse(repr(reverseform.errors))
             rev = reverseform.save(entered_by=request.user) 
             form = forms.CashsheetForm(tofix=rev)
+            show_advanced_fields = True
         else:
             form = forms.CashsheetForm(request.POST)
             if form.is_valid():
                 form.save(entered_by=request.user)
                 return HttpResponseRedirect(reverse('cashsheet_input'))
+            show_advanced_fields = True
     else:
         form = forms.CashsheetForm()
     transactions = models.Transaction.objects.filter(
             timestamp__range=(today,today+datetime.timedelta(1)))
     can_reverse = True
+    if request.user.is_staff:
+        show_advanced_fields = True
     return render_to_response('accounting/cashsheet_input.html', locals(),
             context_instance=RequestContext(request))
 

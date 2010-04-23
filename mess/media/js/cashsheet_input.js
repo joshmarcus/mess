@@ -80,6 +80,7 @@ function autocalc() {
   balance -= -document.getElementById('id_regular_sales').value;
   balance -= document.getElementById('id_credit_debit').value;
   balance -= document.getElementById('id_check_mo').value;
+  balance -= document.getElementById('id_ebt').value;
   newbalance = document.getElementById('newbalance');
   newbalance.innerHTML = messmoney(balance);
 }
@@ -91,6 +92,7 @@ function setup_autocalc() {
   document.getElementById('id_regular_sales').onchange = autocalc;
   document.getElementById('id_credit_debit').onchange = autocalc;
   document.getElementById('id_check_mo').onchange = autocalc;
+  document.getElementById('id_ebt').onchange = autocalc;
 }
 
 // if form is basically ok, return true, else return confirm.
@@ -100,7 +102,8 @@ function confirm_if_weird(cashform, isStaff) {
                   document.getElementById('id_bulk_orders').value ||
                   document.getElementById('id_regular_sales').value;
   var payments = document.getElementById('id_credit_debit').value ||
-                 document.getElementById('id_check_mo').value;
+                 document.getElementById('id_check_mo').value ||
+                 document.getElementById('id_ebt').value;
   if (payments && (!purchases)) {
     return confirm("Account paid without buying anything?");
   }

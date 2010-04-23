@@ -34,7 +34,7 @@
     <td>{{ transaction.get_payment_type_display }}</td>
     <td>{% if transaction.payment_amount %}{{ transaction.payment_amount|messmoney:"payment" }}{% endif %}</td>
     <td>{{ transaction.account_balance|messmoney }}</td>
-    <td>{{ transaction.entered_by.username }}{% if can_reverse %} <input type="button" value="X" onclick="reverse_trans({{ transaction.id }}, '{{ transaction.account|addslashes }}');">{% endif %}</td>
+    <td>{{ transaction.entered_by.username }}{% if can_reverse and not transaction.fixes_target and not transaction.fixers %} <input type="button" value="X" onclick="reverse_trans({{ transaction.id }}, '{{ transaction.account|addslashes }}');">{% endif %}</td>
   </tr>
     {% endfor %}
   {% endif %}

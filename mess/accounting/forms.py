@@ -162,6 +162,15 @@ class ReverseForm(forms.Form):
             widget=forms.HiddenInput())
     reverse_reason = forms.CharField(widget=forms.HiddenInput())
 
+    def clean(self):
+        '''you can't reverse a reversal, that's just broken'''
+        trans = self.cleaned_data['reverse_id']
+        if trans.fixes_target():
+            raise forms.ValidationError('you can\'t reverse a reversal.')
+        if trans.fixers():
+            raise forms.ValidationError('this was already reversed before.')
+        return self.cleaned_data
+
     def save(self, entered_by):
         trans = self.cleaned_data['reverse_id']
         trans.reverse(entered_by, self.cleaned_data['reverse_reason'])
@@ -183,6 +192,8 @@ class CashsheetForm(forms.Form):
                 widget=forms.TextInput(attrs={'size':'4'}))
     check_mo = forms.DecimalField(required=False,
                 widget=forms.TextInput(attrs={'size':'4'}))
+    ebt = forms.DecimalField(required=False,
+                widget=forms.TextInput(attrs={'size':'4'}))
     note = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
@@ -201,6 +212,8 @@ class CashsheetForm(forms.Form):
                 data['credit_debit'] = tofix.payment_amount
             elif tofix.payment_type == 'K':
                 data['check_mo'] = tofix.payment_amount
+            elif tofix.payment_type == 'E':
+                data['ebt'] = tofix.payment_amount
             super(CashsheetForm, self).__init__(data, *args, **kwargs)
         else:
             super(CashsheetForm, self).__init__(*args, **kwargs)
@@ -213,6 +226,10 @@ class CashsheetForm(forms.Form):
                 raise forms.ValidationError('note required for negative entry')
         if self.cleaned_data.get('misc') and not note:
             raise forms.ValidationError('note required for misc transaction')
+        if self.cleaned_data.get('ebt'):
+            if (self.cleaned_data.get('ebt') != self.cleaned_data.get('regular_sales')
+                and self.cleaned_data.get('ebt') != self.cleaned_data.get('bulk_orders')):
+                    raise forms.ValidationError('EBT amount must match regular sales amount or bulk orders amount.')
         return self.cleaned_data
 
     def save(self, entered_by=None):
@@ -226,7 +243,8 @@ class CashsheetForm(forms.Form):
         payments = [(payment_type, self.cleaned_data[fieldname])
             for payment_type, fieldname in (
                 ('C', 'credit_debit'),
-                ('K', 'check_mo'))
+                ('K', 'check_mo'),
+                ('E', 'ebt'))
             if self.cleaned_data[fieldname]]
         if len(purchases) == len(payments) == 1:
             trans = models.Transaction(account=self.cleaned_data['account'],
