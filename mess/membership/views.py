@@ -131,6 +131,10 @@ def member_form(request, username=None):
             for formset in (related_account_formset, LOA_formset, 
                     address_formset, email_formset, phone_formset):
                 _setattr_formset_save(request, formset, 'member', member)
+            if not edit:
+                # TODO send member an email with login information see #224
+                # see also password_reset in django.contrib.auth.views.py
+                pass
             # FIXME this is bad if member has more than one account
             try:
                 redirect = member.accounts.all()[0].get_absolute_url()
