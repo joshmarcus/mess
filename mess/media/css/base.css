@@ -318,10 +318,10 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 				float:left;
 				color:#fff;
 				background:#53648C url(../images/bg-global-nav.gif) no-repeat top right;
-				line-height:25px;
+				line-height:26px;
 				text-decoration:none;
 				padding:0 15px 0 16px;
-				height:25px;
+				height:26px;
 				}
 				ul#global-nav li a:hover {
 					background:#246495 url(../images/bg-global-nav-hover.gif) no-repeat top right;
