@@ -623,6 +623,9 @@ div.accountmemberalert {float:right; color:red; font-weight:bold; font-size:14pt
 
 div#footer {
 	}
+	div#footer a {
+		color:#eee;
+	}
 	div#footer-nav {
 		padding:20px;
 		background:#00417d;
