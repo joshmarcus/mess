@@ -367,7 +367,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					ul#local-nav li a.active {
 						color:#333; 
 						text-decoration:none;
-						background:url('../images/bg-local-nav-active.png') no-repeat center 26px;
+						background:url('../images/bg-local-nav-active.png') no-repeat center 29px;
 						}						
 					
 		/*primary-content-wrapper styles*/
