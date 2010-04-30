@@ -29,17 +29,26 @@
           </div>
         {% endif %}
         <div class="section">
+          {% if user.is_staff %}
           <h3>Main</h3>
           <table>
             {{ user_form }}
             {{ member_form }}
           </table>
+          {% else %}
+          <h3>Email</h3>
+          <table>
+            {{ user_email_form }}
+          </table>
+          {% endif %}
         </div>
         {% include 'membership/snippets/formsets.html' %}
         <div class="save">
           <input type="submit" class="button" value="Save" /> 
           <input type="submit" class="button" name="cancel" value="Cancel" />
+          {% if user.is_staff %}
           <input type="submit" class="button" name="delete" value="Delete" onclick="return confirm('Do you really wish to delete member &quot;{{ member.user.username }}&quot; forever and ever?');" id="delete" />
+          {% endif %}
         </div>
       </form>
     </div>
