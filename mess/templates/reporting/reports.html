@@ -3,22 +3,21 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
-  <h2>Available Reports</h2>
-
-  Many of these reports can be customized...for example, open the $50 member equity report, then change the number 50 to any number.
-
-  <table style="width:100%;">
+  	<h2>Available Reports</h2>
+  	<p>Many of these reports can be customized...for example, open the $50 member equity report, then change the number 50 to any number.</p>
+  	<table style="width:100%;">
     {% for categ in report_categories %}
       {% cycle '<tr><td>' '<td>' '<td>' %}
         <h4>{{ categ.name }}</h4>
-        <ul>
-          {% for report in categ.reports %}
+        	<ul>
+          	{% for report in categ.reports %}
             <li><a href="{{ report.url }}">{{ report.name }}</a></li>
-          {% endfor %}
-        </ul>
-      {% cycle '</td>' '</td>' '</td></tr>' %}
-    {% endfor %}
-  </tr></table>
+          	{% endfor %}
+        	</ul>
+      	{% cycle '</td>' '</td>' '</td></tr>' %}
+    	{% endfor %}
+  	</tr>
+	</table>
 
   </div>
 </div>
