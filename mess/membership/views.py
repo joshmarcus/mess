@@ -75,12 +75,15 @@ def member(request, username):
             and request.user.id == user.id):
         return HttpResponseRedirect(reverse('login'))
     context = RequestContext(request)
-    context['member'] = user.get_profile()
+    member = user.get_profile()
+    context['member'] = member
     # to get around silly {% url %} limits
     context['address_name'] = 'address'
     context['email_name'] = 'email'
     context['phone_name'] = 'phone'
-    context['contact_media'] = ['address', 'email', 'phone']
+    context['contact_media'] = ['address', 'phone']
+    if(len(member.emails.all()) < 1):
+        context['contact_media'].append('email')
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
