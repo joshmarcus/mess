@@ -122,21 +122,16 @@ def member_form(request, username=None):
                     instance=member, prefix='leave_of_absence')
         address_formset = forms.AddressFormSet(request.POST, instance=member,
                 prefix='address')
-        # email_formset removed 2010-04-29 in favor of user.email because only one 
-        # email needed -- gsf
+        # email_formset removed 2010-04-29 in favor of user.email because only 
+        # one email needed -- gsf
         #email_formset = forms.EmailFormSet(request.POST, instance=member,
         #        prefix='email')
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
-        if address_formset.is_valid() and phone_formset.is_valid():
-            for formset in (address_formset, phone_formset):
-                _setattr_formset_save(request, formset, 'member', member)
-        else: 
-            is_errors = True
         if request.user.is_staff:
             if (user_form.is_valid() and member_form.is_valid() and 
                     related_account_formset.is_valid() and 
-                    LOA_formset.is_valid()): #email_formset.is_valid() and 
+                    LOA_formset.is_valid()): 
                 user = user_form.save()
                 member = member_form.save(commit=False)
                 member.user = user
@@ -154,6 +149,12 @@ def member_form(request, username=None):
                 user = user_email_form.save()
             else:
                 is_errors = True
+        # must be after member.save() in case member is newly added
+        if address_formset.is_valid() and phone_formset.is_valid():
+            for formset in (address_formset, phone_formset):
+                _setattr_formset_save(request, formset, 'member', member)
+        else: 
+            is_errors = True
         if not is_errors:
              # FIXME this is bad if member has more than one account
             try:
