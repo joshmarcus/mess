@@ -18,9 +18,9 @@
 
 <div class="accountmemberside">
   <ul class="quick-info">
-    {% for email in am.member.emails.all %}
-      <li><b>Email:</b> {{ email }}</li>
-    {% endfor %}
+    {% if am.member.user.email %}
+      <li><b>Email:</b> {{ am.member.user.email }}</li>
+    {% endif %}
 
 
     {% for phone in am.member.phones.all %}
