@@ -60,7 +60,7 @@ class MemberForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('username', 'first_name', 'last_name', 'email')
     # username pulled straight from django/contrib/auth/forms.py
     username = forms.RegexField(label=_("Username"), max_length=30, 
             regex=r'^\w+$', help_text = _("Required. 30 characters or fewer. Alphanumeric characters only (letters, digits and underscores)."),

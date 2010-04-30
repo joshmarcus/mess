@@ -117,8 +117,10 @@ def member_form(request, username=None):
                 instance=member, prefix='related_account')
         address_formset = forms.AddressFormSet(request.POST, instance=member,
                 prefix='address')
-        email_formset = forms.EmailFormSet(request.POST, instance=member,
-                prefix='email')
+        # email_formset removed 2010-04-29 in favor of user.email because only one 
+        # email needed -- gsf
+        #email_formset = forms.EmailFormSet(request.POST, instance=member,
+        #        prefix='email')
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
         LOA_formset = forms.LeaveOfAbsenceFormSet(request.POST, 
@@ -126,13 +128,13 @@ def member_form(request, username=None):
         if (user_form.is_valid() and member_form.is_valid() and 
                 related_account_formset.is_valid() and 
                 address_formset.is_valid() and phone_formset.is_valid() 
-                and email_formset.is_valid() and LOA_formset.is_valid()):
+                and LOA_formset.is_valid()): #email_formset.is_valid() and 
             user = user_form.save()
             member = member_form.save(commit=False)
             member.user = user
             member.save()
             for formset in (related_account_formset, LOA_formset, 
-                    address_formset, email_formset, phone_formset):
+                    address_formset, phone_formset): #email_formset, 
                 _setattr_formset_save(request, formset, 'member', member)
             if not edit:
                 # TODO send member an email with login information see #224
@@ -153,7 +155,7 @@ def member_form(request, username=None):
                 prefix='related_account')
         address_formset = forms.AddressFormSet(instance=member, 
                 prefix='address')
-        email_formset = forms.EmailFormSet(instance=member, prefix='email')
+        #email_formset = forms.EmailFormSet(instance=member, prefix='email')
         phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')
         LOA_formset = forms.LeaveOfAbsenceFormSet(instance=member, 
                 prefix='leave_of_absence')
@@ -165,7 +167,7 @@ def member_form(request, username=None):
         (related_account_formset, 'Accounts'), 
         (LOA_formset, 'Leaves of Absence'),
         (address_formset, 'Addresses'), 
-        (email_formset, 'Email Addresses'),
+        #(email_formset, 'Email Addresses'),
         (phone_formset, 'Phones'),
     ]
     context['is_errors'] = is_errors
