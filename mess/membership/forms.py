@@ -57,6 +57,11 @@ class MemberForm(forms.ModelForm):
         model = models.Member
         exclude = ('status', 'user')
 
+class UserEmailForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)
+
 class UserForm(forms.ModelForm):
     class Meta:
         model = User

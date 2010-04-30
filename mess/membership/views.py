@@ -87,6 +87,7 @@ def member(request, username):
     template = get_template('membership/member.html')
     return HttpResponse(template.render(context))
 
+@login_required
 def member_form(request, username=None):
     '''
     edit member info
@@ -111,10 +112,14 @@ def member_form(request, username=None):
             user.delete()
             return HttpResponseRedirect(reverse('accounts'))
         user_form = forms.UserForm(request.POST, prefix='user', instance=user)
+        user_email_form = forms.UserEmailForm(request.POST, instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)
-        related_account_formset = forms.RelatedAccountFormSet(request.POST, 
-                instance=member, prefix='related_account')
+        if request.user.is_staff:
+            related_account_formset = forms.RelatedAccountFormSet(request.POST, 
+                    instance=member, prefix='related_account')
+            LOA_formset = forms.LeaveOfAbsenceFormSet(request.POST, 
+                    instance=member, prefix='leave_of_absence')
         address_formset = forms.AddressFormSet(request.POST, instance=member,
                 prefix='address')
         # email_formset removed 2010-04-29 in favor of user.email because only one 
@@ -123,33 +128,42 @@ def member_form(request, username=None):
         #        prefix='email')
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
-        LOA_formset = forms.LeaveOfAbsenceFormSet(request.POST, 
-                instance=member, prefix='leave_of_absence')
-        if (user_form.is_valid() and member_form.is_valid() and 
-                related_account_formset.is_valid() and 
-                address_formset.is_valid() and phone_formset.is_valid() 
-                and LOA_formset.is_valid()): #email_formset.is_valid() and 
-            user = user_form.save()
-            member = member_form.save(commit=False)
-            member.user = user
-            member.save()
-            for formset in (related_account_formset, LOA_formset, 
-                    address_formset, phone_formset): #email_formset, 
+        if address_formset.is_valid() and phone_formset.is_valid():
+            for formset in (address_formset, phone_formset):
                 _setattr_formset_save(request, formset, 'member', member)
-            if not edit:
-                # TODO send member an email with login information see #224
-                # see also password_reset in django.contrib.auth.views.py
-                pass
-            # FIXME this is bad if member has more than one account
+        else: 
+            is_errors = True
+        if request.user.is_staff:
+            if (user_form.is_valid() and member_form.is_valid() and 
+                    related_account_formset.is_valid() and 
+                    LOA_formset.is_valid()): #email_formset.is_valid() and 
+                user = user_form.save()
+                member = member_form.save(commit=False)
+                member.user = user
+                member.save()
+                for formset in (related_account_formset, LOA_formset): 
+                    _setattr_formset_save(request, formset, 'member', member)
+                if not edit:
+                    # TODO send member an email with login information see #224
+                    # see also password_reset in django.contrib.auth.views.py
+                    pass
+            else:
+                is_errors = True
+        else:
+            if user_email_form.is_valid():
+                user = user_email_form.save()
+            else:
+                is_errors = True
+        if not is_errors:
+             # FIXME this is bad if member has more than one account
             try:
                 redirect = member.accounts.all()[0].get_absolute_url()
             except IndexError:
                 redirect = reverse('accounts')
             return HttpResponseRedirect(redirect)
-        else:
-            is_errors = True
     else:
         user_form = forms.UserForm(instance=user, prefix='user')
+        user_email_form = forms.UserEmailForm(instance=user)
         member_form = forms.MemberForm(instance=member, prefix='member')
         related_account_formset = forms.RelatedAccountFormSet(instance=member, 
                 prefix='related_account')
@@ -162,14 +176,20 @@ def member_form(request, username=None):
     context = RequestContext(request)
     context['member'] = member
     context['user_form'] = user_form
+    context['user_email_form'] = user_email_form
     context['member_form'] = member_form
-    context['formsets'] = [
-        (related_account_formset, 'Accounts'), 
-        (LOA_formset, 'Leaves of Absence'),
-        (address_formset, 'Addresses'), 
-        #(email_formset, 'Email Addresses'),
-        (phone_formset, 'Phones'),
-    ]
+    if request.user.is_staff:
+        context['formsets'] = [
+            (related_account_formset, 'Accounts'), 
+            (LOA_formset, 'Leaves of Absence'),
+            (address_formset, 'Addresses'), 
+            (phone_formset, 'Phones'),
+        ]
+    else:
+        context['formsets'] = [
+            (address_formset, 'Addresses'), 
+            (phone_formset, 'Phones'),
+        ]
     context['is_errors'] = is_errors
     context['edit'] = edit
     template = get_template('membership/member_form.html')
