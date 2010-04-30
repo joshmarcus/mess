@@ -24,8 +24,8 @@ def reminder_emails():
     print "sending email reminders on %s" % datetime.date.today()
     print "***********************************"
 
-    reminder_tasks = generate_reminder(datetime.date.today()).filter(
-            member__emails__isnull=False).distinct()
+    reminder_tasks = generate_reminder(datetime.date.today()).exclude(
+            member__user__email='').distinct()
 
     message_template = loader.get_template('scheduling/reminder_mail.html')
     for task in (reminder_tasks):

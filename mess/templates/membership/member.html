@@ -7,18 +7,23 @@
       <h2>Member Profile</h2>
       <div class="profile {% if not member.is_active %}profile-inactive{% endif %}">
 
+{% with member.accountmember_set.all|first as am %}
+
+{% include "membership/snippets/accountmember.html" %}
+
+{% endwith %}
+
+        {% comment %}
         <h4>
           <a href="{% url member-edit member.user.username %}">edit</a>
           {{ member.user.get_full_name }} 
         </h4>
-        {% comment %}
         <ul class="quick-info">
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.verbose_status }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/>{{ member.get_work_status_display }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/>{{ member.has_key }}</li>
           <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/>{{ member.date_joined }}</li>
         </ul>
-        {% endcomment %}
         <div class="details clearfix">
 		  <ul class="edit-contact-info ceasefire">
 			{% for medium in contact_media %}
@@ -47,6 +52,7 @@
           {% endfor %} 
           </p>
         </div>
+        {% endcomment %}
         {% if user.is_staff %}
           <form method="post" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('Click OK to send a password reset email to this user.');">
             {% csrf_token %}

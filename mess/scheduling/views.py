@@ -421,8 +421,8 @@ def reminder(request, date=None):
     next_date = date + datetime.timedelta(1)
 
     tasks = generate_reminder(date)
-    noemail = tasks.filter(member__emails__isnull=True)
-    tasks = tasks.filter(member__emails__isnull=False).distinct()
+    noemail = tasks.filter(member__user__email='').distinct()
+    tasks = tasks.exclude(member__user__email='').distinct()
 
     return render_to_response('scheduling/reminder.html', locals(),
                                 context_instance=RequestContext(request))

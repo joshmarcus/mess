@@ -52,9 +52,9 @@
         <td>{{ member.verbose_status }}</td>        
         <td>
           <ul class="ceasefire">
-            {% for email in member.emails.all %}
-            <li>{{ email.get_type_display }}: {{ email.email }}</li>
-            {% endfor %}
+            {% if member.user.email %}
+            <li>{{ member.user.email }}</li>
+            {% endif %}
           </ul>
         </td>
         <td>

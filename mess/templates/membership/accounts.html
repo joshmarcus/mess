@@ -44,12 +44,12 @@
                 {% for member in account.members.all %}
                 {% if member.is_active %}
                 <li>
-                  <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.get_profile.emails.all|first }}
+                  <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.email }}
                 </li>
                 {% else %}
                 {% if inactive %}
                 <li>
-                  <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.get_profile.emails.all|first }} ({{ member.verbose_status }})
+                  <a href="{% url member member.user.username %}">{{ member }}</a> {{ member.user.get_profile.phones.all|first }} {{ member.user.email }} ({{ member.verbose_status }})
                 </li>
                 {% endif %}
                 {% endif %}

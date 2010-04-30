@@ -85,7 +85,8 @@ def reports(request):
                 '',
                 '{% for y in x.accountmember_set.all %}{% if y.member.is_active %}{{ y.member }}{% if y.account_contact %}*{% endif %}{% if y.shopper %}(s){% endif %}<br>{% endif %}{% endfor %}\*=Member Equity, (s)=Shopper\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.active %}{% for z in y.emails.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Emails\r\ndeposit'),
+                '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
+                'deposit'),
 
 #           listrpt('Accounts','Active Addresses',
 #               '',
@@ -115,7 +116,7 @@ def reports(request):
                 'hours_balance__gte=1.00', 
                 'hours_balance\r\nbalance\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
+                '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
                 'billable_member_count\r\nnote',
                 order_by='-hours_balance',
                 include='Present'),
@@ -124,7 +125,7 @@ def reports(request):
                 'balance__gte=25',
                 'balance\r\nmax_allowed_balance\r\nhours_balance\r\n'+
                 '{% for y in x.members.active %}{% for z in y.phones.all %}{{ y.user.first_name }}: {{ z }}<br>{% endfor %}{% endfor %}\Phones\r\n'+
-                '{% for y in x.members.active %}{% for z in y.emails.all %}{{ z }}<br>{% endfor %}{% endfor %}\Emails\r\n'+
+                '{% for y in x.members.active %}{% if y.user.email %}{{ y.user.first_name }}: {{ y.user.email }}<br>{% endif %}{% endfor %}\Emails\r\n'+
                 'active_member_count\r\nnote',
                 order_by='-balance',
                 include='Present'),
@@ -148,11 +149,11 @@ def reports(request):
                 order_by='accounts'),
 
             listrpt('Members','with Email',
-                'emails__isnull=False', 'accounts\r\nemails\r\nBox:emails',
+                'user__email!=', 'accounts\r\nuser.email\r\nBox:user.email',
                 order_by='accounts'),
 
             listrpt('Members','without Email (phone list)',
-                'emails__isnull=True\r\naccountmember__shopper=False',
+                'user__email=\r\naccountmember__shopper=False',
                 'accounts\r\nphones', order_by='accounts'),
 
             listrpt('Members','Member Equity Holders on LOA',
@@ -214,7 +215,7 @@ def reports(request):
 
             listrpt('Tasks','Cashiers With Email',
                 'job__name=Cashier\r\nmember__isnull=False',
-                'job\r\nmember\r\naccount\r\nmember.emails\r\nBox:member.emails'),
+                'job\r\nmember\r\naccount\r\nmember.user.email\r\nBox:member.user.email'),
 
             listrpt('Tasks','Storekeepers',
                 'job__name=Store Keeper\r\nmember__isnull=False',
