@@ -20,7 +20,7 @@
       {% else %}
         <b>Balance Limit:</b> {{ account.max_allowed_to_owe }}
       {% endif %}
-      <br><a href="{{ account.get_templimit_url }}">change balance limit</a>
+      <br /><a href="{{ account.get_templimit_url }}">change balance limit</a>
     {% else %}
       {% if account.temporarybalancelimit_set.current %}
         <b>{{ account.temporarybalancelimit_set.current|first }}</b>
