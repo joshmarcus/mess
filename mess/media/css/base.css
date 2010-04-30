@@ -53,8 +53,12 @@ body {
 		margin-bottom:1.2em;
 		}
 h2 {font-size: 1.6em; 
-    padding: 0.2em 0em 0.25em 0em;
-    color:#004175;}
+    padding: 0.2em 0em 0.5em 0em;
+    color:#004175;
+		}
+		#primary-content-wrapper > h2:first-child {
+		margin-top:1em;
+		}
 h2.accountmembersection {margin-top:0.8em;}
 	h3 {
 		font-size: 1.4em;
