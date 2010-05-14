@@ -7,11 +7,7 @@
       <h2>Member Profile</h2>
       <div class="profile {% if not member.is_active %}profile-inactive{% endif %}">
 
-{% with member.accountmember_set.all|first as am %}
-
-{% include "membership/snippets/accountmember.html" %}
-
-{% endwith %}
+{% include "membership/snippets/member.html" %}
 
         {% comment %}
         <h4>

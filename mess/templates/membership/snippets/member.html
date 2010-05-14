@@ -1,0 +1,73 @@
+<h4>
+  <a href="{% url member-edit member.user.username %}">edit</a>
+
+      <a class="nofloat" href="{% url member member.user.username %}">{{ member }}</a>
+</h4>
+
+<div class="accountmemberside">
+  <ul class="quick-info">
+    {% if member.user.email %}
+      <li><b>Email:</b> {{ member.user.email }}</li>
+    {% endif %}
+
+
+    {% for phone in member.phones.all %}
+      <li><b>Phone:</b> {{ phone }}</li>
+    {% endfor %}
+
+    {% for address in member.addresses.all %}
+      <li><b>Address:</b> <br>
+        {{ address.address1 }}<br>
+        {% if address.address2 %}{{ address.address2 }}<br>{% endif %}
+        {{ address.city }}, {{ address.state }} {{ address.postal_code }}
+        {% ifnotequal address.country "USA" %}
+          <br>{{ address.country }}
+        {% endifnotequal %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+<div class="accountmemberside">
+  <ul class="quick-info">
+    {% if member.date_departed %}
+      <li><b>Departed:</b> {{ member.date_departed|date:"n/j/Y" }}</li>
+    {% endif %}
+    {% if member.date_missing %}
+      <li><b>Missing:</b> {{ member.date_missing|date:"n/j/Y" }}</li>
+    {% endif %}
+
+    {% ifequal section "departed" %}
+      {% if am.shopper %}<li><b>Was Proxy</b></li>{% endif %}
+      {% if am.account_contact %}<li><b>Was Member Equity Holder</b></li>{% endif %}
+    {% endifequal %}
+
+    {% if member.current_loa %}
+      <li>
+        <b>On leave:</b> {{ member.current_loa.start|date:"n/j/Y" }} 
+        to {{ member.current_loa.end|date:"n/j/Y" }}
+      </li>
+    {% endif %}
+
+    {% if am.account_contact %}
+      <!-- work status is only for member equity holders -->
+      <li><b>Work status:</b> {{ member.get_work_status_display }}</li>
+    {% endif %}
+
+    <li><b>Key:</b> 
+      {% if member.has_key %}Has Key{% else %}No Key{% endif %}
+    </li>
+
+    {% if request.user.is_staff %}
+    {% if member.card_number or member.card_facility_code or member.card_type %}
+    <li><b>Key #:</b>
+      {{ member.card_number }} / {{ member.card_facility_code }} / {{ member.card_type }}
+    </li>
+    {% endif %}
+    {% endif %}
+
+    {% if member.date_joined_is_realistic or request.user.is_staff %}
+    <li><b>Joined:</b> {{ member.date_joined|date:"n/j/Y" }}</li>
+    {% endif %}
+  </ul>
+</div>
+<hr class="endaccountmember">
