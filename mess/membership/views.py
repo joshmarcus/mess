@@ -150,7 +150,7 @@ def member_form(request, username=None):
             else:
                 is_errors = True
         # must be after member.save() in case member is newly added
-        if address_formset.is_valid() and phone_formset.is_valid():
+        if address_formset.is_valid() and phone_formset.is_valid() and not is_errors:
             for formset in (address_formset, phone_formset):
                 _setattr_formset_save(request, formset, 'member', member)
         else: 
