@@ -9,6 +9,7 @@ LIST_OBJECT_CHOICES = (
     ('Accounts', 'Accounts'),
     ('Members', 'Members'),
     ('Tasks', 'Tasks'),
+    ('Logs', 'Logs'),
 )
 LIST_INCLUDE_CHOICES = (
     ('Active', 'Active'),

@@ -2,6 +2,7 @@ from datetime import date, timedelta
 import datetime
 import time
 
+from django.contrib.admin.models import LogEntry
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
@@ -263,6 +264,11 @@ def reports(request):
                 '{% for y in x.accountmember_set.all %}{{ y.member }}{% if y.account_contact and not y.member.date_departed and not y.member.date_missing %}*{% endif %}<br>{% endfor %}\\*=Elector\r\nactive_member_count\r\ndeposit'),
 
         ]),
+        ('Logging', [
+            listrpt('Logs', 'General',
+                '',
+                'action_time\r\nuser\r\ncontent_type\r\nobject_id\r\nobject_repr\r\naction_flag\r\nchange_message'),
+        ]),
         ]]
     return render_to_response('reporting/reports.html', locals(),
             context_instance=RequestContext(request))
@@ -310,6 +316,10 @@ def list(request):
             objects = objects.exclude(time__gt=datetime.date.today()+datetime.timedelta(weeks=4), recur_rule__interval=4)
         blank_object = s_models.Task()
         outputters = [ListOutputter('<a href="{% url scheduling-task x.id %}">{{ x }}</a>', blank_object, 'Task')]
+    elif context['object'] == 'Logs':
+        objects = LogEntry.objects.all()
+        blank_object = LogEntry()
+        outputters = [ListOutputter('{{ x }}', blank_object, 'Log')]
     else:
         objects = [] 
         outputters = []
