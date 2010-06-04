@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('mess.accounting.views',
     url(r'^listen_to_paypal$', 'listen_to_paypal', name='listen_to_paypal'),
+    url(r'^paypal$', 'listen_to_paypal', name='paypal'),
     url(r'^transaction$', 'transaction', name='transaction'),
     url(r'^after_hours$', 'after_hours', name='after_hours'),
     url(r'^EBT$', 'EBT', name='EBT'),

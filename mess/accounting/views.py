@@ -21,13 +21,14 @@ today = datetime.date.today()
 
 @csrf_exempt
 def listen_to_paypal(request):
-    file = open('listen_to_paypal.log','a')
+    file = open('/var/www/mess/listen_to_paypal.log','a')
     file.write('\n\nListening to Paypal...%s..\n' % datetime.datetime.today())
     file.write(repr(request))
     file.write('\n\n')
     file.write(repr(request.POST))
     file.close()
-    return HttpResponse('Thank you.')
+    return render_to_response('accounting/test_paypal.html', locals(),
+            context_instance=RequestContext(request))
     
 
 # cashier permission is the first if
