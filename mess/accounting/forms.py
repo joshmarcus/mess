@@ -226,6 +226,8 @@ class CashsheetForm(forms.Form):
                 raise forms.ValidationError('note required for negative entry')
         if self.cleaned_data.get('misc') and not note:
             raise forms.ValidationError('note required for misc transaction')
+        if self.cleaned_data.get('deposit') and not note:
+            raise forms.ValidationError('note required for member equity transaction')
         if self.cleaned_data.get('ebt'):
             if (self.cleaned_data.get('ebt') != self.cleaned_data.get('regular_sales')
                 and self.cleaned_data.get('ebt') != self.cleaned_data.get('bulk_orders')):

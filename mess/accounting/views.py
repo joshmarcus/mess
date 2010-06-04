@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.utils import simplejson
+from django.views.decorators.csrf import csrf_exempt
 
 from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
@@ -17,6 +18,17 @@ from mess.membership import models as m_models
 from mess.core.context_processors import cashier_permission
 
 today = datetime.date.today()
+
+@csrf_exempt
+def listen_to_paypal(request):
+    file = open('listen_to_paypal.log','a')
+    file.write('\n\nListening to Paypal...%s..\n' % datetime.datetime.today())
+    file.write(repr(request))
+    file.write('\n\n')
+    file.write(repr(request.POST))
+    file.close()
+    return HttpResponse('Thank you.')
+    
 
 # cashier permission is the first if
 @login_required
