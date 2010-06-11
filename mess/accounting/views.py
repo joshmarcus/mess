@@ -31,8 +31,9 @@ def listen_to_paypal(request):
     file.write(repr(request))
     file.write('\n\n')
     file.write(repr(request.raw_post_data))
-    verify = urllib.urlopen('https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate&'+request.raw_post_data)
-    verified = verify.read()
+    verifyurl = 'https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate&'+urllib.urlencode(request.POST) 
+    file.write(repr(verifyurl))
+    verified = urllib.urlopen(verifyurl).read()
     file.write(repr(verified))
     file.close()
     return render_to_response('accounting/test_paypal.html', locals(),
