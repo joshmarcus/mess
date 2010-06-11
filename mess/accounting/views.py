@@ -1,4 +1,5 @@
 import datetime
+import urllib
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -21,11 +22,18 @@ today = datetime.date.today()
 
 @csrf_exempt
 def listen_to_paypal(request):
+    '''
+    this whole thing is documented by Paypal at:
+
+    '''
     file = open('/var/www/mess/listen_to_paypal.log','a')
     file.write('\n\nListening to Paypal...%s..\n' % datetime.datetime.today())
     file.write(repr(request))
     file.write('\n\n')
-    file.write(repr(request.POST))
+    file.write(repr(request.raw_post_data))
+    verify = urllib.urlopen('https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_notify-validate&'+request.raw_post_data)
+    verified = verify.read()
+    file.write(repr(verified))
     file.close()
     return render_to_response('accounting/test_paypal.html', locals(),
             context_instance=RequestContext(request))
