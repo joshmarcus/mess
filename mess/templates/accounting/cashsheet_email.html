@@ -1,0 +1,52 @@
+{% extends "accounting/cashsheet.html" %}
+
+{% block head %}
+<style>
+#header, #local-nav, #footer, #previous-day, #next-day {
+  display: none;
+}
+
+/* body { font-size:10pt; } */
+a { color:black; text-decoration:none; }
+
+h2 { margin:5pt; }
+
+.frozen { background:#888; font-weight:bold; color:#fff; text-align:center;}
+.notice { background:#888; font-weight:bold; color:#fff; text-align:center; }
+.oldbalance { text-align:center; } 
+table.cashsheet td.newbalance { padding-bottom:32pt; } /* blank cell for spacing */
+.tiny { font-size:7pt; }
+
+/* everything here is really designed for the timecard, specifically. */
+table { border-collapse:collapse; }
+table.data { border:0.5pt solid #000; width:100%; font-size:10pt; }
+table.data tr { border:0.5pt solid #777; }
+table.data th { text-align:left; }
+table.data td { line-height:12pt; 
+                padding-bottom:0pt; 
+                border-right:0.5pt solid #bbb; }
+table.data td.last { border-right:0.5pt solid #777; }
+table.data tr.timecard-extra td { padding-bottom:24pt; }
+.darkcolumnline {border-left: 2pt solid black;}
+
+.noprint { display:none; }
+.float-right { float:right; }
+h3.float-right { margin:0pt; }
+.scrunch-top { margin-top:0pt; }
+
+thead#timecard-thead th.squish { font-size:8pt; padding-right:-2em; }
+
+.pagebreakafter { page-break-after:always; }
+.rotation th, .rotation td { border:1pt solid black; padding:3pt; 
+    vertical-align:top; font-size:10pt; line-height:9pt; }
+.rotation-shift { min-height:50pt; border-bottom:1pt solid black; padding:5pt; }
+.rotation-shift hr { border:0pt; margin:1pt; }
+th.rotation-ideal { font-size:14pt; line-height:14pt; padding-bottom:17pt; }
+
+#primary-content-wrapper table.data td { 
+  padding:{{ row_height }}mm .25em {{ row_height }}mm .5em; 
+}
+</style>
+{% endblock %}
+
+
