@@ -10,10 +10,14 @@ setup_environ(settings)
 
 # these imports raise errors if placed before setup_environ(settings)
 import datetime
+from django.shortcuts import render_to_response
 from mess.scheduling import models
 from mess.scheduling.views import generate_reminder
+from mess.accounting.views import cashsheet
+from mess.accounting import forms as a_forms
+from mess.membership import models as m_models
 from django.template import loader, Context
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 
 def reminder_emails():
     '''
@@ -37,8 +41,32 @@ def reminder_emails():
         subject = subject.split(' ', 1)[1]
         send_mail(subject, message, None, [to])
 
+def cashsheet_email():
+    '''
+    bundles cash sheet report with its print css, then emails it to all staff.
+    '''
+    # the file is at /templates/accounting/cashsheet_email.html
+    form = a_forms.CashSheetFormatForm()
+    row_height = 2.5
+    rows_per_page = 25
+    # include ! accounts at top ("Mariposa" and "UNCLAIMED")
+    accounts = (list(m_models.Account.objects.filter(name__startswith='!')) +
+                list(m_models.Account.objects.present()))
+    outfile = render_to_response('accounting/cashsheet_email.html', locals())
+    # get staff email addresses.
+#    send_to = m_models.Member.objects.filter(user__is_staff=True).values_list('user__email', flat=True)
+    send_to = "(anna3lc@gmail.com,)"
+    # create email with the file as attachment.
+    subject = "cashsheet backup %s" % datetime.date.today()
+    message = "You are receiving this message because you are marked as mariposa staff in the MESS.  If MESS is down, contact MESS members according to instructions posted on bulletin board.  Then you can open and print the attached file using your web browser.  It contains a cashsheet accurate as of last night, which cashiers can use until MESS is restored."
+    # send them the file as an attachment.
+    email = EmailMessage(subject, message, None, send_to)
+    email.attach(cashsheet.html, outfile)
+    email.send()
+
 def main():
     reminder_emails()
+    cashsheet_email()
 
 if __name__ == "__main__":
     main()
