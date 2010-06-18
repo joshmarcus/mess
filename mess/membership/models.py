@@ -1,5 +1,6 @@
 from datetime import date
 import datetime
+import string
 from decimal import Decimal
 
 from django.conf import settings
@@ -283,6 +284,9 @@ class Account(models.Model):
     note = models.TextField(blank=True)
 
     objects = AccountManager()
+
+    def alphanumericname(self):
+        return ''.join(c for c in self.name if c in string.letters+string.digits+' ')
 
     def active_members(self):
         return Member.objects.filter(accountmember__in=
