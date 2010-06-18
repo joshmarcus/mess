@@ -23,19 +23,33 @@ today = datetime.date.today()
 @csrf_exempt
 def listen_to_paypal(request):
     '''
-    this whole thing is documented by Paypal at:
+    this whole thing is documented by Paypal at: (somewhere)
 
     '''
-    file = open('/var/www/mess/listen_to_paypal.log','a')
-    file.write('\n\nListening to Paypal...%s..\n' % datetime.datetime.today())
-    file.write(repr(request))
-    file.write('\n\n')
-    file.write(repr(request.raw_post_data))
-    verifyurl = 'https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate&'+urllib.urlencode(request.POST) 
-    file.write(repr(verifyurl))
-    verified = urllib.urlopen(verifyurl).read()
-    file.write(repr(verified))
-    file.close()
+    if request.POST:
+        file = open('/var/www/mess/listen_to_paypal.log','a')
+        file.write('\n\n\nListening to Paypal...%s..\n' % datetime.datetime.today())
+        file.write(repr(request))
+        payer_email = request.POST['payer_email']
+        receiver_email = request.POST['receiver_email']
+        item_number = request.POST['item_number']
+        payment_gross = request.POST['payment_gross']
+        txn_id = request.POST['txn_id']
+        verifyurl = 'https://www.paypal.com/cgi-bin/webscr?cmd=_notify-validate&'+urllib.urlencode(request.POST) 
+        verified = urllib.urlopen(verifyurl).read()
+        file.write('\n%s|%s|%s|%s|%s\n' % (payer_email, receiver_email, item_number, payment_gross, verified))
+        file.close()
+        assert verified == 'VERIFIED', 'Paypal not verified'
+        assert receiver_email == 'finance@mariposa.coop', 'Paypal wrong receiver'
+        assert item_number[:8] == 'Account-', 'Paypal wrong item number'
+        account_id = int(item_number[8:])
+        account = m_models.Account.objects.get(id=account_id)
+        already_did_transaction = models.Transaction.objects.filter(note__contains=txn_id).count()
+        if not already_did_transaction:
+            transaction = models.Transaction.objects.create(account=account,
+                            payment_type='Y',
+                            payment_amount=payment_gross,
+                            note='Paypal txn_id=%s from %s' % (txn_id, payer_email))
     return render_to_response('accounting/test_paypal.html', locals(),
             context_instance=RequestContext(request))
     

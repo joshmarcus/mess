@@ -27,6 +27,7 @@ PAYMENT_CHOICES = (
     ('M','Money Order'),
     ('E','EBT'),
     ('W','Work Credit'),
+    ('Y','Paypal'),
 )
 
 class HoursTransaction(models.Model):
