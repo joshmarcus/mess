@@ -1,5 +1,6 @@
 import datetime
 import urllib
+import decimal
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -48,7 +49,7 @@ def listen_to_paypal(request):
         if not already_did_transaction:
             transaction = models.Transaction.objects.create(account=account,
                             payment_type='Y',
-                            payment_amount=payment_gross,
+                            payment_amount=decimal.Decimal(payment_gross),
                             note='Paypal txn_id=%s from %s' % (txn_id, payer_email))
     return render_to_response('accounting/test_paypal.html', locals(),
             context_instance=RequestContext(request))
