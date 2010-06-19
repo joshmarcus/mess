@@ -286,7 +286,7 @@ class Account(models.Model):
     objects = AccountManager()
 
     def alphanumericname(self):
-        return ''.join(c for c in self.name if c in string.letters+string.digits+' ')
+        return ''.join(c for c in self.name if c in string.letters+string.digits+' ')[:50]
 
     def active_members(self):
         return Member.objects.filter(accountmember__in=

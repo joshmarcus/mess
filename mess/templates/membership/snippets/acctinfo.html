@@ -29,6 +29,7 @@
     </li>
   {% endif %}
   {% if request.user.is_staff %} <!-- only show Paypal to Staff until its tested more -->
+  <!-- the meaning of each variable is explained at https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables -->
   <li>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
       <input type="hidden" name="cmd" value="_xclick">
@@ -53,6 +54,7 @@
       <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
       <input type="hidden" name="notify_url" value="https://mess.mariposa.coop/accounting/listen_to_paypal">
       <input type="hidden" name="return" value="https://mess.mariposa.coop">
+      <input type="hidden" name="rm" value="1">
       <input type="submit" value="add money with Paypal">
     </form>
   </li>
