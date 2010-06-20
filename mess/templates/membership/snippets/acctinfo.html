@@ -28,7 +28,6 @@
     {% endif %}
     </li>
   {% endif %}
-  {% if request.user.is_staff %} <!-- only show Paypal to Staff until its tested more -->
   <!-- the meaning of each variable is explained at https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables -->
   <li>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -58,7 +57,6 @@
       <input type="submit" value="add money with Paypal">
     </form>
   </li>
-  {% endif %}
 </ul>
 
 <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>
