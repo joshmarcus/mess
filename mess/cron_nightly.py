@@ -67,7 +67,7 @@ def cashsheet_email():
     email.send()
 
 def main():
-#    reminder_emails()
+    reminder_emails()
     cashsheet_email()
 
 if __name__ == "__main__":
