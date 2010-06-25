@@ -48,15 +48,15 @@ def cashsheet_email():
     # some code copied from accounting views
     form = a_forms.CashSheetFormatForm()
     row_height = 2.5
-    rows_per_page = 25
+    rows_per_page = 22
     # include ! accounts at top ("Mariposa" and "UNCLAIMED")
     accounts = (list(m_models.Account.objects.filter(name__startswith='!')) +
                 list(m_models.Account.objects.present()))
     outfile = render_to_response('accounting/cashsheet_email.html', locals())
 
     # get staff email addresses.
-#    send_to = m_models.Member.objects.filter(user__is_staff=True).values_list('user__email', flat=True)
-    send_to = ('anna3lc@gmail.com',)  # for testing...
+    send_to = m_models.Member.objects.filter(user__is_staff=True).values_list('user__email', flat=True)
+#    send_to = ('anna3lc@gmail.com',)  # for testing...
     # create email with the file as attachment.
     subject = "cashsheet backup %s" % datetime.date.today()
     message = "You are receiving this message because you are marked as mariposa staff in the MESS.  If MESS is down, contact MESS members according to instructions posted on bulletin board.  Then you can open and print the attached file using your web browser.  It contains a cashsheet accurate as of last night, which cashiers can use until MESS is restored."
