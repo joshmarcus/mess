@@ -50,6 +50,7 @@ def reminder_emails():
         else:
             message = scheduled.render(Context({'task':task}))
             subject = scheduled_subject.render(Context({'task':task}))
+        subject = ''.join(subject.splitlines())
         try:
             mail.send_mail(subject, message, None, [task.member.user.email])
         except smtplib.SMTPRecipientsRefused, e:
