@@ -281,8 +281,8 @@ def account_form(request, id=None):
             else:
                 return HttpResponseRedirect(reverse('accounts'))
         if 'delete' in request.POST:
-            log(request, account, 'delete')
             account.delete()
+            log(request, account, 'delete')
             return HttpResponseRedirect(reverse('accounts'))
         form = forms.AccountForm(request.POST, instance=account)
         related_member_formset = forms.RelatedMemberFormSet(request.POST, 
