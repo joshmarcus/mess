@@ -39,12 +39,12 @@ class HoursTransaction(models.Model):
     hours_balance = models.DecimalField(max_digits=5, decimal_places=2)
     entered_by = models.ForeignKey(User, blank=True, null=True)
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self, *args, **kwargs):
         old_balance = self.account.hours_balance
         new_balance = old_balance + self.hours_balance_change
         self.account.hours_balance = self.hours_balance = new_balance
         self.account.save()
-        super(HoursTransaction, self).save(force_insert, force_update)
+        super(HoursTransaction, self).save(*args, **kwargs)
 
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True) #never have to deal w/ this in a form.
@@ -68,7 +68,7 @@ class Transaction(models.Model):
         return '%s %s' % (self.account, 
                           self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self, *args, **kwargs):
         # purchase_amount and purchase_type must appear together
         if bool(self.purchase_amount) is not bool(self.purchase_type):
             self.purchase_amount = 0
@@ -82,7 +82,7 @@ class Transaction(models.Model):
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance
         self.account.save()
-        super(Transaction, self).save(force_insert, force_update)
+        super(Transaction, self).save(*args, **kwargs)
 
     def fixes_target(self):
         '''
@@ -171,12 +171,12 @@ class EBTBulkOrder(models.Model):
                 note='(reversed) '+self.note)
         duplicate.save()
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self, *args, **kwargs):
         if self.id:
             oldself = EBTBulkOrder.objects.get(id=self.id)
             if oldself.paid_by_transaction:
                 raise AssertionError, "cannot edit EBT bulk order already paid"
-        super(EBTBulkOrder, self).save(force_insert, force_update)
+        super(EBTBulkOrder, self).save(*args, **kwargs)
 
 
 class StoreDay(models.Model):
