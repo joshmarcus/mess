@@ -137,6 +137,9 @@ USER_PASSES_TEST_URLS = (
     (r'', lambda u: u.is_staff),
 )
 
+# Uncomment for email testing
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ## mess project constants below ##
 
 try:

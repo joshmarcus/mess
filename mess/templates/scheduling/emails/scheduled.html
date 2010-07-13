@@ -1,0 +1,33 @@
+Dear {{ task.member.user.first_name }},
+
+Your Mariposa Food Co-op member work shift is scheduled for:
+    Date: {{ task.time|date:"l, F j, Y" }}
+    Time: {{ task.time|date:"g:ia" }}
+    Job: {{ task.job }}
+    Account: {{ task.account }}
+
+If you cannot work at this time, it is your responsibility to contact
+members who work the same shift (same day of the week and time,
+different week of the rotation) and attempt to arrange a one-time
+shift swap. Visit the store to collect names, phone numbers, and shift
+dates of potential other work shifters. If you find a match, be sure
+you know one another's account names and the dates/times you are
+trading. You must let a staff member know about the swap so we know
+who to expect both days.
+
+As a last resort or if you have banked hours you want to use, you may
+call the co-op at 215-729-2121 at least 48 hours before your shift. If
+you do not have banked hours, you will then need to schedule and work
+a makeup.
+
+Please be aware a missed shift without timely notice (with the
+exceptions of emergencies/sickness) will freeze your account: no one
+will be able to shop on the account until all owed hours are made-up.
+Make-ups can be scheduled through the store. Remember, the co-op
+depends on your work as a member, so please make every effort to
+attend as scheduled. 
+
+We'll see you on {{ task.time|date:"l" }}!
+
+Mariposa Food Co-op
+
