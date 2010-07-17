@@ -46,8 +46,15 @@ class UserPassesTestMiddleware(object):
         
     def process_view(self, request, view_func, view_args, view_kwargs):
         # don't wrap if function is already wrapped
-        if getattr(view_func, 'decorator', None):  
+
+        #  This getattr line doesn't work and is breaking non-staff access to 
+        # everything as of 7/17/2010.  So I replaced it with low-level 
+        # "view_func.func_code_co_name", which should *not* be the right way
+        # to do it, but at least it works for now.  --Paul
+        #if getattr(view_func, 'decorator', None):  
+        if view_func.func_code.co_name = '_wrapped_view':
             return 
+
         for regex, test in self.urls:
             if regex.search(request.path): 
                 if test:  # return view wrapped in test
