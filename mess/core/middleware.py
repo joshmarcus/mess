@@ -52,7 +52,7 @@ class UserPassesTestMiddleware(object):
         # "view_func.func_code_co_name", which should *not* be the right way
         # to do it, but at least it works for now.  --Paul
         #if getattr(view_func, 'decorator', None):  
-        if view_func.func_code.co_name = '_wrapped_view':
+        if view_func.func_code.co_name == '_wrapped_view':
             return 
 
         for regex, test in self.urls:
