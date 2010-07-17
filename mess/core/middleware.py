@@ -51,7 +51,10 @@ class UserPassesTestMiddleware(object):
         # everything as of 7/17/2010.  So I replaced it with low-level 
         # "view_func.func_code_co_name", which should *not* be the right way
         # to do it, but at least it works for now.  --Paul
-        #if getattr(view_func, 'decorator', None):  
+        # But the getattr part is still needed to make sure autocomplete
+        # will still work.  This thing is all confusing!  --Paul
+        if getattr(view_func, 'decorator', None):  
+            return
         if view_func.func_code.co_name == '_wrapped_view':
             return 
 
