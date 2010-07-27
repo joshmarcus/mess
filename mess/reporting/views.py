@@ -194,6 +194,9 @@ def reports(request):
 
             ('Transaction Summary',reverse('trans_summary')),
 
+            listrpt('Accounts','Purchases Per Account Last 90 Days',
+                '','TSum:0:90:P\r\nTSum:0:90:B\r\nTSum:0:90:A'),
+
             listrpt('Accounts','All Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count',
                 include='All'),
@@ -380,17 +383,30 @@ class ListOutputter:
         self.field = field
         self.total = 0
         self.name = name or field.title()
-        if '{' in field:
+        if not field:
+            self.fieldpath = []
+            self.render = self.render_by_getattr
+        elif '{' in field:
             self.render = self.render_as_template
             if '\\' in field:
                 self.field, self.name = field.split('\\',1)
             self.template = Template(self.field)
+        elif field[:5] == 'TSum:':
+            daysago, daysprior, self.tsumtype = field[5:].split(':')
+            self.daterange = (datetime.date.today()-datetime.timedelta(int(daysprior)),
+                              datetime.date.today()-datetime.timedelta(int(daysago)))
+            self.render = self.render_tsum            
+            self.name = 'Sum of %s' % dict(a_models.PURCHASE_CHOICES)[self.tsumtype]
         else:
-            if self.field:
-                self.fieldpath = self.field.split('.')
-            else:
-                self.fieldpath = []
+            self.fieldpath = self.field.split('.')
             self.render = self.render_by_getattr
+
+    def render_tsum(self, object, export=False):
+        ts = object.transaction_set.filter(timestamp__range=self.daterange,
+            purchase_type=self.tsumtype).aggregate(Sum('purchase_amount')).values()[0]
+        if ts:
+            self.total += ts
+        return ts
 
     def render_as_template(self, object, export=False):
         object_context = Context({'x':object})
