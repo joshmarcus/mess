@@ -137,7 +137,8 @@ def cashsheet_input(request):
     else:
         form = forms.CashsheetForm()
     transactions = models.Transaction.objects.filter(
-            timestamp__range=(today,today+datetime.timedelta(1)))
+            timestamp__range=(today,today+datetime.timedelta(1))).exclude(
+            purchase_type='U').exclude(purchase_type='O')
     can_reverse = True
     if request.user.is_staff:
         show_advanced_fields = True
