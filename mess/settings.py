@@ -137,6 +137,10 @@ USER_PASSES_TEST_URLS = (
     (r'', lambda u: u.is_staff),
 )
 
+AUTHENTICATION_BACKENDS = (
+    'mess.core.backends.ModelBackend',
+)
+
 # Uncomment for email testing
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
