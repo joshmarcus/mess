@@ -3,11 +3,11 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
-    <h2>Swap Shifts</h2>
+    <h2>Trade Shifts</h2>
     <table class="data">
       <tr>
         <th>Original Shift</th>
-        <th>Swap Shift</th>
+        <th>Trade Shift</th>
       </tr>
       <td>
         {{ original.member.user.first_name }}
@@ -16,16 +16,16 @@
         {{ original.hours }} hours
       </td>
       <td>
-        {% if swap_member %}
-          {{ swap_member.user.first_name }}
-          (<a href="{{ swap_member.get_primary_account.get_absolute_url }}">{{ swap_member.get_primary_account }}</a>)<br>
-          <form method="post"> <!-- pick task to swap -->
+        {% if trade_member %}
+          {{ trade_member.user.first_name }}
+          (<a href="{{ trade_member.get_primary_account.get_absolute_url }}">{{ trade_member.get_primary_account }}</a>)<br>
+          <form method="post"> <!-- pick task to trade -->
             {% csrf_token %}
             <table>{{ form }}</table>
-            <input type="submit" value="Swap">
+            <input type="submit" value="Trade">
           </form>
         {% else %}
-          <form method="GET"> <!-- search for member to swap with -->
+          <form method="GET"> <!-- search for member to trade with -->
             <table>{{ form }}</table>
             <input type="hidden" name="original" value="{{ original.id }}">
             <input type="submit" value="Search">

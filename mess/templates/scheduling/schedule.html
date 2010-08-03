@@ -114,7 +114,7 @@
                 </form>
               {% endif %}
               {% if task.assigned %}
-                <a href="{% url swap %}?original={{ task.id }}">swap</a>
+                <a href="{% url trade %}?original={{ task.id }}">trade</a>
               {% endif %}
             {% endif %}
           </td>

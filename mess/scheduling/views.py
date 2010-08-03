@@ -482,54 +482,54 @@ def switch(request):
     return render_to_response('scheduling/switch.html', locals(),
                               context_instance=RequestContext(request))
 
-def swap(request):
+def trade(request):
     """ 
-    two members swap shifts (one-time), and tell a staff person 
+    two members trade shifts (one-time), and tell a staff person 
     uses member.remove_from_shifts to break recur_rules where needed
     """
     original = models.Task.objects.get(id=request.GET['original'])
     if request.method == 'POST':
-        swap = models.Task.objects.get(id=request.POST['task'])
+        trade = models.Task.objects.get(id=request.POST['task'])
         DO_IT_RIGHT = False
         if DO_IT_RIGHT: 
             duporiginal = original.excuse_and_duplicate()
-            duporiginal.account = swap.account
-            duporiginal.member = swap.member
+            duporiginal.account = trade.account
+            duporiginal.member = trade.member
             duporiginal.save()
-            dupswap = swap.excuse_and_duplicate()
-            dupswap.account = original.account
-            dupswap.member = original.member
-            dupswap.save()
+            duptrade = trade.excuse_and_duplicate()
+            duptrade.account = original.account
+            duptrade.member = original.member
+            duptrade.save()
         else: # Do it wrong, breaking the recur_rules into halves
             original_account = original.account
             original_member = original.member
             original_member.remove_from_shifts(original.time.date(), 
                             original.time.date()+datetime.timedelta(1))
-            swap_account = swap.account
-            swap_member = swap.member
-            swap_member.remove_from_shifts(swap.time.date(), 
-                        swap.time.date()+datetime.timedelta(1))
-            original.account = swap_account
-            original.member = swap_member
+            trade_account = trade.account
+            trade_member = trade.member
+            trade_member.remove_from_shifts(trade.time.date(), 
+                        trade.time.date()+datetime.timedelta(1))
+            original.account = trade_account
+            original.member = trade_member
             original.recur_rule = None
             original.save()
-            swap.account = original_account
-            swap.member = original_member
-            swap.recur_rule = None
-            swap.save()
+            trade.account = original_account
+            trade.member = original_member
+            trade.recur_rule = None
+            trade.save()
         return HttpResponseRedirect(reverse('scheduling-schedule', 
                                     args=[original.time.date()]))
-    if 'member' in request.GET:   # member to swap with
-        swap_member = m_models.Member.objects.get(id=request.GET['member'])
+    if 'member' in request.GET:   # member to trade with
+        trade_member = m_models.Member.objects.get(id=request.GET['member'])
         form = forms.PickTaskForm()
         form.fields['task'].queryset = models.Task.objects.filter(
-                   member=swap_member, 
+                   member=trade_member, 
                    time__range=(today - datetime.timedelta(7),
                                 today + datetime.timedelta(180)))
         form.fields['task'].initial = form.fields['task'].queryset[0].id
     else:
         form = m_forms.PickMemberForm()
-    return render_to_response('scheduling/swap.html', locals(),
+    return render_to_response('scheduling/trade.html', locals(),
                               context_instance=RequestContext(request))
         
 def skills(request):
