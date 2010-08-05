@@ -11,7 +11,7 @@
     {% include "scheduling/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
       <h3 class="float-right">(Rotations: {{ old_rotations }})</h3>
-      <h2>
+      <h2 style="text-align:center;">
         <a href="{% url scheduling-timecard previous_date|date:"Y-m-d" %}" id="previous-day">&larr;</a> 
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-timecard next_date|date:"Y-m-d" %}" id="next-day">&rarr;</a>
