@@ -29,7 +29,7 @@
           <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
           {% if request.user.is_staff %}<li class="last-item"><a href="http://trac.rc98.net/mess/wiki/UserGuide">Help</a></li>{% endif %}
           {% else %}
-          <li class="last-item"><a href="{% url login %}" >Log in</a></li>
+          <li class="last-item"><a href="{% url welcome %}" >Log in</a></li>
           {% endif %}
         </ul>
         {% endblock login %}

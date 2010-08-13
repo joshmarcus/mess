@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
 
-    url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    #url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^passwordchange/$', auth_views.password_change, name='auth_password_change'),
     url(r'^passwordchange/done/$', auth_views.password_change_done, name='auth_password_change_done'),

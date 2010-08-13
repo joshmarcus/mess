@@ -1,4 +1,6 @@
 from django.contrib.auth import forms as auth_forms
+from django.contrib.auth import authenticate, login
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import get_template
@@ -20,7 +22,18 @@ def welcome(request):
     entries = feed.entries[:MAX_ENTRIES]
     context['rss_entries'] = entries
 
-    context['form'] = auth_forms.AuthenticationForm()
+    if request.method == 'POST':
+        auth_form = auth_forms.AuthenticationForm(data=request.POST)
+        if auth_form.is_valid():
+            user = auth_form.get_user()
+            login(request, user)
+            redirect = request.POST.get('next') or reverse('welcome')
+            #raise Exception, auth_form.cleaned_data
+            return HttpResponseRedirect(redirect)
+    else:
+        auth_form = auth_forms.AuthenticationForm()
+        context['next'] = request.GET.get('next')
+    context['form'] = auth_form
 
     threads = f_models.Post.objects.threads()
     context['threads'] = threads[:MAX_ENTRIES]
