@@ -27,12 +27,12 @@ def welcome(request):
         if auth_form.is_valid():
             user = auth_form.get_user()
             login(request, user)
-            redirect = request.POST.get('next') or reverse('welcome')
+            redirect = request.POST.get('next', reverse('welcome'))
             #raise Exception, auth_form.cleaned_data
             return HttpResponseRedirect(redirect)
     else:
         auth_form = auth_forms.AuthenticationForm()
-        context['next'] = request.GET.get('next')
+        context['next'] = request.GET.get('next', '')
     context['form'] = auth_form
 
     threads = f_models.Post.objects.threads()
