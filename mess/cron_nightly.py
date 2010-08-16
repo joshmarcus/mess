@@ -44,7 +44,7 @@ def reminder_emails():
         if task.excused:
             message = excused.render(Context({'task':task}))
             subject = excused_subject.render(Context({'task':task}))
-        elif task.job.is_dancer:
+        elif task.job.is_dancer():
             message = dancer.render(Context({'task':task}))
             subject = dancer_subject.render(Context({'task':task}))
         else:
