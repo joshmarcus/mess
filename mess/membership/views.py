@@ -73,7 +73,7 @@ def member(request, username):
     user = get_object_or_404(User, username=username)
     if not request.user.is_staff and not (request.user.is_authenticated() 
             and request.user.id == user.id):
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('welcome'))
     context = RequestContext(request)
     member = user.get_profile()
     context['member'] = member
@@ -255,7 +255,7 @@ def account(request, id):
     request_member = models.Member.objects.get(user=request.user)
     if not request.user.is_staff and not (request.user.is_authenticated() 
             and request_member in account.members.all()):
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('welcome'))
     context = RequestContext(request)
     context['account'] = account
     transactions = account.transaction_set.all()
@@ -523,7 +523,7 @@ def _get_current_page(pager, page_number):
 # merged with member_edit into member_form
 #def member_add(request):
 #    if not request.user.is_staff:
-#        return HttpResponseRedirect(reverse('login'))
+#        return HttpResponseRedirect(reverse('welcome'))
 #    is_errors = False
 #    # a fake member (no member should have an id of 0) will return
 #    # no addresses, phones, or emails
