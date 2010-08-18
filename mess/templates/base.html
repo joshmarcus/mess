@@ -1,25 +1,48 @@
 {% load core_tags %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!doctype html>
+<html lang="en" class="no-js">
   <head>
-    <meta name="generator" content=""/>
+		<meta charset="utf-8">
     <meta name="author" content="MESS Team"/>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <link href="{{ MEDIA_URL }}css/base.css" type="text/css" rel="Stylesheet" media="screen" />
-    <link href="{{ MEDIA_URL }}css/print.css" type="text/css" rel="stylesheet" media="print" />
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+
+    <title>{% block title %}The MESS: {{ page_name }}{% endblock %}</title>
+  
+		<link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="{{ MEDIA_URL }}css/base.css" rel="stylesheet" media="screen" />
+    <link href="{{ MEDIA_URL }}css/print.css" rel="stylesheet" media="print" />
+
+		{# Modernize IE to handle HTML5 elements #} 
+		<script src="js/modernizr-1.5.min.js"></script>
+		
+		{# serve jQuery via google's CDN but fall to local if it's unavailable #}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script>!window.jQuery && document.write('<script src="js/jquery-1.4.2.min.js"><\/script>')</script>
+
+
+    <script src="{{ MEDIA_URL }}js/base.js"></script>
     {# used by Django autocomplete widget #} 
     {{ form.media }}
+
     {% if form.media %}
       <link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
     {% endif %}
-    <title>{% block title %}The MESS: {{ page_name }}{% endblock %}</title>
+
     {% block head %}{% endblock %}
+
   </head>
   <!-- class yui-skin-sam on the body tends to misalign the autocomplete :( -->
   <!-- <body class="yui-skin-sam"> -->
-  <body>
+
+<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
+
     <div id="wrapper">	
       <div id="header">
         {% block login %}
@@ -96,4 +119,3 @@
     </div><!--end of wrapper-->
   </body>
 </html>
-
