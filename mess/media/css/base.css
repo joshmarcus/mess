@@ -72,7 +72,8 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 #main_nav {background:#48586f; height:35px; clear:both;}
 	#main_nav ul.primary {height:40px; line-height:35px; border-left:1px solid #556983;}
 	#main_nav ul.primary li {float:left; font-size:14px; border-right:1px solid #556983;}
-		#main_nav ul.primary li a {display:block; float:left; margin-right:10px; padding:0 0 0 15px;}
+		#main_nav ul.primary li span.item {padding-right:15px;}
+		#main_nav ul.primary li a {display:block; float:left; padding:0 0 0 15px;}
 			#main_nav ul.primary li a:hover {text-decoration:underline; /*background:#7a8697;*/}
 			#main_nav ul.primary li.current span.item {background:#e5e8ed;}	
 				#main_nav ul.primary li.current span.item a {color:#313131;}
@@ -80,7 +81,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 		#main_nav ul.primary li span {display:block; float:left; color:#efefef;}
 			#main_nav ul.primary li span.item:hover {cursor:pointer; background:#7a8697;}
 				#main_nav ul.primary li.current span.item:hover {background:#e5e8ed;}
-			#main_nav ul.primary li span.more {border:1px solid #ccc; text-align:center; margin-right:10px; width:10px; height:10px; line-height:10px; margin-top:12px; overflow:hidden;}
+			#main_nav ul.primary li span.more {border:1px solid #ccc; text-align:center; margin-left:10px; width:10px; height:10px; line-height:10px; margin-top:12px; overflow:hidden;}
 				#main_nav ul.primary li span.more:hover {background:black;}
 	#main_nav ul.primary li ul.sub_nav {border:none; background:#7a8697; clear:left;}
 		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; float:none; border:none;}
@@ -92,7 +93,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 	#secondary_nav ul li {float:left; padding:0 7px; border-right:1px solid #ccc;}
 
 /*main_content*/
-#main_content {background:#fff;}
+#main_content {background:#fff; border-top:40px solid #e5e8ed;}
 	#main_content .section_wrap {padding:20px 0 40px 0;}
 
 /*footer*/

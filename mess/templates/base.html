@@ -80,22 +80,21 @@
 					<ul class="primary">
 
 					{% if user.is_authenticated %}
-						<li>
+						<li{% if location.path|match:'/$' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url welcome %}"{% if location.path|match:'/$' %} class="current"{% endif %}>Dashboard</a>
-								<span class="more">View more</span>
+								<a href="{% url welcome %}">Dashboard</a>
 							</span>	
 							</li>
-						<li>
+						<li{% if location.path|match:'/membership' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url accounts %}"{% if location.path|match:'/membership' %} class="current"{% endif %}>Membership</a>
+								<a href="{% url accounts %}">Membership</a>
 								<span class="more">View more</span>
 							</span>
 						</li>
 						{% if not user.is_staff %}
-							<li>
+							<li{% if location.path|match:'/scheduling' %} class="current"{% endif %}>
 								<span class="item">
-									<a href="{% url myschedule %}"{% if location.path|match:'/scheduling' %} class="current"{% endif %}>Scheduling</a>
+									<a href="{% url myschedule %}">Scheduling</a>
 									<span class="more">View more</span>
 								</span>
 							</li>
@@ -103,42 +102,40 @@
 					{% endif %}
 
 					{% if user.is_staff %}
-						<li>
+						<li{% if location.path|match:'/scheduling' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url scheduling-schedule-today %}"{% if location.path|match:'/scheduling' %} class="current"{% endif %}>Scheduling</a>
+								<a href="{% url scheduling-schedule-today %}">Scheduling</a>
 								<span class="more">View more</span>
 							</span>
 						</li>
-						<li>
+						<li{% if location.path|match:'/reporting' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url reports %}"{% if location.path|match:'/reporting' %} class="current"{% endif %}>Reports</a>
-								<span class="more">View more</span>
+								<a href="{% url reports %}">Reports</a>
 							</span>
 						</li>
 					{% endif %}
 
 					{% if can_cashier_now %}
-						<li>
+						<li{% if location.path|match:'/accounting' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url cashsheet_input %}"{% if location.path|match:'/accounting' %} class="current"{% endif %}>Cashier</a>
+								<a href="{% url cashsheet_input %}">Cashier</a>
 								<span class="more">View more</span>
 							</span>
 						</li>
 					{% endif %}
 
 					{% if user.is_authenticated %}
-						<li>
+						<li{% if location.path|match:'/forum' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url forum-menu %}"{% if location.path|match:'/forum' %} class="current"{% endif %}>Forum</a>
-								<span class="more">View more</span>
+								<a href="{% url forum-menu %}">Forum</a>
 							</span>
 						</li>
 					{% endif %}
 					
 					{% if perms.telethon.can_fundraise or user.is_staff %}
-						<li>
+						<li{% if location.path|match:'/fundraising' %} class="current"{% endif %}>
 							<span class="item">
-								<a href="{% url telethon-index %}"{% if location.path|match:'/fundraising' %} class="current"{% endif %}>Fundraising</a>
+								<a href="{% url telethon-index %}">Fundraising</a>
 								<span class="more">View more</span>
 							</span>
 						</li>
