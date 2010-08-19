@@ -11,9 +11,13 @@
     <title>{% block title %}The MESS: {{ page_name }}{% endblock %}</title>
   
 		<link rel="shortcut icon" href="/favicon.ico">
+		
+		{# leaving legacy css for now #}
+    <link href="{{ MEDIA_URL }}css-legacy/base.css" rel="stylesheet" media="screen" />
+    <link href="{{ MEDIA_URL }}css-legacy/print.css" rel="stylesheet" media="print" />
 
+		{# ui-2.0 #}
     <link href="{{ MEDIA_URL }}css/base.css" rel="stylesheet" media="screen" />
-    <link href="{{ MEDIA_URL }}css/print.css" rel="stylesheet" media="print" />
 
 		{# Modernize IE to handle HTML5 elements #} 
 		<script src="js/modernizr-1.5.min.js"></script>
