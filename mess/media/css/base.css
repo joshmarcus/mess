@@ -11,10 +11,9 @@
 * {margin:0; padding:0; font-weight:normal;}
 body {font-size:12px; background:#48586f; color:#333; font-family:Arial, Helvetica, sans-serif; line-height:1.3em; text-align:center;}
 img {display:block; border:none;}
-h1 {color:#111; font-weight:bold; font-size:24px; letter-spacing:-.03em; margin-bottom:10px; line-height:28px;}
-p, ul {}
+h1 {color:#111; font-weight:bold; font-size:24px; letter-spacing:-.03em; margin-bottom:12px; line-height:28px;}
+h2 {color:#111; font-weight:bold; font-size:18px; letter-spacing:-.03em; margin:12px 0;}
 ul li, ol li {list-style-type:none;}
-li {margin-bottom:5px;}
 address, blockquote, small, cite, time, header, menu, article, section, footer, aside, nav {display:block; font-style:normal;}
 a, a:visited {color:#4183c4; outline:none;}
 a:hover, a:focus {color:#48586f;}
@@ -82,7 +81,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 			#main_nav ul.primary li span.item:hover {cursor:pointer; background:#7a8697;}
 				#main_nav ul.primary li.current span.item:hover {background:#e5e8ed;}
 			#main_nav ul.primary li span.more {border:1px solid #ccc; text-align:center; margin-left:10px; width:10px; height:10px; line-height:10px; margin-top:12px; overflow:hidden;}
-				#main_nav ul.primary li span.more:hover {background:black;}
+			#main_nav ul.primary li span.more:hover {background:black;}
 	#main_nav ul.primary li ul.sub_nav {border:none; background:#7a8697; clear:left;}
 		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; float:none; border:none;}
 	
@@ -95,6 +94,8 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 /*main_content*/
 #main_content {background:#fff; border-top:40px solid #e5e8ed;}
 	#main_content .section_wrap {padding:20px 0 40px 0;}
+		#main_content p, #main_content ul {font-size:13px; line-height:19px; margin:15px 0;}
+			#main_content ul li {margin-bottom:6px;}
 
 /*footer*/
 #global_footer {background:#48586f; padding:20px 0 40px 0; overflow:hidden; color:#efefef;}
