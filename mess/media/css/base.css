@@ -82,7 +82,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 				#main_nav ul.primary li.current span.item:hover {background:#e5e8ed;}
 			#main_nav ul.primary li span.more {border:1px solid #ccc; text-align:center; margin-left:10px; width:10px; height:10px; line-height:10px; margin-top:12px; overflow:hidden;}
 			#main_nav ul.primary li span.more:hover {background:black;}
-	#main_nav ul.primary li ul.sub_nav {border:none; background:#7a8697; clear:left;}
+	#main_nav ul.primary li ul.sub_nav {position:relative; border:none; background:#7a8697; clear:left;}
 		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; float:none; border:none;}
 	
 #secondary_nav {background:#e5e8ed; height:45px; border-bottom:1px solid #ccc;}
