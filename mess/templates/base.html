@@ -26,8 +26,12 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<script>!window.jQuery && document.write('<script src="js/jquery-1.4.2.min.js"><\/script>')</script>
 
+		{# old javascript files #}
+		<script src="{{ MEDIA_URL }}js-legacy/base.js"></script>
 
+		{# ui-2.0 javascript files #}
     <script src="{{ MEDIA_URL }}js/base.js"></script>
+		
     {# used by Django autocomplete widget #} 
     {{ form.media }}
 
@@ -90,6 +94,11 @@
 								<a href="{% url accounts %}">Membership</a>
 								<span class="more">View more</span>
 							</span>
+							<ul class="sub_nav">
+								<li><a href="">Test One</a></li>
+								<li><a href="">Test Two</a></li>
+								<li><a href="">Test Three</a></li>
+							</ul>
 						</li>
 						{% if not user.is_staff %}
 							<li{% if location.path|match:'/scheduling' %} class="current"{% endif %}>
