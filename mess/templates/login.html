@@ -1,11 +1,7 @@
 {% extends "base.html" %}
 
-{% block login %}{% endblock %}
-
 {% block content %}
-  <div id="double-column">
-    <div id="primary-content-wrapper">
-      <div class="attention">
+
         {% if not user.is_authenticated %}
         <form class="standard" id="login" method="post" action=".">
           {% csrf_token %}
@@ -13,40 +9,22 @@
           {% if form.errors %}
           <p class="error">Incorrect username/email or password. If you can't remember your password, go ahead and <a href="{% url auth_password_reset %}">reset it</a>.</p>
           {% endif %}
-          <table>
-            <tr>
-              <th>
-                <label for="id_username">Username/email:&nbsp;</label>
-              </th>
-              <td>{{form.username}}</td>
-            </tr>
-            <tr>
-              <th>
-                <label for="id_password">Password:&nbsp;</label>
-              </th>
-              <td>{{form.password}}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <input class="button" type="submit" value="Log in"/>
-              </td>
-            </tr>
-          </table>
+          <label for="id_username">Username/email:</label>
+          {{form.username}}
+          <label for="id_password">Password:</label>
+          {{form.password}}
+          <input class="button" type="submit" value="Log in"/>
         </form>
-          {% if form.has_errors %}
+
+        {% if form.has_errors %}
         <p>If you are having trouble logging in, please contact a staff member.</p>
-          {% endif %}
+        {% endif %}
+
         {% else %}
         <ul>
           <li>Logged in as <a href="{% url member user.username %}" >{{ user.username }}</a></li>
           <li class="last-item"><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
         </ul>
         {% endif %}
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript">
-    document.getElementById('id_username').focus();
-  </script>
+
 {% endblock %}
