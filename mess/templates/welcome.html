@@ -2,7 +2,13 @@
 
 {% block title %}Welcome to The MESS{% endblock %}
 
-{% block bodyclass %}class="welcome"{% endblock %}
+{% block bodyclass %} 
+	{% if user.is_anonymous %}
+		class="login"
+	{% else %}
+		class="welcome"
+	{% endif %}
+{% endblock %}
 
 {% block content %}
 
