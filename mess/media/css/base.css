@@ -62,9 +62,9 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 	#masthead a, #masthead a:visited {color:#efefef; font-weight:bold; text-decoration:none;}
 	#masthead .section_wrap.shell_top {height:75px;}
 	#mess_logo {float:left; width:225px; text-indent:-5000px; height:55px; margin-top:9px; background:url('../images/sprites/base_sprite.png') no-repeat 0 -20px;}
-	#utility_nav {float:right; background:#48586f; border-bottom-left-radius:7px; border-bottom-right-radius:7px;  padding:10px 15px;}
+	#utility_nav {color:#efefef; float:right; background:#48586f; border-bottom-left-radius:7px; border-bottom-right-radius:7px;  padding:10px 15px;}
 		#utility_nav {-moz-border-radius-bottomright:7px; -moz-border-radius-bottomleft:7px;} /*damn mozilla vendor prefixes*/
-			#utility_nav ul li {float:left; padding:0 10px; border-right:1px solid #bbb;}
+			#utility_nav ul li {float:left; padding:0 10px; border-right:1px solid #556983;}
 				#utility_nav ul li:last-child {border:none;}
 					#masthead #utility_nav ul li a {font-weight:normal;}
 						#masthead #utility_nav ul li a:hover {text-decoration:underline;}
