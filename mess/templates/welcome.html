@@ -18,7 +18,7 @@
 	<h1>Welcome to The MESS (Mariposa's Electronic Storage System)</h1>
 	<p>Members and staff, please log in.</p>
 
-	<form id="login" method="post">
+	<form id="login" class="gradiated" method="post">
 
 		{% csrf_token %}
 		<input type="hidden" name="next" value="{{ next }}" />
@@ -32,13 +32,15 @@
 			</li>
 				<li>{{form.username}}</li>
 			<li>
-				<label for="id_password">Password</label>
+				<label for="id_password">Password <a href="">Forgot your password?</a></label>
 			</li>
 				<li>{{form.password}}</li>
 			<li>
 				<input class="button" type="submit" value="Log in"/>
 			</li>
 		</ol>
+
+		<p></p>
 
 	</form>
 
