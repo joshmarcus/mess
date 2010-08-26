@@ -20,11 +20,11 @@
     <link href="{{ MEDIA_URL }}css/base.css" rel="stylesheet" media="screen" />
 
 		{# Modernize IE to handle HTML5 elements #} 
-		<script src="js/modernizr-1.5.min.js"></script>
+		<script src="{{ MEDIA_URL }}js/modernizr-1.5.min.js"></script>
 		
 		{# serve jQuery via google's CDN but fall to local if it's unavailable #}
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-		<script>!window.jQuery && document.write('<script src="js/jquery-1.4.2.min.js"><\/script>')</script>
+		<script>!window.jQuery && document.write('<script src="{{ MEDIA_URL }}js/jquery-1.4.2.min.js"><\/script>')</script>
 
 		{# old javascript files #}
 		<script src="{{ MEDIA_URL }}js-legacy/base.js"></script>
