@@ -1,5 +1,9 @@
-$(document).ready(function() {
-	
+//Focus cursor on input#login
+function focusLogin() {
+	$('input#id_username').focus();
+}
+
+$(document).ready(function() {	
 	//hidd sub_nav on document.ready and display it when span.more is clicked
 	$('.sub_nav').hide();
 	$('#main_nav ul li .more').click(function() {

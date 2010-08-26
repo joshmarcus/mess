@@ -2,6 +2,14 @@
 
 {% block title %}Welcome to The MESS{% endblock %}
 
+{% block head %}
+<script>
+$(document).ready(function() {
+focusLogin();
+});
+</script>
+{% endblock %}
+
 {% block bodyclass %} 
 	{% if user.is_anonymous %}
 		class="login"
