@@ -15,6 +15,7 @@ h1 {color:#111; font-weight:bold; font-size:24px; letter-spacing:-.03em; margin-
 h2 {color:#111; font-weight:bold; font-size:18px; letter-spacing:-.03em; margin:12px 0;}
 ul li, ol li {list-style-type:none;}
 address, blockquote, small, cite, time, header, menu, article, section, footer, aside, nav {display:block; font-style:normal;}
+small {font-size:11px;}
 a, a:visited {color:#4183c4; outline:none;}
 a:hover, a:focus {color:#48586f;}
 
@@ -96,6 +97,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 #main_content {background:#fff; border-top:40px solid #e5e8ed;}
 	#main_content .section_wrap {padding:20px 0 40px 0;}
 		#main_content p, #main_content ul {font-size:13px; line-height:19px; margin:15px 0;}
+			#main_content small {margin:15px 0;}
 			#main_content ul li {margin-bottom:6px;}
 
 /*footer*/
@@ -104,3 +106,19 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 		#global_footer .colophon ul li {float:left; padding:0 5px; border-right:1px solid #556983;}
 			#global_footer .colophon ul li address {display:inline;}
 			#global_footer .colophon ul li a, #global_footer .colophon ul li a:visited {color:#efefef;}
+
+/*login page*/
+body.login {background:#fff; padding:40px 0;}
+	body.login #container {margin:0 auto; width:600px; padding:5px; border:1px solid #ddd;}
+	body.login #container, body.login #container header#masthead, body.login .section_wrap {width:600px;}
+		body.login #container header#masthead {height:90px;}
+			body.login #container header#masthead #mess_logo {margin:20px 15px 15px 15px;}
+			body.login #container header#masthead nav {display:none;}
+	body.login #container #main_content {width:600px; border:none; background:#f4f4f4;}
+		body.login #container #main_content h1 {margin-left:15px; margin-bottom:5px; font-size:18px;}
+		body.login #container #main_content p {margin-left:15px; margin-top:5px;}
+		body.login #container form#login {border:1px solid #ccc; margin:0 15px 15px 15px; padding:15px; background:#dedede;}
+			body.login #container form#login input[type=text], body.login #container form#login input[type=password] {width:300px;}
+			body.login #container form#login input.button {margin-top:5px;}
+			body.login #container small {margin-left:15px; margin-right:15px;}
+	body.login #container footer#global_footer {display:none;}
