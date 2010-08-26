@@ -50,7 +50,8 @@ input, textarea, label {display:block;}
 /*skin utility*/
 .gradiated {background:-moz-linear-gradient(-90deg, #eee, #E1E1E1) repeat 0 0 transparent;}/*moz*/
 .gradiated {background:-webkit-gradient(linear,0% 0,0% 100%,from(#eee),to(#e1e1e1));}/*webkit*/
-.shadowed {}
+.shadowed {-moz-box-shadow: 10px 10px 5px #efefef;}/*moz NOTE:note final*/
+.shadowed {-webkit-box-shadow: 10px 10px 5px #efefef;}/*webkit NOTE:note final*/
 
 /*classed globals*/
 menu.pagination {float:right; overflow:hidden; margin-bottom:10px;}
@@ -116,7 +117,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 
 /*login page*/
 body.login {background:#fff; padding:40px 0;}
-	body.login #container {margin:0 auto; width:600px; padding:5px;}
+	body.login #container {margin:0 auto; width:600px;}
 	body.login #container, body.login #container header#masthead, body.login .section_wrap {width:600px;}
 		body.login #container header#masthead {height:90px;}
 			body.login #container header#masthead #mess_logo {margin:20px;}
