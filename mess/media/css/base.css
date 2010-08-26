@@ -116,8 +116,10 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 			#global_footer .colophon ul li a, #global_footer .colophon ul li a:visited {color:#efefef;}
 
 /*login page*/
-body.login {background:#fff; padding:40px 0;}
-	body.login #container {margin:0 auto; width:600px;}
+body.login {background:#fff;}
+	body.login #browser_message {border-bottom:1px solid #cc0000; background:#ffcccc; display:none; position:absolute; top:0; left:0; width:100%; padding:15px 0;}/*injected view javascript with detectIE() for IE users*/
+		body.login #browser_message p, body.login #browser_message p a {color:#111;}
+	body.login #container {margin:60px auto; width:600px;}
 	body.login #container, body.login #container header#masthead, body.login .section_wrap {width:600px;}
 		body.login #container header#masthead {height:90px;}
 			body.login #container header#masthead #mess_logo {margin:20px;}
