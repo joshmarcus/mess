@@ -29,13 +29,15 @@ table td {vertical-align:top; border-bottom:1px solid #ddd; padding:10px 5px 5px
 /*form globals*/
 form {}
 input, textarea, label {display:block;}
-  input[type=hidden] {display:none;} 
   label {margin-bottom:3px;}
-  input, textarea {font:inherit; padding:3px; margin-bottom:10px;}
-	input[type=text] {width:250px;}
 	option {font:inherit;}
+  input, textarea {font:inherit; padding:3px; margin-bottom:10px;}
+		input[type="hidden"] {display:none;} 
+		input[type="text"] {width:250px;}
+		input[type="radio"] {vertical-align:text-bottom;}/*by: Thierry Koblentz tjkdesign.com/ez-css/css/base.css*/
+		input[type="checkbox"] {vertical-align:bottom; *vertical-align:baseline;}
 
-/*utility*/
+/*layout utility*/
 .break {display:block;}
 .left {float:left;}
 .right {float:right;}
@@ -45,7 +47,7 @@ input, textarea, label {display:block;}
 .clear_right {clear:right;}
 .clear_both {clear:both;}
 
-/*fill utility*/
+/*skin utility*/
 .gradiated {background:-moz-linear-gradient(-90deg, #eee, #E1E1E1) repeat 0 0 transparent;}/*moz*/
 .gradiated {background:-webkit-gradient(linear,0% 0,0% 100%,from(#eee),to(#e1e1e1));}/*webkit*/
 .shadowed {}
@@ -146,16 +148,14 @@ body.login {background:#fff; padding:40px 0;}
 	table.data { border:0.5pt solid #000; width:100%; font-size:10pt; }
 	table.data tr { border:0.5pt solid #777; }
 	table.data th { text-align:left; }
-	table.data td { line-height:12pt; 
-									padding-bottom:0pt; 
-									border-right:0.5pt solid #bbb; }
+	table.data td { line-height:12pt; padding-bottom:0pt; border-right:0.5pt solid #bbb; }
 	table.data td.last { border-right:0.5pt solid #777; }
 	table.data tr.timecard-extra td { padding-bottom:24pt; }
 	.darkcolumnline {border-left: 2pt solid black;}
 
 	.noprint { display:none; }
-	.float-right { float:right; }
-	h3.float-right { margin:0pt; }
+	.float_right { float:right; }
+	h3.float_right { margin:0pt; }
 	.scrunch-top { margin-top:0pt; }
 
 	thead#timecard-thead th.squish { font-size:8pt; padding-right:-2em; }
