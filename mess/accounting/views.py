@@ -422,6 +422,7 @@ def diagnose_cashier_permission(request):
     ret += 'Remote Address: %s\n' % request.META['REMOTE_ADDR']
     ret += 'Mariposa IP: %s\n' % settings.MARIPOSA_IP
     ret += 'Remote Address is Mariposa IP: %s\n' % (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP)
+    ret += 'User: %s\n' % request.user
     ret += 'User is cashier today: %s\n' % request.user.get_profile().is_cashier_today
     ret += 'User is cashier recently: %s\n' % request.user.get_profile().is_cashier_recently
     ret += 'Cashier permission function: %s\n' % cashier_permission(request)
