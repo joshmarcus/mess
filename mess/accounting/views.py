@@ -1,6 +1,7 @@
 import datetime
 import urllib
 import decimal
+from django.conf import settings
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -412,3 +413,18 @@ def EBT_bulk_orders(request, EBTBulkOrder_id=None):
     return render_to_response('accounting/EBT_bulk_orders.html', context,
                                 context_instance=RequestContext(request))
 
+@login_required
+def diagnose_cashier_permission(request):
+    ret = '<pre>Diagnosing cashier permission.\n'
+    ret += 'Logged in as: %s\n' % request.user
+    ret += 'User is authenticated: %s\n' % request.user.is_authenticated()
+    ret += 'User is staff: %s\n' % request.user.is_staff
+    ret += 'Remote Address: %s\n' % request.META['REMOTE_ADDR']
+    ret += 'Mariposa IP: %s\n' % settings.MARIPOSA_IP
+    ret += 'Remote Address is Mariposa IP: %s\n' % (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP)
+    ret += 'User is cashier today: %s\n' % request.user.get_profile().is_cashier_today
+    ret += 'User is cashier recently: %s\n' % request.user.get_profile().is_cashier_recently
+    ret += 'Cashier permission function: %s\n' % cashier_permission(request)
+    ret += 'Cashier permission: %s\n' % bool(cashier_permission(request))
+    ret += '</pre>'
+    return HttpResponse(ret)
