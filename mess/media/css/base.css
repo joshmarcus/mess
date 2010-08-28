@@ -11,10 +11,10 @@
 * {margin:0; padding:0; font-weight:normal;}
 body {font-size:12px; background:#48586f; color:#333; font-family:Arial, Helvetica, sans-serif; line-height:1.3em; text-align:center;}
 img {display:block; border:none;}
-h1 {color:#111; font-weight:bold; font-size:24px; letter-spacing:-.03em; margin-bottom:12px; line-height:28px;}
-h2 {color:#111; font-weight:bold; font-size:18px; letter-spacing:-.03em; margin:12px 0;}
+h2 {color:#111; font-weight:bold; font-size:24px; letter-spacing:-.03em; margin-bottom:12px; line-height:28px;}
+h3 {color:#111; font-weight:bold; font-size:18px; letter-spacing:-.03em; margin:12px 0;}
 ul li, ol li {list-style-type:none;}
-address, blockquote, small, cite, time, header, menu, article, section, footer, aside, nav {display:block; font-style:normal;}
+hgroup, address, blockquote, small, cite, time, header, menu, article, section, footer, aside, nav {display:block; font-style:normal;}
 small {font-size:11px;}
 a, a:visited {color:#4183c4; outline:none;}
 a:hover, a:focus {color:#48586f;}
@@ -70,7 +70,9 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 #masthead {background:#5c718e;}
 	#masthead a, #masthead a:visited {color:#efefef; font-weight:bold; text-decoration:none;}
 	#masthead .section_wrap.shell_top {height:75px;}
-	#mess_logo {float:left; width:225px; text-indent:-5000px; height:55px; margin-top:9px; background:url('../images/sprites/base_sprite.png') no-repeat 0 -20px;}
+
+	#masthead hgroup {float:left; width:225px; text-indent:-5000px; height:55px; margin-top:9px;}
+		#masthead hgroup h1 a {background:url('../images/sprites/base_sprite.png') no-repeat 0 -20px; display:block; width:225px; height:55px;}
 	#utility_nav {color:#efefef; float:right; background:#48586f; border-bottom-left-radius:7px; border-bottom-right-radius:7px;  padding:10px 15px;}
 		#utility_nav {-moz-border-radius-bottomright:7px; -moz-border-radius-bottomleft:7px;} /*damn mozilla vendor prefixes*/
 			#utility_nav ul li {float:left; padding:0 10px; border-right:1px solid #556983;}
@@ -122,10 +124,10 @@ body.login {background:#fff;}
 	body.login #container {margin:60px auto; width:600px;}
 	body.login #container, body.login #container header#masthead, body.login .section_wrap {width:600px;}
 		body.login #container header#masthead {height:90px;}
-			body.login #container header#masthead #mess_logo {margin:20px;}
+			body.login #container header#masthead hgroup {margin:20px;}
 			body.login #container header#masthead nav {display:none;}
 	body.login #container #main_content {width:600px; border:none; background:#efefef;}
-		body.login #container #main_content h1 {margin-left:15px; margin-bottom:5px; font-size:18px;}
+		body.login #container #main_content h2 {margin-left:15px; margin-bottom:5px; font-size:18px;}
 		body.login #container #main_content p {margin-left:15px; margin-top:5px;}
 		body.login #container form#login {border:10px solid #ccc; margin:0 20px 20px 20px; padding:15px;}
 			body.login #container form#login input[type=text], body.login #container form#login input[type=password] {width:300px;}

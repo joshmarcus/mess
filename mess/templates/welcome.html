@@ -24,7 +24,7 @@ detectIE();
 {% if user.is_anonymous %}
 <section>
 
-	<h1>Welcome to The MESS (Mariposa's Electronic Storage System)</h1>
+	<h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
 	<p>Members and staff, please log in.</p>
 	<form id="login" class="gradiated" method="post">
 
@@ -59,8 +59,8 @@ detectIE();
 
   <div id="left-column">
     <div id="primary-content-wrapper">
-      <h1>Hello, {{ user.first_name }}!</h1>
-      <h2>Recent Discussion from the Mess <a href="/forum/menu">Forum</a></h2>
+      <h2>Hello, {{ user.first_name }}!</h2>
+      <h3>Recent Discussion from the Mess <a href="/forum/menu">Forum</a></h3>
       <ul>
       {% for t in threads %}
       <li><a href="/forum/{{ t.forum__slug }}/?subject={{ t.subject }}">{{ t.subject }}</a> - new post on 
@@ -68,11 +68,11 @@ detectIE();
       {% endfor %}
       </ul>
 
-      <h2>Recent News from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h2>
+      <h3>Recent News from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h3>
       {% for entry in rss_entries %}
-      <h4>{{ entry.title }}</h4>
-      <p>{{ entry.summary|linebreaksbr }} <a href="{{ entry.link }}">read more</a></p>
-        {% endfor %}
+				<h4>{{ entry.title }}</h4>
+				<p>{{ entry.summary|linebreaksbr }} <a href="{{ entry.link }}">read more</a></p>
+      {% endfor %}
     </div>
   </div>
 
@@ -83,5 +83,4 @@ detectIE();
   </div>
 
   {% endif %}
- {% endblock %}
-
+{% endblock %}
