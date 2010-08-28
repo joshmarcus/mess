@@ -50,8 +50,8 @@ input, textarea, label {display:block;}
 /*skin utility*/
 .gradiated {background:-moz-linear-gradient(-90deg, #eee, #E1E1E1) repeat 0 0 transparent;}/*moz*/
 .gradiated {background:-webkit-gradient(linear,0% 0,0% 100%,from(#eee),to(#e1e1e1));}/*webkit*/
-.shadowed {-moz-box-shadow: 10px 10px 5px #efefef;}/*moz NOTE:note final*/
-.shadowed {-webkit-box-shadow: 10px 10px 5px #efefef;}/*webkit NOTE:note final*/
+.shadowed {-moz-box-shadow:0 4px 10px #8B8B8B;}/*moz NOTE:subject to change*/
+.shadowed {-webkit-box-shadow:0 4px 10px #8B8B8B;}/*webkit NOTE:subject to change*/
 
 /*classed globals*/
 menu.pagination {float:right; overflow:hidden; margin-bottom:10px;}
