@@ -4,6 +4,9 @@
  * implement some gradients in table cells, nav
  * implement css drop shadows in nav and headings
  * fix button styles which seem weird
+ * make button hover
+ * make standard .inner_glow style
+ * create form element theme
  * create type styles
  * /
  *
@@ -30,12 +33,13 @@ table td {vertical-align:top; border-bottom:1px solid #ddd; padding:10px 5px 5px
 form {}
 input, textarea, label {display:block;}
   label {margin-bottom:3px;}
-	option {font:inherit;}
+	option {font:inherit; width:250px;}
   input, textarea {font:inherit; padding:3px; margin-bottom:10px;}
 		input[type="hidden"] {display:none;} 
 		input[type="text"] {width:250px;}
+		input[type="text"]:focus, input[type="password"]:focus {background:#FEFEF3;}
 		input[type="radio"] {vertical-align:text-bottom;}/*by: Thierry Koblentz tjkdesign.com/ez-css/css/base.css*/
-		input[type="checkbox"] {vertical-align:bottom; *vertical-align:baseline;}
+		input[type="checkbox"] {width:250px; vertical-align:bottom; *vertical-align:baseline;}
 
 /*layout utility*/
 .break {display:block;}
@@ -52,6 +56,7 @@ input, textarea, label {display:block;}
 .gradiated {background:-webkit-gradient(linear,0% 0,0% 100%,from(#eee),to(#e1e1e1));}/*webkit*/
 .shadowed {-moz-box-shadow:0 4px 10px #8B8B8B;}/*moz NOTE:subject to change*/
 .shadowed {-webkit-box-shadow:0 4px 10px #8B8B8B;}/*webkit NOTE:subject to change*/
+.beige {background:#FEFEF3;}
 
 /*classed globals*/
 menu.pagination {float:right; overflow:hidden; margin-bottom:10px;}
