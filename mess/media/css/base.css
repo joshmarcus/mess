@@ -99,8 +99,9 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 				#main_nav ul.primary li.current span.item:hover {background:#e5e8ed;}
 			#main_nav ul.primary li span.more {background:url('../images/sprites/base_sprite.png') no-repeat 2px -110px; text-indent:-5000px; margin-left:5px; width:13px; height:12px; line-height:12px; margin-top:12px; overflow:hidden;}
 			#main_nav ul.primary li span.more:hover {background-position:-30px -110px;}
-	#main_nav ul.primary li ul.sub_nav {position:relative; width:180px; margin-right:-100px;border:none; background:#7a8697; clear:left;}
-		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; float:none; border:none;}
+	#main_nav ul.primary li ul.sub_nav {display:none; position:relative; width:180px; margin-right:-100px;border:none; background:#e5e8ed; border-left:2px solid #ddd; border-bottom:2px solid #ddd; border-right:1px solid #ddd; clear:left;}
+		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; font-size:12px; float:none; border:none; border-bottom:1px solid #ddd; color:#313131; height:30px; line-height:30px;}
+			#main_nav ul li ul.sub_nav li a:hover {color:#efefef; background:#7a8697;}
 	
 #secondary_nav {background:#e5e8ed; height:45px; border-bottom:1px solid #ccc;}
 	#secondary_nav a,	#secondary_nav a:visited {color:#313131;}

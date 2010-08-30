@@ -13,18 +13,24 @@ function detectIE() {
 	}
 }
 
-
-//stuff automaticall run on pageload
-$(document).ready(function() {	
-	//hidd sub_nav on document.ready and display it when span.more is clicked
-	//$('.sub_nav').hide();
-	$('#main_nav ul li .more').click(function() {
-    $(this).toggleClass('open');
-		$(this).parent().toggleClass('clicked');
-    $(this).parent().next('.sub_nav').slideToggle(200);
-	 });
-	 $('body').click(function() {
-	   $('.sub_nav').hide();
-	 });
+function subNav() {
 	
+	var sub_nav = $('.sub_nav');
+	
+	$('#main_nav ul li .more').click(function() { //When trigger is clicked...
+		
+		//Following events are applied to the sub_nav itself (moving sub_nav up and down)
+		$(this).parent().next(sub_nav).slideDown('fast'); //Drop down the sub_nav on click
+		
+		$(this).closest('li').hover(function() {
+		}, function() {
+			$(this).parent().find('.sub_nav').slideUp('slow'); //When the mouse hovers out of the containing li, move it back up
+		});
+
+	});
+}
+
+//stuff to automatically run on pageload
+$(document).ready(function() {	
+	subNav();
 });
