@@ -72,7 +72,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 	.button {background:-webkit-gradient(linear,0% 0,0% 100%,from(#fff),to(#e1e1e1));}/*webkit*/
 
 /*header*/
-#masthead {background:#5c718e;}
+#masthead {background:#5c718e; border-bottom:40px solid #e5e8ed;}
 	#masthead a, #masthead a:visited {color:#efefef; font-weight:bold; text-decoration:none;}
 	#masthead .section_wrap.shell_top {height:75px;}
 
@@ -85,7 +85,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 					#masthead #utility_nav ul li a {font-weight:normal;}
 						#masthead #utility_nav ul li a:hover {text-decoration:underline;}
 #main_nav {background:#48586f; height:35px; clear:both;}
-	#main_nav ul.primary {height:40px; line-height:35px; border-left:1px solid #556983;}
+	#main_nav ul.primary {height:35px; line-height:35px; border-left:1px solid #556983;}
 	#main_nav ul.primary li {float:left; font-size:14px; border-right:1px solid #556983;}
 		#main_nav ul.primary li span.item {padding-right:10px;}
 		#main_nav ul.primary li a {display:block; float:left; padding:0 0 0 15px;}
@@ -103,14 +103,15 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; font-size:12px; float:none; border:none; border-bottom:1px solid #ddd; color:#313131; height:30px; line-height:30px;}
 			#main_nav ul li ul.sub_nav li a:hover {color:#efefef; background:#7a8697;}
 	
-#secondary_nav {background:#e5e8ed; height:45px; border-bottom:1px solid #ccc;}
+#secondary_nav {background:#e5e8ed; width:960px; margin:0 auto; margin-bottom:-35px; overflow:hidden;}
 	#secondary_nav a,	#secondary_nav a:visited {color:#313131;}
 		#secondary_nav a:hover {text-decoration:underline;}
-	#secondary_nav ul {margin-top:15px;}
-	#secondary_nav ul li {float:left; padding:0 7px; border-right:1px solid #ccc;}
+	#secondary_nav ul {overflow:hidden; height:35px;}
+	#secondary_nav ul li {float:left; padding:0 7px; margin-top:15px; border-right:1px solid #ccc;}
+		#secondary_nav ul li:last-child {border:none;}
 
 /*main_content*/
-#main_content {background:#fff; border-top:40px solid #e5e8ed;}
+#main_content {background:#fff; border-top:1px solid #ccc;}
 	#main_content .section_wrap {padding:20px 0 40px 0;}
 		#main_content p, #main_content ul {font-size:13px; line-height:19px; margin:15px 0;}
 			#main_content small {margin:15px 0;}

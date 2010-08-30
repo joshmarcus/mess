@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 
+{% block masthead %}
+	{% include "membership/snippets/page_menu.html" %}
+{% endblock %}
+
 {% block content %}
   <div id="double-column">
-    {% include "membership/snippets/page_menu.html" %}
-    <div id="primary-content-wrapper">
+        <div id="primary-content-wrapper">
       {% if user.is_staff %}	
       <form action="{% url account-add %}">
         <div class="add-button">
