@@ -1,6 +1,7 @@
 {% block page_menu %}
 {% load core_tags %}
-  <ul id="local-nav">
+<nav id="local_nav">
+  <ul>
     {% if request.user.is_staff %}
     <li><a href="{% if date %}{% url scheduling-schedule date|date:"Y-m-d" %}{% else %}{% url scheduling-schedule-today %}{% endif %}"{% if location.path|match:'/scheduling/schedule' %} class="active"{% endif %}>Schedule</a></li>
     {# <li><a href="{% url scheduling-assign %}">Assign</a></li> #}
@@ -11,4 +12,5 @@
     <li><a href="{% url scheduling-rotation %}"{% if location.path|match:'/scheduling/rotation' %} class="active"{% endif %}>Wall Calendar</a></li>
     <li class="last-item"><a href="{% url myschedule %}"{% if location.path|match:'/scheduling/myschedule' %} class="active"{% endif %}>My Schedule</a></li>
   </ul>
+</nav>
 {% endblock %}

@@ -106,12 +106,12 @@ p.error {padding:7px; border:2px solid #cc0000; background:#ffcccc;}
 		#main_nav ul.primary li ul.sub_nav li, 	#main_nav ul li ul.sub_nav li a {margin:0; font-size:12px; float:none; border:none; border-bottom:1px solid #ddd; color:#313131; height:30px; line-height:30px;}
 			#main_nav ul li ul.sub_nav li a:hover {color:#efefef; background:#7a8697;}
 	
-#secondary_nav {background:#e5e8ed; width:960px; margin:0 auto; margin-bottom:-35px; overflow:hidden;}
-	#secondary_nav a,	#secondary_nav a:visited {color:#313131;}
-		#secondary_nav a:hover {text-decoration:underline;}
-	#secondary_nav ul {overflow:hidden; height:35px;}
-	#secondary_nav ul li {float:left; padding:0 7px; margin-top:15px; border-right:1px solid #ccc;}
-		#secondary_nav ul li:last-child {border:none;}
+#local_nav {background:#e5e8ed; width:960px; margin:0 auto; margin-bottom:-35px; overflow:hidden;}
+	#local_nav a,	#local_nav a:visited {color:#313131;}
+		#local_nav a:hover {text-decoration:underline;}
+	#local_nav ul {overflow:hidden; height:35px;}
+	#local_nav ul li {float:left; padding:0 7px; margin-top:15px; border-right:1px solid #ccc;}
+		#local_nav ul li:last-child {border:none;}
 
 /*main_content*/
 #main_content {background:#fff; border-top:1px solid #ccc;}

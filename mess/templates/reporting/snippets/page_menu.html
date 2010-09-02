@@ -1,11 +1,13 @@
 {% block page_menu %}
 {% load core_tags %}
-  <ul id="local-nav">
+<nav id="local-nav">
+  <ul>
     <li><a href=""{% if location.path|match:'/members' %} class="active"{% endif %}>Members</a></li>
     <li><a href=""{% if location.path|match:'/accounts' %} class="active"{% endif %}>Accounts</a></li>
     <li><a href=""{% if location.path|match:'/transactions' %} class="active"{% endif %}>Transactions</a></li>
     <li class="last-item"><a href=""{% if location.path|match:'/scheduling' %} class="active"{% endif %}>Scheduling</a></li>
   </ul>
+</nav>
 {% endblock %}
 
 
