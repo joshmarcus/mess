@@ -22,7 +22,7 @@ detectIE();
 {% block content %}
 
 {% if user.is_anonymous %}
-<section>
+<div class="login_wrap">
 
 	<h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
 	<p>Members and staff, please log in.</p>
@@ -50,7 +50,7 @@ detectIE();
 
 	</form>
 
-</section>
+</div>
 
 <small>MESS is already in use behind-the-scenes for workshift scheduling and member account maintenance.  Now members can use MESS to check their workshifts and update their account information. In the future, the MESS will provide a variety of services to members and staff.</small>
 <small>Visit <a href="http://www.mariposa.coop/">Mariposa's main site!</a></small>

@@ -67,9 +67,12 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 	ol.form li {overflow:hidden;}
 		ol.form li.checkbox input {float:left; margin-right:5px;} 
 		ol.form li.checkbox label {float:left;}
-.button {display:block; border:1px solid #ccc; color:#111; cursor:pointer; font:inherit; font-weight:bold; padding:0 5px; height:30px; text-shadow:1px 1px 0 #FFFFFF; border-radius:4px 4px 4px 4px;}
+.button {display:block; border:1px solid #ccc; color:#444; cursor:pointer; font:inherit; font-weight:bold; padding:0 5px; height:30px; text-shadow:1px 1px 0 #FFFFFF; border-radius:4px 4px 4px 4px;}
 	.button {-moz-border-radius:4px 4px 4px 4px; -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3); background:-moz-linear-gradient(-90deg, #FFFFFF, #E1E1E1) repeat 0 0 transparent;}/*moz*/
 	.button {background:-webkit-gradient(linear,0% 0,0% 100%,from(#fff),to(#e1e1e1));}/*webkit*/
+	.button:hover {color:#000;}
+p.error {padding:7px; border:2px solid #cc0000; background:#ffcccc;}
+	p.error a {color:#333;}
 
 /*header*/
 #masthead {background:#5c718e; border-bottom:40px solid #e5e8ed;}
@@ -86,7 +89,7 @@ form.page_control {background:#fefef3; padding:10px; margin-bottom:10px; border:
 						#masthead #utility_nav ul li a:hover {text-decoration:underline;}
 #main_nav {background:#48586f; height:35px; clear:both;}
 	#main_nav ul.primary {height:35px; line-height:35px; border-left:1px solid #556983;}
-	#main_nav ul.primary li {float:left; font-size:14px; border-right:1px solid #556983;}
+	#main_nav ul.primary li {float:left; font-size:12px; border-right:1px solid #556983;}
 		#main_nav ul.primary li span.item {padding-right:10px;}
 		#main_nav ul.primary li a {display:block; float:left; padding:0 0 0 15px;}
 			#main_nav ul.primary li a:hover {text-decoration:underline; /*background:#7a8697;*/}
@@ -130,16 +133,19 @@ body.login {background:#fff;}
 		body.login #browser_message p, body.login #browser_message p a {color:#111;}
 	body.login #container {margin:60px auto; width:600px;}
 	body.login #container, body.login #container header#masthead, body.login .section_wrap {width:600px;}
-		body.login #container header#masthead {height:90px;}
+		body.login #container header#masthead {height:90px; border:none;}
 			body.login #container header#masthead hgroup {margin:20px;}
 			body.login #container header#masthead nav {display:none;}
-	body.login #container #main_content {width:600px; border:none; background:#efefef;}
-		body.login #container #main_content h2 {margin-left:15px; margin-bottom:5px; font-size:18px;}
-		body.login #container #main_content p {margin-left:15px; margin-top:5px;}
-		body.login #container form#login {border:10px solid #ccc; margin:0 20px 20px 20px; padding:15px;}
-			body.login #container form#login input[type=text], body.login #container form#login input[type=password] {width:300px;}
-			body.login #container form#login input.button {margin-top:5px;}
-			body.login #container small {margin-left:20px; margin-right:15px;}
+	body.login #container #main_content {width:600px; border:none;}
+		body.login #container #main_content .section_wrap {padding:0;}
+			body.login #container .section_wrap .login_wrap {background:#efefef; padding:20px 0 5px 0;}
+			body.login #container #main_content h2 {margin-left:15px; margin-bottom:5px; font-size:18px;}
+			body.login #container #main_content p {margin-left:15px; margin-top:5px;}
+			body.login #container form#login {border:10px solid #ccc; margin:0 20px 20px 20px; padding:15px;}
+				body.login #container form#login p {margin-left:0;}
+				body.login #container form#login input[type=text], body.login #container form#login input[type=password] {width:350px; font-size:22px;}
+				body.login #container form#login input.button {margin-top:5px;}
+			body.login #container small {margin-left:20px; margin-right:15px; color:#888;}
 	body.login #container footer#global_footer {display:none;}
 
 /*print styles
