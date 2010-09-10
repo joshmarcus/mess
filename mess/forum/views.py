@@ -36,7 +36,7 @@ def forum(request, forum_slug):
     
 def _organize_as_threads(posts):
     threads = {}
-    for post in posts.reverse():
+    for post in posts:
         if post.subject in threads:
             threads[post.subject]['posts'].append(post)
             threads[post.subject]['newest'] = post.timestamp
