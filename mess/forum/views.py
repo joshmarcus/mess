@@ -36,7 +36,7 @@ def forum(request, forum_slug):
     
 def _organize_as_threads(posts):
     threads = {}
-    for post in posts.reverse():
+    for post in posts:
         if post.subject in threads:
             threads[post.subject]['posts'].append(post)
             threads[post.subject]['newest'] = post.timestamp
@@ -56,7 +56,7 @@ def addpost(request, forum_slug):
     subject = request.GET.get('subject')
     if request.method == "POST":
         form = forms.AddPostForm(request.POST)
-        if form.is_valid() and form.data.get('action')=='Post':
+        if form.is_valid() and request.POST.get('action')=='Post':
             form.save(author=request.user)
             new_post = form.instance
             return HttpResponseRedirect(new_post.get_absolute_url())

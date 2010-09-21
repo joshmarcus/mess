@@ -1,14 +1,9 @@
 from django import forms
 from mess.forum import models
 
-class AddPostForm(forms.ModelForm):
-    class Meta:
-        model = models.Post
-        exclude = ('timestamp','deleted')
-
+class AddPostForm(forms.Form):
     forum = forms.ModelChoiceField(models.Forum.objects.all(),
             widget=forms.HiddenInput())
-    author = forms.CharField(required=False, widget=forms.HiddenInput())
     subject = forms.CharField(widget=forms.TextInput(attrs={'size':50}))
     body = forms.CharField(widget=forms.Textarea(attrs={'cols':80}))
     
@@ -19,5 +14,8 @@ class AddPostForm(forms.ModelForm):
             self.fields['subject'].widget = forms.HiddenInput()
 
     def save(self, author):
-        self.cleaned_data['author'] = author
-        super(AddPostForm, self).save()
+        self.instance = models.Post.objects.create(
+                        forum=self.cleaned_data.get('forum'),
+                        author=author,
+                        subject=self.cleaned_data.get('subject'),
+                        body=self.cleaned_data.get('body'))
