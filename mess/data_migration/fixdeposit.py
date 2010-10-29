@@ -22,7 +22,7 @@ for account in models.Account.objects.all():
         matches = 'matches'
     else:
         matches = 'does not match'
-        if sys.argv[-1] == '-yes' and datetime(2010,10,24) < most_recent_timestamp < datetime(2010,10,25) and most_recent_amount == 20:
+        if sys.argv[-1] == '-yes' and datetime(2010,10,22) < most_recent_timestamp < datetime(2010,10,23) and most_recent_amount == 20:
             account.deposit = logged_deposit
             account.save()
             matches = 'now updated to match'
