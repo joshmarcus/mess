@@ -6,7 +6,7 @@ from django.core.management import setup_environ
 setup_environ(settings)
 
 from mess.membership import models
-import datetime
+from datetime import datetime
 
 for account in models.Account.objects.all():
     booked_deposit = account.deposit
@@ -22,7 +22,7 @@ for account in models.Account.objects.all():
         matches = 'matches'
     else:
         matches = 'does not match'
-        if sys.argv[-1] == '-yes' and datetime(2010,10,22) < most_recent_timestamp < datetime(2010,10,23) and most_recent_amount == 20:
+        if sys.argv[-1] == '-yes':
             account.deposit = logged_deposit
             account.save()
             matches = 'now updated to match'
