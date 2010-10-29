@@ -232,7 +232,3 @@ def commit_potential_bills(accounts, bill_type, entered_by):
                            purchase_amount=account.potential_bill,
                            entered_by=entered_by)
         bill.save()
-        if bill_type == 'O': #deposit
-            account.deposit += account.potential_bill
-            account.save()
-
