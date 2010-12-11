@@ -3,11 +3,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db.models import Q
+import django.conf as conf
 
 from mess.forum import models
 from mess.forum import forms
 
 import datetime
+import urllib2
+import time
+import md5
 
 @login_required
 def menu(request):
@@ -75,3 +79,16 @@ def deletepost(request):
     post.deleted = True
     post.save()
     return HttpResponse('Post deleted.')
+
+@login_required
+def gotophpbb(request):
+    """ Send user to the phpbb system located at http://mariposa.4now.us """
+    data = ('username='+urllib2.quote(request.user.username)
+           +'&fullname='+urllib2.quote(request.user.get_full_name())
+           +'&email='+urllib2.quote(request.user.email)
+           +'&time='+str(int(time.time()))
+           +'&secret=')
+    md5result = md5.md5(data + conf.settings.GOTOPHPBB_SECRET).hexdigest()
+    urltarget = 'http://mariposa.4now.us'
+    return render_to_response('forum/gotophpbb.html', locals(),
+            context_instance=RequestContext(request))

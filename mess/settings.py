@@ -146,6 +146,8 @@ AUTHENTICATION_BACKENDS = (
 
 ## mess project constants below ##
 
+GOTOPHPBB_SECRET = 'The real secret should be specified under settings_local.py'
+
 try:
     from settings_local import *
 except ImportError:
