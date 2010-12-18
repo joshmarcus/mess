@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.db.models import Q
+from django.utils.safestring import mark_safe
 import django.conf as conf
 
 from mess.forum import models
@@ -89,6 +90,7 @@ def gotophpbb(request):
            +'&time='+str(int(time.time()))
            +'&secret=')
     md5result = md5.md5(data + conf.settings.GOTOPHPBB_SECRET).hexdigest()
-    urltarget = 'http://mariposa.4now.us'
+    urltarget = 'http://mariposa.4now.us/phpBB3/index.php'
+    data = mark_safe(data)
     return render_to_response('forum/gotophpbb.html', locals(),
             context_instance=RequestContext(request))
