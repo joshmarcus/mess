@@ -90,7 +90,8 @@ def gotophpbb(request):
            +'&time='+str(int(time.time()))
            +'&secret=')
     md5result = md5.md5(data + conf.settings.GOTOPHPBB_SECRET).hexdigest()
-    urltarget = 'http://mariposa.4now.us/phpBB3/index.php'
+    #urltarget = 'http://mariposa.4now.us/phpBB3/index.php'
+    urltarget = 'http://mariposa.4now.us/aux/messEntry.php'
     data = mark_safe(data)
     return render_to_response('forum/gotophpbb.html', locals(),
             context_instance=RequestContext(request))
