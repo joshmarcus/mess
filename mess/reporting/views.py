@@ -149,6 +149,18 @@ def reports(request):
                 '{% ifnotequal x.addresses.count 0 %}{% ifnotequal x.addresses.count 1 %}*another address on record*{% endifnotequal %}{% endifnotequal %}\Other Addresses',
                 order_by='accounts'),
 
+            listrpt('Members','by Last Name',
+                'accountmember__shopper=False',
+                'accounts\r\n'+
+                'date_joined\r\n'+
+                'phones\r\n'+
+                'user.email\r\n'+
+                '{% with x.addresses.all|first as z %}{{ z.address1 }}{% endwith %}\Street1\r\n'+ 
+                '{% with x.addresses.all|first as z %}{{ z.address2 }}{% endwith %}\Street2\r\n'+ 
+                '{% with x.addresses.all|first as z %}{{ z.postal_code }}{% endwith %}\ZIP\r\n'+
+                '{% with x.accounts.all|first as z %}{{ z.deposit }}{% endwith %}\Deposit',
+                order_by='user__last_name'),
+
             listrpt('Members','with Email',
                 'user__email!=', 'accounts\r\nuser.email\r\nBox:user.email',
                 order_by='accounts'),
