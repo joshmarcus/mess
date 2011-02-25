@@ -56,6 +56,8 @@ def listen_to_paypal(request):
             if equity:
                 transaction = models.Transaction.objects.create(
                     account=account,
+                    payment_type='Y',
+                    payment_amount=decimal.Decimal(payment_gross),
                     purchase_type='O',
                     purchase_amount=decimal.Decimal(payment_gross),
                     note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
