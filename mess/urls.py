@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
 
+    # IS4C connector
+    (r'^is4c/', include('mess.is4c.urls')),        
+
     #url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^passwordchange/$', auth_views.password_change, name='auth_password_change'),
