@@ -147,6 +147,7 @@ AUTHENTICATION_BACKENDS = (
 ## mess project constants below ##
 
 GOTOPHPBB_SECRET = 'The real secret should be specified under settings_local.py'
+IS4C_SECRET = 'fakesecret'
 
 try:
     from settings_local import *
