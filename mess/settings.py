@@ -132,6 +132,7 @@ USER_PASSES_TEST_URLS = (
     (r'^/media/', None),
     (r'^/passwordreset/', None),
     (r'^/accounting/listen_to_paypal', None),
+    (r'^/is4c/', None),
     (r'^/fundraising/', lambda u: u.has_perm('telethon.can_fundraise') or 
         u.is_staff),
     (r'', lambda u: u.is_staff),
