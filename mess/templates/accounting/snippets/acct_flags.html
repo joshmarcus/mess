@@ -1,13 +1,11 @@
-            {% if account.frozen_flags %}
-              <div class="frozen">
-                {{ account.frozen_flags|join:" ... " }}
-              </div>
-            {% endif %}
-            {% if account.ebtbulkorder_set.unpaid %}
-              <div class="notice">
-                EBT Bulk Order
-              </div>
-            {% endif %}
-            {% if show_acct_link %}
-              <a href="{{ account.get_absolute_url }}">view account</a>
-            {% endif %}
+{% if account.frozen_flags %}
+  <div class="frozen">
+    {{ account.frozen_flags|join:" ... " }}
+  </div>
+{% endif %}{% if account.ebtbulkorder_set.unpaid %}
+  <div class="notice">
+    EBT Bulk Order
+  </div>
+{% endif %}{% if show_acct_link %}
+  <a href="{{ account.get_absolute_url }}">view account</a>
+{% endif %}

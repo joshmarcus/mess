@@ -43,7 +43,7 @@ def account(request, account_id):
     * account receipt notes  #future calculated fields
     """
     template = get_template('accounting/snippets/acct_flags.html')
-    acct_flags = template.render(Context({'account':account.id}))
+    acct_flags = template.render(Context({'account':account}))
     
     
     result = simplejson.dumps({'id':account.id,
