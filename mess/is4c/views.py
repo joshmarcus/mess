@@ -9,8 +9,6 @@ import django.conf as conf
 from mess.membership import models as m_models
 
 
-# this decorator allows non-login acces(?)
-@csrf_exempt
 def index(request):
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
@@ -26,11 +24,27 @@ def account(request, account_id):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        # TODO: make this a json-formatted error or something
         return HttpResponse('Wrong IS4C secret!!')
 
     account = get_object_or_404(m_models.Account, id=account_id)
+    result = simplejson.dumps(getacctdict(account))
+    return HttpResponse(result, mimetype='application/json')
+
+
+def accounts(request):
+    # all requests will have some get variables, at the very least the secret is a get variable.
+    # verify secret
+    if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+        return HttpResponse('Wrong IS4C secret!!')
+
+    accounts = [getacctdict(account) for account in m_models.Account.objects.all()]
+    result = simplejson.dumps(accounts)
+    return HttpResponse(result, mimetype='application/json')
     
+        
+
+# helper method
+def getacctdict(account):
     """
     stuff is4c needs:
     * account id
@@ -45,16 +59,11 @@ def account(request, account_id):
     template = get_template('accounting/snippets/acct_flags.html')
     acct_flags = template.render(Context({'account':account}))
     
-    
-    result = simplejson.dumps({'id':account.id,
+    return {'id':account.id,
         'name':account.name,
         'balance_limit':str(account.max_allowed_to_owe()),
         'balance':str(account.balance),
         'discount':'???', # what is discount??
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
-        'receipt_notes':'Thank you for shopping!'})
-
-    return HttpResponse(result, mimetype='application/json')
-
-
+        'receipt_notes':'Thank you for shopping!'}
