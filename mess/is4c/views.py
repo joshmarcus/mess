@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 import django.conf as conf
 
 from mess.membership import models as m_models
+from mess.accounting import models as a_models
 
 
 def index(request):
@@ -92,3 +93,17 @@ def getmemberdict(member):
         'firstname':member.user.first_name,
         'lastname':member.user.last_name,
         'equity':'please do this by hand first'}
+
+@csrf_exempt
+def recordtransaction(request):
+    # all requests will have some get variables, at the very least the secret is a get variable.
+    # verify secret
+    if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+        return HttpResponse('Wrong IS4C secret!!')
+
+    json = request.read()   # this fails, because request doesn't have a read method. hm.
+    object = simplejson.reads(json)
+    #for t in object:
+    # tnew = a.models.Transaction(trans_id=t['trans_id'], trans_no=t['trans_no'], etc...)
+    # tnew.save()
+    return HttpResponse('done.  and here it was: ' +repr(object))

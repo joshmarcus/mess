@@ -48,21 +48,38 @@ class HoursTransaction(models.Model):
 
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True) #never have to deal w/ this in a form.
-    account = models.ForeignKey(Account)
+    account = models.ForeignKey(Account)   # IS4C.account_id
     member = models.ForeignKey(Member, blank=True, null=True)
     purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,
         blank=True, default='P')
     purchase_amount = models.DecimalField(max_digits=8, decimal_places=2, 
-        default=0, blank=True)
+        default=0, blank=True)   # this or payment_amount will hold the IS4C.total
     payment_type = models.CharField(max_length=1, choices=PAYMENT_CHOICES,
         blank=True)
     payment_amount = models.DecimalField(max_digits=8, decimal_places=2, 
-        default=0, blank=True)
-    note = models.CharField(max_length=256, blank=True)
+        default=0, blank=True)   # this or purchase_amount will hold the IS4C.total
+    note = models.CharField(max_length=256, blank=True)   # IS4C.description
     account_balance = models.DecimalField(max_digits=8, decimal_places=2)
-    entered_by = models.ForeignKey(User, blank=True, null=True)
-    # reference is for check numbers, etc.  will uncomment when necessary
-    #reference = models.PositiveIntegerField(blank=True, null=True)
+    entered_by = models.ForeignKey(User, blank=True, null=True)  # IS4C.emp_no
+
+    # NEW FIELDS FOR IS4C
+    register_no = models.IntegerField(blank=True, null=True)
+    trans_id = models.IntegerField(blank=True, null=True)  #this is foreign pk for IS4C
+    trans_no = models.IntegerField(blank=True, null=True)
+    upc = models.CharField(max_length=13, blank=True)
+    # TODO: trans_type : this needs a mapping, but let's also keep the original IS4C value
+    trans_type = models.CharField(max_length=5, blank=True)
+    trans_subtype = models.CharField(max_length=5, blank=True)
+    department = models.IntegerField(blank=True, null=True)
+    quantity = models.IntegerField(blank=True, null=True)
+    # TODO: Kristina's example json has cost:2.73666666667, are we really limiting 
+    # to decimal_places=2?
+    cost = models.DecimalField(max_digits=8, decimal_places=2,
+        default=0, blank=True)   
+    taxable = models.NullBooleanField(blank=True, null=True)
+
+    
+    
 
     def __unicode__(self):
         return '%s %s' % (self.account, 
