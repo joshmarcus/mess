@@ -30,7 +30,6 @@ def account(request, account_id):
     result = simplejson.dumps(getacctdict(account))
     return HttpResponse(result, mimetype='application/json')
 
-
 def accounts(request):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
@@ -40,8 +39,6 @@ def accounts(request):
     accounts = [getacctdict(account) for account in m_models.Account.objects.all()]
     result = simplejson.dumps(accounts)
     return HttpResponse(result, mimetype='application/json')
-    
-        
 
 # helper method
 def getacctdict(account):
@@ -67,3 +64,31 @@ def getacctdict(account):
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
         'receipt_notes':'Thank you for shopping!'}
+
+def member(request, member_id):
+    # all requests will have some get variables, at the very least the secret is a get variable.
+    # verify secret
+    if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+        return HttpResponse('Wrong IS4C secret!!')
+
+    member = get_object_or_404(m_models.Member, id=member_id)
+    result = simplejson.dumps(getmemberdict(member))
+    return HttpResponse(result, mimetype='application/json')
+
+def members(request):
+    # all requests will have some get variables, at the very least the secret is a get variable.
+    # verify secret
+    if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
+        return HttpResponse('Wrong IS4C secret!!')
+
+    members = [getmemberdict(member) for member in m_models.Member.objects.all()]
+    result = simplejson.dumps(members)
+    return HttpResponse(result, mimetype='application/json')
+
+# helper method
+def getmemberdict(member):
+    return {'memberid':member.id,
+        'username':member.user.username,
+        'firstname':member.user.first_name,
+        'lastname':member.user.last_name,
+        'equity':'please do this by hand first'}
