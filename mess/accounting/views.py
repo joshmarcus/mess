@@ -25,8 +25,8 @@ today = datetime.date.today()
 @csrf_exempt
 def listen_to_paypal(request):
     '''
-    this whole thing is documented by Paypal at: (somewhere)
-
+    this whole thing is documented by Paypal at: 
+    https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_admin_IPNIntro
     '''
     if request.POST:
         file = open('/var/www/mess/listen_to_paypal.log','a')
@@ -47,11 +47,28 @@ def listen_to_paypal(request):
         account_id = int(item_number[8:])
         account = m_models.Account.objects.get(id=account_id)
         already_did_transaction = models.Transaction.objects.filter(note__contains=txn_id).count()
+        custom = request.POST.get('custom')
+        equity = False
+        # first position of custom set to 1 means equity
+        if custom and custom[0] == '1':
+            equity = True
         if not already_did_transaction:
-            transaction = models.Transaction.objects.create(account=account,
-                            payment_type='Y',
-                            payment_amount=decimal.Decimal(payment_gross),
-                            note='Paypal txn_id=%s from %s' % (txn_id, payer_email))
+            if equity:
+                transaction = models.Transaction.objects.create(
+                    account=account,
+                    payment_type='Y',
+                    payment_amount=decimal.Decimal(payment_gross),
+                    purchase_type='O',
+                    purchase_amount=decimal.Decimal(payment_gross),
+                    note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
+                )
+            else:
+                transaction = models.Transaction.objects.create(
+                    account=account,
+                    payment_type='Y',
+                    payment_amount=decimal.Decimal(payment_gross),
+                    note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
+                )
     return render_to_response('accounting/test_paypal.html', locals(),
             context_instance=RequestContext(request))
     

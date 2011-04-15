@@ -1,0 +1,10 @@
+alter table accounting_transaction add column "register_no" integer;
+alter table accounting_transaction add column "trans_id" integer;
+alter table accounting_transaction add column "trans_no" integer;
+alter table accounting_transaction add column "upc" varchar(13) NOT NULL DEFAULT '';
+alter table accounting_transaction add column "trans_type" varchar(13) NOT NULL DEFAULT '';
+alter table accounting_transaction add column "trans_subtype" varchar(13) NOT NULL DEFAULT '';
+alter table accounting_transaction add column "department" integer;
+alter table accounting_transaction add column "quantity" integer;
+alter table accounting_transaction add column "cost" decimal;
+alter table accounting_transaction add column "taxable" bool;

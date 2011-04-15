@@ -132,6 +132,7 @@ USER_PASSES_TEST_URLS = (
     (r'^/media/', None),
     (r'^/passwordreset/', None),
     (r'^/accounting/listen_to_paypal', None),
+    (r'^/is4c/', None),
     (r'^/fundraising/', lambda u: u.has_perm('telethon.can_fundraise') or 
         u.is_staff),
     (r'', lambda u: u.is_staff),
@@ -145,6 +146,9 @@ AUTHENTICATION_BACKENDS = (
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ## mess project constants below ##
+
+GOTOPHPBB_SECRET = 'The real secret should be specified under settings_local.py'
+IS4C_SECRET = 'fakesecret'
 
 try:
     from settings_local import *
