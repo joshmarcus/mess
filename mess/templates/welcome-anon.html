@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to The MESS{% endblock %}
+{% block logo %}The MESS{% endblock %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+      <h2>Welcome to The MESS (Mariposa's Electronic Storage System)</h2>
+      <div class="attention">
+        <h3>Members and staff, please log in.</h3>
+        <form class="standard" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}" />
+          {% if form.errors %}
+          <p class="error">Incorrect username/email or password. If you can't remember your password, go ahead and <a href="{% url auth_password_reset %}">reset it</a>.</p>
+          {% endif %}
+          <table>
+            <tr>
+              <th>
+                <label for="id_username">Username/email:&nbsp;</label>
+              </th>
+              <td>{{form.username}}</td>
+            </tr>
+            <tr>
+              <th>
+                <label for="id_password">Password:&nbsp;</label>
+              </th>
+              <td>{{form.password}}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <input class="button" type="submit" value="Log in"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <p>MESS is already in use behind-the-scenes for workshift scheduling and member account maintenance.  
+          Now members can use MESS to check their workshifts and update their account information.
+          In the future, the MESS will provide a variety of services to members and staff.</p>
+      </div>
+      <div class="attention">
+        <h3>Visitors and neighbors, for more info...</h3>
+        <p>Visit <a href="http://www.mariposa.coop/">Mariposa's main site!</a></p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
