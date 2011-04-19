@@ -89,7 +89,7 @@ def members(request):
 # helper method
 def getmemberdict(member):
     return {'memberid':member.id,
-        'accounts':map(lambda a: a.id, member.accounts),
+        'accounts':map(lambda a: a.id, member.accounts.all()),
         'username':member.user.username,
         'firstname':member.user.first_name,
         'lastname':member.user.last_name,
