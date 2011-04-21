@@ -1,14 +1,22 @@
 from django.utils import simplejson
-from django.http import HttpResponse
 from django.template import RequestContext, Context
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.db.models import Q
+from django.utils.safestring import mark_safe
+
 import django.conf as conf
 
 from mess.membership import models as m_models
 from mess.accounting import models as a_models
 
+import datetime
+import urllib2
+import time
+import md5
 
 def index(request):
     # verify secret
