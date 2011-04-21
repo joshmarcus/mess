@@ -168,7 +168,7 @@ class EBTBulkOrder(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account)
     amount = models.DecimalField(max_digits=8, decimal_places=2,
-        default=0, blank=True)
+        default=0)
     paid_by_transaction = models.ForeignKey(Transaction, null=True)
     note = models.CharField(max_length=256, blank=True)
 
