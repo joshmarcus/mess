@@ -108,3 +108,19 @@ def recordtransaction(request):
     # tnew = a.models.Transaction(trans_id=t['trans_id'], trans_no=t['trans_no'], etc...)
     # tnew.save()
     return HttpResponse('done.  and here it was: ' +repr(object))
+
+@login_required
+def gotois4c(request):
+    """ Send user to is4c hosted locally """
+    data = ('username='+urllib2.quote(request.user.username)
+           +'&fullname='+urllib2.quote(request.user.get_full_name())
+           +'&email='+urllib2.quote(request.user.email)
+           +'&time='+str(int(time.time()))
+           +'&secret=')
+    md5result = md5.md5(data + conf.settings.GOTOIS4C_SECRET).hexdigest()
+    #urltarget = 'http://mariposa.4now.us/phpBB3/index.php'
+    urltarget = 'http://localhost/mess-login.php'
+    data = mark_safe(data)
+    return render_to_response('is4c/gotois4c.html', locals(),
+            context_instance=RequestContext(request))
+
