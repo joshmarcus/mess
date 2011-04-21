@@ -122,7 +122,7 @@ def gotois4c(request):
     """ Send user to is4c hosted locally """
     data = ('username='+urllib2.quote(request.user.username)
            +'&fullname='+urllib2.quote(request.user.get_full_name())
-           +'&email='+urllib2.quote(request.user.email)
+           +'&id='+urllib2.quote(str(request.user.id))
            +'&time='+str(int(time.time()))
            +'&secret=')
     md5result = md5.md5(data + conf.settings.GOTOIS4C_SECRET).hexdigest()
