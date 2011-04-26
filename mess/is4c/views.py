@@ -17,6 +17,7 @@ import datetime
 import urllib2
 import time
 import md5
+from decimal import *
 
 def index(request):
     # verify secret
@@ -110,12 +111,22 @@ def recordtransaction(request):
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
         return HttpResponse('Wrong IS4C secret!!')
 
-    json = request.read()   # this fails, because request doesn't have a read method. hm.
-    object = simplejson.reads(json)
-    #for t in object:
-    # tnew = a.models.Transaction(trans_id=t['trans_id'], trans_no=t['trans_no'], etc...)
-    # tnew.save()
-    return HttpResponse('done.  and here it was: ' +repr(object))
+    json = request.POST['transaction'] 
+    t = simplejson.loads(json)
+    account = m_models.Account.objects.get(id=t['account'])
+    member = m_models.Member.objects.get(id=t['member'])
+    cashier = m_models.Member.objects.get(id=t['entered_by'])
+    if t.has_key('payment_amount'): payment_amount = Decimal(str(t['payment_amount']))
+    else: payment_amount = 0
+    if t.has_key('purchase_amount'): purchase_amount = Decimal(str(t['purchase_amount']))
+    else: purchase_amount = 0
+    tnew = a_models.Transaction(account=account, member=member, 
+            purchase_type=t['purchase_type'], purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=t['payment_type'], 
+            note=t['note'], entered_by=cashier, register_no=t['register_no'], trans_id=t['trans_id'], trans_no=t['trans_no'],
+            upc=t['upc'])
+    tnew.save()
+    status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
+    return HttpResponse(status=status_code)
 
 @login_required
 def gotois4c(request):
