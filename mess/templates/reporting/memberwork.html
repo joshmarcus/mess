@@ -27,12 +27,7 @@
             {% endfor %}
           </td>
           <td>
-            {% ifequal member.work_status "e" %}
-              <div class="task-exempt">Exempt</div>
-            {% endifequal %}
-            {% ifequal member.work_status "c" %}
-              <div class="task-committee">Committee or other Non-Shift work</div>
-            {% endifequal %}
+            <div class="task-{{ member.get_work_status_display }}">{{ member.get_work_status_display }}</div>
             {% if member.shift %}
               {{ member.shift.time|date:"D" }}-{{ member.shift.rotletter }} {{ member.shift.job }} (<a href="{% url scheduling-task member.shift.id %}">{{ member.shift.time|date:"n/j g:ia" }}</a>)
             {% endif %}

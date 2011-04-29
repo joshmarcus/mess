@@ -676,8 +676,9 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .task-banked {background: #fcb;}   /* light orange */
 .task-complex-workflag {background: #fc0; }   /* bright orange */
 .task-LOA {background: #fff; }  /* white */
-.task-exempt {background: #ffc; }
-.task-committee {background: #fdb; }
+.task-Exempt {background: #ffc; }
+.task-Committee {background: #fdb; }
+.task-Non-Working {background: #fcd; }
 .task-hiding-spot td { padding:0px; line-height:0px; }
 .task-hiding-spot td div { line-height:10pt; }
 
