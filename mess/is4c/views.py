@@ -102,6 +102,7 @@ def getmemberdict(member):
         'username':member.user.username,
         'firstname':member.user.first_name,
         'lastname':member.user.last_name,
+        'work_Status':member.work_status
         'equity':'please do this by hand first'}
 
 @csrf_exempt
