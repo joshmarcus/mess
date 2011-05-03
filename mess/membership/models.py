@@ -25,6 +25,7 @@ WORK_STATUS = (
     ('w', 'Workshift'),  # Member is active and should have a workshift
     ('c', 'Committee'), # Anything not tracked shift by shift
     ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
+    ('n', 'Non-Working'), # Non-working member
 )
 EXEMPTION_TYPES = (
     ('k', 'Kids'),
@@ -452,7 +453,7 @@ class Account(models.Model):
             return
         for am in self.accountmember_set.all():
             if (am.member.regular_shift()
-                    or (am.member.work_status in 'ec' and not am.shopper)):
+                    or (am.member.work_status in 'ecn' and not am.shopper)):
                 obligations -= 1
         if obligations:
             return 'NEEDS SHIFT'
@@ -474,7 +475,7 @@ class Account(models.Model):
             else:
                 flags.append('ACCOUNT CLOSED')
         satisfactions = self.accountmember_set.filter(
-            Q(member__work_status__in='ec', shopper=False) |
+            Q(member__work_status__in='ecn', shopper=False) |
             Q(member__task__time__gte=datetime.date.today())).count()
         if obligations > satisfactions and self.days_old() > 7:
             flags.append('NEEDS SHIFT')

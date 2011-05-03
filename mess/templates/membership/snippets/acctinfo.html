@@ -97,12 +97,7 @@
   <div class="workhist"> 
     <table class="acctwork">
       {% for member in account.members.all %}
-        {% ifequal member.work_status "e" %}
-          <tr><td class="task-exempt">{{ member }}: Exempt</td></tr>
-        {% endifequal %}
-        {% ifequal member.work_status "c" %}
-          <tr><td class="task-committee">{{ member }}: Committee or other Non-Shift work</td></tr>
-        {% endifequal %}
+        <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
         {% if member.current_loa %}
           <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
         {% endif %}

@@ -115,7 +115,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 LOGIN_URL = PROJECT_URL
 LOGIN_REDIRECT_URL = PROJECT_URL
 
-CACHE_BACKEND = 'locmem:///'
+CACHE_BACKEND = 'locmem://'
 
 # Default to clearing everything at browser close.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

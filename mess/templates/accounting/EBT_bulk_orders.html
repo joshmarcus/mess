@@ -28,7 +28,7 @@
            </td>
         </table>
       </form>
-    <h2>EBT bulk orders (total unpaid: {{ total_unpaid }})</h2>
+    <h2>Recent EBT bulk orders (total unpaid: {{ total_unpaid }})</h2>
     <table class="data">
       <tr>
         <th>Order Date</th>
@@ -38,7 +38,7 @@
         <th>Note</th>
         <th>Edit</th>
       </tr>    
-      {% for order in unpaid|dictsortreversed:"id" %}
+      {% for order in unpaid %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
         <td><a href="{{ order.account.get_absolute_url }}">{{ order.account }}</a></td>
@@ -52,7 +52,7 @@
         </td>
       </tr>
       {% endfor %}
-       {% for order in paid|dictsortreversed:"id" %}
+       {% for order in paid %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ order.order_date|date:"n/j/y g:i A" }}</td>
         <td><a href="{{ order.account.get_absolute_url }}">{{ order.account }}</a></td>

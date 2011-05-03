@@ -82,7 +82,7 @@ class Transaction(models.Model):
     
 
     def __unicode__(self):
-        return '%s %s' % (self.account, 
+        return u'%s %s' % (self.account, 
                           self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
     def save(self, *args, **kwargs):
@@ -168,14 +168,14 @@ class EBTBulkOrder(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account)
     amount = models.DecimalField(max_digits=8, decimal_places=2,
-        default=0, blank=True)
+        default=0)
     paid_by_transaction = models.ForeignKey(Transaction, null=True)
     note = models.CharField(max_length=256, blank=True)
 
     objects = EBTBulkOrderManager()
 
     def __unicode__(self):
-        return '%s EBT bulk ordered %s on %s' % (self.account, 
+        return u'%s EBT bulk ordered %s on %s' % (self.account, 
                 self.amount, self.order_date)
 
     def duplicate_after_reversed(self):
@@ -224,7 +224,7 @@ class Reconciliation(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return str(self.date)
+        return unicode(self.date)
 
 def total_balances_on(time):
     ''' I want to do something more like...

@@ -96,7 +96,7 @@ def reports(request):
                 
 # broken :(
 #           listrpt('Accounts','Needing Shifts? Incomplete List',
-#               'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ec',
+#               'task__time__gte!='+str(datetime.date.today())+'\r\nmembers__work_status__in!=ecn',
 #               'note'),
 
 # this duplicates all multi-member accounts :(
@@ -251,6 +251,7 @@ def reports(request):
             ('Regular Shift', reverse('memberwork')+'?section=Regular Shift'),
             ('Exemptions', reverse('memberwork')+'?section=Exempt'),
             ('Committee', reverse('memberwork')+'?section=Committee'),
+            ('Non-Working', reverse('memberwork')+'?section=Non-Working'),
         ]),
 
         ('Anomalies',[
@@ -272,6 +273,10 @@ def reports(request):
 
             listrpt('Accounts','Accounts With Committee Work',
                 'members__work_status=c',
+                '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
+
+            listrpt('Accounts','Accounts With Non-Working Members',
+                'members__work_status=n',
                 '{% for m in x.members.all %}{{ m }}: {{ m.get_work_status_display }}<br>{% endfor %}\\Members\r\nnote'),
 
             listrpt('Accounts','Electors (use Active Contacts instead)',
@@ -492,7 +497,8 @@ def memberwork(request):
             proxypair[mw.get_primary_account()].section = 'Proxy Shift Pairs'
 
     section_names = ['Regular Shift', 'Cashiers', 'Dancers', 'Committee', 
-        'Exempt', 'LOA', 'Need Shift', 'Proxy Shift Pairs', 'Proxy']
+        'Exempt', 'Non-Working', 'LOA', 'Need Shift', 'Proxy Shift Pairs', 
+        'Proxy']
     if 'section' in request.GET:
         section_names = [request.GET['section']]
     sections = [{'name':x, 
@@ -523,6 +529,8 @@ def prepmemberwork(member, weekbreaks):
         section = 'Exempt'
     elif member.work_status == 'c':
         section = 'Committee'
+    elif member.work_status == 'n':
+        section = 'Non-Working'
     elif member.shift == None:
         section = 'Need Shift'
     elif member.shift.job.name == 'Cashier':
