@@ -17,7 +17,7 @@ import datetime
 import urllib2
 import time
 import md5
-from decimal import *
+from decimal import Decimal 
 
 def index(request):
     # verify secret
@@ -102,7 +102,7 @@ def getmemberdict(member):
         'username':member.user.username,
         'firstname':member.user.first_name,
         'lastname':member.user.last_name,
-        'work_Status':member.work_status
+        'work_Status':member.work_status,
         'equity':'please do this by hand first'}
 
 @csrf_exempt
