@@ -29,7 +29,7 @@ def listen_to_paypal(request):
     https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_admin_IPNIntro
     '''
     if request.POST:
-        file = open('/var/www/mess/listen_to_paypal.log','a')
+        file = open('listen_to_paypal.log','a')
         file.write('\n\n\nListening to Paypal...%s..\n' % datetime.datetime.today())
         file.write(repr(request))
         payer_email = request.POST['payer_email']
