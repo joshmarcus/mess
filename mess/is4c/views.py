@@ -62,6 +62,7 @@ def getacctdict(account):
     * account discount #does not exist yet
     * account cashier notes #calculated field, account flags
     * account receipt notes  #future calculated fields
+    * account active members
     """
     template = get_template('accounting/snippets/acct_flags.html')
     acct_flags = template.render(Context({'account':account}))
@@ -73,7 +74,8 @@ def getacctdict(account):
         'discount':'???', # what is discount??
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
-        'receipt_notes':'Thank you for shopping!'}
+        'receipt_notes':'Thank you for shopping!',
+	'active_member_count': account.active_member_count()}
 
 def member(request, member_id):
     # all requests will have some get variables, at the very least the secret is a get variable.
