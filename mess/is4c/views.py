@@ -75,7 +75,7 @@ def getacctdict(account):
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
         'receipt_notes':'Thank you for shopping!',
-	'active_member_count': account.active_member_count()}
+	'active_member_count': account.active_member_count}
 
 def member(request, member_id):
     # all requests will have some get variables, at the very least the secret is a get variable.
@@ -105,7 +105,9 @@ def getmemberdict(member):
         'firstname':member.user.first_name,
         'lastname':member.user.last_name,
         'work_status':member.work_status,
-        'equity':'please do this by hand first'}
+        'equity':'please do this by hand first',
+        'is_active':member.is_active,
+        'is_on_loa':member.is_on_loa}
 
 @csrf_exempt
 def recordtransaction(request):
