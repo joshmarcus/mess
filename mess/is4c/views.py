@@ -125,6 +125,10 @@ def recordtransaction(request):
     else: payment_amount = 0
     if t.has_key('purchase_amount'): purchase_amount = Decimal(str(t['purchase_amount']))
     else: purchase_amount = 0
+    if t.has_key('payment_type'): payment_type = t['payment_type']
+    else: payment_type = ''
+    if t.has_key('purchase_type'): purchase_type = t['purchase_type']
+    else: purchase_type = ''
     tnew = a_models.Transaction(account=account, member=member, 
             purchase_type=t['purchase_type'], purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=t['payment_type'], 
             note=t['note'], entered_by=cashier, register_no=t['register_no'], trans_id=t['trans_id'], trans_no=t['trans_no'],
