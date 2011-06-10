@@ -82,16 +82,16 @@ def deletepost(request):
     return HttpResponse('Post deleted.')
 
 @login_required
-def gotophpbb(request):
-    """ Send user to the phpbb system located at http://mariposa.4now.us """
+def goto(request):
+    """ Send user to the forum system located at http://mariposa.4now.us """
     data = ('username='+urllib2.quote(request.user.username)
            +'&fullname='+urllib2.quote(request.user.get_full_name())
            +'&email='+urllib2.quote(request.user.email)
            +'&time='+str(int(time.time()))
            +'&secret=')
-    md5result = md5.md5(data + conf.settings.GOTOPHPBB_SECRET).hexdigest()
+    md5result = md5.md5(data + conf.settings.GOTOFORUM_SECRET).hexdigest()
     #urltarget = 'http://mariposa.4now.us/phpBB3/index.php'
     urltarget = 'http://mariposa.4now.us/aux/messEntry.php'
     data = mark_safe(data)
-    return render_to_response('forum/gotophpbb.html', locals(),
+    return render_to_response('forum/goto.html', locals(),
             context_instance=RequestContext(request))

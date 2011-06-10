@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+  <h2>Sending you to the Mariposa Forum</h2>
+
+  <h3>Just a second...</h3>
+<!-- Please wait...sending your MESS username, fullname, email and an authentication token to {{ urltarget }}... -->
+
+<form id="gotophpbbform" method="POST" action="{{ urltarget }}">
+<input type="hidden" name="data" value="{{ data }}">
+<input type="hidden" name="md5" value="{{ md5result }}">
+If nothing happens, you may have javascript disabled.  In that case, click the button to complete the transfer:  
+<input type="submit" value="Go!">
+</form>
+<script>
+//function submitnow() {
+  document.getElementById('gotophpbbform').submit();
+//}
+//window.setTimeout('submitnow();',5000);
+</script>
+
+  </div>
+{% endblock %}

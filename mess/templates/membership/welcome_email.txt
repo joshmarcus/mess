@@ -12,13 +12,11 @@ Then you can log in at:  https://mess.mariposa.coop
 
 Current features available to members:
   * View your next workshift, and your workshift history
+  * View your account balance and recent transactions
+  * Add credit and equity to your account with Paypal
   * View your account members
   * View and edit your contact information
   * Forum to share ideas with other members
-
-Features coming soon:
-  * View your account balance and recent transactions
-  * Switch a workshift to an earlier time
 
 Sincerely,
 The MESS Committee
