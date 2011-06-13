@@ -97,9 +97,11 @@
   <div class="workhist"> 
     <table class="acctwork">
       {% for member in account.members.all %}
-        <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
-        {% if member.current_loa %}
-          <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+        {% if member.is_active %}
+          <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
+          {% if member.current_loa %}
+            <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+          {% endif %}
         {% endif %}
       {% endfor %}
     </table>
