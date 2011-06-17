@@ -25,7 +25,7 @@ WORK_STATUS = (
     ('w', 'Workshift'),  # Member is active and should have a workshift
     ('c', 'Committee'), # Anything not tracked shift by shift
     ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
-    ('n', 'Non-Working'), # Non-working member
+    ('n', 'No Workshift'), # Non-working member
 )
 EXEMPTION_TYPES = (
     ('k', 'Kids'),
