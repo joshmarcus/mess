@@ -94,7 +94,6 @@
 </ul>
 
 <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>
-  <div class="workhist"> 
     <table class="acctwork">
       {% for member in account.members.all %}
         {% if member.is_active %}
@@ -106,6 +105,7 @@
       {% endfor %}
     </table>
 
+  <div class="workhist"> 
     <table class="workhist" id="workhist_week0">
       {% for week in account.workhist %}
         {% if week.flagcurrent %}
