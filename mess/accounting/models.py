@@ -77,6 +77,7 @@ class Transaction(models.Model):
     cost = models.DecimalField(max_digits=8, decimal_places=2,
         default=0, blank=True)   
     taxable = models.NullBooleanField(blank=True, null=True)
+    is4c_timestamp = models.DateTimeField(blank=True, null=True)
 
     
     

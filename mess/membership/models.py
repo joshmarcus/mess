@@ -86,11 +86,17 @@ class Member(models.Model):
     card_facility_code = models.CharField(max_length=128, blank=True, 
             null=True)
     card_type = models.CharField(max_length=128, blank=True, null=True)
+    equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    equity_increment = models.DecimalField(max_digits=8, decimal_places=2, default=25)
 
     objects = MemberManager()
 
     def __unicode__(self):
         return self.user.get_full_name()
+
+    def equity_target(self):
+        return Decimal("200.00")   #TODO: For shared address, return $150 or $125
 
     def skills(self):
         return s_models.Skill.objects.filter(
@@ -283,6 +289,7 @@ class Account(models.Model):
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     note = models.TextField(blank=True)
+    shared_address = models.BooleanField()
 
     objects = AccountManager()
 
