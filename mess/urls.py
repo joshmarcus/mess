@@ -10,7 +10,6 @@ urlpatterns = patterns('',
     (r'^accounting/', include('mess.accounting.urls')),        
     (r'^membership/', include('mess.membership.urls')),        
     (r'^forum/', include('mess.forum.urls')),
-    (r'^fundraising/', include('mess.telethon.urls')),
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
 
