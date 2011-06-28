@@ -40,7 +40,7 @@
       {{ account.hours_balance|messmoney }} 
     {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
   </li>
-  <li><b>Member equity:</b> {{ account.deposit|messmoney }}</li>
+  {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
   <li>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
       <input type="hidden" name="cmd" value="_xclick">
@@ -75,6 +75,7 @@
       <input type="submit" value="add equity with Paypal">
     </form>
   </li>
+  <li><b>Shared Address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
   {% if account.temporarybalancelimit_set.current or request.user.is_staff %}
     <li>
     {% if request.user.is_staff %}
@@ -91,6 +92,7 @@
     {% endif %}
     </li>
   {% endif %}
+
 </ul>
 
 <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>

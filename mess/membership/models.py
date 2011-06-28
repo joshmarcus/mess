@@ -96,7 +96,14 @@ class Member(models.Model):
         return self.user.get_full_name()
 
     def equity_target(self):
-        return Decimal("200.00")   #TODO: For shared address, return $150 or $125
+        shared_house_size = 0
+        for acct in self.accounts.filter(shared_address=True):
+            shared_house_size = max(shared_house_size, acct.active_member_count)
+        if shared_house_size >= 5:
+            return Decimal("125.00")
+        if shared_house_size >= 3:
+            return Decimal("150.00")
+        return Decimal("200.00")
 
     def skills(self):
         return s_models.Skill.objects.filter(

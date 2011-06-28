@@ -48,6 +48,11 @@
       </li>
     {% endif %}
 
+    <li><b>Equity held:</b> {{ member.equity_held }}</li>
+    <li><b>Equity due:</b> {{ member.equity_due }}</li>
+    <li><b>Equity increment:</b> {{ member.equity_increment }}</li>
+    <li><b>Equity target:</b> {{ member.equity_target }}</li>
+
     {% if am.account_contact %}
       <!-- work status is only for member equity holders -->
       <li><b>Work status:</b> {{ member.get_work_status_display }}</li>
