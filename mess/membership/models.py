@@ -314,7 +314,7 @@ class Account(models.Model):
         totaldiscount = 0.0
         memberset = self.billable_members()
         for m in memberset:
-            if m.work_status != 'n' and m.work_status !='e':
+            if m.work_status != 'n':
                 totaldiscount += 10
             else: 
                 totaldiscount += 5
