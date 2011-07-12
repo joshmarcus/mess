@@ -2,6 +2,7 @@ from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import authenticate, login
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
+from django.db.models.options import FieldDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import get_template
@@ -28,7 +29,12 @@ def welcome(request):
             cache.set('entries', entries, 300)
         context['rss_entries'] = entries
 
-        threads = cache.get('threads')
+        # not sure why we're getting the FieldDoesNotExist error with locmem
+        # but this try/except block seems to handle it
+        try:
+            threads = cache.get('threads')
+        except FieldDoesNotExist:
+            threads = None
         if not threads:
             threads = f_models.Post.objects.threads()[:MAX_ENTRIES]
             cache.set('threads', threads)

@@ -1,11 +1,20 @@
-This is the readme file, beginning to be written by Paul as of July 2008.
+The MESS is a python / django web application designed to manage members, accounts, workshifts, and sales transactions for the staff and members of the Mariposa food coop.
 
-This is the MESS Programming Intro, for use by new programmers and designers
-For general MESS Project info, visit trac.breaksalot.org/mess
-For the MESS User Guide, visit trac.breaksalot.org/mess/wiki/UserGuide
+It is both in use and in development.  There is currently not a demo site that is accessible to the public, because that would require a bunch of dummy data which we unfortunately have not created.
+
+
+Sections a readme should have:
+
+Installation guidelines
+
+Screenshots
+
+Architecture outline
+
+MESS Programming Intro, for use by new programmers and designers
 
 ** I. What is Django **
 Django is a web programming framework built around Python.  It provides routines and classes (and probably other things) to help manage many aspects of a dynamic-database-driven website.  On the database side, Django deals with SQL calls so the programmer doesn't have to.  On the webserver side, Django does all kinds of things.
 
-** II. What happens when I load http://mess.breaksalot.org/someurl ? **
+** II. What happens when I load a mess url **
 Django keeps tables of URLs (in */url.py) telling which Template to use for each URL.  The template file (in /templates/*/*.html) is served to the browser.  However, the template file can include Python code, particularly pulling data from the database.  Code in the template is set off with {{ double braces }}.
