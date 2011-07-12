@@ -71,7 +71,7 @@ def getacctdict(account):
         'name':account.name,
         'balance_limit':str(account.max_allowed_to_owe()),
         'balance':str(account.balance),
-        'discount':str(account.discount), 
+        'discount':'???', #str(account.discount), 
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
         'receipt_notes':'Thank you for shopping!',
