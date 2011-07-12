@@ -129,7 +129,7 @@ def recordtransaction(request):
     else: payment_type = ''
     if t.has_key('purchase_type'): purchase_type = t['purchase_type']
     else: purchase_type = ''
-    if t['purchase_type'] == 'B':
+    if purchase_type == 'B':
       tnew = a_models.Transaction(account=account, 
             purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
             note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'])
