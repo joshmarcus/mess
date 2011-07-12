@@ -136,7 +136,7 @@ def recordtransaction(request):
     else:
       tnew = a_models.Transaction(account=account, member=member, 
             purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
-            note=t['note'], entered_by=cashier, register_no=t['register_no'], trans_no=t['trans_no'])
+            note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'])
     tnew.save()
     status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
     return HttpResponse(status=status_code)
