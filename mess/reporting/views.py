@@ -251,7 +251,7 @@ def reports(request):
             ('Regular Shift', reverse('memberwork')+'?section=Regular Shift'),
             ('Exemptions', reverse('memberwork')+'?section=Exempt'),
             ('Committee', reverse('memberwork')+'?section=Committee'),
-            ('Non-Working', reverse('memberwork')+'?section=Non-Working'),
+            ('No Workshift', reverse('memberwork')+'?section=No Workshift'),
         ]),
 
         ('Anomalies',[
@@ -497,7 +497,7 @@ def memberwork(request):
             proxypair[mw.get_primary_account()].section = 'Proxy Shift Pairs'
 
     section_names = ['Regular Shift', 'Cashiers', 'Dancers', 'Committee', 
-        'Exempt', 'Non-Working', 'LOA', 'Need Shift', 'Proxy Shift Pairs', 
+        'Exempt', 'No Workshift', 'LOA', 'Need Shift', 'Proxy Shift Pairs', 
         'Proxy']
     if 'section' in request.GET:
         section_names = [request.GET['section']]
@@ -530,7 +530,7 @@ def prepmemberwork(member, weekbreaks):
     elif member.work_status == 'c':
         section = 'Committee'
     elif member.work_status == 'n':
-        section = 'Non-Working'
+        section = 'No Workshift'
     elif member.shift == None:
         section = 'Need Shift'
     elif member.shift.job.name == 'Cashier':

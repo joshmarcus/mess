@@ -5,6 +5,7 @@
 <ul class="quick-info">
   <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> 
     {{ account.balance|messmoney }}</li>
+    <li><b>Discount:</b>{{ account.discount }}%</li>
   <!-- the meaning of each variable is explained at https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables -->
   <li>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -94,16 +95,18 @@
 </ul>
 
 <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>
-  <div class="workhist"> 
     <table class="acctwork">
       {% for member in account.members.all %}
-        <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
-        {% if member.current_loa %}
-          <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+        {% if member.is_active %}
+          <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
+          {% if member.current_loa %}
+            <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+          {% endif %}
         {% endif %}
       {% endfor %}
     </table>
 
+  <div class="workhist"> 
     <table class="workhist" id="workhist_week0">
       {% for week in account.workhist %}
         {% if week.flagcurrent %}

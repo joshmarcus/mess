@@ -678,7 +678,7 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .task-LOA {background: #fff; }  /* white */
 .task-Exempt {background: #ffc; }
 .task-Committee {background: #fdb; }
-.task-Non-Working {background: #fcd; }
+.task-No-Workshift {background: #fcd; }
 .task-hiding-spot td { padding:0px; line-height:0px; }
 .task-hiding-spot td div { line-height:10pt; }
 
@@ -687,6 +687,8 @@ tr.profile h4.warning {background:red; color:#fff; font-size:1em;}
 .workhist-today { border:1px solid black; }
 .workhist td { text-align:right; padding-left:5pt; }
 div.workhist { margin-bottom:2em; }
+.acctwork { width:100%; }
+.acctwork td { padding-left:5pt; }
 
 .LOA {background: #fff; }
 
