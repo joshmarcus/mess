@@ -313,6 +313,8 @@ class Account(models.Model):
         # LOA members and proxy shoppers not included
         totaldiscount = 0.0
         memberset = self.billable_members()
+        if memberset.count() == 0:
+            return 0
         for m in memberset:
             if m.work_status != 'n':
                 totaldiscount += 10
