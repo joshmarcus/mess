@@ -7,4 +7,5 @@ urlpatterns = patterns('mess.is4c.views',
     url(r'^member/(\d+)/$', 'member', name='is4c-member'),
     url(r'^members/$', 'members', name='is4c-members'),
     url(r'^recordtransaction/$', 'recordtransaction', name='is4c-recordtransaction'),
+    url(r'^gotois4c$', 'gotois4c', name='is4c-login'),
 )
