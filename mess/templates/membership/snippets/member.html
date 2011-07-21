@@ -68,6 +68,10 @@
     {% if member.date_joined_is_realistic or request.user.is_staff %}
     <li><b>Joined:</b> {{ member.date_joined|date:"n/j/Y" }}</li>
     {% endif %}
+
+    {% if member.user.groups.all %}
+    <li><b>Groups:</b>{{ member.user.groups.all|join:", "}}</li>
+    {% endif %}
   </ul>
 </div>
 <hr class="endaccountmember">

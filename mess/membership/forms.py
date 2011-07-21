@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.forms import formsets
 from django.forms.models import inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
@@ -65,11 +65,14 @@ class UserEmailForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'groups')
     # username pulled straight from django/contrib/auth/forms.py
     username = forms.RegexField(label=_("Username"), max_length=30, 
             regex=r'^\w+$', help_text = _("Required. 30 characters or fewer. Alphanumeric characters only (letters, digits and underscores)."),
             error_message = _("This value must contain only letters, numbers and underscores."))
+    # groups pulled from django/contrib/auth/models.py and augmented
+    groups = forms.ModelMultipleChoiceField(Group.objects.all(),
+        help_text=_('Hold down "Control", or "Command" on a Mac, to select more than one.'))
 
 class AccountForm(forms.ModelForm):
     class Meta:

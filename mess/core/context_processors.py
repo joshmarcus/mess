@@ -21,7 +21,7 @@ def cashier_permission(request):
     '''
     if not request.user.is_authenticated():
         return {}     # no permission, bool({}) = False
-    if request.user.is_staff:
+    if request.user.has_perm('accounting.add_transaction'):
         return {'can_cashier_now':True}
     if (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP
         and (request.user.get_profile().is_cashier_today
