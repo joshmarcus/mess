@@ -60,7 +60,7 @@ class Transaction(models.Model):
         default=0, blank=True)   # this or purchase_amount will hold the IS4C.total
     note = models.CharField(max_length=256, blank=True)   # IS4C.description
     account_balance = models.DecimalField(max_digits=8, decimal_places=2)
-    entered_by = models.ForeignKey(Member, blank=True, null=True)  # IS4C.emp_no
+    entered_by = models.ForeignKey(User, blank=True, null=True)  # IS4C.emp_no
 
     # NEW FIELDS FOR IS4C
     register_no = models.IntegerField(blank=True, null=True)
