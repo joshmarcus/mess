@@ -120,7 +120,6 @@ def recordtransaction(request):
     t = simplejson.loads(json)
     account = m_models.Account.objects.get(id=t['account'])
     if t.has_key('member'): member = m_models.Member.objects.get(id=t['member'])
-    if t.has_key('entered_by'): cashier = m_models.Member.objects.get(id=t['entered_by'])
     if t.has_key('payment_amount'): payment_amount = Decimal(str(t['payment_amount']))
     else: payment_amount = 0
     if t.has_key('purchase_amount'): purchase_amount = Decimal(str(t['purchase_amount']))
@@ -129,14 +128,13 @@ def recordtransaction(request):
     else: payment_type = ''
     if t.has_key('purchase_type'): purchase_type = t['purchase_type']
     else: purchase_type = ''
-    if purchase_type == 'B':
-      tnew = a_models.Transaction(account=account, 
-            purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
-            note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'])
-    else:
-      tnew = a_models.Transaction(account=account, member=member, 
-            purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
-            note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'])
+    if t.has_key('is4c_cashier_id'): cashier_id = t['is4c_cashier_id']
+    else: cashier_id = ''
+    if t.has_key('date'): is4c_ts = t['date']
+    else: is4c_ts = ''
+    tnew = a_models.Transaction(account=account, 
+          purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
+          note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'], is4c_cashier_id=cashier_id, is4c_timestamp=is4c_ts)
     tnew.save()
     status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
     return HttpResponse(status=status_code)
