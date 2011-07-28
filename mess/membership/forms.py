@@ -72,7 +72,8 @@ class UserForm(forms.ModelForm):
             error_message = _("This value must contain only letters, numbers and underscores."))
     # groups pulled from django/contrib/auth/models.py and augmented
     groups = forms.ModelMultipleChoiceField(Group.objects.all(),
-        help_text=_('Hold down "Control", or "Command" on a Mac, to select more than one.'))
+        help_text=_('Hold down "Control", or "Command" on a Mac, to select more than one.'),
+        required=False)
 
 class AccountForm(forms.ModelForm):
     class Meta:
