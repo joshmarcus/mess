@@ -320,6 +320,23 @@ class Account(models.Model):
     def billable_member_count(self):
         return self.billable_members().count()
 
+    @property
+    def discount(self):
+        # active working members at 10%
+        # active nonworking members at 5%
+        # LOA members and proxy shoppers not included
+        totaldiscount = 0.0
+        memberset = self.billable_members()
+        if memberset.count() == 0:
+            return 0
+        for m in memberset:
+            if m.work_status != 'n':
+                totaldiscount += 10
+            else: 
+                totaldiscount += 5
+        return round(totaldiscount / memberset.count(), 2)
+
+
     def autocomplete_label(self):
         if self.active_member_count:
             return self.name

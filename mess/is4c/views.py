@@ -1,14 +1,23 @@
 from django.utils import simplejson
-from django.http import HttpResponse
 from django.template import RequestContext, Context
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.db.models import Q
+from django.utils.safestring import mark_safe
+
 import django.conf as conf
 
 from mess.membership import models as m_models
 from mess.accounting import models as a_models
 
+import datetime
+import urllib2
+import time
+import md5
+from decimal import Decimal 
 
 def index(request):
     # verify secret
@@ -53,6 +62,7 @@ def getacctdict(account):
     * account discount #does not exist yet
     * account cashier notes #calculated field, account flags
     * account receipt notes  #future calculated fields
+    * account active members
     """
     template = get_template('accounting/snippets/acct_flags.html')
     acct_flags = template.render(Context({'account':account}))
@@ -61,10 +71,11 @@ def getacctdict(account):
         'name':account.name,
         'balance_limit':str(account.max_allowed_to_owe()),
         'balance':str(account.balance),
-        'discount':'???', # what is discount??
+        'discount':str(account.discount), 
         'json_flags':account.frozen_flags(),
         'html_flags':acct_flags,
-        'receipt_notes':'Thank you for shopping!'}
+        'receipt_notes':'Thank you for shopping!',
+	'active_member_count': account.active_member_count}
 
 def member(request, member_id):
     # all requests will have some get variables, at the very least the secret is a get variable.
@@ -89,10 +100,14 @@ def members(request):
 # helper method
 def getmemberdict(member):
     return {'memberid':member.id,
+        'accounts':map(lambda a: a.id, member.accounts.all()),
         'username':member.user.username,
         'firstname':member.user.first_name,
         'lastname':member.user.last_name,
-        'equity':'please do this by hand first'}
+        'work_status':member.work_status,
+        'equity':'please do this by hand first',
+        'is_active':member.is_active,
+        'is_on_loa':member.is_on_loa}
 
 @csrf_exempt
 def recordtransaction(request):
@@ -101,9 +116,43 @@ def recordtransaction(request):
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
         return HttpResponse('Wrong IS4C secret!!')
 
-    json = request.read()   # this fails, because request doesn't have a read method. hm.
-    object = simplejson.reads(json)
-    #for t in object:
-    # tnew = a.models.Transaction(trans_id=t['trans_id'], trans_no=t['trans_no'], etc...)
-    # tnew.save()
-    return HttpResponse('done.  and here it was: ' +repr(object))
+    json = request.POST['transaction'] 
+    t = simplejson.loads(json)
+    account = m_models.Account.objects.get(id=t['account'])
+    if t.has_key('member'): member = m_models.Member.objects.get(id=t['member'])
+    if t.has_key('payment_amount'): payment_amount = Decimal(str(t['payment_amount']))
+    else: payment_amount = 0
+    if t.has_key('purchase_amount'): purchase_amount = Decimal(str(t['purchase_amount']))
+    else: purchase_amount = 0
+    if t.has_key('payment_type'): payment_type = t['payment_type']
+    else: payment_type = ''
+    if t.has_key('purchase_type'): purchase_type = t['purchase_type']
+    else: purchase_type = ''
+    if t.has_key('is4c_cashier_id'): cashier_id = t['is4c_cashier_id']
+    else: cashier_id = ''
+    if t.has_key('date'): is4c_ts = t['date']
+    else: is4c_ts = ''
+    tnew = a_models.Transaction(account=account, 
+          purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
+          note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'], is4c_cashier_id=cashier_id, is4c_timestamp=is4c_ts)
+    tnew.save()
+    status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
+    return HttpResponse(status=status_code)
+
+@login_required
+def gotois4c(request):
+    """ Send user to is4c hosted locally """
+    profile = request.user.get_profile()
+    data = ('username='+urllib2.quote(request.user.username)
+           +'&fullname='+urllib2.quote(request.user.get_full_name())
+           +'&mem_id='+urllib2.quote(str(profile.id))
+           +'&user_id='+str(request.user.id)
+           +'&time='+str(int(time.time()))
+           +'&secret=')
+    md5result = md5.md5(data + conf.settings.GOTOIS4C_SECRET).hexdigest()
+    #urltarget = 'http://mariposa.4now.us/phpBB3/index.php'
+    urltarget = 'http://localhost/mess-login.php'
+    data = mark_safe(data)
+    return render_to_response('is4c/gotois4c.html', locals(),
+            context_instance=RequestContext(request))
+

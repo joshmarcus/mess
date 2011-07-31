@@ -78,9 +78,7 @@ class Transaction(models.Model):
         default=0, blank=True)   
     taxable = models.NullBooleanField(blank=True, null=True)
     is4c_timestamp = models.DateTimeField(blank=True, null=True)
-
-    
-    
+    is4c_cashier_id = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return u'%s %s' % (self.account, 

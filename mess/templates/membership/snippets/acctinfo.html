@@ -5,6 +5,7 @@
 <ul class="quick-info">
   <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> 
     {{ account.balance|messmoney }}</li>
+    <li><b>Discount:</b>{{ account.discount }}%</li>
   <!-- the meaning of each variable is explained at https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables -->
   <li>
     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">

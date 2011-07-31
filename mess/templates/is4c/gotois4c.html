@@ -1,0 +1,17 @@
+
+Please wait...sending your MESS username, fullname, email and an authentication token to {{ urltarget }}...
+
+<form id="gotois4cform" method="POST" action="{{ urltarget }}">
+<input type="hidden" name="data" value="{{ data }}">
+<input type="hidden" name="md5" value="{{ md5result }}">
+<input type="submit" value="Send">
+</form>
+<script>
+function submitnow() {
+  document.getElementById('gotois4cform').submit();
+}
+window.setTimeout('submitnow();',10);
+</script>
+
+(If you have enough time to read this, you may have javascript disabled.  In that case, 
+click the button above to send your MESS username, fullname, email and an authentication token to {{ urltarget }}.)
