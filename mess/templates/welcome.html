@@ -69,7 +69,6 @@
     {% include "accounting/snippets/acct_flags.html" %}
     <ul class="quick-info">
       <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> {{ account.balance|messmoney }}</li>
-        <li><b>Discount:</b> {{ account.discount }}%</li>
       <!-- the meaning of each variable is explained at https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables -->
       <li>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -99,6 +98,7 @@
           <input type="submit" value="add credit with Paypal">
         </form>
       </li>
+      <li><b>Discount:</b> {{ account.discount }}%</li>
       {% if account.next_shift %}
       <li><b>Next workshift:</b> {{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a></li>
       {% endif %}
@@ -108,22 +108,7 @@
       </li>
       {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
       <li><b>Shared address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
-      {% if account.temporarybalancelimit_set.current or request.user.is_staff %}
-        <li>
-        {% if request.user.is_staff %}
-          {% if account.temporarybalancelimit_set.current %}
-            <b>{{ account.temporarybalancelimit_set.current|first }}</b>
-          {% else %}
-            <b>Balance limit:</b> {{ account.max_allowed_to_owe }}
-          {% endif %}
-          <br /><a href="{{ account.get_templimit_url }}">change balance limit</a>
-        {% else %}
-          {% if account.temporarybalancelimit_set.current %}
-            <b>{{ account.temporarybalancelimit_set.current|first }}</b>
-          {% endif %}
-        {% endif %}
-        </li>
-      {% endif %}
+      <li><b>Balance limit:</b> {% if account.temporarybalancelimit_set.current %}{{ account.temporarybalancelimit_set.current|first }}{% else %}{{ account.max_allowed_to_owe }}{% endif %}</li>
     </ul>
     {% endfor %}
   </div>
