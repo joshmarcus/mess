@@ -1,14 +1,17 @@
     <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>
-        <table class="acctwork">
-          {% for member in account.members.all %}
-            {% if member.is_active %}
-              <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
-              {% if member.current_loa %}
-                <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
-              {% endif %}
+      <ul class="quick-info">
+        <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a>{% else %}None{% endif %}</li>
+      </ul>
+      <table class="acctwork">
+        {% for member in account.members.all %}
+          {% if member.is_active %}
+            <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
+            {% if member.current_loa %}
+              <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
             {% endif %}
-          {% endfor %}
-        </table>
+          {% endif %}
+        {% endfor %}
+      </table>
 
       <div class="workhist"> 
         <table class="workhist" id="workhist_week0">
