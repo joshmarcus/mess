@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load messmoney %}
 
 {% block title %}Welcome to The MESS{% endblock %}
 {% block logo %}The MESS{% endblock %}
@@ -25,7 +26,101 @@
 
   <div id ="right-column">
     {% with user.get_profile.accounts.all|first as account %}
-    {% include "membership/snippets/acctinfo.html" %}
+    <h2><a href="{{ account.get_absolute_url }}">{{ account }}</a></h2>
+    {% include "accounting/snippets/acct_flags.html" %}
+    <ul class="quick-info">
+      <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> 
+        {{ account.balance|messmoney }}</li>
+        <li><b>Discount:</b>{{ account.discount }}%</li>
+      <!-- the meaning of each variable is explained at https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables -->
+      <li>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+          <input type="hidden" name="cmd" value="_xclick">
+          <input type="hidden" name="business" value="DJ7UFJ58N3SSJ">
+          <input type="hidden" name="lc" value="US">
+          <input type="hidden" name="item_name" value="Add credit to your Mariposa account ({{ account.alphanumericname }})">
+          <select name="amount">
+            <option value="10.00">10.00</option>
+            <option value="20.00">20.00</option>
+            <option value="30.00">30.00</option>
+            <option value="50.00" selected>50.00</option>
+            <option value="100.00">100.00</option>
+            <option value="150.00">150.00</option>
+            <option value="200.00">200.00</option>
+            <option value="300.00">300.00</option>
+            <option value="500.00">500.00</option>
+          </select>
+          <input type="hidden" name="item_number" value="Account-{{ account.id }}">
+          <input type="hidden" name="button_subtype" value="services">
+          <input type="hidden" name="no_shipping" value="1">
+          <input type="hidden" name="undefined_quantity" value="1">
+          <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+          <input type="hidden" name="notify_url" value="https://mess.mariposa.coop/accounting/listen_to_paypal">
+          <input type="hidden" name="return" value="https://mess.mariposa.coop">
+          <input type="hidden" name="rm" value="1">
+          <input type="submit" value="add credit with Paypal">
+        </form>
+      </li>
+      <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a>{% else %}None{% endif %}</li>
+      <li>
+      <b>Hours {% if account.hours_owed %}owed{% else %}banked{% endif %}:</b> 
+          {{ account.hours_balance|messmoney }} 
+        {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
+      </li>
+      {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
+      <li>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+          <input type="hidden" name="cmd" value="_xclick">
+          <input type="hidden" name="business" value="DJ7UFJ58N3SSJ">
+          <input type="hidden" name="lc" value="US">
+          <input type="hidden" name="item_name" value="Add equity to your Mariposa account ({{ account.alphanumericname }})">
+          <!-- 1st position of custom value at 1 means equity payment, not credit -->
+          <input type="hidden" name="custom" value="1">
+          <select name="amount">
+            <option value="10.00">10.00</option>
+            <option value="20.00">20.00</option>
+            <option value="30.00">30.00</option>
+            <option value="50.00" selected>50.00</option>
+            <option value="100.00">100.00</option>
+            <option value="150.00">150.00</option>
+            <option value="200.00">200.00</option>
+            <option value="300.00">300.00</option>
+            <option value="500.00">500.00</option>
+            <option value="1000.00">1000.00</option>
+            <option value="1500.00">1500.00</option>
+            <option value="2000.00">2000.00</option>
+            <option value="2500.00">2500.00</option>
+          </select>
+          <input type="hidden" name="item_number" value="Account-{{ account.id }}">
+          <input type="hidden" name="button_subtype" value="services">
+          <input type="hidden" name="no_shipping" value="1">
+          <input type="hidden" name="undefined_quantity" value="1">
+          <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+          <input type="hidden" name="notify_url" value="https://mess.mariposa.coop/accounting/listen_to_paypal">
+          <input type="hidden" name="return" value="https://mess.mariposa.coop">
+          <input type="hidden" name="rm" value="1">
+          <input type="submit" value="add equity with Paypal">
+        </form>
+      </li>
+      <li><b>Shared Address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
+      {% if account.temporarybalancelimit_set.current or request.user.is_staff %}
+        <li>
+        {% if request.user.is_staff %}
+          {% if account.temporarybalancelimit_set.current %}
+            <b>{{ account.temporarybalancelimit_set.current|first }}</b>
+          {% else %}
+            <b>Balance Limit:</b> {{ account.max_allowed_to_owe }}
+          {% endif %}
+          <br /><a href="{{ account.get_templimit_url }}">change balance limit</a>
+        {% else %}
+          {% if account.temporarybalancelimit_set.current %}
+            <b>{{ account.temporarybalancelimit_set.current|first }}</b>
+          {% endif %}
+        {% endif %}
+        </li>
+      {% endif %}
+    </ul>
+    {% include 'membership/snippets/workshifts.html' %}
     {% endwith %}
   </div>
 {% endblock %}
