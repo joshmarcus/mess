@@ -334,7 +334,9 @@ class Account(models.Model):
                 totaldiscount += 10
             else: 
                 totaldiscount += 5
-        return round(totaldiscount / memberset.count(), 2)
+        rounded = round(totaldiscount / memberset.count(), 2)
+        # no decimals if can be displayed as integer
+        return rounded if int(rounded) != rounded else int(rounded)
 
 
     def autocomplete_label(self):
