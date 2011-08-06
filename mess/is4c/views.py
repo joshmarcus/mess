@@ -129,7 +129,7 @@ def recordtransaction(request):
     if t.has_key('purchase_type'): purchase_type = t['purchase_type']
     else: purchase_type = ''
     if t.has_key('is4c_cashier_id'): cashier_id = t['is4c_cashier_id']
-    else: cashier_id = ''
+    else: cashier_id = 0
     if t.has_key('date'): is4c_ts = t['date']
     else: is4c_ts = ''
     tnew = a_models.Transaction(account=account, 
