@@ -97,8 +97,10 @@ class Transaction(models.Model):
         balance = self.account.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance
-        self.account.save()
+        # put account save after transaction save so balance isn't
+        # changed on transaction save error
         super(Transaction, self).save(*args, **kwargs)
+        self.account.save()
 
     def fixes_target(self):
         '''
