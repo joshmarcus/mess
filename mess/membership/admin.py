@@ -21,7 +21,7 @@ class MemberAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__first_name', 'user__last_name')
 
 class AccountAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('name',)
 
 class AccountMemberAdmin(admin.ModelAdmin):
     search_fields = ('account__name', 'member__user__username')
