@@ -86,11 +86,24 @@ class Member(models.Model):
     card_facility_code = models.CharField(max_length=128, blank=True, 
             null=True)
     card_type = models.CharField(max_length=128, blank=True, null=True)
+    equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    equity_increment = models.DecimalField(max_digits=8, decimal_places=2, default=25)
 
     objects = MemberManager()
 
     def __unicode__(self):
         return self.user.get_full_name()
+
+    def equity_target(self):
+        shared_house_size = 0
+        for acct in self.accounts.filter(shared_address=True):
+            shared_house_size = max(shared_house_size, acct.active_member_count)
+        if shared_house_size >= 5:
+            return Decimal("125.00")
+        if shared_house_size >= 3:
+            return Decimal("150.00")
+        return Decimal("200.00")
 
     def skills(self):
         return s_models.Skill.objects.filter(
@@ -283,6 +296,7 @@ class Account(models.Model):
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     note = models.TextField(blank=True)
+    shared_address = models.BooleanField()
 
     objects = AccountManager()
 
@@ -320,7 +334,9 @@ class Account(models.Model):
                 totaldiscount += 10
             else: 
                 totaldiscount += 5
-        return round(totaldiscount / memberset.count(), 2)
+        rounded = round(totaldiscount / memberset.count(), 2)
+        # no decimals if can be displayed as integer
+        return rounded if int(rounded) != rounded else int(rounded)
 
 
     def autocomplete_label(self):

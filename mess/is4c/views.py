@@ -116,25 +116,22 @@ def recordtransaction(request):
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
         return HttpResponse('Wrong IS4C secret!!')
 
+    # get the transaction and sanitize it
     json = request.POST['transaction'] 
     t = simplejson.loads(json)
-    account = m_models.Account.objects.get(id=t['account'])
-    if t.has_key('member'): member = m_models.Member.objects.get(id=t['member'])
-    if t.has_key('payment_amount'): payment_amount = Decimal(str(t['payment_amount']))
-    else: payment_amount = 0
-    if t.has_key('purchase_amount'): purchase_amount = Decimal(str(t['purchase_amount']))
-    else: purchase_amount = 0
-    if t.has_key('payment_type'): payment_type = t['payment_type']
-    else: payment_type = ''
-    if t.has_key('purchase_type'): purchase_type = t['purchase_type']
-    else: purchase_type = ''
-    if t.has_key('is4c_cashier_id'): cashier_id = t['is4c_cashier_id']
-    else: cashier_id = ''
-    if t.has_key('date'): is4c_ts = t['date']
-    else: is4c_ts = ''
-    tnew = a_models.Transaction(account=account, 
-          purchase_type=purchase_type, purchase_amount=purchase_amount, payment_amount=payment_amount, payment_type=payment_type, 
-          note=t['note'], register_no=t['register_no'], trans_no=t['trans_no'], is4c_cashier_id=cashier_id, is4c_timestamp=is4c_ts)
+    t['account'] = m_models.Account.objects.get(id=t['account'])
+    if 'member' in t: 
+        t['member'] = m_models.Member.objects.get(id=t['member'])
+    t['payment_amount'] = Decimal(str(t.get('payment_amount', 0)))
+    t['purchase_amount'] = Decimal(str(t.get('purchase_amount', 0)))
+    t['payment_type'] = t.get('payment_type', '')
+    t['purchase_type'] = t.get('purchase_type', '')
+    t['is4c_cashier_id'] = t.get('is4c_cashier_id', 0)
+    t['is4c_timestamp'] = t.get('date')
+    if 'date' in t: 
+        del t['date']
+
+    tnew = a_models.Transaction(**t)
     tnew.save()
     status_code = (500, 200)[tnew.pk and a_models.Transaction.objects.filter(pk=tnew.pk).exists()]
     return HttpResponse(status=status_code)

@@ -15,13 +15,45 @@
         {% endif %}
         {{ account }}
       </h2>
+      {% include "accounting/snippets/acct_flags.html" %}
+
+        <div class="accountinfo">
+      <div class="accountmemberside">
+        <ul class="quick-info">
+          <li><b>{% if account.owes_money %}Money owed{% else %}Credit{% endif %}:</b> 
+            {{ account.balance|messmoney }}</li>
+          <li><b>Discount:</b> {{ account.discount }}%</li>
+          <li>
+            <b>Balance limit:</b> {% if account.temporarybalancelimit_set.current %}{{ account.temporarybalancelimit_set.current|first }}{% else %}{{ account.max_allowed_to_owe }}{% endif %}
+            {% if request.user.is_staff %}
+              <br /><a href="{{ account.get_templimit_url }}">change balance limit</a>
+            {% endif %}
+          </li>
+        </ul>
+        </div>
+
+      <div class="accountmemberside">
+        <ul class="quick-info">
+          <li><b>Hours {% if account.hours_owed %}owed{% else %}banked{% endif %}:</b> 
+            {{ account.hours_balance|messmoney }} 
+            {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
+          </li>
+
+          <li><b>Shared Address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
+          {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
+        </ul>
+        </div>
 
       {% if request.user.is_staff and account.note %}
-        <div class="details">
+      <div class="details">
           <h5 class="accountnotes">Account Notes</h5>
           {{ account.note|linebreaks }}
-        </div>
+      </div>
       {% endif %}
+      </div>
+
+
+
 
       {% if account.accountmember_set.active_depositor %}
         <h2 class="accountmembersection">
@@ -90,8 +122,9 @@
       </div>
     </div>
   </div>
-  <div id="right-column">
-    {% include "membership/snippets/acctinfo.html" %}
 
+
+  <div id="right-column">
+    {% include 'membership/snippets/workshifts.html' %}
   </div>
 {% endblock %}

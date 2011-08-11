@@ -535,10 +535,13 @@ h5.accountnotes { margin-top:0.2em; margin-bottom:0em; }
 							#primary-content-wrapper div.profile-links ul li a:hover, #primary-content-wrapper ul.edit-contact-info a:hover {
 								color:#246495;
 								}
-			#primary-content-wrapper div.details {
+			#primary-content-wrapper div.accountinfo{
 				border:1px solid #ddd;
 				padding:0.3em 1em 0.3em 1em;
 				background:beige;
+				}	
+			#primary-content-wrapper div.details {
+        clear:both;
 				}	
 
 ul.quick-info {margin:1em 1.5em 2em 1.5em; list-style-type:none;}
@@ -546,7 +549,6 @@ ul.quick-info li {background-image:none;
                   padding:0px 0px 3px 0px; 
                   border-bottom:1px solid #eee;}
 ul.quick-info li img {margin-right:1em;}
-ul.quick-info li b {display:inline-block; padding-right:5px;}
 
 div.accountmemberside {width:50%; float:left;}
 hr.endaccountmember {clear:both; border:0px;}

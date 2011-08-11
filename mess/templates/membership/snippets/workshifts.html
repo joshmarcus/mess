@@ -1,0 +1,73 @@
+    <h2>Workshifts (<span id="workhist_week0hider"><u>past</u></span>/<span id="workhist_future0hider"><u>future</u></span>)</h2>
+      <ul class="quick-info">
+        <li><b>Next Workshift:</b> {% if account.next_shift %}{{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a>{% else %}None{% endif %}</li>
+      </ul>
+      <table class="acctwork">
+        {% for member in account.members.all %}
+          {% if member.is_active %}
+            <tr><td class="task-{{ member.get_work_status_display }}">{{ member }}: {{ member.get_work_status_display }}</td></tr>
+            {% if member.current_loa %}
+              <tr><td class="LOA">{{ member }}: LOA {{ member.current_loa.start }} until {{ member.current_loa.end }}</td></tr>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </table>
+
+      <div class="workhist"> 
+        <table class="workhist" id="workhist_week0">
+          {% for week in account.workhist %}
+            {% if week.flagcurrent %}
+              </table><table class="workhist" id="workhist_current">
+            {% endif %}
+            {% if week.flagfuture %}
+              </table><table class="workhist" id="workhist_future0">
+            {% endif %}
+            <tr id="workhist_week{{ forloop.counter }}hider">
+              <td>{{ week.newmonth|date:"M" }}{{ week.newyear }}</td>
+              <td>&nbsp;</td>
+              {% for day in week.days %}
+                {% if day.workflag %}
+                  <td class="task-{{ day.workflag }}{% if day.istoday %} workhist-today{% endif %}" title="{{ day.task.member }}. {{ day.task.job }}. {{ day.task.time|time:"g:ia" }}, {{ day.task.hours }} hours.  {{ day.workflag|capfirst }}"><b><u>{{ day.date|date:"j" }}</u></b></td>
+                {% else %}
+                  <td {% if day.istoday %}class="workhist-today"{% endif %}>{{ day.date|date:"j" }}</td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+            <tr class="task-hiding-spot">
+              <td colspan="9">
+                <div id="workhist_week{{ forloop.counter }}">
+                {% for task in week.tasks %}
+                  <div class="task-{{ task.simple_workflag }}">
+                    {{ task.member }} &mdash; {{ task.job }} <br>
+                    {% if request.user.is_staff %}<a href="{% url scheduling-task task.id %}">{{ task.time|date:"D n/j/y" }}</a>{% else %}{{ task.time|date:"D n/j/y" }}{% endif %}, 
+                    {{ task.time|time:"g:ia" }}, {{ task.hours }} hours <br>
+                    {% if task.hours_worked %}<b>Worked {{ task.hours_worked }} hours</b>{% endif %}
+                    <b>{{ task.workflag }}</b>
+                  </div>
+                {% endfor %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+
+        <script> 
+            attach_hiders('workhist_future',1);
+            attach_hiders('workhist_week',{{ account.workhist|length }}); 
+        </script>
+      click any highlighted day to show shift info
+      </div>
+
+        {% if account.members_leaveofabsence_set %}
+          <h2>Leave of Absence History</h2>
+          <table class="acctwork">
+          {% for member in account.members.all %}
+            {% for leave in member.leaveofabsence_set.all %}
+              <tr><td>
+                {{ member }}: LOA {{ leave.start }} until {{ leave.end }}
+              </td></tr>
+            {% endfor %}
+          {% endfor %}
+          </table>
+        {% endif %}
+
