@@ -292,6 +292,7 @@ class Account(models.Model):
     can_shop = models.BooleanField(default=True)
     ebt_only = models.BooleanField()
     hours_balance = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    # deposit is now known as equity
     deposit = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0)

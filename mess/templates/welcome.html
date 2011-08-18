@@ -25,6 +25,7 @@
   </div>
 
   <div id ="right-column">
+    <!-- uncomment quick box when equity switches to members
     <h2>The Quick Box</h2>
     <ul class="quick-info">
       <li><b>Equity held:</b> {{ user.get_profile.equity_held }}</li>
@@ -62,6 +63,7 @@
         </form>
       </li>
     </ul>
+    -->
     {% for account in user.get_profile.accounts.all %}
     <h2><a href="{{ account.get_absolute_url }}">{{ account }}</a></h2>
     {% include "accounting/snippets/acct_flags.html" %}
@@ -77,6 +79,7 @@
           <select name="amount">
             <option value="10.00">10.00</option>
             <option value="20.00">20.00</option>
+            <option value="25.00">25.00</option>
             <option value="30.00">30.00</option>
             <option value="50.00" selected>50.00</option>
             <option value="100.00">100.00</option>
@@ -96,6 +99,42 @@
           <input type="submit" value="add credit with Paypal">
         </form>
       </li>
+      <!-- delete until END DELETE when equity switches to members -->
+      <li><b>Equity:</b> {{ account.deposit|messmoney }}</li>
+      <li>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+          <input type="hidden" name="cmd" value="_xclick">
+          <input type="hidden" name="business" value="DJ7UFJ58N3SSJ">
+          <input type="hidden" name="lc" value="US">
+          <input type="hidden" name="item_name" value="Add equity for account ({{ account.alphanumericname }})">
+          <select name="amount">
+            <option value="10.00">10.00</option>
+            <option value="20.00">20.00</option>
+            <option value="25.00">25.00</option>
+            <option value="30.00">30.00</option>
+            <option value="50.00" selected>50.00</option>
+            <option value="100.00">100.00</option>
+            <option value="150.00">150.00</option>
+            <option value="200.00">200.00</option>
+            <option value="300.00">300.00</option>
+            <option value="500.00">500.00</option>
+            <option value="1000.00">1000.00</option>
+            <option value="1500.00">1500.00</option>
+            <option value="2000.00">2000.00</option>
+            <option value="2500.00">2500.00</option>
+          </select>
+          <input type="hidden" name="item_number" value="Equity-{{ account.id }}">
+          <input type="hidden" name="button_subtype" value="services">
+          <input type="hidden" name="no_shipping" value="1">
+          <input type="hidden" name="undefined_quantity" value="1">
+          <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+          <input type="hidden" name="notify_url" value="https://mess.mariposa.coop/accounting/listen_to_paypal">
+          <input type="hidden" name="return" value="https://mess.mariposa.coop">
+          <input type="hidden" name="rm" value="1">
+          <input type="submit" value="add equity with Paypal">
+        </form>
+      </li>
+      <!-- END DELETE -->
       <li><b>Discount:</b> {{ account.discount }}%</li>
       {% if account.next_shift %}
       <li><b>Next workshift:</b> {{ account.next_shift.member.user.first_name }} {{ account.next_shift.time|date:"D n/j g:ia" }}<br><a href="{{ account.next_shift.get_switch_url }}">need to switch?</a></li>
