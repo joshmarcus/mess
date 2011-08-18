@@ -12,7 +12,7 @@ from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.db.models.aggregates import Sum
+from django.db.models.aggregates import Sum, Max
 
 from mess.accounting import models as a_models
 from mess.accounting.models import Transaction
@@ -680,4 +680,13 @@ def turnout(request):
         form = forms.DateRangeForm()
         turnout = s_models.turnout(today - datetime.timedelta(30), today)
     return render_to_response('reporting/turnout.html', locals(),
+            context_instance=RequestContext(request))
+
+
+def equity(request):
+    ''' member equity, grouped by account.  TODO: or grouped by member '''
+    accounts = m_models.Account.objects.all().order_by('name')
+    esums = a_models.Transaction.objects.filter(purchase_type='O'
+            ).values('account','account__name','account__deposit').annotate(esum=Sum('purchase_amount')).order_by('account')
+    return render_to_response('reporting/equity.html', locals(),
             context_instance=RequestContext(request))
