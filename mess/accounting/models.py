@@ -97,15 +97,17 @@ class Transaction(models.Model):
         # if member is specified for equity transaction, then record on member.equity_held.
         # TODO LATER: return error for equity attempted to record without specifying a member
         if self.purchase_type == 'O':  
-            if self.member is None:
-                # TODO LATER: return error in this case and don't do anything.
-                self.account.deposit += self.purchase_amount
-            else:
-                self.member.equity_held += self.purchase_amount
-                self.member.equity_due -= self.purchase_amount
-                if self.member.equity_due < 0:
-                    self.member.equity_due = 0
-                self.member.save()
+            # TODO: delete following line and uncomment block below for member-based equity
+            self.account.deposit += self.purchase_amount
+            #if self.member is None:
+            #    # TODO LATER: return error in this case and don't do anything.
+            #    self.account.deposit += self.purchase_amount
+            #else:
+            #    self.member.equity_held += self.purchase_amount
+            #    self.member.equity_due -= self.purchase_amount
+            #    if self.member.equity_due < 0:
+            #        self.member.equity_due = 0
+            #    self.member.save()
         balance = self.account.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance
