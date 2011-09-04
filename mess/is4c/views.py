@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Q
 from django.utils.safestring import mark_safe
+from django.core.mail import mail_admins
 
 import django.conf as conf
 
@@ -121,7 +122,16 @@ def recordtransaction(request):
     t = simplejson.loads(json)
     t['account'] = m_models.Account.objects.get(id=t['account'])
     if 'member' in t: 
-        t['member'] = m_models.Member.objects.get(id=t['member'])
+        try:
+            t['member'] = m_models.Member.objects.get(id=t['member'])
+        except m_models.Member.DoesNotExist:
+            mail_admins('Member %s not found in record transaction' % t['member'],
+                    simplejson.dumps(t))
+            del t['member']
+        except ValueError:
+            mail_admins('Member for record transaction weren\'t no integer',
+                    simplejson.dumps(t))
+            del t['member']
     t['payment_amount'] = Decimal(str(t.get('payment_amount', 0)))
     t['purchase_amount'] = Decimal(str(t.get('purchase_amount', 0)))
     t['payment_type'] = t.get('payment_type', '')
