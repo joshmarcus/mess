@@ -14,6 +14,7 @@ from django.template import RequestContext
 from django.template.loader import get_template
 from django.utils import simplejson
 from django.views.decorators.csrf import csrf_exempt
+from django.forms.formsets import formset_factory
 
 from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
@@ -451,3 +452,31 @@ def diagnose_cashier_permission(request):
     ret += 'Cashier permission: %s\n' % bool(cashier_permission(request))
     ret += '</pre>'
     return HttpResponse(ret)
+
+def equity_transfer(request, account):
+    EquityTransferFormSet = formset_factory(forms.EquityTransferForm, extra=0)
+    if request.POST:
+        formset = EquityTransferFormSet(request.POST)
+        # we don't check formset.is_valid b/c that is causing account.deposit 
+        # to be bound from the model, which was messing up the math.
+        # related to github ticket 336?
+        for form in formset.forms:
+            if form.is_valid():
+                form.save(request.user)
+        return HttpResponseRedirect(reverse('equity_transfer', args=[account]))
+
+    else:
+        account = get_object_or_404(m_models.Account, id=account)
+        initial = []
+        active_members = account.members.active().count()
+        if not active_members == 0:
+            amount = (account.deposit / active_members).quantize(decimal.Decimal('0.01'))
+            for member in account.members.active():
+                initial.append({'account':account, 'member':member, 
+                    'amount':amount})
+            # retroactively adjust one member's initial amount (division problems)
+            initial[0]['amount'] = account.deposit - amount * (active_members - 1)
+
+        formset = EquityTransferFormSet(initial=initial)
+    return render_to_response('accounting/equity_transfer.html', locals(),
+            context_instance=RequestContext(request))

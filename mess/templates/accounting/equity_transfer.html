@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+{% endblock head %}
+
+{% block content %}
+  <div id="double-column" >
+   {% include "accounting/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <h2>Account Transfer: {{ account }}</h2>
+      <h4>Account Equity: {{ account.deposit }}</h4>
+      <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table class="data cashsheet">
+          <tr>
+            <th>Member Name</th>
+            <th>Member's Accounts</th>
+            <th>Member Equity Held</th>
+            <th>+ Equity to Transfer from Account</th>
+          </tr>
+          {% for form in formset.forms %}
+          <tr>
+            <td> {{ form.initial.member }} </td>
+            <td>
+              {% for acct in form.initial.member.accounts.all %}
+                {{ acct }}
+                {% if not forloop.last %}<br>{% endif %}
+              {% endfor %}
+            </td>
+            <td> {{ form.initial.member.equity_held }} </td>
+            <td> {{ form.as_p }} </td>
+          </tr>
+          {% endfor %}
+        </table>
+        <input type="submit" value="Submit">
+      </form>
+        {{ formset.errors }}
+    </div>
+  </div>
+{% endblock %}

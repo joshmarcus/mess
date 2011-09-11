@@ -176,6 +176,25 @@ class ReverseForm(forms.Form):
         trans.reverse(entered_by, self.cleaned_data['reverse_reason'])
         return trans
 
+class EquityTransferForm(forms.Form):
+    account = forms.ModelChoiceField(m_models.Account.objects.all(), 
+            widget=forms.HiddenInput(),required=True)
+    member = forms.ModelChoiceField(m_models.Member.objects.all(), 
+            widget=forms.HiddenInput(),required=True)
+    amount = forms.DecimalField(required=False, 
+            widget=forms.TextInput(attrs={'size':'4'}))
+
+    def save(self, entered_by):
+        trans1 = models.Transaction.objects.create(
+                        account=self.cleaned_data['account'],
+                        entered_by=entered_by, purchase_type='O',
+                        purchase_amount=-self.cleaned_data['amount'])
+        trans2 = models.Transaction.objects.create(
+                        account=self.cleaned_data['account'],
+                        member=self.cleaned_data['member'],
+                        entered_by=entered_by, purchase_type='O',
+                        purchase_amount=self.cleaned_data['amount'])
+
 class CashsheetForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
             widget=AutoCompleteWidget('account_spiffy',

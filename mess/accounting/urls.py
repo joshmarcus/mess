@@ -18,4 +18,5 @@ urlpatterns = patterns('mess.accounting.views',
         'EBT_bulk_orders', name="EBT-bulk-orders-edit"),
     url(r'^diagnose_cashier_permission$','diagnose_cashier_permission',name='diagnose_cashier_permission'),
 #   url(r'^reverse_trans$', 'reverse_trans', name='reverse_trans'),
+    url(r'^equity_transfer/(\d+)$', 'equity_transfer', name='equity_transfer'),
 )
