@@ -86,7 +86,7 @@ def cashsheet_email():
 
 def main():
     reminder_emails()
-    cashsheet_email()
+    #cashsheet_email()
 
 if __name__ == "__main__":
     main()
