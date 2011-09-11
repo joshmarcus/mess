@@ -8,7 +8,7 @@
   <div id="double-column" >
    {% include "accounting/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <h2>Account Transfer: {{ account }}</h2>
+      <h2>Account Transfer: <a href="/membership/accounts/{{account.id}}">{{ account }}</a></h2>
       <h4>Account Equity: {{ account.deposit }}</h4>
       <form method="post">
         {% csrf_token %}

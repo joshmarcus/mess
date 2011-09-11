@@ -96,7 +96,6 @@ class Transaction(models.Model):
         # equity should be recorded on account.deposit ONLY if member is unspecified.
         # if member is specified for equity transaction, then record on member.equity_held.
         # TODO LATER: return error for equity attempted to record without specifying a member
-        self.note = 'account.deposit was %s, account.balance was %s, '% (self.account.deposit, self.account.balance)
         if self.purchase_type == 'O':  
             if self.member is None:
                 # TODO LATER: return error in this case and don't do anything.
@@ -112,7 +111,6 @@ class Transaction(models.Model):
         self.account.balance = self.account_balance = new_balance
         # put account save after transaction save so balance isn't
         # changed on transaction save error
-        self.note += 'account.deposit is now %s, account.balance was %s' % (self.account.deposit, self.account.balance)
         super(Transaction, self).save(*args, **kwargs)
         self.account.save()
 

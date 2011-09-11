@@ -186,10 +186,12 @@ class EquityTransferForm(forms.Form):
 
     def save(self, entered_by):
         trans1 = models.Transaction.objects.create(
+                        note='transferring equity from account',
                         account=self.cleaned_data['account'],
                         entered_by=entered_by, purchase_type='O',
                         purchase_amount=-self.cleaned_data['amount'])
         trans2 = models.Transaction.objects.create(
+                        note='transferring equity to member',
                         account=self.cleaned_data['account'],
                         member=self.cleaned_data['member'],
                         entered_by=entered_by, purchase_type='O',
