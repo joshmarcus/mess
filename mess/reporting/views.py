@@ -685,8 +685,24 @@ def turnout(request):
 
 def equity(request):
     ''' member equity, grouped by account.  TODO: or grouped by member '''
-    accounts = m_models.Account.objects.all().order_by('name')
-    esums = a_models.Transaction.objects.filter(purchase_type='O'
-            ).values('account','account__name','account__deposit').annotate(esum=Sum('purchase_amount')).order_by('account')
+    ''' TODO: add link to equity_transfer page for each account
+        TODO: group accounts by shared address status, # of members '''
+    equity_transactions = a_models.Transaction.objects.filter(purchase_type='O')
+    esums = equity_transactions.values(
+            'account','account__name','account__deposit'
+            ).annotate(esum=Sum('purchase_amount')).order_by('account')
+    data = []
+    for esum in esums:
+        acct = m_models.Account.objects.get(id=esum['account'])
+        data.append({ 
+            'account': acct, # need account object not just acct id
+            'acct_name': esum['account__name'],
+            'acct_deposit': esum['account__deposit'],
+            'acct_esum': esum['esum'],
+        })
+    member_equity = m_models.Member.objects.all().aggregate(total=Sum('equity_held'))
+    acct_equity = m_models.Account.objects.all().aggregate(total=Sum('deposit'))
+    all_equity = member_equity['total'] + acct_equity['total']
+    equity_transactions_sum = equity_transactions.aggregate(total=Sum('purchase_amount'))
     return render_to_response('reporting/equity.html', locals(),
             context_instance=RequestContext(request))

@@ -4,14 +4,28 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
     <h2>Equity Entries By Account</h2>
-    (coming later: Account-only entries vs Member-linked entries)
+    equity transactions total: {{ equity_transactions_sum.total }}
+    account + member equity total: {{ all_equity }}
 
-    <table>
-      <tr><th>Account id</th><th>Account name</th><th>Account equity amount</th><th>Sum of equity transactions</th></tr>
-      {% for account in esums %}
-        <tr {% ifnotequal account.account__deposit account.esum %}class="task-unexcused"{% endifnotequal %}>
-          <td>{{ account.account }}</td><td>{{ account.account__name }}</td>
-          <td>{{ account.account__deposit }}</td><td>{{ account.esum }}</td>
+    <table class="data">
+      <tr>
+        <th>Account</th>
+        <th>Members, member equities</th>
+        <th>Account equity amount</th>
+        <th>Sum of equity transactions</th>
+        <th>Link</th>
+      </tr>
+      {% for datum in data %}
+      <tr> 
+          <td>{{ datum.acct_name }}</td>
+          <td>
+            {% for am in datum.account.members.all %}
+              {{ am }} {{ am.equity_held }}<br />
+            {% endfor %}
+          </td>
+          <td>{{ datum.acct_deposit }}</td>
+          <td>{{ datum.acct_esum }}</td>
+          <td></td>
         </tr>
       {% endfor %}
     </table>
