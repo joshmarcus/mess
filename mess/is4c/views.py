@@ -126,11 +126,11 @@ def recordtransaction(request):
             t['member'] = m_models.Member.objects.get(id=t['member'])
         except m_models.Member.DoesNotExist:
             mail_admins('Member %s not found in record transaction' % t['member'],
-                    simplejson.dumps(t))
+                    repr(t.__dict__))
             del t['member']
         except ValueError:
             mail_admins('Member for record transaction weren\'t no integer',
-                    simplejson.dumps(t))
+                    repr(t.__dict__))
             del t['member']
     t['payment_amount'] = Decimal(str(t.get('payment_amount', 0)))
     t['purchase_amount'] = Decimal(str(t.get('purchase_amount', 0)))
