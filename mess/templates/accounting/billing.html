@@ -3,43 +3,62 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
-    <h2>Dues and Member Equity Billing</h2>
-    <form method="post">
-      {% csrf_token %}
-      <table>{{ form }}</table>
-      <input type="submit" name="action" value="Prepare">
-    </form>
-    {% if accounts %}
+    <h2>Member Equity Billing (New 2011 To Bill Individual Members Equity_Due Field)</h2>
+
     <table class="data">
       <tr>
-        <th>Account</th>
-        <th>Billable Members</th>
-        <th>Current Member Equity</th>
-        <th>AMOUNT TO BILL</th>
+        <th>Member</th>
+        <th>Accounts</th>
+        <th>Equity Target</th>
+        <th>Equity Held</th>
+        <th>Equity Due</th>
+        <th>Equity Increment</th>
+        <th>Potential New Equity Due</th>
       </tr>
-      {% for account in accounts %}
-        <tr>
-          <td><a href="{{ account.get_absolute_url }}">{{ account }}</a></td>
-          <td>{{ account.billable_member_count }}</td>
-          <td>{{ account.deposit }}</td>
-          <td>{{ account.potential_bill }}</td>
-        </tr>
-      {% endfor %}
+
       <tr>
         <th>Totals:</th>
-        <td>{{ total_billable_members }}</td>
-        <td>{{ total_deposits }}</td>
+        <td></td>
+        <td>{{ total_equity_target }}</td>
+        <td>{{ total_existing_equity_held }}</td>
+        <td>{{ total_existing_equity_due }}</td>
+        <td></td>
         <td>{{ total_potential_bills }}</td>
       </tr>
+
+      {% for member in members %}
+        <tr>
+          <td><a href="{{ member.get_absolute_url }}">{{ member }}</a></td>
+          <td>
+            {% for account in member.accounts.all %}
+              <a href="{{ account.get_absolute_url }}">{{ account }}</a><br/>
+            {% endfor %}
+          </td>
+          <td>{{ member.equity_target }}</td>
+          <td>{{ member.equity_held }}</td>
+          <td>{{ member.equity_due }}</td>
+          <td>{{ member.equity_increment }}</td>
+          <td>{{ member.potential_new_equity_due }}</td>
+        </tr>
+      {% endfor %}
+
+      <tr>
+        <th>Totals:</th>
+        <td></td>
+        <td>{{ total_equity_target }}</td>
+        <td>{{ total_existing_equity_held }}</td>
+        <td>{{ total_existing_equity_due }}</td>
+        <td></td>
+        <td>{{ total_potential_bills }}</td>
+      </tr>
+
     </table>
-    <span style="color:red; font-weight:bold;">By clicking Commit, all these accounts will be charged as shown.  PRINT THIS PAGE FIRST!</span><br>
-    <!-- separate form commits only what was previewed -->
+    <span style="color:red; font-weight:bold;">By clicking Commit, all these members will be charged as shown.  PRINT THIS PAGE FIRST!</span><br>
     <form method="post">
       {% csrf_token %}
-      <table style="display:none;">{{ form }}</table>      
+      <table>{{ form }}</table>      
       <input type="submit" name="action" value="Commit" id="commit">
     </form>
-    {% endif %}
   </div>
 </div>
 {% endblock %}
