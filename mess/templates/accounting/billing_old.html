@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Dues and Member Equity Billing</h2>
+    <form method="post">
+      {% csrf_token %}
+      <table>{{ form }}</table>
+      <input type="submit" name="action" value="Prepare">
+    </form>
+    {% if accounts %}
+    <table class="data">
+      <tr>
+        <th>Account</th>
+        <th>Billable Members</th>
+        <th>Current Member Equity</th>
+        <th>AMOUNT TO BILL</th>
+      </tr>
+      {% for account in accounts %}
+        <tr>
+          <td><a href="{{ account.get_absolute_url }}">{{ account }}</a></td>
+          <td>{{ account.billable_member_count }}</td>
+          <td>{{ account.deposit }}</td>
+          <td>{{ account.potential_bill }}</td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <th>Totals:</th>
+        <td>{{ total_billable_members }}</td>
+        <td>{{ total_deposits }}</td>
+        <td>{{ total_potential_bills }}</td>
+      </tr>
+    </table>
+    <span style="color:red; font-weight:bold;">By clicking Commit, all these accounts will be charged as shown.  PRINT THIS PAGE FIRST!</span><br>
+    <!-- separate form commits only what was previewed -->
+    <form method="post">
+      {% csrf_token %}
+      <table style="display:none;">{{ form }}</table>      
+      <input type="submit" name="action" value="Commit" id="commit">
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

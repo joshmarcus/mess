@@ -298,7 +298,10 @@ class CloseOutForm(forms.ModelForm):
     class Meta:
         model = models.Reconciliation
 
-class BillingForm(forms.Form):
+class MemberEquityBillingForm(forms.Form):
+    confirm = forms.BooleanField(required=True)
+
+class BillingOldForm(forms.Form):
     bill_type = forms.ChoiceField(
                 choices=(('O','Member Equity'),('U','Dues')))
     amount_per_member = forms.DecimalField(initial=20)

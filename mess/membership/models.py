@@ -105,6 +105,13 @@ class Member(models.Model):
             return Decimal("150.00")
         return Decimal("200.00")
 
+    def potential_new_equity_due(self):
+        if (not self.is_active) or (self.is_on_loa):
+            return Decimal("0.00")
+        held_plus_due = self.equity_held + self.equity_due
+        remaining_to_target = self.equity_target() - held_plus_due
+        return min(self.equity_increment, remaining_to_target)
+
     def skills(self):
         return s_models.Skill.objects.filter(
             trained_by__task__in=self.task_set.worked()).distinct()

@@ -252,9 +252,32 @@ def frozen(request):
     
 
 def billing(request):
+    ''' NEW 2011 view to bill equity to members, not accounts '''
+    members = m_models.Member.objects.filter(Q(equity_held__gt=0) | Q(equity_due__gt=0) | Q(date_missing__isnull=True, date_departed__isnull=True))
+    if request.method=='POST':
+        form = forms.MemberEquityBillingForm(request.POST)
+        if form.is_valid():
+            for member in members:
+                member.equity_due += member.potential_new_equity_due()
+                member.save()
+    else:
+        form = forms.MemberEquityBillingForm()
+    total_equity_target = 0
+    total_existing_equity_held = 0
+    total_existing_equity_due = 0
+    total_potential_bills = 0
+    for member in members:
+        total_equity_target += member.equity_target()
+        total_existing_equity_held += member.equity_held
+        total_existing_equity_due += member.equity_due
+        total_potential_bills += member.potential_new_equity_due()
+    return render_to_response('accounting/billing.html', locals(),
+            context_instance=RequestContext(request))
+            
+def billing_old(request):
     ''' view to bill dues and deposits for all active accounts '''
     if request.method=='POST':
-        form = forms.BillingForm(request.POST)
+        form = forms.BillingOldForm(request.POST)
         if form.is_valid():
             total_billable_members = 0
             total_deposits = 0
@@ -280,8 +303,8 @@ def billing(request):
                                       entered_by=request.user)
                 return HttpResponse('Billing was completed.  Thank you.')
     else:
-        form = forms.BillingForm()
-    return render_to_response('accounting/billing.html', locals(),
+        form = forms.BillingOldForm()
+    return render_to_response('accounting/billing_old.html', locals(),
             context_instance=RequestContext(request))
 
 # cashier permission is the first if

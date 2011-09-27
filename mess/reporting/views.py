@@ -223,9 +223,9 @@ def reports(request):
             listrpt('Accounts','Active Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count'),
 
-            ('Dues and Member Equities Billing',reverse('billing')),
-
+            ('Dues and Member Equities Billing (Old)',reverse('billing_old')),
             ('Equity Entries By Account',reverse('equity')),
+            ('Member Equities Billing (New 2011)',reverse('billing')),
         ]),
 
         ('Tasks',[
