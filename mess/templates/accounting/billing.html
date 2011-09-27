@@ -28,7 +28,9 @@
 
       {% for member in members %}
         <tr>
-          <td><a href="{{ member.get_absolute_url }}">{{ member }}</a></td>
+          <td {% if not member.is_active %} class="profile-inactive" {% endif %}>
+            <a href="{{ member.get_absolute_url }}">{{ member }}</a>
+          </td>
           <td>
             {% for account in member.accounts.all %}
               <a href="{{ account.get_absolute_url }}">{{ account }}</a><br/>
