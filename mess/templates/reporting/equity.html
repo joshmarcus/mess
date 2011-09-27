@@ -4,7 +4,7 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
     <h2>Equity Entries By Account</h2>
-    equity transactions total: {{ equity_transactions_sum.total }}
+    equity transactions total: {{ equity_transactions_sum.total }}<br>
     account + member equity total: {{ all_equity }}
 
     <table class="data">
@@ -20,12 +20,14 @@
           <td>{{ datum.acct_name }}</td>
           <td>
             {% for am in datum.account.members.all %}
-              {{ am }} {{ am.equity_held }}<br />
+            <div {% if not am.is_active %}class="profile-inactive"{% endif %}>
+                {{ am }} {{ am.equity_held }}
+            </div>
             {% endfor %}
           </td>
           <td>{{ datum.acct_deposit }}</td>
           <td>{{ datum.acct_esum }}</td>
-          <td></td>
+          <td><a href="/accounting/equity_transfer/{{ datum.account.id }}">transfer</a></td>
         </tr>
       {% endfor %}
     </table>

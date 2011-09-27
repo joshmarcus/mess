@@ -224,6 +224,8 @@ def reports(request):
                 '','balance\r\ndeposit\r\nactive_member_count'),
 
             ('Dues and Member Equities Billing',reverse('billing')),
+
+            ('Equity Entries By Account',reverse('equity')),
         ]),
 
         ('Tasks',[
