@@ -151,6 +151,8 @@ def reports(request):
 
             listrpt('Members','by Last Name',
                 'accountmember__shopper=False',
+                'user.last_name\r\n'+
+                'user.first_name\r\n'+
                 'accounts\r\n'+
                 'date_joined\r\n'+
                 'phones\r\n'+
