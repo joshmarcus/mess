@@ -1,8 +1,7 @@
 import datetime
 import urllib
-import decimal
+from decimal import Decimal as D
 from django.conf import settings
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -53,7 +52,7 @@ def listen_to_paypal(request):
                 transaction = models.Transaction.objects.create(
                     account=account,
                     payment_type='Y',
-                    payment_amount=decimal.Decimal(payment_gross),
+                    payment_amount=D(payment_gross),
                     note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
                 )
             # switch to this when we're ready to put equity on member
@@ -69,9 +68,9 @@ def listen_to_paypal(request):
                     account=account,
                     #member=member,
                     payment_type='Y',
-                    payment_amount=decimal.Decimal(payment_gross),
+                    payment_amount=D(payment_gross),
                     purchase_type='O',
-                    purchase_amount=decimal.Decimal(payment_gross),
+                    purchase_amount=D(payment_gross),
                     note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
                 )
     return render_to_response('accounting/test_paypal.html', locals(),
@@ -493,12 +492,12 @@ def equity_transfer(request, account):
         initial = []
         active_members = account.members.active().count()
         if not active_members == 0:
-            amount = (account.deposit / active_members).quantize(decimal.Decimal('0.01'))
             for member in account.members.active():
-                initial.append({'account':account, 'member':member, 
-                    'amount':amount})
-            # retroactively adjust one member's initial amount (division problems)
-            initial[0]['amount'] = account.deposit - amount * (active_members - 1)
+                initial.append({'account': account, 'member': member, 'amount': 0})
+            for i in range(account.deposit*100):
+                initial[i%active_members]['amount'] += 1
+            for entry in initial:
+                entry['amount'] = (D(entry['amount'])/100).quantize(D('0.01'))
 
         formset = EquityTransferFormSet(initial=initial)
     return render_to_response('accounting/equity_transfer.html', locals(),
