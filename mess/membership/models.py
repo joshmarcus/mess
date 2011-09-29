@@ -1,4 +1,3 @@
-from datetime import date
 import datetime
 import string
 from decimal import Decimal
@@ -79,7 +78,7 @@ class Member(models.Model):
         regular shift, for example, COMMITTEE, BUSINESS/ORG, etc')
     has_key = models.BooleanField(default=False)
     #primary_account = models.ForeignKey('Account', blank=True, null=True)
-    date_joined = models.DateField(default=date.today())
+    date_joined = models.DateField(default=datetime.date.today())
     date_missing = models.DateField(blank=True, null=True)
     date_departed = models.DateField(blank=True, null=True)
     card_number = models.CharField(max_length=128, blank=True, null=True)
