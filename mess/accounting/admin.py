@@ -7,4 +7,5 @@ class TransactionAdmin(admin.ModelAdmin):
     ordering = ('-timestamp', '-id')
     search_fields = ('account__name', 'member__user__username')
 
-admin.site.register(models.Transaction, TransactionAdmin)
+# uncomment to show Transactions in the admin
+#admin.site.register(models.Transaction, TransactionAdmin)
