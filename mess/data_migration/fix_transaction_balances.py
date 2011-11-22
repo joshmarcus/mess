@@ -21,6 +21,8 @@ if False:   #debug to see the stupid query
         else:
             sys.exit()
 
+if forreal == 'for real':
+    fix = conn.cursor()
 
 while 1:
     try:
@@ -41,10 +43,7 @@ while 1:
         print 'But new balance should be: %s' % expected_balance
         if forreal == 'for real':
             print 'fixing...'
-            fix = conn.cursor()
             fix.execute("UPDATE accounting_transaction SET account_balance=%s WHERE id=%s;" % (expected_balance, tid))
-            fix.close()
-            print '...done'
     balances[account_id] = expected_balance
 trans.close()
 
@@ -60,9 +59,12 @@ while 1:
         print 'Wrong balance for account %s %s' % (aid, repr(name))
         if forreal == 'for real':
             print 'fixing...'
-            fix = conn.cursor()
             fix.execute("UPDATE membership_account SET balance=%s WHERE id=%s;" % (balances[aid], aid))
-            fix.close()
-            print '...done'
 acct.close()
 
+if forreal == 'for real':
+    print 'committing all changes...'
+    fix.close()
+    conn.commit()
+    conn.close()
+    print '...done'
