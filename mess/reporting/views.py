@@ -712,7 +712,7 @@ def equity(request):
 
 def equity_transfer(request):
     ''' member equity, grouped by account'''
-    equity_transactions = a_models.Transaction.objects.filter(purchase_type='O')
+    equity_transactions = a_models.Transaction.objects.filter(purchase_type='O').filter(account__deposit__gt=0)
     esums = equity_transactions.values(
             'account','account__name','account__deposit'
             ).annotate(esum=Sum('purchase_amount')).order_by('account')
