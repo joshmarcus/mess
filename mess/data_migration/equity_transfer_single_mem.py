@@ -18,7 +18,7 @@ from mess.accounting import models as a_models
 accts = models.Account.objects.all()
 entered_by = models.Member.objects.get(user__id=259).user #This is Paul Dexter
 for acct in accts:
-    if acct.active_member_count == 1:
+    if acct.active_member_count == 1 and acct.deposit != 0:
         print "Before Transfer: " + repr(acct.name), acct.deposit, repr(acct.members.active()[0]), acct.members.active()[0].equity_held
         old_deposit = acct.deposit
         trans1 = a_models.Transaction.objects.create(
