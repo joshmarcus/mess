@@ -13,6 +13,7 @@
         <th>Members, member equities</th>
         <th>Account equity amount</th>
         <th>Sum of equity transactions</th>
+        <th>Link</th>
       </tr>
       {% for datum in data %}
       <tr> 
@@ -26,6 +27,7 @@
           </td>
           <td>{{ datum.acct_deposit }}</td>
           <td>{{ datum.acct_esum }}</td>
+          <td><a href="/accounting/equity_transfer/{{ datum.account.id }}">transfer</a></td>
         </tr>
       {% endfor %}
     </table>
