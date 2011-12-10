@@ -111,7 +111,7 @@ class Member(models.Model):
         held_plus_due = self.equity_held + self.equity_due
         remaining_to_target = self.equity_target() - held_plus_due
         if remaining_to_target < 0:
-            remaining_to_target = 0
+            remaining_to_target = Decimal("0.00")
         return min(self.equity_increment, remaining_to_target)
 
     def skills(self):
