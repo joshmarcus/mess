@@ -55,18 +55,16 @@ def listen_to_paypal(request):
                     payment_amount=D(payment_gross),
                     note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
                 )
-            # switch to this when we're ready to put equity on member
-            #if item_number[:7] == 'Member-':
-            if item_number[:7] == 'Equity-':
+            if item_number[:7] == 'Member-':
                 # do member equity stuff
-                #member_id = int(item_number[7:])
-                #member = m_models.Member.objects.get(id=member_id)
-                #account = member.accounts.all()[0]
+                member_id = int(item_number[7:])
+                member = m_models.Member.objects.get(id=member_id)
+                account = member.accounts.all()[0]
                 account_id = int(item_number[7:])
                 account = m_models.Account.objects.get(id=account_id)
                 transaction = models.Transaction.objects.create(
                     account=account,
-                    #member=member,
+                    member=member,
                     payment_type='Y',
                     payment_amount=D(payment_gross),
                     purchase_type='O',
