@@ -85,6 +85,31 @@ class Transaction(models.Model):
                           self.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
 
     def save(self, *args, **kwargs):
+        if not self.member:
+            raise Exception('all new transactions must have member')
+        # purchase_amount and purchase_type must appear together
+        if bool(self.purchase_amount) is not bool(self.purchase_type):
+            self.purchase_amount = 0
+            self.purchase_type = ''
+        if bool(self.payment_amount) is not bool(self.payment_type):
+            self.payment_amount = 0
+            self.payment_type = ''
+
+        if self.purchase_type == 'O':  
+            self.member.equity_held += self.purchase_amount
+            self.member.equity_due -= self.purchase_amount
+            if self.member.equity_due < 0:
+                self.member.equity_due = 0
+            self.member.save()
+        balance = self.account.balance
+        new_balance = balance + self.purchase_amount - self.payment_amount
+        self.account.balance = self.account_balance = new_balance
+        # put account save after transaction save so balance isn't
+        # changed on transaction save error
+        super(Transaction, self).save(*args, **kwargs)
+        self.account.save()
+
+    def save_for_equity_transfer(self, *args, **kwargs):
         # purchase_amount and purchase_type must appear together
         if bool(self.purchase_amount) is not bool(self.purchase_type):
             self.purchase_amount = 0
@@ -95,10 +120,8 @@ class Transaction(models.Model):
 
         # equity should be recorded on account.deposit ONLY if member is unspecified.
         # if member is specified for equity transaction, then record on member.equity_held.
-        # TODO LATER: return error for equity attempted to record without specifying a member
         if self.purchase_type == 'O':  
             if self.member is None:
-                # TODO LATER: return error in this case and don't do anything.
                 self.account.deposit += self.purchase_amount
             else:
                 self.member.equity_held += self.purchase_amount

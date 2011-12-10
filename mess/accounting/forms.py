@@ -185,17 +185,19 @@ class EquityTransferForm(forms.Form):
             widget=forms.TextInput(attrs={'size':'4'}))
 
     def save(self, entered_by):
-        trans1 = models.Transaction.objects.create(
+        trans1 = models.Transaction(
                         note='transferring equity from account',
                         account=self.cleaned_data['account'],
                         entered_by=entered_by, purchase_type='O',
                         purchase_amount=-self.cleaned_data['amount'])
-        trans2 = models.Transaction.objects.create(
+        trans1.save_for_equity_transfer()
+        trans2 = models.Transaction(
                         note='transferring equity to member',
                         account=self.cleaned_data['account'],
                         member=self.cleaned_data['member'],
                         entered_by=entered_by, purchase_type='O',
                         purchase_amount=self.cleaned_data['amount'])
+        trans2.save_for_equity_transfer()
 
 class CashsheetForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
