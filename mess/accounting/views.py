@@ -248,7 +248,7 @@ def frozen(request):
         accounts = accounts.filter(members__card_number__gt='')
     return render_to_response('accounting/frozen.html', locals(),
             context_instance=RequestContext(request))
-    
+
 
 def billing(request):
     ''' NEW 2011 view to bill equity to members, not accounts '''
@@ -272,7 +272,7 @@ def billing(request):
         total_potential_bills += member.potential_new_equity_due()
     return render_to_response('accounting/billing.html', locals(),
             context_instance=RequestContext(request))
-            
+
 def billing_old(request):
     ''' view to bill dues and deposits for all active accounts '''
     if request.method=='POST':
