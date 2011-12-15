@@ -7,7 +7,7 @@
 </ul>
 {% if account.ebt_only %}<h4>EBT Only</h4>{% endif %}
 {% if account.obligations %}<h4>{{ account.obligations }}</h4>{% endif %}
-{% if account.must_work %}<h4 class="warning">MUST WORK</h4>{% endif %}
-{% if account.must_pay %}<h4 class="warning">MUST PAY {{ account.must_pay }}</h4>{% endif %}
+{% if account.must_work %}<h4 class="warning">Owes Hours</h4>{% endif %}
+{% if account.must_pay %}<h4 class="warning">Owes Balance {{ account.must_pay }}</h4>{% endif %}
 {% if not account.can_shop %}<h4 class="warning">CAN NOT SHOP</h4>{% endif %}
 {% if not account.active_member_count %}<h4 class="warning">ACCOUNT CLOSED</h4>{% endif %}

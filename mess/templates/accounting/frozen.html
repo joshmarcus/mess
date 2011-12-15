@@ -40,7 +40,7 @@
           <td>{{ account.months_old }}</td>
           <td>{{ account.balance|messmoney }}</td>
           {% if account.must_pay %}
-            <td class="frozen">Must Pay {{ account.must_pay|messmoney }}</td>
+            <td class="frozen">Owes Balance {{ account.must_pay|messmoney }}</td>
           {% else %}
             <td></td>
           {% endif %}
@@ -51,7 +51,7 @@
           {% endif %}
           <td>{{ account.hours_balance|messmoney }}</td>
           {% if account.must_work %}
-            <td class="frozen">Must Work {{ account.must_work|messmoney }}</td>
+            <td class="frozen">Owes Hours {{ account.must_work|messmoney }}</td>
           {% else %}
             <td></td>
           {% endif %}

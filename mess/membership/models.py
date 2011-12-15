@@ -496,9 +496,9 @@ class Account(models.Model):
             return
         flags = []
         if self.balance > self.max_allowed_to_owe():
-            flags.append('MUST PAY')
+            flags.append('Owes Balance')
         if self.hours_balance > Decimal('0.03'):
-            flags.append('MUST WORK')
+            flags.append('Owes Hours')
         if not self.can_shop:
             flags.append('CANNOT SHOP')
         obligations = self.billable_member_count
