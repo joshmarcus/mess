@@ -3,10 +3,20 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
-    <h2>Equity Entries By Account</h2>
-    equity transactions total: {{ equity_transactions_sum.total }}<br>
-    account + member equity total: {{ all_equity }}
+    <h2>Equity Totals</h2>
+    <table class="data">
+      <tr>
+        <th>equity transactions total</th>
+        <th>total of account equity + member equity_held</th>
+      </tr>
+      <tr>
+        <td>{{ equity_transactions_sum.total }}</td>
+        <td>{{ all_equity }}</td>
+      </tr>
+    </table>
 
+    <br>
+    <h2>Equity By Account</h2>
     <table class="data">
       <tr>
         <th>Account</th>
