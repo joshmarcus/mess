@@ -19,7 +19,22 @@ class SelectAfterAjax(forms.Select):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = models.Transaction
-        exclude = ('account_balance','entered_by')
+        exclude = (
+                    'account_balance',
+                    'entered_by',
+                    'register_no',
+                    'trans_id',
+                    'trans_no',
+                    'upc',
+                    'trans_type',
+                    'trans_subtype',
+                    'department',
+                    'quantity',
+                    'cost',
+                    'taxable',
+                    'is4c_timestamp',
+                    'is4c_cashier_id'
+                  )
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))

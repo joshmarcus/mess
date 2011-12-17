@@ -49,7 +49,7 @@
           <li><a href="{% url reports %}"{% if location.path|match:'/reporting' %} class="active"{% endif %}>Reports</a></li>
           {% endif %}
           {% if can_cashier_now %}
-          <li><a href="{% url cashsheet_input %}"{% if location.path|match:'/accounting' %} class="active"{% endif %}>Cashier</a></li>
+          <li><a href="{% url transaction %}"{% if location.path|match:'/accounting' %} class="active"{% endif %}>Cashier</a></li>
           {% endif %}
           {% if user.is_authenticated %}
           <li><a href="{% url forum-menu %}"{% if location.path|match:'/forum' %} class="active"{% endif %}>Forum</a></li>
