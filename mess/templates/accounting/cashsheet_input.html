@@ -12,6 +12,7 @@
     <div id="primary-content-wrapper">
       <form method="post" onsubmit="return confirm_if_weird(this{% if user.is_staff %}, true{% endif %});">
         {% csrf_token %}
+        <h2>This form is broken and will never submit correctly!  Do not use!!!</h2>
         <table class="data cashsheet">
           <tr>
             <th>Account</th>
