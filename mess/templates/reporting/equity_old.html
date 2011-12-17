@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="double-column">
+  <div id="primary-content-wrapper">
+    <h2>Equity Entries By Account</h2>
+    (coming later: Account-only entries vs Member-linked entries)
+
+    <table>
+      <tr><th>Account id</th><th>Account name</th><th>Account equity amount</th><th>Sum of equity transactions</th></tr>
+      {% for account in esums %}
+        <tr {% ifnotequal account.account__deposit account.esum %}class="task-unexcused"{% endifnotequal %}>
+          <td>{{ account.account }}</td><td>{{ account.account__name }}</td>
+          <td>{{ account.account__deposit }}</td><td>{{ account.esum }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+</div>
+{% endblock %}

@@ -3,15 +3,39 @@
 {% block content %}
 <div id="double-column">
   <div id="primary-content-wrapper">
-    <h2>Equity Entries By Account</h2>
-    (coming later: Account-only entries vs Member-linked entries)
+    <h2>Equity Totals</h2>
+    <table class="data">
+      <tr>
+        <th>equity transactions total</th>
+        <th>total of account equity + member equity_held</th>
+      </tr>
+      <tr>
+        <td>{{ equity_transactions_sum.total }}</td>
+        <td>{{ all_equity }}</td>
+      </tr>
+    </table>
 
-    <table>
-      <tr><th>Account id</th><th>Account name</th><th>Account equity amount</th><th>Sum of equity transactions</th></tr>
-      {% for account in esums %}
-        <tr {% ifnotequal account.account__deposit account.esum %}class="task-unexcused"{% endifnotequal %}>
-          <td>{{ account.account }}</td><td>{{ account.account__name }}</td>
-          <td>{{ account.account__deposit }}</td><td>{{ account.esum }}</td>
+    <br>
+    <h2>Equity By Account</h2>
+    <table class="data">
+      <tr>
+        <th>Account</th>
+        <th>Members, member equities</th>
+        <th>Account equity amount</th>
+        <th>Sum of equity transactions</th>
+      </tr>
+      {% for datum in data %}
+      <tr> 
+          <td><a href="{% url account datum.account.id %}">{{ datum.acct_name }}</a></td>
+          <td>
+            {% for am in datum.account.members.all %}
+            <div {% if not am.is_active %}class="profile-inactive"{% endif %}>
+                {{ am }} {{ am.equity_held }}
+            </div>
+            {% endfor %}
+          </td>
+          <td>{{ datum.acct_deposit }}</td>
+          <td>{{ datum.acct_esum }}</td>
         </tr>
       {% endfor %}
     </table>
