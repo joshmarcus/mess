@@ -26,8 +26,8 @@
         <th>Link</th>
       </tr>
       {% for datum in data %}
-      <tr> 
-          <td>{{ datum.acct_name }}</td>
+      <tr>
+          <td><a href="{% url account datum.account.id %}">{{ datum.acct_name }}</a></td>
           <td>
             {% for am in datum.account.members.all %}
             <div {% if not am.is_active %}class="profile-inactive"{% endif %}>
