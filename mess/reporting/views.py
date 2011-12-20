@@ -151,6 +151,8 @@ def reports(request):
 
             listrpt('Members','by Last Name',
                 'accountmember__shopper=False',
+                'user.last_name\r\n'+
+                'user.first_name\r\n'+
                 'accounts\r\n'+
                 'date_joined\r\n'+
                 'phones\r\n'+
@@ -223,10 +225,9 @@ def reports(request):
             listrpt('Accounts','Active Balances and Member Equities',
                 '','balance\r\ndeposit\r\nactive_member_count'),
 
-            ('Dues and Member Equities Billing (Old)',reverse('billing_old')),
-            ('Equity By Account',reverse('equity')),
-            ('One-time Equity Transfer',reverse('equity_transfer')),
             ('Member Equities Billing (New 2011)',reverse('billing')),
+            ('One-time Equity Transfer',reverse('equity_transfer')),
+            ('Equity By Account',reverse('equity')),
         ]),
 
         ('Tasks',[
@@ -264,6 +265,8 @@ def reports(request):
         ]),
 
         ('Old Reports',[
+            ('Equity By Account (Old)',reverse('equity_old')),
+            ('Dues and Member Equities Billing (Old)',reverse('billing_old')),
             ('Member Contact Information', reverse('contact_list')),
 
             listrpt('Accounts','Accounts With Permanent Shifts',
@@ -686,6 +689,14 @@ def turnout(request):
             context_instance=RequestContext(request))
 
 
+def equity_old(request):
+    ''' member equity, grouped by account.  TODO: or grouped by member '''
+    accounts = m_models.Account.objects.all().order_by('name')
+    esums = a_models.Transaction.objects.filter(purchase_type='O'
+            ).values('account','account__name','account__deposit').annotate(esum=Sum('purchase_amount')).order_by('account')
+    return render_to_response('reporting/equity_old.html', locals(),
+            context_instance=RequestContext(request))
+
 def equity(request):
     ''' member equity, grouped by account.  TODO: or grouped by member '''
     ''' TODO: add link to equity_transfer page for each account
@@ -697,7 +708,7 @@ def equity(request):
     data = []
     for esum in esums:
         acct = m_models.Account.objects.get(id=esum['account'])
-        data.append({ 
+        data.append({
             'account': acct, # need account object not just acct id
             'acct_name': esum['account__name'],
             'acct_deposit': esum['account__deposit'],

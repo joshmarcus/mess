@@ -26,8 +26,8 @@
         <ul id="utility-nav">
           {% if user.is_authenticated %}
           <li>Logged in as <a href="{% url member user.username %}" >{{ user.username }}</a></li>
-          <li><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
-          {% if request.user.is_staff %}<li class="last-item"><a href="http://trac.rc98.net/mess/wiki/UserGuide">Help</a></li>{% endif %}
+          <li class="last-item"><a href="{% url django.contrib.auth.views.logout_then_login %}" >Log out</a></li>
+          {# {% if request.user.is_staff %}<li class="last-item"><a href="http://trac.rc98.net/mess/wiki/UserGuide">Help</a></li>{% endif %} #}
           {% else %}
           <li class="last-item"><a href="{% url welcome %}" >Log in</a></li>
           {% endif %}
@@ -80,7 +80,7 @@
 {% endcomment %}
 		</div><!--end of footer-nav-->
 		<div id="footer-info">
-		  <p>Mariposa Coop<br />
+		  <p>Mariposa Food Co-op<br />
 		   4726 Baltimore Avenue<br />
 		   Philadelphia, PA  19143<br />
        215-729-2121<br />
