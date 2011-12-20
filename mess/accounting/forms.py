@@ -39,12 +39,7 @@ class TransactionForm(forms.ModelForm):
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
-        widget=SelectAfterAjax(), required=False)
-
-    def clean_member(self):
-        if self.cleaned_data['member']:
-            return self.cleaned_data['member']
-        raise forms.ValidationError("Every transaction must have a member")
+        widget=SelectAfterAjax(), required=True)
 
 
 class AfterHoursForm(forms.Form):
