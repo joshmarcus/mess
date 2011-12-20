@@ -22,7 +22,7 @@
           </tr>
           {% for form in formset.forms %}
           <tr>
-            <td> {{ form.initial.member }} </td>
+            <td><div {% if not form.initial.member.is_active %}class="profile-inactive"{% endif %}> {{ form.initial.member }} </div></td>
             <td>
               {% for acct in form.initial.member.accounts.all %}
                 {{ acct }}

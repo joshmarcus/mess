@@ -489,11 +489,15 @@ def equity_transfer(request, account):
         account = get_object_or_404(m_models.Account, id=account)
         initial = []
         active_members = account.members.active().count()
-        if not active_members == 0:
+        total_members = account.members.count()
+        if not total_members == 0:
             for member in account.members.active():
                 initial.append({'account': account, 'member': member, 'amount': 0})
-            for i in range(account.deposit*100):
-                initial[i%active_members]['amount'] += 1
+            for member in account.members.inactive():
+                initial.append({'account': account, 'member': member, 'amount': 0})
+            if (active_members != 0):
+                for i in range(account.deposit*100):
+                    initial[i%active_members]['amount'] += 1
             for entry in initial:
                 entry['amount'] = (D(entry['amount'])/100).quantize(D('0.01'))
 
