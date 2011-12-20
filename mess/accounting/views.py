@@ -45,23 +45,18 @@ def listen_to_paypal(request):
         assert receiver_email == 'finance@mariposa.coop', 'Paypal wrong receiver'
         already_did_transaction = models.Transaction.objects.filter(note__contains=txn_id).count()
         if not already_did_transaction:
-            if item_number[:8] == 'Account-':
-                # do account credit stuff
-                account_id = int(item_number[8:])
-                account = m_models.Account.objects.get(id=account_id)
+            (credit_or_equity, a, account_id, m, member_id) = item_number.split('-')
+            account = m_models.Account.objects.get(id=account_id)
+            member = m_models.Member.objects.get(id=member_id)
+            if credit_or_equity == 'Credit':
                 transaction = models.Transaction.objects.create(
                     account=account,
+                    member=member,
                     payment_type='Y',
                     payment_amount=D(payment_gross),
                     note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
                 )
-            if item_number[:7] == 'Member-':
-                # do member equity stuff
-                member_id = int(item_number[7:])
-                member = m_models.Member.objects.get(id=member_id)
-                account = member.accounts.all()[0]
-                account_id = int(item_number[7:])
-                account = m_models.Account.objects.get(id=account_id)
+            else:   # equity
                 transaction = models.Transaction.objects.create(
                     account=account,
                     member=member,
@@ -71,6 +66,7 @@ def listen_to_paypal(request):
                     purchase_amount=D(payment_gross),
                     note='Paypal txn_id=%s from %s' % (txn_id, payer_email),
                 )
+
     return render_to_response('accounting/test_paypal.html', locals(),
             context_instance=RequestContext(request))
     

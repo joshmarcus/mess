@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div id ="right-column">
+  <div id ="right-column">  
     <h2>Member Equity</h2>
     <ul class="quick-info">
       <li><b>Equity held:</b> {{ user.get_profile.equity_held }}</li>
@@ -35,7 +35,7 @@
           <input type="hidden" name="business" value="DJ7UFJ58N3SSJ">
           <input type="hidden" name="lc" value="US">
           <input type="hidden" name="item_name" value="Add equity for member ({{ user.username }})">
-          <input type="hidden" name="item_number" value="Member-{{ user.get_profile.id }}">
+          <input type="hidden" name="item_number" value="Equity-Account-{{ user.get_profile.get_primary_account.id }}-Member-{{ user.get_profile.id }}">
           <input type="hidden" name="button_subtype" value="services">
           <input type="hidden" name="no_shipping" value="1">
           <input type="hidden" name="undefined_quantity" value="1">
@@ -88,7 +88,7 @@
             <option value="300.00">300.00</option>
             <option value="500.00">500.00</option>
           </select>
-          <input type="hidden" name="item_number" value="Account-{{ account.id }}">
+          <input type="hidden" name="item_number" value="Credit-Account-{{ account.id }}-Member-{{ user.get_profile.id }}">
           <input type="hidden" name="button_subtype" value="services">
           <input type="hidden" name="no_shipping" value="1">
           <input type="hidden" name="undefined_quantity" value="1">
