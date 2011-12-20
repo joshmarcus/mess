@@ -21,15 +21,17 @@ for acct in accts:
     if acct.active_member_count == 1 and acct.deposit != 0:
         print "Before Transfer: " + repr(acct.name), acct.deposit, repr(acct.members.active()[0]), acct.members.active()[0].equity_held
         old_deposit = acct.deposit
-        trans1 = a_models.Transaction.objects.create(
+        trans1 = a_models.Transaction(
                         note='transferring equity from account',
                         account=acct,
                         entered_by=entered_by, purchase_type='O',
                         purchase_amount=-old_deposit)
-        trans2 = a_models.Transaction.objects.create(
+        trans1.save_for_equity_transfer()
+        trans2 = a_models.Transaction(
                         note='transferring equity to member',
                         account=acct,
                         member=acct.members.active()[0],
                         entered_by=entered_by, purchase_type='O',
                         purchase_amount=old_deposit)
+        trans2.save_for_equity_transfer()
         print "After Transfer: " + repr(acct.name), acct.deposit, repr(acct.members.active()[0]), acct.members.active()[0].equity_held
