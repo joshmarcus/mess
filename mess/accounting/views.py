@@ -96,6 +96,7 @@ def transaction(request):
             template = get_template('accounting/snippets/acctinfo.html')
         return HttpResponse(template.render(context))
 
+    is_errors = False
     if request.method == 'POST':
         form = forms.TransactionForm(request.POST)
         if form.is_valid():
@@ -103,16 +104,21 @@ def transaction(request):
             transaction.entered_by = request.user # add entered_by
             transaction.save()                    # save to database
             return HttpResponseRedirect(reverse('transaction'))
+        else:
+            is_errors = True
     else:
         form = forms.TransactionForm()
-    context['form'] = form
     today = datetime.date.today()
     transactions = models.Transaction.objects.filter(
             timestamp__range=(today,today+datetime.timedelta(1)))
-    context['transactions'] = transactions
-    context['can_reverse'] = True
-    template = get_template('accounting/transaction.html')
-    return HttpResponse(template.render(context))
+    context = {
+        'transactions':transactions,
+        'form':form,
+        'can_reverse':True,
+        'is_errors':is_errors
+    }
+    return render_to_response('accounting/transaction.html', context,
+                                context_instance=RequestContext(request))
 
 # cashier permission is the first if
 @login_required
