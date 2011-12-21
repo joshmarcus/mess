@@ -101,14 +101,16 @@ def transaction(request):
             return HttpResponseRedirect(reverse('transaction'))
     else:
         form = forms.TransactionForm()
-    context['form'] = form
     today = datetime.date.today()
     transactions = models.Transaction.objects.filter(
             timestamp__range=(today,today+datetime.timedelta(1)))
-    context['transactions'] = transactions
-    context['can_reverse'] = True
-    template = get_template('accounting/transaction.html')
-    return HttpResponse(template.render(context))
+    context = {
+        'transactions':transactions,
+        'form':form,
+        'can_reverse':True,
+    }
+    return render_to_response('accounting/transaction.html', context,
+                                context_instance=RequestContext(request))
 
 # cashier permission is the first if
 @login_required

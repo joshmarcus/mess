@@ -39,7 +39,8 @@ class TransactionForm(forms.ModelForm):
         widget=AutoCompleteWidget('account_spiffy',
             view_name='membership-autocomplete', canroundtrip=True))
     member = forms.ModelChoiceField(m_models.Member.objects.all(),
-        widget=SelectAfterAjax(), required=False)
+        widget=SelectAfterAjax(), required=True)
+
 
 class AfterHoursForm(forms.Form):
     account = forms.ModelChoiceField(m_models.Account.objects.all(),
