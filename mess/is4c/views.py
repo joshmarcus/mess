@@ -108,7 +108,10 @@ def getmemberdict(member):
         'work_status':member.work_status,
         'equity':'please do this by hand first',
         'is_active':member.is_active,
-        'is_on_loa':member.is_on_loa}
+        'is_on_loa':member.is_on_loa,
+        # we use a string here because Decimal is not serializable!
+        'equity_due':'%f' % member.equity_due
+    }
 
 @csrf_exempt
 def recordtransaction(request):
