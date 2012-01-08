@@ -227,7 +227,7 @@ def reports(request):
 
             ('Member Equities Billing (New 2011)',reverse('billing')),
             ('One-time Equity Transfer',reverse('equity_transfer')),
-            ('Equity By Account',reverse('equity')),
+            ('Equity Totals',reverse('equity')),
         ]),
 
         ('Tasks',[
@@ -690,7 +690,7 @@ def turnout(request):
 
 
 def equity_old(request):
-    ''' member equity, grouped by account.  TODO: or grouped by member '''
+    ''' member equity, grouped by account. '''
     accounts = m_models.Account.objects.all().order_by('name')
     esums = a_models.Transaction.objects.filter(purchase_type='O'
             ).values('account','account__name','account__deposit').annotate(esum=Sum('purchase_amount')).order_by('account')
@@ -698,22 +698,21 @@ def equity_old(request):
             context_instance=RequestContext(request))
 
 def equity(request):
-    ''' member equity, grouped by account.  TODO: or grouped by member '''
-    ''' TODO: add link to equity_transfer page for each account
-        TODO: group accounts by shared address status, # of members '''
+    ''' member equity, grouped by account'''
     equity_transactions = a_models.Transaction.objects.filter(purchase_type='O')
-    esums = equity_transactions.values(
-            'account','account__name','account__deposit'
-            ).annotate(esum=Sum('purchase_amount')).order_by('account')
-    data = []
-    for esum in esums:
-        acct = m_models.Account.objects.get(id=esum['account'])
-        data.append({
-            'account': acct, # need account object not just acct id
-            'acct_name': esum['account__name'],
-            'acct_deposit': esum['account__deposit'],
-            'acct_esum': esum['esum'],
-        })
+#    esums = equity_transactions.values(
+#            'account','account__name','account__deposit'
+#            ).annotate(esum=Sum('purchase_amount')).order_by('account')
+#    data = []
+#    for esum in esums:
+#        acct = m_models.Account.objects.get(id=esum['account'])
+#        data.append({
+#            'account': acct, # need account object not just acct id
+#            'acct_name': esum['account__name'],
+#            'acct_deposit': esum['account__deposit'],
+#            'acct_esum': esum['esum'],
+#        })
+    mem_equity_due = m_models.Member.objects.all().aggregate(total=Sum('equity_due'))
     member_equity = m_models.Member.objects.all().aggregate(total=Sum('equity_held'))
     acct_equity = m_models.Account.objects.all().aggregate(total=Sum('deposit'))
     all_equity = member_equity['total'] + acct_equity['total']

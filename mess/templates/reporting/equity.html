@@ -4,17 +4,32 @@
 <div id="double-column">
   <div id="primary-content-wrapper">
     <h2>Equity Totals</h2>
-    <table class="data">
-      <tr>
-        <th>equity transactions total</th>
-        <th>total of account equity + member equity_held</th>
-      </tr>
-      <tr>
-        <td>{{ equity_transactions_sum.total }}</td>
-        <td>{{ all_equity }}</td>
-      </tr>
-    </table>
+    <div style="width:30%">
+      <table class="data">
+        <tr>
+          <th>equity transactions</th>
+          <td>{{ equity_transactions_sum.total }}</td>
+        </tr>
+        <tr>
+          <th>account + member equities</th>
+          <td>{{ all_equity }}</td>
+        </tr>
+        <tr>
+          <th>member equity held</th>
+          <td>{{ member_equity.total }}</td>
+        </tr>
+        <tr>
+          <th>account equity</th> 
+          <td>{{ acct_equity.total }}</td>
+        </tr>
+        <tr>
+          <th>member equity due</th>
+          <td>{{ mem_equity_due.total }}</td>
+        </tr>
+      </table>
+    </div>
 
+    {% comment %}
     <br>
     <h2>Equity By Account</h2>
     <table class="data">
@@ -39,6 +54,7 @@
         </tr>
       {% endfor %}
     </table>
+    {% endcomment %}
 
   </div>
 </div>
