@@ -27,7 +27,7 @@
               <th class="printonly">Acct.<br />Susp.<br />Call</th>
               <th class="printonly">Remind<br />Call</th>
               <th>Hours<br />Worked<span class="printonly">=&#10003;</span></th>
-              <th class="squish">Excused</th>
+              <th class="squish">Shift Status</th>
               <th class="squish">Makeup</th>
               <th class="squish">Banked</th>
               <th>Time</th>
@@ -43,9 +43,16 @@
             <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}{% if task.timecard_submitted %} timecard-submitted{% endif %}">
               <td class="printonly"></td> <!-- account suspended call -->
               <td class="printonly"></td> <!-- reminder call -->
-              <td>{{ form.id }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}{% if task.excused %}0{% else %}{{ task.hours }}{% endif %}{% endif %}" /></td>
+              <td>{{ form.id }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}0.00{% endif %}" /></td>
               {# this was, if task.hours_worked ... else ... but the problem was that bool(0) == False.  timecard_submitted checks if it's None.  this should really be done at the form level... #}
-              <td>{{ form.excused }}</td>
+              <!-- <td>{{ form.excused }}</td> -->
+              <td>
+                <select name="{{ form.prefix }}-shift_status" id="id_{{ form.prefix }}-shift_status" onchange="shiftStatusChanged(this, '{{ form.prefix }}', '{{ task.hours }}')">
+                  <option value="unexcused" {% if task.timecard_submitted and not task.hours_worked %}selected="selected"{% endif %}>Unexcused</option> 
+                  <option value="worked" {% if task.hours_worked %}selected="selected"{% endif %}>Worked</option> 
+                  <option value="excused" {% if task.excused %}selected="selected"{% endif %}>Excused</option>
+                </select>
+              </td>
               <td>{{ form.makeup }}</td>
               <td>{{ form.banked }}</td>
               <td class="time">

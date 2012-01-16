@@ -96,12 +96,19 @@ class SkillForm(forms.ModelForm):
     class Meta:
         model = models.Skill
 
-class TimecardForm(forms.ModelForm):
-    class Meta:
-        model = models.Task
-        fields = ('hours_worked','excused','makeup','banked')
+class TimecardForm(forms.Form):
+    id = forms.IntegerField(widget=forms.HiddenInput)
     hours_worked = forms.DecimalField(required=False, 
                     widget=forms.TextInput(attrs={'size':'2'}))
+    shift_status = forms.ChoiceField(choices=(
+        ('unexcused', 'Unexcused'),
+        ('worked', 'Worked'),
+        ('excused', 'Excused'),
+        )
+    )
+    makeup = forms.BooleanField(required=False)
+    banked = forms.BooleanField(required=False)
+    
 
 class RecurForm(forms.ModelForm):
     class Meta:
