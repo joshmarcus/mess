@@ -203,24 +203,23 @@ def timecard(request, date=None):
     if request.method == 'POST':
       formset = TaskFormSet(request.POST)
 
+      no_form_errors = True
+
       for form in formset.forms:
         if (form.is_valid()):
           task = models.Task.objects.get(id=form.cleaned_data['id'])
           task.hours_worked=form.cleaned_data['hours_worked']
 
-          if (form.cleaned_data['shift_status']=='excused'):
-            task.excused=True
-          else:
-            task.excused=False
-
+          task.excused = (form.cleaned_data['shift_status']=='excused')
           task.makeup = form.cleaned_data['makeup']
           task.banked = form.cleaned_data['banked']
          
           task.save()
         else:
-          assert False, form
+          no_form_errors = False
 
-      return HttpResponseRedirect(reverse('scheduling-timecard', args=[date.date()]))
+      if (no_form_errors):
+        return HttpResponseRedirect(reverse('scheduling-timecard', args=[date.date()]))
     else:
       num_tasks = unicode(len(tasks))
 
@@ -230,9 +229,8 @@ def timecard(request, date=None):
         'form-MAX_NUM_FORMS': num_tasks,
       }
 
-      i = 0
-
-      for task in tasks:
+      for i in range(len(tasks)):
+        task = tasks[i];
         data['form-' + str(i) + '-id'] = task.id;
 
         if (task.hours_worked):
@@ -251,14 +249,14 @@ def timecard(request, date=None):
         data['form-' + str(i) + '-makeup'] = task.makeup
         data['form-' + str(i) + '-banked'] = task.banked
 
-        i = i + 1
-
       formset = TaskFormSet(data)
       
-      i = 0
-      for form in formset.forms:
-        form.instance = tasks[i]  
-        i = i + 1
+    # We used to use a model formset built with the Task 
+    # model, so the template expects each form to have 
+    # member named instance that points to its corresponding
+    # task. We set these manually here - TM 1/17/2012
+    for i in range(len(formset.forms)):
+      formset.forms[i].instance = tasks[i]  
 
     context['formset'] = formset
     context['date'] = date

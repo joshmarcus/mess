@@ -98,13 +98,16 @@ class SkillForm(forms.ModelForm):
 
 class TimecardForm(forms.Form):
     id = forms.IntegerField(widget=forms.HiddenInput)
-    hours_worked = forms.DecimalField(required=False, 
+    hours_worked = forms.DecimalField(required=True, 
                     widget=forms.TextInput(attrs={'size':'2'}))
     shift_status = forms.ChoiceField(choices=(
+        ('', ''),
         ('unexcused', 'Unexcused'),
         ('worked', 'Worked'),
         ('excused', 'Excused'),
-        )
+        ), 
+        required=True, 
+        error_messages={'invalid_choice': "Please select a shift status"},
     )
     makeup = forms.BooleanField(required=False)
     banked = forms.BooleanField(required=False)

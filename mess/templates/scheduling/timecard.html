@@ -16,8 +16,26 @@
         {{ date|date:"l, F jS, Y" }} 
         <a href="{% url scheduling-timecard next_date|date:"Y-m-d" %}" id="next-day">&rarr;</a>
       </h2>
-      <p class="printonly scrunch-top"><b>Instructions:</b> If they worked, mark a check by the hours.<br/>  <b>Excused:</b> Change hours worked to "0" and check "excused." <b>Unexcused:</b> Change hours worked to "0".</p>
-      <p class="noprint">Instructions: If they worked, just keep the hours worked.<br/>   Excused: Change hours worked to "0" and check "excused."<br/>  Unexcused: Change hours worked to "0".</p>
+      <span class="printonly scrunch-top">
+        <p><b>Instructions:</b></p>
+        <ul>
+          <li>For each work shift, select a shift status: "Unexcused", "Worked", or "Excused"</li>
+          <li>If the shift is a makeup shift, or if the member is banking hours, please check the appropriate box</li>
+          <li>Click "Submit" at the bottom of the page to submit all workshifts to MESS</li>
+          <li>When a timecard has been successfully submitted, it's background will turn blue</li>
+        </ul>
+      </span>
+      <span class="noprint">
+        <p><b>Instructions:</b></p>
+        <ul>
+          <li>For each work shift, select a shift status: "Unexcused", "Worked", or "Excused"</li>
+          <li>If the shift is a makeup shift, or if the member is banking hours, please check the appropriate box</li>
+          <li>Click "Submit" at the bottom of the page to submit all workshifts to MESS</li>
+          <li>When a timecard has been successfully submitted, it's background will turn blue</li>
+        </ul>
+      </span>
+      <!--<p class="printonly scrunch-top"><b>Instructions:</b> If they worked, mark a check by the hours.<br/>  <b>Excused:</b> Change hours worked to "0" and check "excused." <b>Unexcused:</b> Change hours worked to "0".</p>
+      <p class="noprint">Instructions: If they worked, just keep the hours worked.<br/>   Excused: Change hours worked to "0" and check "excused."<br/>  Unexcused: Change hours worked to "0".</p> -->
       <form method="post">
         {% csrf_token %}
         {{ formset.management_form }}
@@ -43,11 +61,12 @@
             <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}{% if task.timecard_submitted %} timecard-submitted{% endif %}">
               <td class="printonly"></td> <!-- account suspended call -->
               <td class="printonly"></td> <!-- reminder call -->
-              <td>{{ form.id }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}0.00{% endif %}" /></td>
+              <td>{{ form.id }}{{ form.hours_worked.errors }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}0.00{% endif %}" /></td>
               {# this was, if task.hours_worked ... else ... but the problem was that bool(0) == False.  timecard_submitted checks if it's None.  this should really be done at the form level... #}
               <!-- <td>{{ form.excused }}</td> -->
-              <td>
+              <td>{{ form.shift_status.errors }}
                 <select name="{{ form.prefix }}-shift_status" id="id_{{ form.prefix }}-shift_status" onchange="shiftStatusChanged(this, '{{ form.prefix }}', '{{ task.hours }}')">
+                  <option value="empty"></option> 
                   <option value="unexcused" {% if task.timecard_submitted and not task.hours_worked %}selected="selected"{% endif %}>Unexcused</option> 
                   <option value="worked" {% if task.hours_worked %}selected="selected"{% endif %}>Worked</option> 
                   <option value="excused" {% if task.excused %}selected="selected"{% endif %}>Excused</option>
