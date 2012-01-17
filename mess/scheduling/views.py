@@ -203,8 +203,6 @@ def timecard(request, date=None):
     if request.method == 'POST':
       formset = TaskFormSet(request.POST)
 
-      no_form_errors = True
-
       for form in formset.forms:
         if (form.is_valid()):
           task = models.Task.objects.get(id=form.cleaned_data['id'])
@@ -215,10 +213,8 @@ def timecard(request, date=None):
           task.banked = form.cleaned_data['banked']
          
           task.save()
-        else:
-          no_form_errors = False
 
-      if (no_form_errors):
+      if (not formset.errors):
         return HttpResponseRedirect(reverse('scheduling-timecard', args=[date.date()]))
     else:
       num_tasks = unicode(len(tasks))
