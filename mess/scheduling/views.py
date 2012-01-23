@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, RequestContext, Context
 from django.utils import simplejson
 import django.views.decorators.vary as vary
+from django.forms.formsets import formset_factory
 
 from mess.scheduling import forms, models
 from mess.membership import forms as m_forms
@@ -196,15 +197,62 @@ def timecard(request, date=None):
         datetime.datetime.combine(date, datetime.time.max))).exclude(
         account__isnull=True, excused=True).order_by('time', 'hours', 'job',
         '-recur_rule', 'id')
+
+    TaskFormSet = formset_factory(forms.TimecardForm)
+
     if request.method == 'POST':
-        formset = forms.TimecardFormSet(request.POST, request.FILES, 
-                queryset=tasks)
-        if formset.is_valid():
-            formset.save()
-            return HttpResponseRedirect(reverse('scheduling-timecard',
-                   args=[date.date()]))
+      formset = TaskFormSet(request.POST)
+
+      for form in formset.forms:
+        if (form.is_valid()):
+          task = models.Task.objects.get(id=form.cleaned_data['id'])
+          task.hours_worked=form.cleaned_data['hours_worked']
+
+          task.excused = (form.cleaned_data['shift_status']=='excused')
+          task.makeup = form.cleaned_data['makeup']
+          task.banked = form.cleaned_data['banked']
+         
+          task.save()
+
+      if (not formset.errors):
+        return HttpResponseRedirect(reverse('scheduling-timecard', args=[date.date()]))
     else:
-        formset = forms.TimecardFormSet(queryset=tasks)
+      num_tasks = unicode(len(tasks))
+
+      data = {
+        'form-TOTAL_FORMS': num_tasks,
+        'form-INITIAL_FORMS': num_tasks,
+        'form-MAX_NUM_FORMS': num_tasks,
+      }
+
+      for i in range(len(tasks)):
+        task = tasks[i];
+        data['form-' + str(i) + '-id'] = task.id;
+
+        if (task.hours_worked):
+          data['form-' + str(i) + '-hours_worked'] = task.hours_worked 
+        else:
+          data['form-' + str(i) + '-hours_worked'] = 0
+
+        if (task.hours_worked):
+          data['form-' + str(i) + '-shift_status'] = u'worked'
+        elif (task.excused):
+          data['form-' + str(i) + '-shift_status'] = u'excused'
+        else:
+          data['form-' + str(i) + '-shift_status'] = u'unexcused'
+
+        data['form-' + str(i) + '-hours'] = task.hours
+        data['form-' + str(i) + '-makeup'] = task.makeup
+        data['form-' + str(i) + '-banked'] = task.banked
+
+      formset = TaskFormSet(data)
+      
+    # We used to use a model formset built with the Task 
+    # model, so the template expects each form to have 
+    # member named instance that points to its corresponding
+    # task. We set these manually here - TM 1/17/2012
+    for i in range(len(formset.forms)):
+      formset.forms[i].instance = tasks[i]  
 
     context['formset'] = formset
     context['date'] = date

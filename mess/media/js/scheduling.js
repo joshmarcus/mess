@@ -150,3 +150,21 @@ function taskOptions(clickA) {
   return false;
 }
 */
+
+/* Called on the timecard form whenever a shift status is selected.
+ * The value of the shift status affects the value of the hours worked
+ * text box. Unless a member has worked their shift, the hours worked
+ * should be set to 0
+ */
+function shiftStatusChanged(select, form_id, hours) {
+  var hours_worked = document.getElementById('id_' + form_id + '-hours_worked');
+  switch(select.value) {
+    case 'worked':
+      hours_worked.value=hours;
+      break;
+    case 'empty':
+    case 'excused':
+    case 'unexcused':
+      hours_worked.value="0.00";
+  }
+}
