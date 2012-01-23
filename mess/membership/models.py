@@ -95,13 +95,33 @@ class Member(models.Model):
         return self.user.get_full_name()
 
     def equity_target(self):
+        '''
+        Returns the member's equity target. A member's equity target is $200 
+        with the following exceptions:
+        - $0 if they are only a proxy shopper
+        - $150 if house is three or more people
+        - $125 if house is five or more people
+        '''
         shared_house_size = 0
+        only_a_proxy=True
+
         for acct in self.accounts.filter(shared_address=True):
             shared_house_size = max(shared_house_size, acct.active_member_count)
-        if shared_house_size >= 5:
+
+        # If this member is an account contact on any account, then they are 
+        # a member of the co-op (not just a proxy shopper) and they owe equity
+        for acct_member in AccountMember.objects.filter(member=self.id):
+            if acct_member.account_contact: 
+              only_a_proxy=False;
+              break;
+
+        if only_a_proxy:
+            return Decimal("0.00")
+        elif shared_house_size >= 5:
             return Decimal("125.00")
-        if shared_house_size >= 3:
+        elif shared_house_size >= 3:
             return Decimal("150.00")
+
         return Decimal("200.00")
 
     def potential_new_equity_due(self):
