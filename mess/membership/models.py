@@ -103,17 +103,13 @@ class Member(models.Model):
         - $125 if house is five or more people
         '''
         shared_house_size = 0
-        only_a_proxy=True
 
         for acct in self.accounts.filter(shared_address=True):
             shared_house_size = max(shared_house_size, acct.active_member_count)
 
         # If this member is an account contact on any account, then they are 
         # a member of the co-op (not just a proxy shopper) and they owe equity
-        for acct_member in AccountMember.objects.filter(member=self.id):
-            if acct_member.account_contact: 
-              only_a_proxy=False;
-              break;
+        only_a_proxy = len(AccountMember.objects.filter(member=self.id, account_contact=True)) == 0
 
         if only_a_proxy:
             return Decimal("0.00")
