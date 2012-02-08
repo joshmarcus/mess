@@ -107,7 +107,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'mess.core.context_processors.cashier_permission',
+    'mess.core.context_processors.staff_permissions',
     'mess.core.context_processors.location',
 )
 
