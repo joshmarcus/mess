@@ -13,7 +13,7 @@ def location(request):
     location['url'] = url
     return {'location': location}
 
-def staff_permissions(request):
+def role_permissions(request):
     cashier_perms = cashier_permission(request)
     msr_perms = member_service_rep_permission(request)
     sa_perms = staff_assistant_permission(request)
