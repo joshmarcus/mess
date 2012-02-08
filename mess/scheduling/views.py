@@ -11,6 +11,8 @@ from django.template import loader, RequestContext, Context
 from django.utils import simplejson
 import django.views.decorators.vary as vary
 from django.forms.formsets import formset_factory
+from django.utils.translation import ugettext as _
+from django.conf import settings
 
 from mess.scheduling import forms, models
 from mess.membership import forms as m_forms
@@ -88,8 +90,14 @@ def task(request, task_id):
     return HttpResponseRedirect(reverse('scheduling-schedule', 
                     args=[task.time.date()])+'?jump_to_task_id='+str(task_id))
 
+@login_required
 def schedule(request, date=None):
     context = RequestContext(request)
+
+    if ((not request.user.is_staff or request.META['REMOTE_ADDR'] != settings.MARIPOSA_IP) and 
+        (not request.user.has_perm('scheduling.add_task') or not request.user.has_perm('scheduling.change_task'))): 
+            return HttpResponseRedirect(reverse('welcome'))
+
     if date:
         try:
 #            date = datetime.datetime.strptime(date, "%Y-%m-%d") Python 2.4 workaround
@@ -177,8 +185,14 @@ def schedule(request, date=None):
     return HttpResponse(template.render(context))
 
 # filter for date
+@login_required
 def timecard(request, date=None):
     context = RequestContext(request)
+
+    if ((not request.user.is_staff or request.META['REMOTE_ADDR'] != settings.MARIPOSA_IP) and 
+        (not request.user.has_perm('scheduling.add_timecard') or not request.user.has_perm('scheduling.change_timecard'))): 
+            return HttpResponseRedirect(reverse('welcome'))
+
     if date:
         try:
 #            date = datetime.datetime.strptime(date, "%Y-%m-%d")  Python 2.4 workaround
