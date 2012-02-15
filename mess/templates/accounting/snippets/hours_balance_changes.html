@@ -1,5 +1,3 @@
-{% load messmoney %}
-
 <table class="data">
   <tr>
     <th>Time</th>
@@ -13,8 +11,8 @@
       <tr class="{% cycle 'odd' 'even' %}">
         <td>{{ transaction.timestamp|date:"n/j g:i A Y" }}</td>
         <td><a href="{{ transaction.account.get_absolute_url }}">{{ transaction.account }}</a></td>
-        <td>{{ transaction.hours_balance_change|messmoney }}</td>
-        <td>{{ transaction.hours_balance|messmoney }}</td>
+        <td>{{ transaction.hours_balance_change }}</td>
+        <td>{{ transaction.hours_balance }}</td>
         <td>{{ transaction.entered_by.username }}</td>
       </tr>
     {% endfor %}

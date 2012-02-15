@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load messmoney %}
+{% load messhours %}
 
 {% block content %}
 <div id="left-column">
@@ -45,7 +45,7 @@
   <ul class="quick-info">
     <li>
       <b>Hours {% if account.hours_owed %}Owed{% else %}Banked{% endif %}:</b> 
-        {{ account.hours_balance|messmoney }} 
+        {{ account.hours_balance|messhours }} 
     </li>
   </ul>
 

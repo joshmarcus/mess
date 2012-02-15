@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load messmoney %}
+{% load messhours %}
 
 {% block content %}
   <div id="left-column">
@@ -34,12 +35,15 @@
 
       <div class="accountmemberside">
         <ul class="quick-info">
-          <li><b>Hours {% if account.hours_owed %}owed{% else %}banked{% endif %}:</b> 
-            {{ account.hours_balance|messmoney }} 
+          <li>
+          {% if account.unexcused_hours_owed %}<b>Unexcused hours owed</b>: {{ account.hours_balance|messhours:"unexcused" }}{% endif %}
+          </li>
+          <li><b>{% if account.excused_hours_owed %}Excused hours owed{% else %}Hours banked{% endif %}:</b> 
+            {{ account.hours_balance|messhours }} 
             {% if request.user.is_staff %}<a href="{{ account.get_hours_balance_history_url }}">history</a>{% endif %}
           </li>
 
-          <li><b>Shared Address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
+          <li><b>Shared address:</b> {% if account.shared_address %}Yes{% else %}No{% endif %}</li>
           {% if account.deposit %}<li><b>Equity still linked to account:</b> {{ account.deposit|messmoney }}</li>{% endif %}
         </ul>
         </div>
