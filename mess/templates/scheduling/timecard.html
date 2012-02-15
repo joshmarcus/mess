@@ -64,7 +64,7 @@
               <td>{{ form.id }}{{ form.hours_worked.errors }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}0.00{% endif %}" /></td>
               {# this was, if task.hours_worked ... else ... but the problem was that bool(0) == False.  timecard_submitted checks if it's None.  this should really be done at the form level... #}
               <!-- <td>{{ form.excused }}</td> -->
-              <td>{{ form.shift_status.errors }}
+              <td>
                 <select name="{{ form.prefix }}-shift_status" id="id_{{ form.prefix }}-shift_status" onchange="shiftStatusChanged(this, '{{ form.prefix }}', '{{ task.hours }}')">
                   <option value="empty"></option> 
                   <option value="unexcused" {% if task.timecard_submitted and not task.hours_worked %}selected="selected"{% endif %}>Unexcused</option> 
