@@ -17,6 +17,7 @@ from django.conf import settings
 from mess.scheduling import forms, models
 from mess.membership import forms as m_forms
 from mess.membership import models as m_models
+from mess.core.permissions import has_elevated_perm
 
 today = datetime.date.today()
 todaytime = datetime.datetime(today.year,today.month,today.day)
@@ -94,9 +95,8 @@ def task(request, task_id):
 def schedule(request, date=None):
     context = RequestContext(request)
 
-    if ((not request.user.is_staff or request.META['REMOTE_ADDR'] != settings.MARIPOSA_IP) and 
-        (not request.user.has_perm('scheduling.add_task') or not request.user.has_perm('scheduling.change_task'))): 
-            return HttpResponseRedirect(reverse('welcome'))
+    if not has_elevated_perm(request, 'scheduling', 'add_task'):
+        return HttpResponseRedirect(reverse('welcome'))
 
     if date:
         try:
@@ -189,9 +189,8 @@ def schedule(request, date=None):
 def timecard(request, date=None):
     context = RequestContext(request)
 
-    if ((not request.user.is_staff or request.META['REMOTE_ADDR'] != settings.MARIPOSA_IP) and 
-        (not request.user.has_perm('scheduling.add_timecard') or not request.user.has_perm('scheduling.change_timecard'))): 
-            return HttpResponseRedirect(reverse('welcome'))
+    if not has_elevated_perm(request, 'scheduling', 'add_timecard'):
+        return HttpResponseRedirect(reverse('welcome'))
 
     if date:
         try:

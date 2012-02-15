@@ -4,7 +4,7 @@
   <div id="double-column">
     {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      {% if user.is_staff %}	
+      {% if user.is_staff or is_staff_assistant %}	
       <form action="{% url account-add %}">
         <div class="add-button">
           <input type="submit" value="Add a new account!" />

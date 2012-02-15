@@ -40,15 +40,17 @@
           {% if user.is_authenticated %}
           <li><a href="{% url welcome %}"{% if location.path|match:'/$' %} class="active"{% endif %}>Dashboard</a></li>
           <li><a href="{% url accounts %}"{% if location.path|match:'/membership' %} class="active"{% endif %}>Membership</a></li>
-            {% if not user.is_staff %}
+            {% if not user.is_staff and not is_member_services_rep and not is_staff_assistant %}
           <li><a href="{% url myschedule %}"{% if location.path|match:'/scheduling' %} class="active"{% endif %}>Scheduling</a></li>
             {% endif %}
           {% endif %}
-          {% if user.is_staff %}
+          {% if user.is_staff or is_member_services_rep or is_staff_assistant %}
           <li><a href="{% url scheduling-schedule-today %}"{% if location.path|match:'/scheduling' %} class="active"{% endif %}>Scheduling</a></li>
+          {% endif %}
+          {% if user.is_staff %}
           <li><a href="{% url reports %}"{% if location.path|match:'/reporting' %} class="active"{% endif %}>Reports</a></li>
           {% endif %}
-          {% if can_cashier_now %}
+          {% if can_cashier_now or is_staff_assistant %}
           <li><a href="{% url transaction %}"{% if location.path|match:'/accounting' %} class="active"{% endif %}>Cashier</a></li>
           {% endif %}
           {% if user.is_authenticated %}

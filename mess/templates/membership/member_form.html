@@ -29,7 +29,7 @@
           </div>
         {% endif %}
         <div class="section">
-          {% if user.is_staff %}
+          {% if user.is_staff or is_staff_assistant %}
           <h3>Main</h3>
           <table>
             {{ user_form }}

@@ -9,10 +9,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
+from django.conf import settings
 
 #from mess.accounting import models as a_models
 from mess.utils.logging import log
 from mess.membership import forms, models
+from mess.core.permissions import has_elevated_perm
+
 import copy
 import datetime
 
@@ -24,7 +27,7 @@ def members(request):
     '''
     list of all members (active by default)
     '''
-    if not request.user.is_staff:
+    if not has_elevated_perm(request,'membership','add_member'):
         return HttpResponseRedirect(reverse('member', 
             args=[request.user.username]))
     context = RequestContext(request)
@@ -71,8 +74,9 @@ def member(request, username):
     individual member page
     '''
     user = get_object_or_404(User, username=username)
-    if not request.user.is_staff and not (request.user.is_authenticated() 
-            and request.user.id == user.id):
+    if (not has_elevated_perm(request,'membership','member') and
+        (not (request.user.is_authenticated() and 
+             request.user.id == user.id))):
         return HttpResponseRedirect(reverse('welcome'))
     context = RequestContext(request)
     member = user.get_profile()
@@ -115,7 +119,7 @@ def member_form(request, username=None):
         user_email_form = forms.UserEmailForm(request.POST, instance=user)
         member_form = forms.MemberForm(request.POST, prefix='member', 
                 instance=member)
-        if request.user.is_staff:
+        if has_elevated_perm(request, 'membership', 'add_member'):
             related_account_formset = forms.RelatedAccountFormSet(request.POST, 
                     instance=member, prefix='related_account')
             LOA_formset = forms.LeaveOfAbsenceFormSet(request.POST, 
@@ -128,7 +132,7 @@ def member_form(request, username=None):
         #        prefix='email')
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
-        if request.user.is_staff:
+        if has_elevated_perm(request, 'membership', 'add_member'):
             if (user_form.is_valid() and member_form.is_valid() and 
                     related_account_formset.is_valid() and 
                     LOA_formset.is_valid()): 
@@ -179,7 +183,7 @@ def member_form(request, username=None):
     context['user_form'] = user_form
     context['user_email_form'] = user_email_form
     context['member_form'] = member_form
-    if request.user.is_staff:
+    if has_elevated_perm(request, 'membership', 'add_member'):
         context['formsets'] = [
             (related_account_formset, 'Accounts'), 
             (LOA_formset, 'Leaves of Absence'),
@@ -202,8 +206,9 @@ def accounts(request):
     list of accounts
     '''
     context = RequestContext(request)
-    if not request.user.is_staff:
+    if not has_elevated_perm(request,'membership','add_account'):
         accounts = request.user.get_profile().accounts.all()
+            
         if len(accounts) == 1:
             return HttpResponseRedirect(accounts[0].get_absolute_url())
     else:
@@ -253,8 +258,9 @@ def account(request, id):
     '''
     account = get_object_or_404(models.Account, id=id)
     request_member = models.Member.objects.get(user=request.user)
-    if not request.user.is_staff and not (request.user.is_authenticated() 
-            and request_member in account.members.all()):
+    if (not has_elevated_perm(request,'membership','add_member') and
+        not (request.user.is_authenticated() and 
+             request_member in account.members.all())):
         return HttpResponseRedirect(reverse('welcome'))
     context = RequestContext(request)
     context['account'] = account
@@ -263,10 +269,15 @@ def account(request, id):
     template = get_template('membership/account.html')
     return HttpResponse(template.render(context))
 
+@login_required
 def account_form(request, id=None):
     '''
     edit account info
     '''
+
+    if not has_elevated_perm(request, 'membership', 'add_account'):
+        return HttpResponseRedirect(reverse('welcome'))
+
     context = RequestContext(request)
     if id:
         account = get_object_or_404(models.Account, id=id)

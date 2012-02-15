@@ -460,10 +460,17 @@ class Account(models.Model):
     def owes_money(self):
         if self.balance > 0:
             return True
+        else:
+            return False
 
-    def hours_owed(self):
-        if self.hours_balance > 0:
+    def excused_hours_owed(self):
+        return self.hours_balance > self.hours_balance.to_integral_value()
+
+    def unexcused_hours_owed(self):
+        if self.hours_balance.to_integral_value() >= 1:
             return True
+        else:
+            return False
 
     def balance_on(self, time):
         newest_trans = self.transaction_set.filter(

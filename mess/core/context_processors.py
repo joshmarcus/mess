@@ -67,7 +67,8 @@ def staff_assistant_permission(request):
     '''
     if not request.user.is_authenticated():
         return {}     # no permission, bool({}) = False
-    if request.user.is_staff:
+    if (request.user.groups.filter(name="staff assistant").count() > 0
+        and request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP):
         return {'is_staff_assistant':True}
     return {}     # no permission, bool({}) = False
 

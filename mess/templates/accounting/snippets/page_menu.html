@@ -1,6 +1,8 @@
 {% block page_menu %}
 {% load core_tags %}
   <ul id="local-nav">
+    {# Staff assistants should only be able to see the transactions tab, which is the default tab, so we don't need the page menu for staff assistants #}
+    {% if user.is_staff or not is_staff_assistant %}
     <li><a href="{% url hours_balance %}"{% if location.path|match:'/accounting/hours_balance' %} class="active"{% endif %}>Hours Balance</a></li>
     <li><a href="{% url transaction %}"{% if location.path|match:'/accounting/transaction' %} class="active"{% endif %}>Transaction</a></li>
     {# <li><a href="{% url after_hours %}"{% if location.path|match:'/accounting/after_hours' %} class="active"{% endif %}>After-hours</a></li> #}
@@ -8,5 +10,6 @@
     <li><a href="{% url EBT-bulk-orders %}"{% if location.path|match:'/accounting/ebt_bulk_orders' %} class="active"{% endif %}>Create EBT Bulk Orders</a></li>
     {# <li><a href="{% url cashsheet_input %}"{% if location.path|match:'/accounting/cashsheet_input' %} class="active"{% endif %}>Cashsheet Input</a></li> #}
     <li class="last-item"><a href="{% url close_out %}"{% if location.path|match:'/accounting/close_out' %} class="active"{% endif %}>Close Out</a></li>
+    {% endif %}
   </ul>
 {% endblock %}

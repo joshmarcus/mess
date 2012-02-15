@@ -18,7 +18,8 @@ from django.forms.formsets import formset_factory
 from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
 from mess.membership import models as m_models
-from mess.core.context_processors import cashier_permission
+from mess.core.permissions import has_elevated_perm
+#from mess.core.context_processors import cashier_permission
 
 today = datetime.date.today()
 
@@ -74,9 +75,12 @@ def listen_to_paypal(request):
 # cashier permission is the first if
 @login_required
 def transaction(request):
-    if not cashier_permission(request):
-        return HttpResponse('Sorry, you do not have cashier permission. %s' 
-                             % request.META['REMOTE_ADDR'])
+#    if not cashier_permission(request):
+#        return HttpResponse('Sorry, you do not have cashier permission. %s' 
+#                             % request.META['REMOTE_ADDR'])
+    if not has_elevated_perm(request, 'accounting', 'add_transaction'):
+        return HttpResponseRedirect(reverse('welcome'))
+
 
     context = RequestContext(request)
     if 'getcashierinfo' in request.GET:
@@ -164,6 +168,8 @@ def cashsheet_input(request):
             context_instance=RequestContext(request))
 
 def hours_balance(request):
+    if not has_elevated_perm(request, 'membership', 'change_account'):
+        return HttpResponseRedirect(reverse('welcome'))
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
         account = m_models.Account.objects.get(id=account_id)
@@ -186,9 +192,11 @@ def hours_balance(request):
 @login_required
 def close_out(request, date=None):
     '''Page to double-check payment amounts'''
-    if not cashier_permission(request):
-        return HttpResponse('Sorry, you do not have cashier permission. %s' 
-                             % request.META['REMOTE_ADDR'])
+    if not has_elevated_perm(request, 'membership', 'change_account'):
+        return HttpResponseRedirect(reverse('welcome'))
+    #if not cashier_permission(request):
+    #    return HttpResponse('Sorry, you do not have cashier permission. %s' 
+    #                         % request.META['REMOTE_ADDR'])
 
     if date:
         try:
@@ -418,8 +426,12 @@ def storeday(request):
     return render_to_response('accounting/storeday.html', locals(),
             context_instance=RequestContext(request))
 
+@login_required
 def EBT_bulk_orders(request, EBTBulkOrder_id=None):
     # probably want to switch this to only list unpaid
+
+    if not has_elevated_perm(request, 'accounting', 'add_ebt_bulk_order'):
+        return HttpResponseRedirect(reverse('welcome'))
 
     if EBTBulkOrder_id:
         ebt_bo = get_object_or_404(models.EBTBulkOrder, id=EBTBulkOrder_id)
