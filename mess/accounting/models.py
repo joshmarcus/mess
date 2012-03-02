@@ -28,6 +28,8 @@ PAYMENT_CHOICES = (
     ('E','EBT'),
     ('W','Work Credit'),
     ('Y','Paypal'),
+    ('A','Cash with Change'),
+    ('B','Cash to Balance'),
 )
 
 class HoursTransaction(models.Model):
