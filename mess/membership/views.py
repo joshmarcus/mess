@@ -1,23 +1,28 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager, Group
 from django.contrib.auth import forms as auth_forms
 from django.core.urlresolvers import reverse
 from django.core import paginator as p
 from django.db.models import Q
+from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.conf import settings
+from django.core import mail
+from django.utils.datastructures import MultiValueDictKeyError
 
 #from mess.accounting import models as a_models
 from mess.utils.logging import log
 from mess.membership import forms, models
+from mess.events import models as e_models
 from mess.core.permissions import has_elevated_perm
 
 import copy
 import datetime
+import smtplib
 
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 50
@@ -514,6 +519,235 @@ def admin_reset_password(request, username):
             Password reset email was sent to %s (%s).''' % \
             (member.get_absolute_url(), member, user.email)
     return HttpResponse(message)
+
+def send_mess_email(subject, to_email, from_email, message):
+    try:
+        mail.send_mail(subject, message, from_email, [to_email])
+    except smtplib.SMTPRecipientsRefused, e:
+        print "SMTP Error: %s" % e
+
+def online_member_sign_up(request):
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        form = forms.OnlineMemberSignUpForm(request.POST)
+
+        if form.is_valid():
+            new_member = models.OnlineMemberSignUp()
+            new_member.first_name = form.cleaned_data["first_name"] 
+            new_member.last_name = form.cleaned_data["last_name"] 
+            new_member.email = form.cleaned_data["email"] 
+            new_member.phone = form.cleaned_data["phone"] 
+            new_member.address1 = form.cleaned_data["street_address"] 
+            new_member.city = form.cleaned_data["city"] 
+            new_member.state = form.cleaned_data["state"] 
+            new_member.postal_code = form.cleaned_data["postal_code"] 
+            new_member.referral_source = form.cleaned_data["referral_source"] 
+            new_member.referring_member = form.cleaned_data["referring_member"]
+            new_member.orientation = e_models.Orientation.objects.get(id=form.cleaned_data["orientation"]) 
+            new_member.equity_paid = form.cleaned_data["equity_paid"] 
+            new_member.save()
+
+            template = get_template('membership/confirmations/online_member_sign_up.html')
+            context["new_member"] = new_member
+
+            email_template = get_template('membership/emails/online_member_sign_up_member_confirmation.html')
+            send_mess_email("Mariposa Member Sign Up", new_member.email, "membership@mariposa.coop", email_template.render(context))
+
+            email_template = get_template('membership/emails/online_member_sign_up_member_coordinator_confirmation.html')
+            send_mess_email("New Member Sign Up: " + new_member.first_name + " " + new_member.last_name, "thomas.m.magee@gmail.com", "membership@mariposa.coop", email_template.render(context))
+        else:
+            template = get_template('membership/online_member_sign_up.html')
+            context['form'] = form
+    else:
+        template = get_template('membership/online_member_sign_up.html')
+        context['form'] = forms.OnlineMemberSignUpForm()
+
+    return HttpResponse(template.render(context))
+
+@login_required
+def online_member_sign_up_edit_form(request, id=None):
+    if not has_elevated_perm(request,'membership','edit_onlinemembersignup'):
+        return HttpResponseRedirect(reverse('welcome'))
+
+    context = RequestContext(request)
+    template = get_template('events/online_member_sign_up_edit_form.html')
+
+    if request.method == "POST":
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('online-member-sign-up-rdataeview'))
+        else:
+            if id:
+                form = forms.OnlineMemberSignUpEditForm(request.POST, instance=models.Orientation.objects.get(pk=id))
+            else:
+                form = forms.OnlineMemberSignUpEditForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('online-member-sign-up-review'))
+    else:
+        if id:
+            form = forms.OnlineMemberSignUpEditForm(instance=models.OnlineMemberSignUp.objects.get(pk=id))
+            context["edit"] = True
+        else:
+            form = forms.OnlineMemberSignUpEditForm()
+
+    context['form'] = form
+    return HttpResponse(template.render(context))
+
+@login_required
+def online_member_sign_up_review(request):
+    if not has_elevated_perm(request,'membership','add_member'):
+        return HttpResponseRedirect(reverse('welcome'))
+
+    context = RequestContext(request)
+
+    new_members = models.OnlineMemberSignUp.objects.filter(saved=False).filter(spam=False).filter(active=True)
+    new_members_count = new_members.count()
+    OnlineMemberSignUpReviewFormSet = formset_factory(forms.OnlineMemberSignUpReviewForm, extra=new_members.count())
+
+    if request.method == "POST":
+
+        formset = OnlineMemberSignUpReviewFormSet(request.POST)
+        
+        review_action = request.POST["review_action"]
+
+        for n in range(0, formset.total_form_count()):
+            form = formset.forms[n]
+            
+            # What a hack. We need to check if a given form has been selected, but the selected
+            # value only appears in POST if the user has actually selected... I am sure there 
+            # is a better way to handle this, but I don't have time to figure it out now - TM
+            try:
+                if request.POST['form-' + str(n) + '-selected']:
+                    member_id = request.POST['form-' + str(n) + '-record_id']
+                    new_member = models.OnlineMemberSignUp.objects.get(id=member_id)
+            except MultiValueDictKeyError:
+                # if the form wasn't selected, then we can just continue on to the next one
+                continue
+
+            if review_action == "spam":
+                new_member.spam = True
+                new_member.active = False
+                new_member.save()
+            elif review_action == "delete":
+                new_member.active = False
+                new_member.save()
+            elif review_action == "save":
+                if form.is_valid():
+                    # Create user
+                    user = User()
+                    user.username = form.cleaned_data['user_name']
+                    user.email = new_member.email
+                    user.first_name = new_member.first_name
+                    user.last_name = new_member.last_name
+                    user.save()
+                    user.groups.add(Group.objects.get(name="member"))
+                    user.save()
+
+                    member = models.Member()
+                    member.user = user
+                    member.status = 'd' # departed
+                    member.work_status = 'n' # no workshift
+
+                    if form.cleaned_data["payment_verified"] and new_member.equity_paid > 0:
+                        member.date_departed = datetime.date(1904, 01, 01)
+                        member.equity_held = new_member.equity_paid
+                    else:
+                        member.date_departed = datetime.date(1904, 02, 02)
+                        
+                    member.referral_source = new_member.referral_source
+
+                    if form.cleaned_data["referring_member"]:
+                        member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
+
+                    member.save()
+
+                    account = models.Account() 
+                    account.name = unicode(new_member) + " " + unicode(datetime.date.today())
+                    account.note = u'Joined Online %s' % unicode(datetime.date.today())
+                    account.save()
+
+                    account_member = models.AccountMember.objects.create(account=account, member=member)
+                    account_member.save()
+
+                    new_member.saved = True
+                    new_member.save()
+                
+                    return HttpResponseRedirect(reverse('online-member-sign-up-review'))
+    else:
+        data = {
+            'form-TOTAL_FORMS': unicode(new_members_count),
+            'form-INITIAL_FORMS': unicode(new_members_count),
+            'form-MAX_NUM_FORMS': u'',
+            }
+
+        for n in range(0, new_members.count()):
+            member = new_members[n]
+            data['form-' + str(n) + '-record_id'] = unicode(member.id)
+
+        formset = OnlineMemberSignUpReviewFormSet(data)
+
+    for n in range(0, new_members.count()):
+        form = formset.forms[n]
+        member = new_members[n]
+
+        form.fields["record_id"].initial = member.id
+        form.fields["name"].initial = str(member)
+        form.fields["email"].initial = member.email
+    
+        if member.referral_source == "Current Member":
+            form.fields["referral_source"].initial = member.referring_member
+        else:
+            form.fields["referral_source"].initial = member.referral_source
+
+        form.fields["orientation"].initial = member.orientation.name
+        form.fields["equity_paid"].initial = member.equity_paid
+        form.fields["phone"].initial = member.phone
+        form.fields["city"].initial = member.city
+        form.fields["state"].initial = member.state
+        form.fields["postal_code"].initial = member.postal_code
+        form.fields["address1"].initial = member.address1
+
+    # This is a total hack, but for whatever reason the form is being validated
+    # even on GET requests which is not what I want, so I clear the form errors
+    # for each form on GET requests
+    if request.method == "GET":
+        for n in range(0, new_members.count()):
+            form.errors.clear()
+
+    context["formset"] = formset
+    template = get_template('membership/online_member_sign_up_review.html')
+    return HttpResponse(template.render(context))
+
+def online_orientation_sign_up(request):
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        form = forms.OnlineOrientationSignUpForm(request.POST)
+
+        if form.is_valid():
+            first_name = form.cleaned_data["first_name"] 
+            last_name = form.cleaned_data["last_name"] 
+            email = form.cleaned_data["email"] 
+            phone = form.cleaned_data["phone"] 
+            orientation = e_models.Orientation.objects.get(id=form.cleaned_data["orientation"]) 
+
+            template = get_template('membership/confirmations/online_orientation_sign_up.html')
+
+            email_template = get_template('membership/emails/online_orientation_sign_up_member_confirmation.html')
+            send_mess_email("Mariposa Orientation Sign Up", email, "membership@mariposa.coop", email_template.render(context))
+
+            email_template = get_template('membership/emails/online_orientation_sign_up_member_coordinator_confirmation.html')
+            send_mess_email("New Orientation Sign Up: " + first_name + " " + last_name, "thomas.m.magee@gmail.com", "membership@mariposa.coop", email_template.render(context))
+        else:
+            template = get_template('membership/online_orientation_sign_up.html')
+            context['form'] = form
+    else:
+        template = get_template('membership/online_orientation_sign_up.html')
+        context['form'] = forms.OnlineOrientationSignUpForm()
+
+    return HttpResponse(template.render(context))
 
 # helper functions below
 

@@ -51,6 +51,27 @@ EMAIL_TYPES = (
     ('s','School'),
     ('o','Other'),
 )
+
+REFERRAL_SOURCES = (
+    ('',''),
+    ('Current Member','Current Member'),
+    ('Website','Website'),
+    ('Flyer','Flyer'),
+    ('Advertisement','Advertisement'),
+    ('Other','Other'),
+)
+
+EQUITY_PAID_OPTIONS = (
+    ('',''),
+    (200,'$200 (Full Equity)'),
+    (25,'$25 (Partial Equity)'),
+    (50,'$50 (Partial Equity)'),
+    (100,'$100 (Partial Equity)'),
+    (300,'$300 (Additional Equity)'),
+    (500,'$500 (Additional Equity)'),
+    (0,'I will pay at orientation'),
+)
+
 today = datetime.date.today()
 
 class MemberManager(models.Manager):
@@ -88,6 +109,10 @@ class Member(models.Model):
     equity_held = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     equity_increment = models.DecimalField(max_digits=8, decimal_places=2, default=25)
+
+    referral_source = models.CharField(max_length=20, choices=REFERRAL_SOURCES)
+    referring_member = models.ForeignKey('self', null=True)
+    orientation = models.ForeignKey('events.Orientation', null=True)
 
     objects = MemberManager()
 
@@ -321,7 +346,7 @@ class Account(models.Model):
     # balance is updated with each transaction.save()
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     note = models.TextField(blank=True)
-    shared_address = models.BooleanField()
+    shared_address = models.BooleanField(default=False)
 
     objects = AccountManager()
 
@@ -681,4 +706,26 @@ def members_with_skill(skill):
     return Member.objects.present().filter(
         task__in=skill.trainedbytasks()).distinct()
 
+class OnlineMemberSignUp(models.Model):
 
+    def __unicode__(self):
+        return self.first_name + " " + self.last_name
+
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100)
+    phone = models.CharField(max_length=100)
+    address1 = models.CharField(max_length=100)
+    address2 = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=50, default='Philadelphia')
+    state = models.CharField(max_length=50, default='PA')
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=50, default='USA')
+    referral_source = models.CharField(max_length=20, choices=REFERRAL_SOURCES)
+    referring_member = models.CharField(max_length=100)
+    orientation = models.ForeignKey('events.Orientation')
+    equity_paid = models.CharField(max_length=20, choices=EQUITY_PAID_OPTIONS)
+    saved = models.BooleanField(default=False)
+    spam = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)

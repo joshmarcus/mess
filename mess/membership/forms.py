@@ -3,8 +3,10 @@ from django.contrib.auth.models import User, Group
 from django.forms import formsets
 from django.forms.models import inlineformset_factory, modelformset_factory
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from mess.membership import models
+from mess.events import models as e_models
 from mess.autocomplete import AutoCompleteWidget
 import datetime
 
@@ -133,6 +135,103 @@ class AccountListFilterForm(forms.Form):
     inactive = forms.BooleanField(initial=False, required=False)
 #   can_shop = forms.BooleanField(initial=True, required=False)
 #   ebt_only = forms.BooleanField(initial=True, required=False)
+
+def mess_get_orientation_choices():
+    """ 
+    Helper function that returns all upcoming (and active)
+    orientations as well as our two special orientations:
+    Returning member, and None of these dates work for me 
+    """
+    returning_member_orientation = e_models.Orientation.objects.filter(name="Returning member")
+    orientations = e_models.Orientation.objects.filter(active=True).filter(datetime__gte=datetime.datetime.now())
+    no_dates_orientation = e_models.Orientation.objects.filter(name="None of these dates work for me")
+    
+    orientation_choices = [('','')]
+
+    for orientation in returning_member_orientation:
+        orientation_choices.append((orientation.id, orientation.name))
+
+    for orientation in orientations:
+        orientation_choices.append((orientation.id, orientation.name))
+
+    for orientation in no_dates_orientation:
+        orientation_choices.append((orientation.id, orientation.name))
+
+    return orientation_choices
+
+
+class OnlineMemberSignUpForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(OnlineMemberSignUpForm, self).__init__(*args, **kwargs)
+        self.fields["orientation"].choices = mess_get_orientation_choices()
+
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    phone = forms.CharField(required=True)
+    street_address = forms.CharField(required=True)
+    city = forms.CharField(required=True, initial="Philadelphia")
+    state = forms.CharField(required=True, initial="PA")
+    postal_code = forms.CharField(required=True, initial="19143")
+    referral_source = forms.ChoiceField(required=False, choices=models.REFERRAL_SOURCES)
+    referring_member = forms.CharField(required=False)
+    terms = forms.BooleanField(required=True, initial=False)
+    orientation = forms.ChoiceField(required=True)
+    equity_paid = forms.ChoiceField(required=True, choices=models.EQUITY_PAID_OPTIONS)
+
+class OnlineMemberSignUpReviewForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(OnlineMemberSignUpReviewForm, self).__init__(*args, **kwargs)
+        
+        members = models.Member.objects.filter(date_departed__isnull=True)
+        member_choices = [('','')]
+
+        for member in members:
+            member_choices.append((member.id, str(member)))
+        
+        self.fields["referring_member"].choices = member_choices
+
+    def clean_user_name(self):
+     
+        value = self.cleaned_data['user_name']
+
+        if (value.strip()==''):
+            raise ValidationError(u'The user name must not be blank')
+    
+        if (User.objects.filter(username=value.strip()).count() > 0):
+            raise ValidationError(u'The user name %s already exists' % value)
+
+        return value
+
+    record_id = forms.IntegerField(widget=forms.HiddenInput, required=False)
+    selected = forms.BooleanField(initial=False, required=False)
+    name = forms.CharField(widget=forms.HiddenInput, required=False)
+    user_name = forms.CharField(max_length=30, required=False)
+    email = forms.CharField(widget=forms.HiddenInput, required=False)
+    phone = forms.CharField(widget=forms.HiddenInput, required=False)
+    address1 = forms.CharField(widget=forms.HiddenInput, required=False)
+    city = forms.CharField(widget=forms.HiddenInput, required=False)
+    state = forms.CharField(widget=forms.HiddenInput, required=False)
+    postal_code = forms.CharField(widget=forms.HiddenInput, required=False)
+    referral_source = forms.CharField(widget=forms.HiddenInput, required=False)
+    referring_member = forms.ChoiceField(required=False)
+    orientation = forms.CharField(widget=forms.HiddenInput, required=False)
+    equity_paid = forms.CharField(widget=forms.HiddenInput, required=False)
+    payment_verified = forms.BooleanField(initial=False, required=False)
+
+class OnlineOrientationSignUpForm(forms.Form):
+    
+    def __init__(self, *args, **kwargs):
+        super(OnlineOrientationSignUpForm, self).__init__(*args, **kwargs)
+        self.fields["orientation"].choices = mess_get_orientation_choices()
+
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    phone = forms.CharField(required=True)
+    orientation = forms.ChoiceField(required=True)
 
 AccountMemberFlagsFormSet = modelformset_factory(models.AccountMember, 
                     exclude=('account', 'member', 'primary_account'), 

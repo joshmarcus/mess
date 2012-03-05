@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    {% include "membership/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <h2>Online Member Sign Up Review</h2>
+      <form action="{% url online-member-sign-up-review %}" method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <p>Action: 
+          <select name="review_action">
+            <option value=""></option>
+            <option value="save">Create Member and Account</option>
+            <option value="spam">Mark as Spam</option>
+            <option value="delete">Delete</option>
+          </select>
+          &nbsp;
+          <input type="submit" value="Apply Action"/>
+        </p>
+        <table class="data">
+          <tr>
+            <th><input type="checkbox" name="select_all"/></th>
+            <th>Name</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Referral Source</th>
+            <th>Referring Member</th>
+            <th>Orientation</th>
+            <th>Equity Paid</th>
+            <th>Payment Verified?</th>
+          </tr>  
+          {% for form in formset.forms %}
+          <tr>
+            <td>{{ form.record_id }}{{ form.selected }}</td>
+            <td>
+              <a title='Phone: {{ form.fields.phone.initial }} | Address: {{ form.fields.address1.initial }} | City: {{ form.fields.city.initial }} | State: {{ form.fields.state.initial }} | Postal Code: {{ form.fields.postal_code.initial }}' href='{% url online-member-sign-up-edit-form form.fields.record_id.initial %}'>{{ form.fields.name.initial }}</a>
+            </td>.
+            <td>{{ form.user_name }}{{ form.user_name.errors }}</td>
+            <td>{{ form.fields.email.initial }}</td>
+            <td>{{form.fields.referral_source.initial }}</td>
+            <td>{{ form.referring_member }}</td>
+            <td>{{ form.fields.orientation.initial }}</td>
+            <td>${{ form.fields.equity_paid.initial }}.00</td>
+            <td>{{ form.payment_verified }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </form>
+
+{% endblock %}

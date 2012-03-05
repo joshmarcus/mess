@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="double-column">
+  {% include "events/snippets/page_menu.html" %}
+  <div id="primary-content-wrapper">
+    <form action="{% url events-location-add %}">
+      <div class="add-button">
+        <input type="submit" value="Add a location" />
+      </div>
+    </form>
+    <h2>Event Locations</h2>
+    <table class="data">
+      <tr>
+        <th>Name</th>
+        <th>Address 1</th>
+        <th>Address 2</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip Code</th>
+        <th>Active</th>
+      </tr>    
+      {% for location in locations %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+          <a href='{% url events-location-edit location.id %}'>{{ location.name }}</a>
+        </td>
+        <td>{{ location.address1 }}</td>
+        <td>{{ location.address2 }}</td>
+        <td>{{ location.city }}</td>
+        <td>{{ location.state }}</td>
+        <td>{{ location.postal_code }}</td>
+        <td>{{ location.active }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% include "snippets/pagination.html" %}
+  </div>
+</div>
+{% endblock %}
+

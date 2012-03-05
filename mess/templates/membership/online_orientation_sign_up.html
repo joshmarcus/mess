@@ -1,0 +1,40 @@
+{% extends "membership/public_form.html" %}
+
+{% block formtitle %}Orientation Sign-up{% endblock %}
+
+{% block content %}
+  <div id="double-column">
+    <div id="primary-content-wrapper">
+      <p>Sign up for an orientation here if:</p>
+      
+      <ul>
+        <li>You joined online but didn’t have the opportunity to sign up for an orientation then.</li>
+        <li>You missed your original orientation date.</li>
+        <li>You couldn’t make it to any of the previously available orientations.</li>
+      </ul>
+
+      <p>If you are signing up for co-op membership for the first time please use the <a href="{% url online-member-sign-up %}">Mariposa Joining Form</a> instead.</p>
+
+      <form class="standard" method="post">
+        {% csrf_token %}
+        <div class="section">
+          <h3>Contact Information</h3>
+          <table>
+            <tr><td><th>First Name:</th></td><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
+            <tr><td><th>Last Name:</th></td><td>{{ form.last_name }}</td><td>{{ form.last_name.errors }}</td></tr>
+            <tr><td><th>{{ form.email.label }}:</th></td><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
+            <tr><td><th>{{ form.phone.label }}:</th></td><td>{{ form.phone }}</td><td>{{ form.phone.errors }}</td></tr>
+          </table>
+        </div>
+        <div class="section">
+          <h3>Orientation</h3>
+          <p>(please scroll down for ALL options!)<p>
+          <table>
+            <tr><td><th>Choose session</th></td><td>{{ form.orientation }}</td><td>{{ form.orientation.errors }}</td></tr>
+          </table>
+        </div>
+        <input type="submit" value="Continue"/>
+      </form>
+    </div>
+  </div>
+{% endblock %}

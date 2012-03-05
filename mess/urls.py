@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'^forum/', include('mess.forum.urls')),
     (r'^reporting/', include('mess.reporting.urls')),        
     (r'^scheduling/', include('mess.scheduling.urls')),        
+    (r'^events/', include('mess.events.urls')),        
 
     # IS4C connector
     (r'^is4c/', include('mess.is4c.urls')),        

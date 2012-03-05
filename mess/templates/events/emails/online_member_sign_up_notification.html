@@ -1,0 +1,25 @@
+Dear {{ task.member.user.first_name }}, 
+
+Your Mariposa Food Co-op member work shift is scheduled for: 
+    Date: {{ task.time|date:"l, F j, Y" }} 
+    Time: {{ task.time|date:"g:ia" }} 
+    Job: {{ task.job }} 
+    Account: {{ task.account }} 
+
+If you cannot work at this time, it is your responsibility to let a 
+staff member know that you will be missing your shift and either 
+schedule a makeup shift or, if you have banked hours, ask for them to 
+be applied. You must contact us at least 48 hours before your shift. 
+If you do not have banked hours, you will then need to schedule and 
+work a makeup. 
+
+Please be aware a missed shift without timely notice (with the 
+exceptions of emergencies/sickness) will freeze your account: no one 
+will be able to shop on the account until all owed hours are made-up. 
+Make-ups can be scheduled through the store. Remember, the co-op 
+depends on your work as a member, so please make every effort to 
+attend as scheduled. 
+
+We'll see you on {{ task.time|date:"l" }}! 
+
+Mariposa Food Co-op 

@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'mess.membership',
     'mess.reporting',
     'mess.scheduling',
+    'mess.events',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -132,6 +133,8 @@ USER_PASSES_TEST_URLS = (
     (r'^/passwordreset/', None),
     (r'^/accounting/listen_to_paypal', None),
     (r'^/is4c/', None),
+    (r'^/membership/online_member_sign_up/$', None),
+    (r'^/membership/online_orientation_sign_up/$', None),
     (r'', lambda u: u.is_staff),
 )
 
