@@ -46,6 +46,10 @@
           </tr>
           {% endfor %}
         </table>
+        {% if not formset.forms %}
+        <br/>
+        <h2 style="text-align: center;">There are no new online member sign ups to review</h2>
+        {% endif %} 
       </form>
 
 {% endblock %}
