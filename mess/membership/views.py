@@ -658,7 +658,7 @@ def online_member_sign_up_review(request):
                         
                     member.referral_source = new_member.referral_source
 
-                    if form.cleaned_data["referring_member"]:
+                    if form.cleaned_data["referring_member"] and member.referral_source == "Current Member":
                         member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
 
                     member.save()
@@ -674,7 +674,7 @@ def online_member_sign_up_review(request):
                     new_member.saved = True
                     new_member.save()
                 
-                    return HttpResponseRedirect(reverse('online-member-sign-up-review'))
+            return HttpResponseRedirect(reverse('online-member-sign-up-review'))
     else:
         data = {
             'form-TOTAL_FORMS': unicode(new_members_count),
@@ -713,7 +713,8 @@ def online_member_sign_up_review(request):
     # even on GET requests which is not what I want, so I clear the form errors
     # for each form on GET requests
     if request.method == "GET":
-        for n in range(0, new_members.count()):
+        for n in range(0, formset.total_form_count()):
+            form = formset.forms[n]
             form.errors.clear()
 
     context["formset"] = formset
