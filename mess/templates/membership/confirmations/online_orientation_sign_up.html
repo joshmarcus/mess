@@ -5,54 +5,11 @@
 {% block content %}
   <div id="double-column">
     <div id="primary-content-wrapper">
-      <form class="standard" method="post">
-        {% csrf_token %}
-        <div class="section">
-          <h3>Contact Information</h3>
-          <table>
-            <tr><td><th>First Name:</th></td><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
-            <tr><td><th>Last Name:</th></td><td>{{ form.last_name }}</td><td>{{ form.last_name.errors }}</td></tr>
-            <tr><td><th>{{ form.email.label }}:</th></td><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
-            <tr><td><th>{{ form.phone.label }}:</th></td><td>{{ form.phone }}</td><td>{{ form.phone.errors }}</td></tr>
-            <tr><td><th>Street Address:</th></td><td>{{ form.street_address }}</td><td>{{ form.street_address.errors }}</td></tr>
-            <tr><td><th>{{ form.city.label }}:</th></td><td>{{ form.city }}</td><td>{{ form.city.errors }}</td></tr>
-            <tr><td><th>{{ form.state.label }}:</th></td><td>{{ form.state }}</td><td>{{ form.state.errors }}</td></tr>
-            <tr><td><th>{{ form.postal_code.label }}:</th></td><td>{{ form.postal_code }}</td><td>{{ form.postal_code.errors }}</td></tr>
-            <tr><td><th>How did you find out about us?</th></td><td>{{ form.referral_source }}</td><td>{{ form.referral_source.errors }}</td></tr>
-            <tr><td><th>If referred by a member, what's their name?</th></td><td>{{ form.referring_member }}</td><td>{{ form.referring_member.errors }}</td></tr>
-          </table>
-        </div>
-        <div class="section">
-          <h3>Terms & Conditions</h3>
-          <p>I understand my member equity is refundable (minus any balance on the account) when I leave Mariposa, Inc.</p> 
-          <p>If I choose to no longer be a member, I understand that I have one year to reclaim any equity after leaving Mariposa, Inc. If I do not make that claim, the money becomes property of Mariposa, Inc.</p>
-          <p>I acknowledge that my membership account is subject to the policies of Mariposa Food Co-op.</p>
-          <table>
-            <tr>
-              <td>{{ form.terms }}</td>
-              <td>I have read the terms and conditions above and I agree.</td>
-            </tr>
-          </table>
-          {% if form.terms.errors %}<ul class="errorlist"><li>You must agree to the Terms & Conditions to join Mariposa</li></ul>{% endif %}
-        </div>
-        <div class="section">
-          <h3>Orientation</h3>
-          <p>Membership at Mariposa means more than just shopping at a retail store. All new members must attend an orientation.</p> 
-          <p>This is a great opportunity to meet members of the Mariposa community, and understand the many benefits, history, mission, and particularities of your co-op! Please sign up below.</p>
-          <table>
-            <tr><td><th>Choose Session</th></td><td>{{ form.orientation }}</td><td>{{ form.orientation.errors }}</td></tr>
-          </table>
-        </div>
-        <div class="section">
-          <h3>Member Equity</h3>
-          <p>Please choose an amount of member equity to pay now.</p>
-          <p>(If you cannot pay the full $200 a minimum payment of $25 is encouraged. A partial equity payment will enroll you in a payment plan of $25 every 3 months until you reach $200. You can also deposit more equity now to support the co-op's move!)</p>
-          <table>
-            <tr><td><th>Equity Amount</th></td><td>{{ form.equity_paid }}</td><td>{{ form.equity_paid.errors }}</tr>
-          </table>
-        </div>
-        <input type="submit" value="Continue"/>
-      </form>
+      <div class="section">
+        <p>Thank you!</p>
+
+        <p>You should have a confirmation email waiting in your inbox.</p>
+      </div>
     </div>
   </div>
 {% endblock %}
