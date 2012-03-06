@@ -548,14 +548,15 @@ def online_member_sign_up(request):
             new_member.equity_paid = form.cleaned_data["equity_paid"] 
             new_member.save()
 
-            template = get_template('membership/confirmations/online_member_sign_up.html')
-            context["new_member"] = new_member
-
             email_template = get_template('membership/emails/online_member_sign_up_member_confirmation.html')
             send_mess_email("Mariposa Member Sign Up", new_member.email, "membership@mariposa.coop", email_template.render(context))
 
             email_template = get_template('membership/emails/online_member_sign_up_member_coordinator_confirmation.html')
             send_mess_email("New Member Sign Up: " + new_member.first_name + " " + new_member.last_name, "thomas.m.magee@gmail.com", "membership@mariposa.coop", email_template.render(context))
+
+            template = get_template('membership/confirmations/online_member_sign_up.html')
+            context["name"] = unicode(new_member)
+            context["equity"] = new_member.equity_paid
         else:
             template = get_template('membership/online_member_sign_up.html')
             context['form'] = form

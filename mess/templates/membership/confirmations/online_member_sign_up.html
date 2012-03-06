@@ -6,54 +6,26 @@
   <p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p>
   <div id="double-column">
     <div id="primary-content-wrapper">
-      <form class="standard" method="post">
-        {% csrf_token %}
-        <div class="section">
-          <h3>Contact Information</h3>
-          <table>
-            <tr><td><th>First Name:</th></td><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
-            <tr><td><th>Last Name:</th></td><td>{{ form.last_name }}</td><td>{{ form.last_name.errors }}</td></tr>
-            <tr><td><th>{{ form.email.label }}:</th></td><td>{{ form.email }}</td><td>{{ form.email.errors }}</td></tr>
-            <tr><td><th>{{ form.phone.label }}:</th></td><td>{{ form.phone }}</td><td>{{ form.phone.errors }}</td></tr>
-            <tr><td><th>Street Address:</th></td><td>{{ form.street_address }}</td><td>{{ form.street_address.errors }}</td></tr>
-            <tr><td><th>{{ form.city.label }}:</th></td><td>{{ form.city }}</td><td>{{ form.city.errors }}</td></tr>
-            <tr><td><th>{{ form.state.label }}:</th></td><td>{{ form.state }}</td><td>{{ form.state.errors }}</td></tr>
-            <tr><td><th>{{ form.postal_code.label }}:</th></td><td>{{ form.postal_code }}</td><td>{{ form.postal_code.errors }}</td></tr>
-            <tr><td><th>How did you find out about us?</th></td><td>{{ form.referral_source }}</td><td>{{ form.referral_source.errors }}</td></tr>
-            <tr><td><th>If referred by a member, what's their name?</th></td><td>{{ form.referring_member }}</td><td>{{ form.referring_member.errors }}</td></tr>
-          </table>
-        </div>
-        <div class="section">
-          <h3>Terms & Conditions</h3>
-          <p>I understand my member equity is refundable (minus any balance on the account) when I leave Mariposa, Inc.</p> 
-          <p>If I choose to no longer be a member, I understand that I have one year to reclaim any equity after leaving Mariposa, Inc. If I do not make that claim, the money becomes property of Mariposa, Inc.</p>
-          <p>I acknowledge that my membership account is subject to the policies of Mariposa Food Co-op.</p>
-          <table>
-            <tr>
-              <td>{{ form.terms }}</td>
-              <td>I have read the terms and conditions above and I agree.</td>
-            </tr>
-          </table>
-          {% if form.terms.errors %}<ul class="errorlist"><li>You must agree to the Terms & Conditions to join Mariposa</li></ul>{% endif %}
-        </div>
-        <div class="section">
-          <h3>Orientation</h3>
-          <p>Membership at Mariposa means more than just shopping at a retail store. All new members must attend an orientation.</p> 
-          <p>This is a great opportunity to meet members of the Mariposa community, and understand the many benefits, history, mission, and particularities of your co-op! Please sign up below.</p>
-          <table>
-            <tr><td><th>Choose Session</th></td><td>{{ form.orientation }}</td><td>{{ form.orientation.errors }}</td></tr>
-          </table>
-        </div>
-        <div class="section">
-          <h3>Member Equity</h3>
-          <p>Please choose an amount of member equity to pay now.</p>
-          <p>(If you cannot pay the full $200 a minimum payment of $25 is encouraged. A partial equity payment will enroll you in a payment plan of $25 every 3 months until you reach $200. You can also deposit more equity now to support the co-op's move!)</p>
-          <table>
-            <tr><td><th>Equity Amount</th></td><td>{{ form.equity_paid }}</td><td>{{ form.equity_paid.errors }}</tr>
-          </table>
-        </div>
-        <input type="submit" value="Continue"/>
+      <div class="section">
+        <p>You're almost done! Please complete your membership by making your equity payment by clicking the Pay Now button.</p>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="cmd" value="_xclick">
+          <input type="hidden" name="business" value="DJ7UFJ58N3SSJ">
+          <input type="hidden" name="lc" value="US">
+          <input type="hidden" name="item_name" value="New Member Equity">
+          <input type="hidden" name="amount" value="{{ equity }}.00">
+          <input type="hidden" name="currency_code" value="USD">
+          <input type="hidden" name="button_subtype" value="services">
+          <input type="hidden" name="no_note" value="0">
+          <input type="hidden" name="no_shipping" value="2">
+          <input type="hidden" name="rm" value="1">
+          <input type="hidden" name="return" value="http://www.mariposa.coop/?page_id=1909">
+          <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
+          <input type="hidden" name="member_name" value="{{ name }}">
+          <input type="image" src="/media/images/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
       </form>
+      <p>If you have elected to pay your membership equity at orientation, your sign-up is complete for now.</p>
     </div>
   </div>
 {% endblock %}
