@@ -19,7 +19,7 @@ class Location(models.Model):
 
 class Event (models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(null=True, max_length=255)
+    description = models.CharField(blank=True, max_length=255)
     datetime = models.DateTimeField(default=datetime.now())
     length_in_minutes = models.IntegerField(default=120)
     location = models.ForeignKey(Location, limit_choices_to={'active': True}, null=True)
