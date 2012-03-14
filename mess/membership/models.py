@@ -25,6 +25,7 @@ WORK_STATUS = (
     ('c', 'Committee'), # Anything not tracked shift by shift
     ('e', 'Exempt'),     # Exemptions granted for kids, health, etc.
     ('n', 'No-Workshift'), # Non-working member
+    ('x', 'Non-Member'), # Not a member - only for our Non-Member account
 )
 EXEMPTION_TYPES = (
     ('k', 'Kids'),
@@ -58,6 +59,7 @@ REFERRAL_SOURCES = (
     ('Website','Website'),
     ('Flyer','Flyer'),
     ('Advertisement','Advertisement'),
+    ('Walked By','Walked By'),
     ('Other','Other'),
 )
 
@@ -380,7 +382,9 @@ class Account(models.Model):
         if memberset.count() == 0:
             return 0
         for m in memberset:
-            if m.work_status != 'n':
+            if m.work_status == 'x':
+                totaldiscount = 0
+            elif m.work_status != 'n':
                 totaldiscount += 10
             else: 
                 totaldiscount += 5
@@ -706,7 +710,7 @@ def members_with_skill(skill):
     return Member.objects.present().filter(
         task__in=skill.trainedbytasks()).distinct()
 
-class OnlineMemberSignUp(models.Model):
+class MemberSignUp(models.Model):
 
     def __unicode__(self):
         return self.first_name + " " + self.last_name
