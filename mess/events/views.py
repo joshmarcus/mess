@@ -22,8 +22,9 @@ def orientations(request):
 
     context = RequestContext(request)
 
-    context['upcoming_orientations'] = models.Orientation.objects.filter(datetime__gte=datetime.now()).order_by('-datetime')
-    context['past_orientations'] = models.Orientation.objects.filter(datetime__lt=datetime.now()).order_by('-datetime')
+    upcoming_orientations = models.Orientation.objects.filter(start__gte=datetime.now()).order_by('-start')
+
+    context['upcoming_orientations']  = upcoming_orientations
 
     template = get_template('events/orientations.html')
     return HttpResponse(template.render(context))
@@ -37,7 +38,10 @@ def orientation_form(request, id=None):
             return HttpResponseRedirect(reverse('events-orientations'))
         else:
             if id:
-                form = forms.OrientationForm(request.POST, instance=models.Orientation.objects.get(pk=id))
+                if models.Orientation.objects.filter(pk=id).exists():
+                    form = forms.OrientationForm(request.POST, instance=models.Orientation.objects.get(pk=id))
+                else:
+                    return HttpResponse("Sorry, no orientation with id " + str(id) + " exists.")
             else:
                 form = forms.OrientationForm(request.POST)
 
@@ -46,8 +50,13 @@ def orientation_form(request, id=None):
                 return HttpResponseRedirect(reverse('events-orientations'))
     else:
         if id:
-            form = forms.OrientationForm(instance=models.Orientation.objects.get(pk=id))
-            context["edit"] = True
+            if models.Orientation.objects.filter(pk=id).exists():
+                orientation = models.Orientation.objects.get(pk=id)
+                form = forms.OrientationForm(instance=orientation)
+                context["edit"] = True
+                context["orientation"] = orientation
+            else:
+                return HttpResponse("Sorry, no orientation with id " + str(id) + " exists.")
         else:
             form = forms.OrientationForm()
 
