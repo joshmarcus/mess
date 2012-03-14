@@ -98,6 +98,7 @@ class SkillForm(forms.ModelForm):
 
 class TimecardForm(forms.Form):
     id = forms.IntegerField(widget=forms.HiddenInput)
+    reminder_call = forms.ChoiceField(choices=(models.REMINDER_CALL))
     hours_worked = forms.DecimalField(required=True, 
                     widget=forms.TextInput(attrs={'size':'2'}))
     shift_status = forms.ChoiceField(choices=(

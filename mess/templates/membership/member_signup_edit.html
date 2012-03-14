@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    {% include "membership/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <h2>Edit member sign-up record</h2>
+      <form class="standard" method="post">
+        {% csrf_token %}
+        {% if is_errors %}
+          <div class="error-message">
+            <h3>You have problems.</h3>
+            <p>Please see specific errors in the form below.</p>
+          </div>
+        {% endif %}
+        <div class="section">
+          <h3>Main</h3>
+          <table>
+            {{ form }}
+          </table>
+          <input type="submit" value="Save"/>
+          <input type="submit" name="cancel" value="Cancel"/>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

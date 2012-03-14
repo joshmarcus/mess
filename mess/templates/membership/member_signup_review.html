@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div id="double-column">
+    {% include "membership/snippets/page_menu.html" %}
+    <div id="primary-content-wrapper">
+      <h2>Member Sign Up Review</h2>
+      <form action="{% url member-signup-review %}" method="post">
+        {{ formset.management_form }}
+        <input type="hidden" name="record_ids" value="{{ record_ids }}"/>
+        <input type="hidden" name="record_states" value="{{ record_states }}"/>
+        {% csrf_token %}
+        <p>Action: 
+          <select name="review_action">
+            <option value=""></option>
+            <option value="save">Create Member and Account</option>
+            <option value="spam">Mark as Spam</option>
+            <option value="delete">Delete</option>
+          </select>
+          &nbsp;
+          <input type="submit" value="Apply Action"/>
+        </p>
+        <table class="data">
+          <tr>
+            <!-- <th><input type="checkbox" name="select_all"/></th> -->
+            <th></th>
+            <th>Name</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Referral Source</th>
+            <th>Referring Member</th>
+            <th>Orientation</th>
+            <th>Equity Paid</th>
+            <th>Payment Verified?</th>
+          </tr>  
+          {% for form, member, record_state in formset_members_recordstates %}
+          {% if record_state == "1" %}
+          <tr>
+            <td>{{ form.selected }}</td>
+            <td>
+              <a title='Phone: {{ member.phone }} | Address: {{ member.address1 }} | City: {{ member.city }} | State: {{ member.state }} | Postal Code: {{ member.postal_code }}' href='{% url member-signup-edit member.id %}'>{{ member.first_name }} {{ member.last_name }}</a>
+            </td>.
+            <td>{{ form.user_name }}{{ form.user_name.errors }}</td>
+            <td>{{ member.email }}</td>
+            {% if member.referring_member %}
+            <td>{{ member.referring_member }}</td>
+            <td>{{ form.referring_member }}</td>
+            {% else %}
+            <td>{{ member.referral_source }}</td>
+            <td></td>
+            {% endif %}
+            <td>{{ member.orientation.name }}</td>
+            <td>${{ member.equity_paid }}.00</td>
+            <td>{{ form.payment_verified }}</td>
+          </tr>
+          {% endif %} 
+          {% endfor %}
+        </table>
+        {% if not formset_members_recordstates %}
+        <br/>
+        <h2 style="text-align: center;">There are no new member sign ups to review</h2>
+        <br/>
+        {% endif %} 
+      </form>
+
+{% endblock %}

@@ -19,6 +19,13 @@ FREQUENCIES = (
     ('m', 'Monthly'),
 )
 
+REMINDER_CALL = (
+    ('n', ''),
+    ('c', 'Contacted'),
+    ('l', 'Left Message'),
+    ('p', 'Problem w #'),
+)
+
 class Skill(models.Model):
     """
     Skills needed to perform jobs
@@ -119,6 +126,8 @@ class Task(models.Model):
     banked = models.BooleanField()
 
     recur_rule = models.ForeignKey(RecurRule, null=True, blank=True)
+
+    reminder_call = models.CharField(max_length=1, choices=REMINDER_CALL, null=True, default='n')
 
     objects = TaskManager()
     

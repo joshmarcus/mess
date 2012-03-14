@@ -36,6 +36,7 @@
         <h1>
           <a href="{% url welcome %}">The Mess</a>
         </h1>	
+        {% block global-navigation %}
     		<ul id="global-nav">
           {% if user.is_authenticated %}
           <li><a href="{% url welcome %}"{% if location.path|match:'/$' %} class="active"{% endif %}>Dashboard</a></li>
@@ -48,6 +49,9 @@
           <li><a href="{% url scheduling-schedule-today %}"{% if location.path|match:'/scheduling' %} class="active"{% endif %}>Scheduling</a></li>
           {% endif %}
           {% if user.is_staff %}
+          <li><a href="{% url events-orientations %}"{% if location.path|match:'/events' %} class="active"{% endif %}>Events</a></li>
+          {% endif %}
+          {% if user.is_staff %}
           <li><a href="{% url reports %}"{% if location.path|match:'/reporting' %} class="active"{% endif %}>Reports</a></li>
           {% endif %}
           {% if can_cashier_now or is_staff_assistant %}
@@ -57,6 +61,7 @@
           <li><a href="{% url forum-menu %}"{% if location.path|match:'/forum' %} class="active"{% endif %}>Forum</a></li>
           {% endif %}
         </ul>
+        {% endblock global-navigation %}
       </div>
       <div id="content-wrapper" class="clearfix">
 

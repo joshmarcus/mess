@@ -19,7 +19,7 @@ from mess.accounting import forms, models
 from mess.accounting.forms import TransactionForm, CloseOutForm
 from mess.membership import models as m_models
 from mess.core.permissions import has_elevated_perm
-#from mess.core.context_processors import cashier_permission
+from mess.core.context_processors import cashier_permission
 
 today = datetime.date.today()
 

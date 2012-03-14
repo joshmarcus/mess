@@ -1,26 +1,38 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager, Group
 from django.contrib.auth import forms as auth_forms
 from django.core.urlresolvers import reverse
 from django.core import paginator as p
 from django.db.models import Q
+from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.conf import settings
+from django.core import mail
+from django.utils.datastructures import MultiValueDictKeyError
 
 #from mess.accounting import models as a_models
 from mess.utils.logging import log
 from mess.membership import forms, models
+from mess.events import models as e_models
+from mess.accounting import models as a_models
 from mess.core.permissions import has_elevated_perm
 
+from decimal import Decimal
 import copy
 import datetime
+import smtplib
 
 # number of members or accounts to show per page in respective lists
 PER_PAGE = 50
+
+RECORD_STATE_ACTIVE = '1'
+RECORD_STATE_INACTIVE = '0'
+
+MEMBER_COORDINATOR_EMAIL = 'membership@mariposa.coop'
 
 @login_required
 def members(request):
@@ -514,6 +526,258 @@ def admin_reset_password(request, username):
             Password reset email was sent to %s (%s).''' % \
             (member.get_absolute_url(), member, user.email)
     return HttpResponse(message)
+
+def send_mess_email(subject, to_email, from_email, message):
+    try:
+        mail.send_mail(subject, message, from_email, [to_email])
+    except smtplib.SMTPRecipientsRefused, e:
+        print "SMTP Error: %s" % e
+
+def member_signup(request):
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        form = forms.MemberSignUpForm(request.POST)
+
+        if form.is_valid():
+            new_member = models.MemberSignUp()
+            new_member.first_name = form.cleaned_data["first_name"] 
+            new_member.last_name = form.cleaned_data["last_name"] 
+            new_member.email = form.cleaned_data["email"] 
+            new_member.phone = form.cleaned_data["phone"] 
+            new_member.address1 = form.cleaned_data["street_address"] 
+            new_member.city = form.cleaned_data["city"] 
+            new_member.state = form.cleaned_data["state"] 
+            new_member.postal_code = form.cleaned_data["postal_code"] 
+            new_member.referral_source = form.cleaned_data["referral_source"] 
+            new_member.referring_member = form.cleaned_data["referring_member"]
+            new_member.orientation = e_models.Orientation.objects.get(id=form.cleaned_data["orientation"]) 
+            new_member.equity_paid = form.cleaned_data["equity_paid"] 
+            new_member.save()
+
+            context["new_member"] = new_member
+            context["equity"] = new_member.equity_paid
+            email_template = get_template('membership/emails/member_signup_member_confirmation.html')
+            send_mess_email("Mariposa Member Sign Up", new_member.email, MEMBER_COORDINATOR_EMAIL, email_template.render(context))
+
+            email_template = get_template('membership/emails/member_signup_member_coordinator_confirmation.html')
+            send_mess_email("New Member Sign Up: " + new_member.first_name + " " + new_member.last_name, MEMBER_COORDINATOR_EMAIL, MEMBER_COORDINATOR_EMAIL, email_template.render(context))
+
+            template = get_template('membership/confirmations/member_signup.html')
+            context["name"] = unicode(new_member)
+            context["equity"] = new_member.equity_paid
+        else:
+            template = get_template('membership/member_signup.html')
+            context['form'] = form
+    else:
+        template = get_template('membership/member_signup.html')
+        context['form'] = forms.MemberSignUpForm()
+
+    return HttpResponse(template.render(context))
+
+@login_required
+def member_signup_edit(request, id=None):
+    if not has_elevated_perm(request,'membership','edit_membersignup'):
+        return HttpResponseRedirect(reverse('welcome'))
+
+    context = RequestContext(request)
+    template = get_template('membership/member_signup_edit.html')
+
+    if request.method == "POST":
+        if 'cancel' in request.POST:
+            return HttpResponseRedirect(reverse('member-signup-review'))
+        else:
+            if id:
+                form = forms.MemberSignUpEditForm(request.POST, instance=models.Orientation.objects.get(pk=id))
+            else:
+                form = forms.MemberSignUpEditForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('member-signup-review'))
+    else:
+        if id:
+            form = forms.MemberSignUpEditForm(instance=models.MemberSignUp.objects.get(pk=id))
+            context["edit"] = True
+        else:
+            form = forms.MemberSignUpEditForm()
+
+    context['form'] = form
+    return HttpResponse(template.render(context))
+
+@login_required
+def member_signup_review(request):
+    if not has_elevated_perm(request,'membership','add_member'):
+        return HttpResponseRedirect(reverse('welcome'))
+
+    context = RequestContext(request)
+
+    MemberSignUpReviewFormSet = formset_factory(forms.MemberSignUpReviewForm)
+
+    if request.method == "POST":
+
+        formset = MemberSignUpReviewFormSet(request.POST)
+        
+        review_action = request.POST["review_action"]
+        record_ids = request.POST["record_ids"].split(',')
+        record_states = request.POST["record_states"].split(',')
+
+        new_members = []
+
+        formset_errors = False
+
+        for n in range(0, formset.total_form_count()):
+
+            new_member = models.MemberSignUp.objects.get(id=record_ids[n])
+            new_members.append(new_member)
+
+            if record_states[n] == RECORD_STATE_INACTIVE:
+                continue
+
+            form = formset.forms[n]
+
+            # We need to check if a given form has been selected, but the selected
+            # value only appears in POST if the user has actually selected... I am sure there 
+            # is a better way to handle this, but I don't have time to figure it out now - TM
+            try:
+                if not request.POST['form-' + str(n) + '-selected']:
+                    #formset.data['form-' + str(n) + '-record_id'] = unicode(new_member.id)
+                    form.errors.clear()
+                    continue
+            except MultiValueDictKeyError:
+                # if the form wasn't selected, then we can just continue on to the next one
+                #formset.data['form-' + str(n) + '-record_id'] = unicode(new_member.id)
+                form.errors.clear()
+                continue
+
+            if review_action == "spam":
+                new_member.spam = True
+                new_member.active = False
+                new_member.save()
+                record_states[n] = RECORD_STATE_INACTIVE
+            elif review_action == "delete":
+                new_member.active = False
+                new_member.save()
+                record_states[n] = RECORD_STATE_INACTIVE
+            elif review_action == "save":
+                if form.is_valid():
+                    # Create user
+                    user = User()
+                    user.username = form.cleaned_data['user_name']
+                    user.email = new_member.email
+                    user.first_name = new_member.first_name
+                    user.last_name = new_member.last_name
+                    user.save()
+                    user.groups.add(Group.objects.get(name="member"))
+                    user.save()
+
+                    # Create member
+                    member = models.Member()
+                    member.user = user
+                    member.status = 'd' # departed
+                    member.work_status = 'n' # no workshift
+
+                    # Per Dana: the departed date is set to a very specific value for new members
+                    # depending upon whether or not they have paid for the equity at sign up
+                    if form.cleaned_data["payment_verified"] and new_member.equity_paid > 0:
+                        member.date_departed = datetime.date(1904, 01, 01)
+
+                    else:
+                        member.date_departed = datetime.date(1904, 02, 02)
+                        
+                    member.referral_source = new_member.referral_source
+                    member.orientation = new_member.orientation
+
+                    if form.cleaned_data["referring_member"] and member.referral_source == "Current Member":
+                        member.referring_member = models.Member.objects.get(id=form.cleaned_data["referring_member"])
+
+                    member.save()
+
+                    # Create account
+                    current_date = unicode(datetime.date.today())
+                    account = models.Account() 
+                    account.name = unicode(new_member) + " " + current_date
+                    account.note = u'Joined Online %s' % current_date
+                    account.save()
+
+                    # Create account member
+                    account_member = models.AccountMember.objects.create(account=account, member=member)
+                    account_member.save()
+
+                    # Perform equity transaction if there was one
+                    if form.cleaned_data["payment_verified"] and new_member.equity_paid > 0:
+                        equity_transaction = a_models.Transaction.objects.create(account=account, member=member, purchase_type='O', purchase_amount=Decimal(new_member.equity_paid), note=u'Joined Online %s' % current_date)
+                        equity_transaction.save()
+                        equity_transaction = a_models.Transaction.objects.create(account=account, member=member, purchase_type='S', purchase_amount=Decimal(0) - Decimal(new_member.equity_paid), note=u'Joined Online %s' % current_date)
+                        equity_transaction.save()
+
+                    new_member.saved = True
+                    new_member.save()
+
+                    record_states[n] = RECORD_STATE_INACTIVE
+                else:
+                    formset_errors = True
+
+        # If there are no errors, just return a fresh GET request
+        if not formset_errors:
+            return HttpResponseRedirect(reverse('member-signup-review'))
+    else:
+
+        new_members = models.MemberSignUp.objects.filter(saved=False).filter(spam=False).filter(active=True)
+        new_members_count = new_members.count()
+
+        record_ids = []
+        record_states = []
+
+        for n in range(0, new_members_count):
+            record_ids.append(str(new_members[n].id))
+            record_states.append(RECORD_STATE_ACTIVE)
+
+        data = {
+            'form-TOTAL_FORMS': unicode(new_members_count),
+            'form-INITIAL_FORMS': unicode(new_members_count),
+            'form-MAX_NUM_FORMS': u'',
+            }
+    
+        formset = MemberSignUpReviewFormSet(data)
+
+        for form in formset.forms:
+            form.errors.clear()
+
+    context["formset"] = formset
+    context["record_ids"] = ','.join(record_ids)
+    context["record_states"] = ','.join(record_states)
+    context["formset_members_recordstates"] = zip(formset.forms, new_members, record_states)
+    template = get_template('membership/member_signup_review.html')
+    return HttpResponse(template.render(context))
+
+def orientation_signup(request):
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        form = forms.OrientationSignUpForm(request.POST)
+
+        if form.is_valid():
+            template = get_template('membership/confirmations/orientation_signup.html')
+            context["first_name"] = form.cleaned_data["first_name"]
+            context["last_name"] = form.cleaned_data["last_name"]
+            context["email"] = form.cleaned_data["email"]
+            context["phone"] = form.cleaned_data["phone"]
+            context["orientation"] = e_models.Orientation.objects.get(id=form.cleaned_data["orientation"]).name 
+
+            email_template = get_template('membership/emails/orientation_signup_member_confirmation.html')
+            send_mess_email("Mariposa Orientation Sign Up", form.cleaned_data["email"], MEMBER_COORDINATOR_EMAIL, email_template.render(context))
+
+            email_template = get_template('membership/emails/orientation_signup_member_coordinator_confirmation.html')
+            send_mess_email("New Orientation Sign Up: " + form.cleaned_data["first_name"] + " " + form.cleaned_data["last_name"], MEMBER_COORDINATOR_EMAIL, MEMBER_COORDINATOR_EMAIL, email_template.render(context))
+        else:
+            template = get_template('membership/orientation_signup.html')
+            context['form'] = form
+    else:
+        template = get_template('membership/orientation_signup.html')
+        context['form'] = forms.OrientationSignUpForm()
+
+    return HttpResponse(template.render(context))
 
 # helper functions below
 

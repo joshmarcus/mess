@@ -211,12 +211,14 @@ def timecard(request, date=None):
         account__isnull=True, excused=True).order_by('time', 'hours', 'job',
         '-recur_rule', 'id')
 
-    TaskFormSet = formset_factory(forms.TimecardForm)
+    TimecardFormSet = formset_factory(forms.TimecardForm)
 
     if request.method == 'POST':
-      formset = TaskFormSet(request.POST)
+      formset = TimecardFormSet(request.POST)
 
-      for form in formset.forms:
+      for n in range(0, formset.total_form_count()):
+        form = formset.forms[n]
+
         if (form.is_valid()):
           task = models.Task.objects.get(id=form.cleaned_data['id'])
           task.hours_worked=form.cleaned_data['hours_worked']
@@ -224,7 +226,16 @@ def timecard(request, date=None):
           task.excused = (form.cleaned_data['shift_status']=='excused')
           task.makeup = form.cleaned_data['makeup']
           task.banked = form.cleaned_data['banked']
-         
+          task.reminder_call = form.cleaned_data['reminder_call']
+          task.save()
+
+        else:
+          ''' 
+          Even if we don't validate, we still save the reminder call value, as
+          reminder calls take place a day before the timecard is ready to be submitted.
+          '''
+          task = models.Task.objects.get(id=request.POST['form-' + str(n) + '-id'])
+          task.reminder_call = request.POST['form-' + str(n) + '-reminder_call']
           task.save()
 
       if (not formset.errors):
@@ -257,8 +268,9 @@ def timecard(request, date=None):
         data['form-' + str(i) + '-hours'] = task.hours
         data['form-' + str(i) + '-makeup'] = task.makeup
         data['form-' + str(i) + '-banked'] = task.banked
+        data['form-' + str(i) + '-reminder_call'] = task.reminder_call
 
-      formset = TaskFormSet(data)
+      formset = TimecardFormSet(data)
       
     # We used to use a model formset built with the Task 
     # model, so the template expects each form to have 

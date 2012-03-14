@@ -2,6 +2,7 @@
 {% load core_tags %}
   <ul id="local-nav">
     <li><a href="{% url accounts %}"{% if location.path|match:'/membership/accounts' %} class="active"{% endif %}>Accounts</a></li>
-    <li class="last-item"><a href="{% url members %}"{% if location.path|match:'/membership/members' %} class="active"{% endif %}>Members</a></li>
+    <li><a href="{% url members %}"{% if location.path|match:'/membership/members' %} class="active"{% endif %}>Members</a></li>
+    <li class="last-item"><a href="{% url member-signup-review %}">Member Signup Review</a></li>
   </ul>
 {% endblock %}
