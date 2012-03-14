@@ -43,7 +43,7 @@
           <thead id="timecard-thead">
             <tr>
               <th class="printonly">Acct.<br />Susp.<br />Call</th>
-              <th class="printonly">Remind<br />Call</th>
+              <th>Reminder<br />Call</th>
               <th>Hours<br />Worked<span class="printonly">=&#10003;</span></th>
               <th class="squish">Shift Status</th>
               <th class="squish">Makeup</th>
@@ -60,7 +60,8 @@
             {% with form.instance as task %}
             <tr class="task-display {% cycle "odd" "even" %}{% if task.form.errors %} hidden{% endif %}{% if task.timecard_submitted %} timecard-submitted{% endif %}">
               <td class="printonly"></td> <!-- account suspended call -->
-              <td class="printonly"></td> <!-- reminder call -->
+              <!-- <td class="printonly"></td> --> <!-- reminder call -->
+              <td>{{ form.reminder_call }}</td>
               <td>{{ form.id }}{{ form.hours_worked.errors }}<input type="text" name="{{ form.prefix }}-hours_worked" id="id_{{ form.prefix }}-hours_worked" value="{% if task.timecard_submitted %}{{ task.hours_worked }}{% else %}0.00{% endif %}" /></td>
               {# this was, if task.hours_worked ... else ... but the problem was that bool(0) == False.  timecard_submitted checks if it's None.  this should really be done at the form level... #}
               <!-- <td>{{ form.excused }}</td> -->

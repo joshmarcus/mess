@@ -36,6 +36,7 @@
         <h1>
           <a href="{% url welcome %}">The Mess</a>
         </h1>	
+        {% block global-navigation %}
     		<ul id="global-nav">
           {% if user.is_authenticated %}
           <li><a href="{% url welcome %}"{% if location.path|match:'/$' %} class="active"{% endif %}>Dashboard</a></li>
@@ -60,6 +61,7 @@
           <li><a href="{% url forum-menu %}"{% if location.path|match:'/forum' %} class="active"{% endif %}>Forum</a></li>
           {% endif %}
         </ul>
+        {% endblock global-navigation %}
       </div>
       <div id="content-wrapper" class="clearfix">
 

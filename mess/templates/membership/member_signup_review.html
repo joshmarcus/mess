@@ -4,10 +4,12 @@
   <div id="double-column">
     {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <h2>Online Member Sign Up Review</h2>
-      <form action="{% url online-member-sign-up-review %}" method="post">
-        {% csrf_token %}
+      <h2>Member Sign Up Review</h2>
+      <form action="{% url member-signup-review %}" method="post">
         {{ formset.management_form }}
+        <input type="hidden" name="record_ids" value="{{ record_ids }}"/>
+        <input type="hidden" name="record_states" value="{{ record_states }}"/>
+        {% csrf_token %}
         <p>Action: 
           <select name="review_action">
             <option value=""></option>
@@ -20,7 +22,8 @@
         </p>
         <table class="data">
           <tr>
-            <th><input type="checkbox" name="select_all"/></th>
+            <!-- <th><input type="checkbox" name="select_all"/></th> -->
+            <th></th>
             <th>Name</th>
             <th>User Name</th>
             <th>Email</th>
@@ -30,25 +33,33 @@
             <th>Equity Paid</th>
             <th>Payment Verified?</th>
           </tr>  
-          {% for form in formset.forms %}
+          {% for form, member, record_state in formset_members_recordstates %}
+          {% if record_state == "1" %}
           <tr>
-            <td>{{ form.record_id }}{{ form.selected }}</td>
+            <td>{{ form.selected }}</td>
             <td>
-              <a title='Phone: {{ form.fields.phone.initial }} | Address: {{ form.fields.address1.initial }} | City: {{ form.fields.city.initial }} | State: {{ form.fields.state.initial }} | Postal Code: {{ form.fields.postal_code.initial }}' href='{% url online-member-sign-up-edit-form form.fields.record_id.initial %}'>{{ form.fields.name.initial }}</a>
+              <a title='Phone: {{ member.phone }} | Address: {{ member.address1 }} | City: {{ member.city }} | State: {{ member.state }} | Postal Code: {{ member.postal_code }}' href='{% url member-signup-edit member.id %}'>{{ member.first_name }} {{ member.last_name }}</a>
             </td>.
             <td>{{ form.user_name }}{{ form.user_name.errors }}</td>
-            <td>{{ form.fields.email.initial }}</td>
-            <td>{{form.fields.referral_source.initial }}</td>
+            <td>{{ member.email }}</td>
+            {% if member.referring_member %}
+            <td>{{ member.referring_member }}</td>
             <td>{{ form.referring_member }}</td>
-            <td>{{ form.fields.orientation.initial }}</td>
-            <td>${{ form.fields.equity_paid.initial }}.00</td>
+            {% else %}
+            <td>{{ member.referral_source }}</td>
+            <td></td>
+            {% endif %}
+            <td>{{ member.orientation.name }}</td>
+            <td>${{ member.equity_paid }}.00</td>
             <td>{{ form.payment_verified }}</td>
           </tr>
+          {% endif %} 
           {% endfor %}
         </table>
-        {% if not formset.forms %}
+        {% if not formset_members_recordstates %}
         <br/>
-        <h2 style="text-align: center;">There are no new online member sign ups to review</h2>
+        <h2 style="text-align: center;">There are no new member sign ups to review</h2>
+        <br/>
         {% endif %} 
       </form>
 

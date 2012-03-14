@@ -2,9 +2,9 @@
 
 {% block content %}
   <div id="double-column">
-    {% include "events/snippets/page_menu.html" %}
+    {% include "membership/snippets/page_menu.html" %}
     <div id="primary-content-wrapper">
-      <h2>Edit online member sign up record</h2>
+      <h2>Edit member sign-up record</h2>
       <form class="standard" method="post">
         {% csrf_token %}
         {% if is_errors %}

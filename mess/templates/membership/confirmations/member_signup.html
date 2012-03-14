@@ -1,12 +1,14 @@
-{% extends "membership/public_form.html" %}
+{% extends "membership/signup_base.html" %}
 
-{% block formtitle %}Mariposa Joining Form{% endblock %}
+{% block title %}Mariposa Joining Form{% endblock %}
 
 {% block content %}
-  <p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p>
   <div id="double-column">
     <div id="primary-content-wrapper">
-      <div class="section">
+      <div style="text-align: center">
+        <br />
+        <h2>Mariposa Joining Form</h2>
+        <p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p>
         <p>You're almost done! Please complete your membership by making your equity payment by clicking the Pay Now button.</p>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
           {% csrf_token %}
@@ -24,8 +26,10 @@
           <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
           <input type="hidden" name="member_name" value="{{ name }}">
           <input type="image" src="/media/images/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-      </form>
-      <p>If you have elected to pay your membership equity at orientation, your sign-up is complete for now.</p>
+        </form>
+        <br/>
+        <p>If you have elected to pay your membership equity at orientation, your sign-up is complete for now.</p>
+      </div>
     </div>
   </div>
 {% endblock %}

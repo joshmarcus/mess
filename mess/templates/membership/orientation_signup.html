@@ -1,10 +1,16 @@
-{% extends "membership/public_form.html" %}
+{% extends "membership/signup_base.html" %}
 
-{% block formtitle %}Orientation Sign-up{% endblock %}
+{% block title %}Mariposa Orientation Sign-up{% endblock %}
 
 {% block content %}
   <div id="double-column">
     <div id="primary-content-wrapper">
+      <div style="text-align: center">
+        <br />
+        <h2>Mariposa Orientation Sign Up</h2>
+        <br />
+      </div>
+      <div class="section">
       <p>Sign up for an orientation here if:</p>
       
       <ul>
@@ -14,10 +20,10 @@
       </ul>
 
       <p>If you are signing up for co-op membership for the first time please use the <a href="{% url online-member-sign-up %}">Mariposa Joining Form</a> instead.</p>
-
+      </div>
+      <div class="section">
       <form class="standard" method="post">
         {% csrf_token %}
-        <div class="section">
           <h3>Contact Information</h3>
           <table>
             <tr><td><th>First Name:</th></td><td>{{ form.first_name }}</td><td>{{ form.first_name.errors }}</td></tr>
@@ -30,7 +36,7 @@
           <h3>Orientation</h3>
           <p>(please scroll down for ALL options!)<p>
           <table>
-            <tr><td><th>Choose session</th></td><td>{{ form.orientation }}</td><td>{{ form.orientation.errors }}</td></tr>
+            <tr><td><th>Choose session&nbsp;&nbsp;</th></td><td>{{ form.orientation }}</td><td>{{ form.orientation.errors }}</td></tr>
           </table>
         </div>
         <input type="submit" value="Continue"/>

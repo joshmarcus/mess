@@ -1,35 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-  <head>
-    <meta name="generator" content=""/>
-    <meta name="author" content="MESS Team"/>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
-    {# used by Django autocomplete widget #} 
-    {{ form.media }}
-    {% if form.media %}
-      <link href="{{ MEDIA_URL }}css/yui_custom.css" type="text/css" rel="Stylesheet" media="screen" />
-    {% endif %}
-    <title>{% block title %}Mariposa Online Sign Up Form!{% endblock %}</title>
-    {% block head %}{% endblock %}
-  </head>
-  <!-- class yui-skin-sam on the body tends to misalign the autocomplete :( -->
-  <!-- <body class="yui-skin-sam"> -->
-  <body>
-    <h2>{% block formtitle %}{% endblock %}</h2>
-    {% block content %}{% endblock %}
-    <div id="footer">
-      <div id="footer-nav">
-  		</div><!--end of footer-nav-->
-  		<div id="footer-info">
-  		  <p>Mariposa Food Co-op<br />
-  		   4726 Baltimore Avenue<br />
-  		   Philadelphia, PA  19143<br />
-         215-729-2121<br />
-  		   <a href="http://www.mariposa.coop">www.mariposa.coop</a><br />
-  		  <p>Site built with <a href="http://www.djangoproject.com">Django</a></p>
-      </div>
-	  </div><!--end of footer-->
-  </body>
-</html>
+{% extends "base.html" %}
+
+{% block head %}
+<link href="{{ MEDIA_URL }}css/div_list.css"
+        type="text/css" rel="Stylesheet" media="screen" />
+{% endblock head %}
+
+{% block login %}{% endblock login %}
+{% block global-navigation %}{% endblock global-navigation %}
+
+{% block page_menu %}
+<a class='button' href="{{ PROJECT_URL }}member/form/" >New Member</a>
+<a class='button' href="{{ PROJECT_URL }}member/" >Home</a>
+{% endblock %}

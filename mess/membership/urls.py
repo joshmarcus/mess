@@ -63,10 +63,10 @@ urlpatterns = patterns('mess.membership.views',
     url(r'^accountmemberflags/$', 'accountmemberflags', name='accountmemberflags'),
 
     url(r'^(?P<username>\w+)/adminresetpassword/$', 'admin_reset_password', name='admin_reset_password'),
-    url(r'^online_member_sign_up/$', 'online_member_sign_up', name='online-member-sign-up'),
-    url(r'^online_member_sign_up/(\d)/edit/$', 'online_member_sign_up_edit_form', name='online-member-sign-up-edit-form'),
-    url(r'^online_member_sign_up/review/$', 'online_member_sign_up_review', name='online-member-sign-up-review'),
-    url(r'^online_orientation_sign_up/$', 'online_orientation_sign_up', name='online-orientation-sign-up'),
+    url(r'^signup/member/$', 'member_signup', name='member_signup'),
+    url(r'^signup/member/(\d+)/edit/$', 'member_signup_edit', name='member-signup-edit'),
+    url(r'^signup/member/review/$', 'member_signup_review', name='member-signup-review'),
+    url(r'^signup/orientation/$', 'orientation_signup', name='orientation-signup'),
 
     #url(r'^rawlist/$', 'raw_list', name='membership-raw-list')
     #url('^junkx/(\w+)/$', junk, name='junkx'),

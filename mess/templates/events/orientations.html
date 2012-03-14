@@ -13,8 +13,8 @@
     <table class="data">
       <tr>
         <th>Name</th>
-        <th>Date & Time</th>
-        <th>Length</th>
+        <th>Start</th>
+        <th>End</th>
         <th>Location</th>
         <th>Address</th>
         <th>Facilitator</th>
@@ -24,10 +24,10 @@
       {% for orientation in upcoming_orientations %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td>
-          <a title='Attendees: {% for member in orientation.member_set.all %}{{ member.first_name }} {{ member.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
+          <a title='Attendees: {% for member in orientation.member_set.all %}{{ member.user.first_name }} {{ member.user.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
         </td>
-        <td>{{ orientation.datetime }}</td>
-        <td>{{ orientation.length_in_minutes }}</td>
+        <td>{{ orientation.start }}</td>
+        <td>{{ orientation.end }}</td>
         <td>{{ orientation.location.name }}</td>        
         <td>{{ orientation.location.address1 }}</td>        
         <td>{{ orientation.facilitator }}</td>        
@@ -37,7 +37,7 @@
       {% endfor %}
     </table>
     <br/>
-    <h2>Past Orientations</h2>
+<!--    <h2>Past Orientations</h2>
     <table class="data">
       <tr>
         <th>Name</th>
@@ -62,7 +62,7 @@
     </table>
 
     {% include "snippets/pagination.html" %}
-  </div>
+  </div> -->
 </div>
 {% endblock %}
 

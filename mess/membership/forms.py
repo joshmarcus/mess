@@ -143,7 +143,7 @@ def mess_get_orientation_choices():
     Returning member, and None of these dates work for me 
     """
     returning_member_orientation = e_models.Orientation.objects.filter(name="Returning member")
-    orientations = e_models.Orientation.objects.filter(active=True).filter(datetime__gte=datetime.datetime.now())
+    orientations = e_models.Orientation.objects.filter(active=True).filter(start__gte=datetime.datetime.now())
     no_dates_orientation = e_models.Orientation.objects.filter(name="None of these dates work for me")
     
     orientation_choices = [('','')]
@@ -160,11 +160,19 @@ def mess_get_orientation_choices():
     return orientation_choices
 
 
-class OnlineMemberSignUpForm(forms.Form):
+class MemberSignUpForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
-        super(OnlineMemberSignUpForm, self).__init__(*args, **kwargs)
+        super(MemberSignUpForm, self).__init__(*args, **kwargs)
         self.fields["orientation"].choices = mess_get_orientation_choices()
+
+#    def clean_email(self):
+#        data = self.cleaned_data["email"]
+#
+#        if User.objects.filter(email=data).count() > 0:
+#            raise ValidationError(u'The email address %s is already in use by an existing member. If you are a returning member, please write to membership@mariposa.coop to inquire about restoring your membership at Mariposa.')
+#
+#        return data
 
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
@@ -180,10 +188,14 @@ class OnlineMemberSignUpForm(forms.Form):
     orientation = forms.ChoiceField(required=True)
     equity_paid = forms.ChoiceField(required=True, choices=models.EQUITY_PAID_OPTIONS)
 
-class OnlineMemberSignUpReviewForm(forms.Form):
+class MemberSignUpEditForm(forms.ModelForm):
+    class Meta:
+        model = models.MemberSignUp
+
+class MemberSignUpReviewForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
-        super(OnlineMemberSignUpReviewForm, self).__init__(*args, **kwargs)
+        super(MemberSignUpReviewForm, self).__init__(*args, **kwargs)
         
         members = models.Member.objects.filter(date_departed__isnull=True)
         member_choices = [('','')]
@@ -221,10 +233,10 @@ class OnlineMemberSignUpReviewForm(forms.Form):
     equity_paid = forms.CharField(widget=forms.HiddenInput, required=False)
     payment_verified = forms.BooleanField(initial=False, required=False)
 
-class OnlineOrientationSignUpForm(forms.Form):
+class OrientationSignUpForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
-        super(OnlineOrientationSignUpForm, self).__init__(*args, **kwargs)
+        super(OrientationSignUpForm, self).__init__(*args, **kwargs)
         self.fields["orientation"].choices = mess_get_orientation_choices()
 
     first_name = forms.CharField(required=True)

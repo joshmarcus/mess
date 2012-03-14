@@ -1,11 +1,15 @@
-{% extends "membership/public_form.html" %}
+{% extends "membership/signup_base.html" %}
 
-{% block formtitle %}Mariposa Joining Form{% endblock %}
+{% block title %}Mariposa Joining Form{% endblock %}
 
 {% block content %}
-  <p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p>
   <div id="double-column">
     <div id="primary-content-wrapper">
+      <div style="text-align: center">
+        <br />
+        <h2>Mariposa Joining Form</h2>
+        <p><a href="http://www.mariposa.coop/join">Click here for more info on the benefits of Mariposa Food Co-op Membership!</a></p>
+      </div>
       <form class="standard" method="post">
         {% csrf_token %}
         <div class="section">

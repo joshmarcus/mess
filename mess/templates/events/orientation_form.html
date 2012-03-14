@@ -27,6 +27,15 @@
           <input type="submit" value="Save"/>
           <input type="submit" name="cancel" value="Cancel"/>
         </div>
+        {% if orientation %}
+        <div class="section">
+          <h3>Scheduled Attendees</h3>
+          <br/>
+          {% for member in orientation.member_set.all %}
+          "{{ member.user.first_name }} {{ member.user.last_name }}" {{ member.user.email }}<br/>
+          {% endfor %}
+        </div>
+        {% endif %}
       </form>
     </div>
   </div>

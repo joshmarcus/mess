@@ -1,18 +1,18 @@
-Dear Thomas,
+Dear {{ new_member.first_name }},
 
 Thanks for joining Mariposa Food Coop!
 
 For confirmation, here is the information you submitted:
 
-First Name: Thomas
-Last Name: Magee
-Email: thomas.m.magee@gmail.com
-Phone: 215-939-7722
-Street Address: 230 Buckingham Place
-City: Philadelphia
-Zip Code: 19104
-Orientation: Wed, March 7, 6:30pm – 8:30pm
-Member Equity: 200.00
+First Name: {{ new_member.first_name }}
+Last Name: {{ new_member.last_name }}
+Email: {{ new_member.email }}
+Phone: {{ new_member.phone }}
+Street Address: {{ new_member.address1 }}
+City: {{ new_member.city }}
+Zip Code: {{ new_member.postal_code }}
+Orientation: {{ new_member.orientation.name }}
+Member Equity: {{ new_member.equity_paid }}.00
 
 If you signed up for an orientation it will be held at our new location at 4824 Baltimore Avenue. We will meet just around the corner from the front of the store on 49th Street. As you walk around the corner, our back gate is the first iron gate that you will see. We will meet you at the gate.
 
