@@ -20,8 +20,8 @@ class Location(models.Model):
 class Event (models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(blank=True, max_length=255)
-    datetime = models.DateTimeField(default=datetime.now())
-    length_in_minutes = models.IntegerField(default=120)
+    start = models.DateTimeField(default=datetime.now())
+    end = models.DateTimeField(default=datetime.now())
     location = models.ForeignKey(Location, limit_choices_to={'active': True}, null=True)
     staff_contact = models.ForeignKey('membership.Member', related_name='staff_contacts', null=True)
     active = models.BooleanField(default=True)
