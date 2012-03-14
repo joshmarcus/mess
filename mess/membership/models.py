@@ -112,9 +112,9 @@ class Member(models.Model):
     equity_due = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     equity_increment = models.DecimalField(max_digits=8, decimal_places=2, default=25)
 
-    referral_source = models.CharField(max_length=20, choices=REFERRAL_SOURCES)
-    referring_member = models.ForeignKey('self', null=True)
-    orientation = models.ForeignKey('events.Orientation', null=True)
+    referral_source = models.CharField(max_length=20, choices=REFERRAL_SOURCES, blank=True, null=True)
+    referring_member = models.ForeignKey('self', blank=True, null=True)
+    orientation = models.ForeignKey('events.Orientation', blank=True, null=True)
 
     objects = MemberManager()
 
