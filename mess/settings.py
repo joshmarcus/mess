@@ -133,8 +133,8 @@ USER_PASSES_TEST_URLS = (
     (r'^/passwordreset/', None),
     (r'^/accounting/listen_to_paypal', None),
     (r'^/is4c/', None),
-    (r'^/signup/member/$', None),
-    (r'^/signup/orientation/$', None),
+    (r'^/membership/signup/member/$', None),
+    (r'^/membership/signup/orientation/$', None),
     (r'', lambda u: u.is_staff),
 )
 
