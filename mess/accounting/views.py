@@ -168,7 +168,7 @@ def cashsheet_input(request):
             context_instance=RequestContext(request))
 
 def hours_balance(request):
-    if not has_elevated_perm(request, 'membership', 'change_account'):
+    if not has_elevated_perm(request, 'accounting', 'add_transaction'):
         return HttpResponseRedirect(reverse('welcome'))
     if 'getcashierinfo' in request.GET:
         account_id = request.GET['account']
@@ -192,7 +192,7 @@ def hours_balance(request):
 @login_required
 def close_out(request, date=None):
     '''Page to double-check payment amounts'''
-    if not has_elevated_perm(request, 'membership', 'change_account'):
+    if not has_elevated_perm(request, 'accounting', 'add_transaction'):
         return HttpResponseRedirect(reverse('welcome'))
     #if not cashier_permission(request):
     #    return HttpResponse('Sorry, you do not have cashier permission. %s' 
