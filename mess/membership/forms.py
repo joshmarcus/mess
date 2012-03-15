@@ -136,26 +136,30 @@ class AccountListFilterForm(forms.Form):
 #   can_shop = forms.BooleanField(initial=True, required=False)
 #   ebt_only = forms.BooleanField(initial=True, required=False)
 
-def mess_get_orientation_choices():
+def mess_get_orientation_choices(upcoming_orientations_only):
     """ 
     Helper function that returns all upcoming (and active)
     orientations as well as our two special orientations:
     Returning member, and None of these dates work for me 
     """
-    returning_member_orientation = e_models.Orientation.objects.filter(name="Returning member")
+    if not upcoming_orientations_only:
+        returning_member_orientation = e_models.Orientation.objects.get(id=1)
+
     orientations = e_models.Orientation.objects.filter(active=True).filter(start__gte=datetime.datetime.now())
-    no_dates_orientation = e_models.Orientation.objects.filter(name="None of these dates work for me")
+
+    if not upcoming_orientations_only:
+        no_dates_orientation = e_models.Orientation.objects.get(id=2)
     
     orientation_choices = [('','')]
 
-    for orientation in returning_member_orientation:
-        orientation_choices.append((orientation.id, orientation.name))
+    if not upcoming_orientations_only:
+        orientation_choices.append((returning_member_orientation.id, returning_member_orientation.name))
 
     for orientation in orientations:
         orientation_choices.append((orientation.id, orientation.name))
 
-    for orientation in no_dates_orientation:
-        orientation_choices.append((orientation.id, orientation.name))
+    if not upcoming_orientations_only:
+        orientation_choices.append((no_dates_orientation.id, no_dates_orientation.name))
 
     return orientation_choices
 
@@ -164,7 +168,7 @@ class MemberSignUpForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(MemberSignUpForm, self).__init__(*args, **kwargs)
-        self.fields["orientation"].choices = mess_get_orientation_choices()
+        self.fields["orientation"].choices = mess_get_orientation_choices(False)
 
 #    def clean_email(self):
 #        data = self.cleaned_data["email"]
@@ -237,7 +241,7 @@ class OrientationSignUpForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super(OrientationSignUpForm, self).__init__(*args, **kwargs)
-        self.fields["orientation"].choices = mess_get_orientation_choices()
+        self.fields["orientation"].choices = mess_get_orientation_choices(True)
 
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
