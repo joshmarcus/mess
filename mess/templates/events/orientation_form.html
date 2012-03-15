@@ -32,7 +32,7 @@
           <h3>Scheduled Attendees</h3>
           <br/>
           {% for member in orientation.member_set.all %}
-          "{{ member.user.first_name }} {{ member.user.last_name }}" {{ member.user.email }}<br/>
+          "{{ member.user.first_name }} {{ member.user.last_name }}" <{{ member.user.email }}><br/>
           {% endfor %}
         </div>
         {% endif %}
