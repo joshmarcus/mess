@@ -702,14 +702,11 @@ def member_signup_review(request):
 
                     # Create account member
                     account_member = models.AccountMember.objects.create(account=account, member=member)
-                    account_member.save()
 
                     # Perform equity transaction if there was one
                     if form.cleaned_data["payment_verified"] and new_member.equity_paid > 0:
                         equity_transaction = a_models.Transaction.objects.create(account=account, member=member, purchase_type='O', purchase_amount=Decimal(new_member.equity_paid), note=u'Joined Online %s' % current_date)
-                        equity_transaction.save()
                         equity_transaction = a_models.Transaction.objects.create(account=account, member=member, purchase_type='S', purchase_amount=Decimal(0) - Decimal(new_member.equity_paid), note=u'Joined Online %s' % current_date)
-                        equity_transaction.save()
 
                     new_member.saved = True
                     new_member.save()
