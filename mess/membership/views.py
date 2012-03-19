@@ -693,6 +693,23 @@ def member_signup_review(request):
 
                     member.save()
 
+                    address = models.Address()
+                    address.type = 'h'
+                    address.address1 = new_member.address1
+                    address.address2 = new_member.address2
+                    address.city = new_member.city
+                    address.state = new_member.state
+                    address.postal_code = new_member.postal_code
+                    address.country = new_member.country
+                    address.member = member
+                    address.save()
+
+                    phone = models.Phone()
+                    phone.type = 'h'
+                    phone.number = new_member.phone
+                    phone.member = member
+                    phone.save()
+                   
                     # Create account
                     current_date = unicode(datetime.date.today())
                     account = models.Account() 
