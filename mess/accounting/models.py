@@ -98,8 +98,14 @@ class Transaction(models.Model):
             self.payment_type = ''
 
         if self.purchase_type == 'O':  
+            print self.purchase_amount
             self.member.equity_held += self.purchase_amount
-            self.member.equity_due -= self.purchase_amount
+
+            # Per Dan's instructions, only update equity_due if the transaction is for a 
+            # positive amount
+            if self.purchase_amount > 0:
+                self.member.equity_due -= self.purchase_amount
+
             if self.member.equity_due < 0:
                 self.member.equity_due = 0
             self.member.save()
