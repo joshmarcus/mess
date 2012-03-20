@@ -38,8 +38,8 @@
           <tr>
             <td>{{ form.selected }}</td>
             <td>
-              <a title='Phone: {{ member.phone }} | Address: {{ member.address1 }} | City: {{ member.city }} | State: {{ member.state }} | Postal Code: {{ member.postal_code }}' href='{% url member-signup-edit member.id %}'>{{ member.first_name }} {{ member.last_name }}</a>
-            </td>.
+              <a title='Phone: {{ member.phone }} | Address: {{ member.address1 }} | City: {{ member.city }} | State: {{ member.state }} | Postal Code: {{ member.postal_code }} | Signup Date & Time: {{ member.timestamp }}' href='{% url member-signup-edit member.id %}'>{{ member.first_name }} {{ member.last_name }}</a>
+            </td>
             <td>{{ form.user_name }}{{ form.user_name.errors }}</td>
             <td>{{ member.email }}</td>
             {% if member.referring_member %}
