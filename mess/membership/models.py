@@ -297,6 +297,12 @@ class Member(models.Model):
         if orientations.count():
             return orientations[0].time.date()
 
+    def save(self, *args, **kwargs):
+        if self.date_departed:
+            self.equity_due = Decimal(0)
+
+        super(Member, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ['user__username']
 
