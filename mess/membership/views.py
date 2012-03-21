@@ -557,8 +557,10 @@ def member_signup(request):
 
             context["new_member"] = new_member
             context["equity"] = new_member.equity_paid
-            email_template = get_template('membership/emails/member_signup_member_confirmation.html')
-            send_mess_email("Mariposa Member Sign Up", new_member.email, MEMBER_COORDINATOR_EMAIL, email_template.render(context))
+
+            if new_member.email:
+                email_template = get_template('membership/emails/member_signup_member_confirmation.html')
+                send_mess_email("Mariposa Member Sign Up", new_member.email, MEMBER_COORDINATOR_EMAIL, email_template.render(context))
 
             email_template = get_template('membership/emails/member_signup_member_coordinator_confirmation.html')
             send_mess_email("New Member Sign Up: " + new_member.first_name + " " + new_member.last_name, MEMBER_COORDINATOR_EMAIL, MEMBER_COORDINATOR_EMAIL, email_template.render(context))

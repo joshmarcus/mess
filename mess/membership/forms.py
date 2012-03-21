@@ -180,7 +180,7 @@ class MemberSignUpForm(forms.Form):
 
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=False)
     phone = forms.CharField(required=True)
     street_address = forms.CharField(required=True)
     city = forms.CharField(required=True, initial="Philadelphia")
