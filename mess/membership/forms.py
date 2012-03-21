@@ -145,7 +145,7 @@ def mess_get_orientation_choices(upcoming_orientations_only):
     if not upcoming_orientations_only:
         returning_member_orientation = e_models.Orientation.objects.get(id=1)
 
-    orientations = e_models.Orientation.objects.filter(active=True).filter(start__gte=datetime.datetime.now())
+    orientations = e_models.Orientation.objects.filter(active=True).filter(start__gte=datetime.datetime.now()).order_by('start')
 
     if not upcoming_orientations_only:
         no_dates_orientation = e_models.Orientation.objects.get(id=2)
