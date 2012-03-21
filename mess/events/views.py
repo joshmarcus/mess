@@ -23,8 +23,10 @@ def orientations(request):
     context = RequestContext(request)
 
     upcoming_orientations = models.Orientation.objects.filter(start__gte=datetime.now()).order_by('-start')
+    special_orientations = [models.Orientation.objects.get(pk=1), models.Orientation.objects.get(pk=2)]
 
     context['upcoming_orientations']  = upcoming_orientations
+    context['special_orientations']  = special_orientations
 
     template = get_template('events/orientations.html')
     return HttpResponse(template.render(context))

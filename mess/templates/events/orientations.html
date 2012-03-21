@@ -37,6 +37,35 @@
       {% endfor %}
     </table>
     <br/>
+    <h2>Special Orientations</h2>
+    <table class="data">
+      <tr>
+        <th>Name</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Location</th>
+        <th>Address</th>
+        <th>Facilitator</th>
+        <th>Cofacilitator</th>
+        <th>Active</th>
+      </tr>    
+      {% for orientation in special_orientations %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+          <a title='Attendees: {% for member in orientation.member_set.all %}{{ member.user.first_name }} {{ member.user.last_name }}, {% endfor %}' href='{% url events-orientation-edit orientation.id %}'>{{ orientation.name }}</a>
+        </td>
+        <td>{{ orientation.start }}</td>
+        <td>{{ orientation.end }}</td>
+        <td>{{ orientation.location.name }}</td>        
+        <td>{{ orientation.location.address1 }}</td>        
+        <td>{{ orientation.facilitator }}</td>        
+        <td>{{ orientation.cofacilitator }}</td>        
+        <td>{{ orientation.active }}</td>        
+      </tr>
+      {% endfor %}
+    </table>
+
+    <br/>
 <!--    <h2>Past Orientations</h2>
     <table class="data">
       <tr>
