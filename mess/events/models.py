@@ -23,7 +23,7 @@ class Event (models.Model):
     start = models.DateTimeField(default=datetime.now())
     end = models.DateTimeField(default=datetime.now())
     location = models.ForeignKey(Location, limit_choices_to={'active': True}, null=True)
-    staff_contact = models.ForeignKey('membership.Member', related_name='staff_contacts', null=True)
+    staff_contact = models.ForeignKey('membership.Member', related_name='staff_contacts', limit_choices_to=models.Q(user__is_staff=True), null=True)
     active = models.BooleanField(default=True)
 
     def __unicode__(self):
