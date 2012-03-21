@@ -619,6 +619,8 @@ def member_signup_review(request):
         formset = MemberSignUpReviewFormSet(request.POST)
         
         review_action = request.POST["review_action"]
+        context["review_action"] = review_action
+
         record_ids = request.POST["record_ids"].split(',')
         record_states = request.POST["record_states"].split(',')
 
@@ -641,7 +643,7 @@ def member_signup_review(request):
             # is a better way to handle this, but I don't have time to figure it out now - TM
             try:
                 if not request.POST['form-' + str(n) + '-selected']:
-                    #formset.data['form-' + str(n) + '-record_id'] = unicode(new_member.id)
+                    # We clear any validation errors on forms that haven't been selected
                     form.errors.clear()
                     continue
             except MultiValueDictKeyError:
@@ -755,6 +757,8 @@ def member_signup_review(request):
     
         formset = MemberSignUpReviewFormSet(data)
 
+        # We have to clear the errors on a GET request because for some reason the forms are trying to 
+        # validate, even on GETs
         for form in formset.forms:
             form.errors.clear()
 
@@ -762,6 +766,21 @@ def member_signup_review(request):
     context["record_ids"] = ','.join(record_ids)
     context["record_states"] = ','.join(record_states)
     context["formset_members_recordstates"] = zip(formset.forms, new_members, record_states)
+
+    members = models.Member.objects.filter(date_departed__isnull=True)
+    member_choices = [('','')]
+
+    """
+    Last but not least we have to populate the choices for the referring member form item. We could have 
+    done this in the form, but that would have caused each and every form to hit the database for the 
+    list of members, so instead we do it here.
+    """
+    for member in members:
+        member_choices.append((member.id, str(member)))
+        
+    for form in formset.forms:
+        form.fields["referring_member"].choices = member_choices
+
     template = get_template('membership/member_signup_review.html')
     return HttpResponse(template.render(context))
 

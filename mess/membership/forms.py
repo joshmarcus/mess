@@ -198,16 +198,16 @@ class MemberSignUpEditForm(forms.ModelForm):
 
 class MemberSignUpReviewForm(forms.Form):
 
-    def __init__(self, *args, **kwargs):
-        super(MemberSignUpReviewForm, self).__init__(*args, **kwargs)
-        
-        members = models.Member.objects.filter(date_departed__isnull=True)
-        member_choices = [('','')]
-
-        for member in members:
-            member_choices.append((member.id, str(member)))
-        
-        self.fields["referring_member"].choices = member_choices
+#    def __init__(self, *args, **kwargs):
+#        super(MemberSignUpReviewForm, self).__init__(*args, **kwargs)
+#        
+#        members = models.Member.objects.filter(date_departed__isnull=True)
+#        member_choices = [('','')]
+#
+#        for member in members:
+#            member_choices.append((member.id, str(member)))
+#        
+#        self.fields["referring_member"].choices = member_choices
 
     def clean_user_name(self):
      

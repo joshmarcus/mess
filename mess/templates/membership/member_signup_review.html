@@ -13,9 +13,9 @@
         <p>Action: 
           <select name="review_action">
             <option value=""></option>
-            <option value="save">Create Member and Account</option>
-            <option value="spam">Mark as Spam</option>
-            <option value="delete">Delete</option>
+            <option value="save" {% if review_action == "save"%}selected="selected"{% endif %}>Create Member and Account</option>
+            <option value="spam" {% if review_action == "spam"%}selected="selected"{% endif %}>Mark as Spam</option>
+            <option value="delete" {% if review_action == "delete"%}selected="selected"{% endif %}>Delete</option>
           </select>
           &nbsp;
           <input type="submit" value="Apply Action"/>
