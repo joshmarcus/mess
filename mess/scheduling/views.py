@@ -30,7 +30,7 @@ def myschedule(request):
         shift = get_object_or_404(models.Task, id=request.POST.get('task'))
         # error here means a race condition -- user should reload page
         assert shift.member is None and shift.account is None
-        if shift.time < todaytime + datetime.timedelta(11):
+        if shift.time < todaytime + datetime.timedelta(1):
             return HttpResponse('Sorry, online signup is only available at least 1 day in advance.  You may still be able to sign up for this shift by going to the co-op.')
         if shift.recur_rule:
             shift = shift.excuse_and_duplicate()  # one-time fill
