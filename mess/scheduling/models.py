@@ -150,7 +150,7 @@ class Task(models.Model):
         return '/scheduling/switch/?original=%s' % self.id
 
     def after_printing_horizon(self):
-        return bool(self.time > todaytime + datetime.timedelta(11))
+        return bool(self.time > todaytime + datetime.timedelta(1))
 
     def html_display(self):
         template = loader.get_template('scheduling/snippets/task.html')
