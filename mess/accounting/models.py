@@ -30,6 +30,8 @@ PAYMENT_CHOICES = (
     ('Y','Paypal'),
     ('A','Cash with Change'),
     ('B','Cash to Balance'),
+    ('T','Gift Certificate'),
+    ('O','Coupon'),
 )
 
 class HoursTransaction(models.Model):
