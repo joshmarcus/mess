@@ -1,7 +1,7 @@
 {% block page_menu %}
 {% load core_tags %}
   <ul id="local-nav">
-    <li><a href="{% url events-orientations %}"{% if location.path|match:'/events/orientations' %} class="active"{% endif %}>Orientations</a></li>
-    <li class="last-item"><a href="{% url events-locations %}"{% if location.path|match:'/events/locations' %} class="active"{% endif %}>Event Locations</a></li>
+    <li><a href="{% url events-orientations %}"{% if location.path|match:'/events/orientation' %} class="active"{% endif %}>Orientations</a></li>
+    <li class="last-item"><a href="{% url events-locations %}"{% if location.path|match:'/events/location' %} class="active"{% endif %}>Event Locations</a></li>
   </ul>
 {% endblock %}
