@@ -3,6 +3,6 @@
   <ul id="local-nav">
     <li><a href="{% url accounts %}"{% if location.path|match:'/membership/accounts' %} class="active"{% endif %}>Accounts</a></li>
     <li><a href="{% url members %}"{% if location.path|match:'/membership/members' %} class="active"{% endif %}>Members</a></li>
-    <li class="last-item"><a href="{% url member-signup-review %}">Member Signup Review</a></li>
+    <li class="last-item"><a {% if location.path|match:'/membership/signup/member/review' %} class="active"{% endif %} href="{% url member-signup-review %}">Member Signup Review</a></li>
   </ul>
 {% endblock %}
