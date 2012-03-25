@@ -17,11 +17,13 @@
       {% endfor %}
       </ul>
 
-      <h3>Here are the most recent updates from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h3>
-      {% for entry in rss_entries %}
-      <h4>{{ entry.title|safe }}</h4>
-      <p>{{ entry.summary|safe|linebreaksbr }} <a href="{{ entry.link }}">read more</a></p>
+      {% if rss_entries %}
+        <h3>Here are the most recent updates from <a href="http://www.mariposa.coop/?cat=3">mariposa.coop</a></h3>
+        {% for entry in rss_entries %}
+          <h4>{{ entry.title|safe }}</h4>
+          <p>{{ entry.summary|safe|linebreaksbr }} <a href="{{ entry.link }}">read more</a></p>
         {% endfor %}
+      {% endif %}
     </div>
   </div>
 
