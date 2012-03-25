@@ -332,6 +332,7 @@ hr.right-clearer {display: block; clear: right; margin: -0.66em 0; visibility: h
 					}
 				ul#global-nav li a.active {
 					background:#ebebeb url(../images/bg-global-nav-active.gif) no-repeat top right;
+          border-bottom:1px solid #ebebeb;
 					color:#333;
 					}
 			
