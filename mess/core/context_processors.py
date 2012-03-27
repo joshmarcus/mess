@@ -30,7 +30,7 @@ def cashier_permission(request):
         return {}     # no permission, bool({}) = False
     if request.user.is_staff:
         return {'can_cashier_now':True}
-    if (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP
+    if (request.META['REMOTE_ADDR'] in settings.MARIPOSA_IPS
         and (request.user.get_profile().is_cashier_today
             or request.user.get_profile().is_cashier_recently
             or request.user.has_perm('accounting.add_transaction'))):
@@ -52,7 +52,7 @@ def member_service_rep_permission(request):
         return {'is_member_services_rep':True}
 
     if (request.user.groups.filter(name="member service representative").count() > 0
-        and request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP):
+        and request.META['REMOTE_ADDR'] in settings.MARIPOSA_IPS):
             return {'is_member_services_rep':True}
     return {}     # no permission, bool({}) = False
 
@@ -68,7 +68,7 @@ def staff_assistant_permission(request):
     if not request.user.is_authenticated():
         return {}     # no permission, bool({}) = False
     if (request.user.groups.filter(name="staff assistant").count() > 0
-        and request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP):
+        and request.META['REMOTE_ADDR'] in settings.MARIPOSA_IPS):
         return {'is_staff_assistant':True}
     return {}     # no permission, bool({}) = False
 

@@ -473,8 +473,11 @@ def diagnose_cashier_permission(request):
     ret += 'User is authenticated: %s\n' % request.user.is_authenticated()
     ret += 'User is staff: %s\n' % request.user.is_staff
     ret += 'Remote Address: %s\n' % request.META['REMOTE_ADDR']
-    ret += 'Mariposa IP: %s\n' % settings.MARIPOSA_IP
-    ret += 'Remote Address is Mariposa IP: %s\n' % (request.META['REMOTE_ADDR'] == settings.MARIPOSA_IP)
+
+    for IP in settings.MARIPOSA_IPS:
+        ret += 'Mariposa IP: %s\n' % IP
+
+    ret += 'Remote Address is Mariposa IP: %s\n' % (request.META['REMOTE_ADDR'] in setting.MARIPOSA_IPS)
     ret += 'User: %s\n' % request.user
     ret += 'User is cashier today: %s\n' % request.user.get_profile().is_cashier_today
     ret += 'User is cashier recently: %s\n' % request.user.get_profile().is_cashier_recently
