@@ -86,7 +86,7 @@ def member(request, username):
     individual member page
     '''
     user = get_object_or_404(User, username=username)
-    if (not has_elevated_perm(request,'membership','member') and
+    if (not has_elevated_perm(request,'membership','change_member') and
         (not (request.user.is_authenticated() and 
              request.user.id == user.id))):
         return HttpResponseRedirect(reverse('welcome'))

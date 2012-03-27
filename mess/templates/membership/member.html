@@ -49,7 +49,7 @@
           </p>
         </div>
         {% endcomment %}
-        {% if user.is_staff %}
+        {% if user.is_staff or is_staff_assistant %}
           <form method="post" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('Click OK to send a password reset email to this user.');">
             {% csrf_token %}
             <input type="submit" value="send email to reset password">
