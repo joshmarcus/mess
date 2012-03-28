@@ -65,13 +65,13 @@ REFERRAL_SOURCES = (
 
 EQUITY_PAID_OPTIONS = (
     ('',''),
-    (200,'$200 (Full Equity)'),
-    (25,'$25 (Partial Equity)'),
-    (50,'$50 (Partial Equity)'),
-    (100,'$100 (Partial Equity)'),
-    (300,'$300 (Additional Equity)'),
-    (500,'$500 (Additional Equity)'),
-    (0,'I will pay at orientation'),
+    ('200','$200 (Full Equity)'),
+    ('25','$25 (Partial Equity)'),
+    ('50','$50 (Partial Equity)'),
+    ('100','$100 (Partial Equity)'),
+    ('300','$300 (Additional Equity)'),
+    ('500','$500 (Additional Equity)'),
+    ('0','I will pay at orientation'),
 )
 
 today = datetime.date.today()
@@ -732,7 +732,7 @@ class MemberSignUp(models.Model):
     postal_code = models.CharField(max_length=20)
     country = models.CharField(max_length=50, default='USA')
     referral_source = models.CharField(max_length=20, choices=REFERRAL_SOURCES)
-    referring_member = models.CharField(max_length=100)
+    referring_member = models.CharField(max_length=100, blank='true')
     orientation = models.ForeignKey('events.Orientation')
     equity_paid = models.CharField(max_length=20, choices=EQUITY_PAID_OPTIONS)
     saved = models.BooleanField(default=False)
