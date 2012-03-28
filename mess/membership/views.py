@@ -590,7 +590,7 @@ def member_signup_edit(request, id=None):
             return HttpResponseRedirect(reverse('member-signup-review'))
         else:
             if id:
-                form = forms.MemberSignUpEditForm(request.POST, instance=models.Orientation.objects.get(pk=id))
+                form = forms.MemberSignUpEditForm(request.POST, instance=models.MemberSignUp.objects.get(pk=id))
             else:
                 form = forms.MemberSignUpEditForm(request.POST)
 
