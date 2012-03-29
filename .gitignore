@@ -1,2 +1,6 @@
-update.sh
+*.log
+*.pyc
 *.swp
+update.sh
+mess/mess.db
+mess/settings_local.py
