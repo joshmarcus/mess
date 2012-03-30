@@ -513,6 +513,8 @@ def accountmemberflags(request):
 def admin_reset_password(request, username):
     ''' Send a password reset link to the member.  This function makes
     auth_forms think a passwordresetform was submitted for the user.email '''
+    if request.method != "POST":
+        return HttpResponse('Error. Adminresetpassword must be called by POST.')
     user = get_object_or_404(User, username=username)
     member = user.get_profile()
     if not user.email:
