@@ -57,11 +57,11 @@ class Transaction(models.Model):
     purchase_type = models.CharField(max_length=1, choices=PURCHASE_CHOICES,
         blank=True, default='P')
     purchase_amount = models.DecimalField(max_digits=8, decimal_places=2, 
-        default=0, blank=True)   # this or payment_amount will hold the IS4C.total
+        default=0)   # this or payment_amount will hold the IS4C.total
     payment_type = models.CharField(max_length=1, choices=PAYMENT_CHOICES,
         blank=True)
     payment_amount = models.DecimalField(max_digits=8, decimal_places=2, 
-        default=0, blank=True)   # this or purchase_amount will hold the IS4C.total
+        default=0)   # this or purchase_amount will hold the IS4C.total
     note = models.CharField(max_length=256, blank=True)   # IS4C.description
     account_balance = models.DecimalField(max_digits=8, decimal_places=2)
     entered_by = models.ForeignKey(User, blank=True, null=True)  # IS4C.emp_no
@@ -110,14 +110,14 @@ class Transaction(models.Model):
 
             if self.member.equity_due < 0:
                 self.member.equity_due = 0
-            self.member.save()
         balance = self.account.balance
         new_balance = balance + self.purchase_amount - self.payment_amount
         self.account.balance = self.account_balance = new_balance
-        # put account save after transaction save so balance isn't
+        # put account and member save after transaction save so balance isn't
         # changed on transaction save error
         super(Transaction, self).save(*args, **kwargs)
         self.account.save()
+        self.member.save()
 
     def save_for_equity_transfer(self, *args, **kwargs):
         # purchase_amount and purchase_type must appear together
