@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block head %}
+  <script src="{{ MEDIA_URL }}js/member.js"></script>
+{% endblock %}
+
 {% block content %}
   <div id="left-column">
     {% include "membership/snippets/page_menu.html" %}
@@ -50,9 +54,11 @@
         </div>
         {% endcomment %}
         {% if user.is_staff or is_staff_assistant %}
-          <form method="post" action="{% url admin_reset_password member.user.username %}" onsubmit="return confirm('Click OK to send a password reset email to this user.');">
+        <!-- XXX Can we just use the builtin password_reset? -->
+          <form id="reset-password-form" method="post" action="{% url pass_reset %}">
             {% csrf_token %}
-            <input type="submit" value="send email to reset password">
+            <input type="hidden" name="username" value="{{ member.user.username }}">
+            <input type="submit" value="Send email to reset password">
           </form>
         {% else %}
           <a href="{% url auth_password_change %}">Change Your Password</a>
