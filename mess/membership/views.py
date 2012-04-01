@@ -618,6 +618,22 @@ def member_signup_review(request):
 
     MemberSignUpReviewFormSet = formset_factory(forms.MemberSignUpReviewForm)
 
+    """
+    We have to populate the choices for the referring member form item. We could have 
+    done this in the form itself, but that would have caused each and every form to 
+    hit the database for the list of members, so instead we do one query on the 
+    database here and set it for each form we are about to show to the user.
+    
+    Here we just create the list, and we set it in each form later. The key here is 
+    that the choices have to be set before each form is validated.
+    """
+    members = models.Member.objects.filter(date_departed__isnull=True)
+    member_choices = [('','')]
+        
+    for member in members:
+        member_choices.append((member.id, str(member)))
+
+
     if request.method == "POST":
 
         formset = MemberSignUpReviewFormSet(request.POST)
@@ -631,7 +647,7 @@ def member_signup_review(request):
         new_members = []
 
         formset_errors = False
-
+        
         for n in range(0, formset.total_form_count()):
 
             new_member = models.MemberSignUp.objects.get(id=record_ids[n])
@@ -641,6 +657,7 @@ def member_signup_review(request):
                 continue
 
             form = formset.forms[n]
+            form.set_referring_member_choices(member_choices)
 
             # We need to check if a given form has been selected, but the selected
             # value only appears in POST if the user has actually selected... I am sure there 
@@ -761,29 +778,19 @@ def member_signup_review(request):
     
         formset = MemberSignUpReviewFormSet(data)
 
-        # We have to clear the errors on a GET request because for some reason the forms are trying to 
-        # validate, even on GETs
+        '''
+        We have to clear the errors on a GET request because for some reason the forms are trying to 
+        validate, even on GETs. We also take the opportunity to set the referring member choices 
+        here
+        '''
         for form in formset.forms:
             form.errors.clear()
+            form.set_referring_member_choices(member_choices)
 
     context["formset"] = formset
     context["record_ids"] = ','.join(record_ids)
     context["record_states"] = ','.join(record_states)
     context["formset_members_recordstates"] = zip(formset.forms, new_members, record_states)
-
-    members = models.Member.objects.filter(date_departed__isnull=True)
-    member_choices = [('','')]
-
-    """
-    Last but not least we have to populate the choices for the referring member form item. We could have 
-    done this in the form, but that would have caused each and every form to hit the database for the 
-    list of members, so instead we do it here.
-    """
-    for member in members:
-        member_choices.append((member.id, str(member)))
-        
-    for form in formset.forms:
-        form.fields["referring_member"].choices = member_choices
 
     template = get_template('membership/member_signup_review.html')
     return HttpResponse(template.render(context))

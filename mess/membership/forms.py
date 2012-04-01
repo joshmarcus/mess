@@ -221,6 +221,9 @@ class MemberSignUpReviewForm(forms.Form):
 
         return value
 
+    def set_referring_member_choices(self, choices):
+        self.fields["referring_member"].choices = choices
+
     record_id = forms.IntegerField(widget=forms.HiddenInput, required=False)
     selected = forms.BooleanField(initial=False, required=False)
     name = forms.CharField(widget=forms.HiddenInput, required=False)
