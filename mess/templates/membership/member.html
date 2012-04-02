@@ -54,10 +54,9 @@
         </div>
         {% endcomment %}
         {% if user.is_staff or is_staff_assistant %}
-        <!-- XXX Can we just use the builtin password_reset? -->
-          <form id="reset-password-form" method="post" action="{% url pass_reset %}">
+          <form id="reset-password-form" method="post" action="{% url auth_password_reset %}">
             {% csrf_token %}
-            <input type="hidden" name="username" value="{{ member.user.username }}">
+            <input type="hidden" name="email" value="{{ member.user.email }}">
             <input type="submit" value="Send email to reset password">
           </form>
         {% else %}
