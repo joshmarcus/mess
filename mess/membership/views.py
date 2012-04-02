@@ -567,9 +567,13 @@ def member_signup(request):
             email_template = get_template('membership/emails/member_signup_member_coordinator_confirmation.html')
             send_mess_email("New Member Sign Up: " + new_member.first_name + " " + new_member.last_name, MEMBER_COORDINATOR_EMAIL, MEMBER_COORDINATOR_EMAIL, email_template.render(context))
 
-            template = get_template('membership/confirmations/member_signup.html')
-            context["name"] = unicode(new_member)
-            context["equity"] = new_member.equity_paid
+            if (new_member.equity_paid == '0'):
+                template = get_template('membership/confirmations/member_signup.html')
+            else:
+                template = get_template('membership/confirmations/member_signup_paypal.html')
+                context["name"] = unicode(new_member)
+                context["equity"] = new_member.equity_paid
+
         else:
             template = get_template('membership/member_signup.html')
             context['form'] = form
@@ -618,7 +622,7 @@ def member_signup_review(request):
 
     MemberSignUpReviewFormSet = formset_factory(forms.MemberSignUpReviewForm)
 
-    """
+    '''
     We have to populate the choices for the referring member form item. We could have 
     done this in the form itself, but that would have caused each and every form to 
     hit the database for the list of members, so instead we do one query on the 
@@ -626,7 +630,7 @@ def member_signup_review(request):
     
     Here we just create the list, and we set it in each form later. The key here is 
     that the choices have to be set before each form is validated.
-    """
+    '''
     members = models.Member.objects.filter(date_departed__isnull=True)
     member_choices = [('','')]
         
