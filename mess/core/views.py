@@ -1,16 +1,17 @@
+import feedparser
+import socket
+
 from django.contrib.auth import forms as auth_forms
 from django.contrib.auth import authenticate, login
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.db.models.options import FieldDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import get_template
 
 from mess.forum import models as f_models
-import feedparser
-import pickle
-import socket
+
 
 MAX_ENTRIES = 5    # maximum number of rss items to show on welcome page
 TIMEOUT = 5  # timeout in seconds in case rss server is down
@@ -55,4 +56,3 @@ def welcome(request):
         context['form'] = auth_form
         template = get_template('welcome-anon.html')
     return HttpResponse(template.render(context))
-
