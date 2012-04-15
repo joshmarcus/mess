@@ -1,6 +1,7 @@
 from django.db import connection
 from django.contrib.auth.models import User, Permission
 from django.db.models import Q
+from django import forms
 
 
 class ModelBackend(object):
@@ -18,6 +19,8 @@ class ModelBackend(object):
             user = User.objects.get(Q(username=username) | Q(email=username))
         except User.DoesNotExist:
             return None
+        except User.MultipleObjectsReturned:
+            raise forms.ValidationError('That email is linked to multiple users. Please use a username instead.')
         if user.check_password(password):
             return user
 

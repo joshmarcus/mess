@@ -555,7 +555,7 @@ div.accountmemberside {width:50%; float:left;}
 hr.endaccountmember {clear:both; border:0px;}
 div.accountmemberalert {float:right; color:red; font-weight:bold; font-size:14pt;}
 
-.errorlist {color:red; font-weight:bold;}
+.errorlist {color:red; list-style-type:none; margin:0; padding:0;}
 /*
                 #primary-content-wrapper ul.errorlist {
                         position: absolute;
