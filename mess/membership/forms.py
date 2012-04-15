@@ -12,8 +12,6 @@ import datetime
 
 AddressFormSet = inlineformset_factory(models.Member, models.Address, 
         extra=0) #, min_num=1)
-EmailFormSet = inlineformset_factory(models.Member, models.Email, 
-        extra=0) #, min_num=1)
 PhoneFormSet = inlineformset_factory(models.Member, models.Phone, 
         extra=0) #, min_num=1)
 LeaveOfAbsenceFormSet = inlineformset_factory(models.Member, models.LeaveOfAbsence, 
@@ -27,11 +25,6 @@ RelatedMemberFormSet = inlineformset_factory(models.Account,
 class AddressForm(forms.ModelForm):
     class Meta:
         model = models.Address
-        exclude = ('member',)
-
-class EmailForm(forms.ModelForm):
-    class Meta:
-        model = models.Email
         exclude = ('member',)
 
 class PhoneForm(forms.ModelForm):

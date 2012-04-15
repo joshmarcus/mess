@@ -52,7 +52,7 @@ def anomalies(request):
         ('Comma in Name', mems.filter(user__first_name__contains=',')),
         ('Missing Lastname', mems.filter(user__last_name='Lastname')),
         ('Duplicate Name', find_dups(mems)),
-        ('Email without @', mems.filter(emails__isnull=False).exclude(emails__email__contains='@')),
+        ('Email without @', mems.filter(user__email__isnull=False).exclude(user__email__contains='@')),
         ]
     for issue, afflicteds in issues:
         report += '<h3>%s (%d members)</h3>\n' % (issue, len(afflicteds))

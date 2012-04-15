@@ -681,22 +681,6 @@ class Address(models.Model):
         verbose_name_plural = 'Addresses'
 
 
-class Email(models.Model):
-    member = models.ForeignKey(Member, related_name='emails')
-    type = models.CharField(max_length=1, choices=EMAIL_TYPES, default='p')
-    email = models.EmailField()
-
-    def __unicode__(self):
-        return self.email
-
-    def save(self, *args, **kwargs):
-        ''' stick new email address onto the user also '''
-        user = self.member.user
-        user.email = self.email
-        user.save()
-        super(Email, self).save(*args, **kwargs)
-
-
 class Phone(models.Model):
     member = models.ForeignKey(Member, related_name='phones')
     type = models.CharField(max_length=1, choices=PHONE_TYPES, default='h')

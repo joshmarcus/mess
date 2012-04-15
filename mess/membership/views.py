@@ -135,10 +135,6 @@ def member_form(request, username=None):
                     instance=member, prefix='leave_of_absence')
         address_formset = forms.AddressFormSet(request.POST, instance=member,
                 prefix='address')
-        # email_formset removed 2010-04-29 in favor of user.email because only 
-        # one email needed -- gsf
-        #email_formset = forms.EmailFormSet(request.POST, instance=member,
-        #        prefix='email')
         phone_formset = forms.PhoneFormSet(request.POST, instance=member,
                 prefix='phone')
         if has_elevated_perm(request, 'membership', 'add_member'):
@@ -183,7 +179,6 @@ def member_form(request, username=None):
                 prefix='related_account')
         address_formset = forms.AddressFormSet(instance=member, 
                 prefix='address')
-        #email_formset = forms.EmailFormSet(instance=member, prefix='email')
         phone_formset = forms.PhoneFormSet(instance=member, prefix='phone')
         LOA_formset = forms.LeaveOfAbsenceFormSet(instance=member, 
                 prefix='leave_of_absence')
