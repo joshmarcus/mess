@@ -3,7 +3,7 @@ from django.template import RequestContext, Context
 from django.template.loader import get_template
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Q
 from django.utils.safestring import mark_safe
@@ -20,10 +20,16 @@ import time
 import md5
 from decimal import Decimal 
 
+def wrong_secret(request):
+    if not request.GET.has_key('secret'):
+        return HttpResponseServerError('Invalid parameters for HTTP request')
+    else:
+        return HttpResponseServerError('Wrong IS4C secret: ' + request.GET['secret'])
+
 def index(request):
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return HttpResponse('Wrong IS4C secret!!')
+        return wrong_secret(request)
 
     if request.method == 'POST':
         # read the specific request type and act accordingly.
@@ -35,7 +41,7 @@ def account(request, account_id):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return HttpResponse('Wrong IS4C secret!!')
+        return wrong_secret(request)
 
     account = get_object_or_404(m_models.Account, id=account_id)
     result = simplejson.dumps(getacctdict(account))
@@ -45,7 +51,7 @@ def accounts(request):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return HttpResponse('Wrong IS4C secret!!')
+        return wrong_secret(request)
 
     accounts = [getacctdict(account) for account in m_models.Account.objects.all()]
     result = simplejson.dumps(accounts)
@@ -82,7 +88,7 @@ def member(request, member_id):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return HttpResponse('Wrong IS4C secret!!')
+        return wrong_secret(request)
 
     member = get_object_or_404(m_models.Member, id=member_id)
     result = simplejson.dumps(getmemberdict(member))
@@ -92,7 +98,7 @@ def members(request):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return HttpResponse('Wrong IS4C secret!!')
+        return wrong_secret(request)
 
     members = [getmemberdict(member) for member in m_models.Member.objects.all()]
     result = simplejson.dumps(members)
@@ -118,7 +124,7 @@ def recordtransaction(request):
     # all requests will have some get variables, at the very least the secret is a get variable.
     # verify secret
     if not request.GET.has_key('secret') or request.GET['secret'] != conf.settings.IS4C_SECRET or conf.settings.IS4C_SECRET == 'fakesecret':
-        return HttpResponse('Wrong IS4C secret!!')
+        return wrong_secret(request)
 
     # get the transaction and sanitize it
     json = request.POST['transaction'] 
