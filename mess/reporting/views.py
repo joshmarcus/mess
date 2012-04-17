@@ -52,7 +52,7 @@ def anomalies(request):
         ('Comma in Name', mems.filter(user__first_name__contains=',')),
         ('Missing Lastname', mems.filter(user__last_name='Lastname')),
         ('Duplicate Name', find_dups(mems)),
-        ('Email without @', mems.filter(emails__isnull=False).exclude(emails__email__contains='@')),
+        ('Email without @', mems.filter(user__email__isnull=False).exclude(user__email__contains='@')),
         ]
     for issue, afflicteds in issues:
         report += '<h3>%s (%d members)</h3>\n' % (issue, len(afflicteds))
@@ -64,15 +64,6 @@ def anomalies(request):
 
     report = '<h1>Anomalies Report (%d blips)</h1>\n' % blips + report
     return HttpResponse(report)
-
-def contact(request):
-    context = RequestContext(request)
-    members = m_models.Member.objects.active().filter(accountmember__shopper=False)
-    context['emailable'] = members.filter(emails__isnull=False)
-    context['nonemailable'] = members.exclude(emails__isnull=False)
-    template = get_template('reporting/contact.html')
-    return HttpResponse(template.render(context))
-
 
 def reports(request):
     # each named category can have various reports, each with a name and url
@@ -267,7 +258,6 @@ def reports(request):
         ('Old Reports',[
             ('Equity By Account (Old)',reverse('equity_old')),
             ('Dues and Member Equities Billing (Old)',reverse('billing_old')),
-            ('Member Contact Information', reverse('contact_list')),
 
             listrpt('Accounts','Accounts With Permanent Shifts',
                 'task__time__year='+str(datetime.date.today().year+1),

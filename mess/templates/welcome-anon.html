@@ -13,7 +13,12 @@
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ next }}" />
           {% if form.errors %}
-          <p class="error">Incorrect username/email or password. If you can't remember your password, go ahead and <a href="{% url auth_password_reset %}">reset it</a>.</p>
+            {% if form.non_field_errors %}
+              {{form.non_field_errors}}
+            {% else %}
+              <ul class="errorlist"><li>Please enter a correct username and password. Note that both fields are case-sensitive.</li></ul>
+            {% endif %}
+            <p>If you can't remember your password, go ahead and <a href="{% url auth_password_reset %}">reset it</a>.</p>
           {% endif %}
           <table>
             <tr>

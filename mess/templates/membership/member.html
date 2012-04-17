@@ -13,46 +13,6 @@
 
 {% include "membership/snippets/member.html" %}
 
-        {% comment %}
-        <h4>
-          <a href="{% url member-edit member.user.username %}">edit</a>
-          {{ member.user.get_full_name }} 
-        </h4>
-        <ul class="quick-info">
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-question-mark.gif" alt="Status"/>{{ member.verbose_status }}</li>
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-clipboard.gif" alt="Work Status"/>{{ member.get_work_status_display }}</li>
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-key.gif" alt="Has Key"/>{{ member.has_key }}</li>
-          <li><img src="{{ MEDIA_URL }}images/twotiny/icon-calendar.gif" alt="Date Joined"/>{{ member.date_joined }}</li>
-        </ul>
-        <div class="details clearfix">
-		  <ul class="edit-contact-info ceasefire">
-			{% for medium in contact_media %}
-			<li>
-              <a class="add" href="{% url membership-add-contact member.user.username,medium %}">add {{medium}}</a>
-            </li>
-			{% endfor %}
-	      </ul>
-          {% for address in member.addresses.all %}
-            {% include "membership/snippets/address.html" %}
-          {% endfor %}
-          <p>
-          {% for email in member.emails.all %}
-            <a href="mailto:{{ email }}">{{ email }}</a> ({{ email.get_type_display }})
-            <a class="edit" href="{% url membership-edit-email member.user.username,email.id %}">edit</a>
-            <a class="remove" href="{% url membership-remove-email member.user.username,email.id %}">remove</a>
-            <br />
-          {% endfor %}
-          </p>
-          <p>
-          {% for phone in member.phones.all %}
-            {{ phone }} ({{ phone.get_type_display }})
-            <a class="edit" href="{% url membership-edit-phone member.user.username,phone.id %}">edit</a>
-            <a class="remove" href="{% url membership-remove-phone member.user.username,phone.id %}">remove</a>
-            <br />
-          {% endfor %} 
-          </p>
-        </div>
-        {% endcomment %}
         {% if user.is_staff or is_staff_assistant %}
           <form id="reset-password-form" method="post" action="{% url auth_password_reset %}">
             {% csrf_token %}

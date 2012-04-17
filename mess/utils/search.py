@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from mess.membership.models import Member, Account, Address, Email, Phone
+from mess.membership.models import Member, Account, Address, Phone
 
 from django.contrib.auth.models import User
 
@@ -43,11 +43,11 @@ def search_for_address(string):
     return create_dictionary(list)
 
 def search_for_email(string):
-    """ Return a dictionary of Email matching a string.
+    """ Return a dictionary of emails matching a string.
     
     dict = {'primary_key': 'name'}
     """
-    list = Email.objects.filter(email__icontains=string)
+    list = User.objects.filter(email__icontains=string)
     return create_dictionary(list)
 
 def search_for_phone(string):
