@@ -24,6 +24,7 @@ todaytime = datetime.datetime(today.year,today.month,today.day)
 
 @login_required
 def myschedule(request):
+    context = RequestContext(request)
     member = request.user.get_profile()
     account = member.get_primary_account()
     if request.method == 'POST' and request.POST.get('action') == 'Sign me up!':
@@ -50,8 +51,11 @@ def myschedule(request):
     unassigned = models.Task.objects.filter(member__isnull=True,
                  excused=False,
                  time__range=(today,today+datetime.timedelta(20)))
+
+    context["is_workingmember"] = member.work_status == 'w' or member.work_status == 'c'
+
     return render_to_response('scheduling/myschedule.html', locals(),
-                              context_instance=RequestContext(request))
+                              context_instance=context)
 
 def unassigned_days(firstday, lastday):
     """

@@ -54,7 +54,7 @@
   {% for shift in unassigned %}
     <li>
       {{ shift.html_display }}
-      {% if shift.after_printing_horizon %}
+      {% if shift.after_printing_horizon and is_workingmember %}
       <br />
       <form method="post" onsubmit="return confirm('Can you commit to working this shift? {{ shift }}');">
         {% csrf_token %}
